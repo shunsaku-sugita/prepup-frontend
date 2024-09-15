@@ -2,4 +2,6 @@
 
 Front-end repository for PrepUp
 
-# Create Prod Branch
+# Create Prod Branch (prod)
+
+# Create Pre-Prod Branch (prod-stg)
