@@ -2,17 +2,17 @@
 
 ## Requirements
 
-- VSCode
-- Updated Node Version: 20+
-- Install Expo Cli
-  **-** Run command: sudo npm i -g expo-cli@latest
+1. VSCode
+2. Updated Node Version: 20+
+3. Install Expo Cli
+  - Run command: sudo npm i -g expo-cli@latest
 
-- Install extensions
-  **-** react native tools extension,
-  **-** ES7+ React/Redux/React-Native snippets
-  **-** Prettier - Code formatter
+4. Install extensions
+  - react native tools extension,
+  - ES7+ React/Redux/React-Native snippets
+  - Prettier - Code formatter
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+- This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Pre-Installation
 
