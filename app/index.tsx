@@ -32,7 +32,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome to PrepUp!</ThemedText>
+        <ThemedText type="title">Welcome to PrepUp Luis!</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
