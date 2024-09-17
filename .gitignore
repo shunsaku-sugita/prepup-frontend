@@ -140,4 +140,4 @@ expo-env.d.ts
 
 package-lock.json
 
-*.expo/
+*.expo
