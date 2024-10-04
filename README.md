@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+# prepup-frontend
+
+Front-end repository for PrepUp
+
+# Create Prod Branch (prod)
+
+# Create Pre-Prod Branch (prod-stg)
+
+# Create Pre-Prod Branch (dev-stg)
+
+# Create Pre-Prod Branch (dev-local)
+
+Hello World World!
+=======
 # Welcome to PrepUp 👋
 
 ## Requirements
@@ -64,3 +79,4 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+>>>>>>> dev-blanca-local

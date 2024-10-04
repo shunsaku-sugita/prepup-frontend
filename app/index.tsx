@@ -1,90 +1,230 @@
-// import { Text, View } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
+import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
+import JobSearchScreen from "../screens/JobSearchScreen";
+import { Ionicons } from "@expo/vector-icons";
+import IconButton from "../components/common/IconButton";
+import HeaderRightIcons from "../components/common/HeaderRightIcons";
+import NotificationsScreen from "../screens/NotificationsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import Greeting from "../components/interview/Greeting";
+import AppContextProvider from "../store/app-context";
+import CategoryScreen from "../screens/CategoryScreen";
+import QuizCategoryScreen from "../screens/QuizCategoryScreen";
+import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
+import QuizScreen from "../screens/QuizScreen";
+import CreateCategoryScreen from "../screens/CreateCategoryScreen";
 
-// export default function Index() {
-//   return (
-//     <View
-//       style={{
-//         flex: 1,
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//     >
-//       <Text>Hello Capstone 2024</Text>
-//     </View>
-//   );
-// }
+const Stack = createNativeStackNavigator();
+const BottomTab = createBottomTabNavigator();
 
-import { Image, StyleSheet, Platform } from "react-native";
-
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-
-export default function HomeScreen() {
+const InterviewOverview = ({ navigation }) => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
+    <BottomTab.Navigator
+      screenOptions={{
+        tabBarInactiveTintColor: "lightgray",
+        tabBarActiveTintColor: "black",
+        tabBarInactiveBackgroundColor: "white",
+        tabBarActiveBackgroundColor: "white",
+        tabBarStyle: { backgroundColor: "white" },
+        tabBarLabelStyle: { fontSize: 14 },
+        headerTitle: "",
+        headerRight: ({ tintColor }) => <HeaderRightIcons color={tintColor} />,
+      }}
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome to PrepUp Shun!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-          to see changes. Press{" "}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
-          </ThemedText>{" "}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this
-          starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{" "}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText>{" "}
-          to get a fresh <ThemedText type="defaultSemiBold">app</ThemedText>{" "}
-          directory. This will move the current{" "}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      {/* <BottomTab.Screen
+        name="InterviewSimulator"
+        component={InterviewSimulatorScreen}
+        options={{
+          title: "Simulator",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="chatbubble-ellipses" color={color} size={30} />
+          ),
+          // headerLeft: () => <Greeting />,
+        }}
+      /> */}
+      <BottomTab.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{
+          title: "Simulator",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="chatbubble-ellipses" color={color} size={30} />
+          ),
+          headerLeft: () => <Greeting />,
+        }}
+      />
+      <BottomTab.Screen
+        name="JobSearch"
+        component={JobSearchScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="briefcase" color={color} size={30} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="FlashCard"
+        component={QuizCategoryScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="sparkles-outline" color={color} size={30} />
+          ),
+        }}
+      />
+    </BottomTab.Navigator>
+  );
+};
+
+export default function App() {
+  return (
+    <>
+      <StatusBar style="auto" />
+      <AppContextProvider>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            headerRight: () => <HeaderRightIcons color="black" />,
+          }}
+        >
+          <Stack.Screen
+            name="InterviewOverview"
+            component={InterviewOverview}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="InterviewSimulator"
+            component={InterviewSimulatorScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="InterviewFeedback"
+            component={InterviewFeedbackScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="QuizScreen"
+            component={QuizScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="QuizFeedback"
+            component={QuizFeedbackScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="CreateCategory"
+            component={CreateCategoryScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="Notifications"
+            component={NotificationsScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+        </Stack.Navigator>
+      </AppContextProvider>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});
+const styles = StyleSheet.create({});
