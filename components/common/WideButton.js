@@ -1,6 +1,6 @@
 import { Button, StyleSheet, TouchableOpacity } from "react-native";
 
-const SmallButton = ({ title, color, onPress }) => {
+const WideButton = ({ title, color, onPress }) => {
   return (
     <TouchableOpacity style={styles.buttonContainer}>
       <Button title={title} color={color} onPress={onPress} />
@@ -8,7 +8,7 @@ const SmallButton = ({ title, color, onPress }) => {
   );
 };
 
-export default SmallButton;
+export default WideButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -18,6 +18,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 4,
     marginBottom: 2,
-    marginHorizontal: 8,
   },
 });

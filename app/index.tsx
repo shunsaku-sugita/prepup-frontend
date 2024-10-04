@@ -7,13 +7,16 @@ import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
 import { Ionicons } from "@expo/vector-icons";
 import IconButton from "../components/common/IconButton";
+import HeaderRightIcons from "../components/common/HeaderRightIcons";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import Greeting from "../components/interview/Greeting";
 import AppContextProvider from "../store/app-context";
+import CategoryScreen from "../screens/CategoryScreen";
 import QuizCategoryScreen from "../screens/QuizCategoryScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
+import CreateCategoryScreen from "../screens/CreateCategoryScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -29,31 +32,23 @@ const InterviewOverview = ({ navigation }) => {
         tabBarStyle: { backgroundColor: "white" },
         tabBarLabelStyle: { fontSize: 14 },
         headerTitle: "",
-        headerRight: ({ tintColor }) => (
-          <View style={styles.headerRightContainer}>
-            <IconButton
-              icon="notifications-outline"
-              color={tintColor}
-              size={30}
-              onPress={() => {
-                navigation.navigate("Notifications");
-              }}
-            />
-            <IconButton
-              icon="person-circle-outline"
-              color={tintColor}
-              size={30}
-              onPress={() => {
-                navigation.navigate("Profile");
-              }}
-            />
-          </View>
-        ),
+        headerRight: ({ tintColor }) => <HeaderRightIcons color={tintColor} />,
       }}
     >
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="InterviewSimulator"
         component={InterviewSimulatorScreen}
+        options={{
+          title: "Simulator",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="chatbubble-ellipses" color={color} size={30} />
+          ),
+          // headerLeft: () => <Greeting />,
+        }}
+      /> */}
+      <BottomTab.Screen
+        name="Category"
+        component={CategoryScreen}
         options={{
           title: "Simulator",
           tabBarIcon: ({ color }) => (
@@ -67,7 +62,7 @@ const InterviewOverview = ({ navigation }) => {
         component={JobSearchScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="search" color={color} size={30} />
+            <Ionicons name="briefcase" color={color} size={30} />
           ),
         }}
       />
@@ -76,7 +71,7 @@ const InterviewOverview = ({ navigation }) => {
         component={QuizCategoryScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="grid" color={color} size={30} />
+            <Ionicons name="sparkles-outline" color={color} size={30} />
           ),
         }}
       />
@@ -92,12 +87,31 @@ export default function App() {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
+            headerRight: () => <HeaderRightIcons color="black" />,
           }}
         >
           <Stack.Screen
             name="InterviewOverview"
             component={InterviewOverview}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="InterviewSimulator"
+            component={InterviewSimulatorScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
           />
           <Stack.Screen
             name="InterviewFeedback"
@@ -138,6 +152,24 @@ export default function App() {
           <Stack.Screen
             name="QuizFeedback"
             component={QuizFeedbackScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="CreateCategory"
+            component={CreateCategoryScreen}
             options={({ navigation }) => ({
               headerShown: true,
               title: "",
@@ -195,10 +227,4 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  headerRightContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    paddingRight: 12,
-  },
-});
+const styles = StyleSheet.create({});

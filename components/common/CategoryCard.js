@@ -1,33 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import SmallButton from "../common/SmallButton";
+import { Image, StyleSheet, Text, View } from "react-native";
+import SmallButton from "./SmallButton";
 
-const QuizCategoryCard = ({ category }) => {
+const CategoryCard = ({ category }) => {
   const navigation = useNavigation();
-  const startQuizHandler = () => {
-    navigation.navigate("QuizScreen");
+  const startInterviewHandler = () => {
+    navigation.navigate("InterviewSimulator");
   };
 
   return (
     <View style={styles.cardContainer}>
-      <TouchableOpacity onPress={startQuizHandler}>
+      <View>
         <View style={styles.imageContainer}>
           <Image source={require("../../assets/images/img.png")} />
         </View>
         <View style={styles.cardBottom}>
           <Text style={styles.categoryText}>{category}</Text>
           <SmallButton
-            title="Start Quiz"
+            title="Start"
             color="white"
-            onPress={startQuizHandler}
+            onPress={startInterviewHandler}
           />
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-export default QuizCategoryCard;
+export default CategoryCard;
 
 const styles = StyleSheet.create({
   cardContainer: {

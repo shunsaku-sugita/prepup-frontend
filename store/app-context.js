@@ -7,16 +7,7 @@ const AppContextProvider = ({ children }) => {
     userName: "Bill",
     questionText: ["Please tell me about yourself.", "What is your strength?"],
     currentQuestionIndex: 0,
-    quizCategories: [
-      "UI/UX Designer",
-      "Softwear Developer",
-      "Data Analyst",
-      "Finance Clerk",
-      "Accountant",
-      "Sales associate",
-      "Factory Manager",
-      "Registerd Nurse",
-    ],
+    quizCategories: ["My Occupation", "General", "Behavioural"],
   });
 
   return (

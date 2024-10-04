@@ -36,7 +36,7 @@ const InterviewQuestion = () => {
     <View style={styles.container}>
       <View style={styles.questionIconContainer}>
         <IconButton
-          icon={isPlaying ? "stop-circle-outline" : "play-circle"}
+          icon={isPlaying ? "stop-circle-outline" : "play-circle-outline"}
           color="black"
           size={45}
           onPress={speakHandler}
@@ -53,7 +53,7 @@ export default InterviewQuestion;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1.5,
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 12,

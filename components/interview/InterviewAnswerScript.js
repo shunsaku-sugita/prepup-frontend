@@ -15,7 +15,7 @@ export default InterviewAnswerScript;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 5,
+    flex: 4,
     borderWidth: 1,
     borderRadius: 12,
     width: 360,

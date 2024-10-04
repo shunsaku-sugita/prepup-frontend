@@ -3,13 +3,14 @@ import { StyleSheet, View } from "react-native";
 import IconButton from "../common/IconButton";
 
 const InterviewControllerIcons = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View>
         <IconButton
           icon="volume-medium-outline"
           color="black"
-          size={40}
+          size={35}
           onPress={() => {
             null;
           }}
@@ -19,7 +20,7 @@ const InterviewControllerIcons = () => {
         <IconButton
           icon="mic-circle-outline"
           color="black"
-          size={65}
+          size={80}
           onPress={() => {
             null;
           }}
@@ -29,9 +30,9 @@ const InterviewControllerIcons = () => {
         <IconButton
           icon="chevron-forward"
           color="black"
-          size={35}
+          size={30}
           onPress={() => {
-            null;
+            navigation.navigate("InterviewFeedback");
           }}
         />
       </View>

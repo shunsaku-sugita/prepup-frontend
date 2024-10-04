@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    marginLeft: 16,
+    marginLeft: 18,
   },
   titleText: {
     fontSize: 20,
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
 });
