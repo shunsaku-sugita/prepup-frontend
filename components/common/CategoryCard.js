@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import SmallButton from "./SmallButton";
 
 const CategoryCard = ({ category }) => {

@@ -18,9 +18,9 @@ const InterviewControllerIcons = () => {
       </View>
       <View>
         <IconButton
-          icon="mic-circle-outline"
+          icon="mic"
           color="black"
-          size={80}
+          size={70}
           onPress={() => {
             null;
           }}
