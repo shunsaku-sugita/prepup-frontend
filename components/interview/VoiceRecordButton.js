@@ -36,7 +36,7 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
       
        <View style={styles.containerStyle}> 
        <Ionicons name="mic" 
-       size={55} 
+       size={45} 
        color="black"
        style={styles.image} />
 
@@ -104,11 +104,11 @@ const VoiceRecordButton = () => {
     <View style={styles.container}>
       <TouchableOpacity onPress={handlePress}>
 
-      <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to Record'}</Text>
+      <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
         <CircularProgress
           percentage={recordDuration} // use recordDuration to show progress
           radius={50}
-          strokeWidth={6} 
+          strokeWidth={10} 
         />  
       </TouchableOpacity>
     </View>
@@ -124,9 +124,8 @@ const styles = StyleSheet.create({
     
   },
   recordingText: {
-    marginBottom: 10,
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     textAlign:'center',
    
   },
