@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 20,
-    marginVertical: 10,
+    // marginVertical: 10,
     width: 340,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 18,
   },
 });

@@ -1,9 +1,9 @@
 import { useNavigation } from "expo-router";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import WideButton from "../common/WideButton";
 
-const InterviewFeedbackButtons = ({ onPress }) => {
+const InterviewFeedbackButtons = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -17,7 +17,7 @@ const InterviewFeedbackButtons = ({ onPress }) => {
         color="white"
         onPress={() => navigation.navigate("InterviewSimulator")}
         icon="add-circle-outline"
-        size={24}
+        size={22}
       />
       <TouchableOpacity
         style={styles.textButton}
@@ -36,12 +36,13 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: "center",
     justifyContent: "center",
+    rowGap: 15,
   },
   textButton: {
-    marginVertical: 10,
+    marginVertical: 8,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     color: "blue",
   },
 });

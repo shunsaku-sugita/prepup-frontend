@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     flex: 4,
     borderWidth: 1,
     borderRadius: 12,
-    width: 360,
+    width: "90%",
     // marginBottom: 12,
   },
   textContainer: {

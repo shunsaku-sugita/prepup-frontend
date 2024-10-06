@@ -94,7 +94,7 @@ const InterviewControllerIcons = () => {
           color={recordingUri ? "black" : "#aaa"}
           size={35}
           onPress={playSound}
-          recordingUri={recordingUri}
+          boolean={recordingUri ? false : true}
         />
       </View>
       <View style={styles.iconContainer}>
@@ -110,8 +110,9 @@ const InterviewControllerIcons = () => {
         <Text></Text>
         <IconButton
           icon="chevron-forward"
-          color="black"
+          color={recordingUri ? "black" : "#aaa"}
           size={30}
+          // boolean={recordingUri ? false : true}
           onPress={() => {
             navigation.navigate("InterviewFeedback");
           }}
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: 360,
+    width: "90%",
     marginBottom: 6,
     paddingHorizontal: 28,
   },

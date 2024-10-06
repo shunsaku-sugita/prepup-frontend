@@ -15,8 +15,9 @@ export default InterviewFeedbackBadge;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2.5,
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 16,
   },
 });

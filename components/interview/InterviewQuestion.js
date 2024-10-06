@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 12,
-    width: 360,
+    width: "90%",
     marginBottom: 16,
   },
   questionIconContainer: {
