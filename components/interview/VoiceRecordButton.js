@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import Svg, { Circle } from 'react-native-svg';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-// import { faMicrophone } from '@fortawesome/free-solid-svg-icons/faMicrophone'
 
 const CircularProgress = ({ percentage, radius, strokeWidth }) => {
   const circumference = 2 * Math.PI * radius;
@@ -13,15 +10,13 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
 
   return (
     <Svg height={radius * 2} width={radius * 2}>
-
-<Circle
-        stroke="gray"
+      <Circle
+        stroke="#A79E9E"
         fill="none"
         cx={radius}
         cy={radius}
         r={radius - strokeWidth / 2}
-       />
-       
+      />
       <Circle
         stroke="black"
         fill="none"
@@ -33,24 +28,16 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
         strokeDashoffset={strokeDashoffset}
         strokeLinecap="round"
       />
-      
-       <View style={styles.containerStyle}> 
-       <Ionicons name="mic" 
-       size={45} 
-       color="black"
-       style={styles.image} />
-
-        {/* <FontAwesomeIcon size={45} style={styles.image} icon={faMicrophone} /> */}
-       </View>
-      
+      <View style={styles.containerStyle}>
+        <Ionicons name="mic" size={45} color="black" style={styles.image} />
+      </View>
     </Svg>
   );
 };
 
 const VoiceRecordButton = () => {
-  const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordDuration, setRecordDuration] = useState(0);
+  const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(null);
 
   const startRecording = async () => {
@@ -61,55 +48,54 @@ const VoiceRecordButton = () => {
         return;
       }
 
-    //   const newRecording = new Audio.Recording();
-    //   await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-    //   await newRecording.startAsync(); 
-    //   setRecording(newRecording);
+      // Start recording and initialize the duration
       setIsRecording(true);
-      
-      // Start a timer for duration
+      setRecordDuration(120); // Start at 120 seconds
+
+      // Start countdown immediately
       const id = setInterval(() => {
-        setRecordDuration(prev => Math.min(prev + 1, 100)); // Limit to 100% for progress
+        setRecordDuration((prevDuration) => {
+          if (prevDuration > 0) {
+            return prevDuration - 1; // Decrement by 1 every second
+          } else {
+            clearInterval(id); // Stop the interval at 0
+            return 0; // Ensure it stays at 0
+          }
+        });
       }, 1000);
+
       setIntervalId(id);
     } catch (err) {
       console.error('Failed to start recording', err);
     }
   };
 
-  const stopRecording = async () => {
+  const stopRecording = () => {
     setIsRecording(false);
     clearInterval(intervalId);
-    if (recording) {
-    //   await recording.stopAndUnloadAsync();
-      setRecording(null);
-      setRecordDuration(0);
-    }
+    setRecordDuration(120); // Reset the duration to 2 minutes if stopped
   };
 
   const handlePress = () => {
     if (isRecording) {
       stopRecording();
-      setRecordDuration(0);
     } else {
       startRecording();
     }
   };
 
-  const totalSeconds = Math.floor(recordDuration * 1.2);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
+  const minutes = Math.floor(recordDuration / 60);
+  const seconds = (recordDuration % 60).toString().padStart(2, '0');
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handlePress}>
-
-      <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
+      <TouchableOpacity onPress={handlePress} style={styles.touchable}>
+        <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
         <CircularProgress
-          percentage={recordDuration} // use recordDuration to show progress
-          radius={50}
-          strokeWidth={10} 
-        />  
+          percentage={(recordDuration / 120) * 100} // Starts at 100% and decreases
+          radius={45}
+          strokeWidth={8}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -119,30 +105,27 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    position:'relative',
-    // padding: 20,
-    
+    position: 'relative',
+  },
+  touchable: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   recordingText: {
     fontSize: 15,
     fontWeight: 'normal',
-    textAlign:'center',
-   
+    textAlign: 'center',
   },
-  containerStyle:{
+  containerStyle: {
     position: 'relative',
     alignCenter: 'center',
-    justifyContent:'center',
-    height:'100%',
+    justifyContent: 'center',
+    height: '100%',
     width: '100%',
   },
   image: {
-    // position: 'absolute',
-    // alignCenter: 'center',
-    // justifyContent:'center',
-   margin:'auto'
+    margin: 'auto',
   },
-  
 });
 
 export default VoiceRecordButton;
