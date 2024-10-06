@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
@@ -109,7 +109,23 @@ export default function App() {
                     icon="arrow-back"
                     color="black"
                     size={28}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                      Alert.alert(
+                        "Cancel the interview?",
+                        "The process is unsaved, you will lose it.",
+                        [
+                          {
+                            text: "Cancel",
+                          },
+                          {
+                            text: "Confirm",
+                            onPress: () => {
+                              navigation.goBack();
+                            },
+                          },
+                        ]
+                      );
+                    }}
                   />
                 ) : null,
             })}
@@ -127,7 +143,7 @@ export default function App() {
                     icon="arrow-back"
                     color="black"
                     size={28}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("Category")}
                   />
                 ) : null,
             })}

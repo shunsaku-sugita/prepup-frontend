@@ -1,14 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
 
 const InterviewFeedbackCard = () => {
   return (
-    <View>
-      <Text>InterviewFeedbackCard</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>InterviewFeedbackCard</Text>
     </View>
   );
 };
 
 export default InterviewFeedbackCard;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 24,
+  },
+});

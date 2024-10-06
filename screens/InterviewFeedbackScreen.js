@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import InterviewFeedbackOutput from "../components/interview/InterviewFeedbackOutput";
 
 const InterviewFeedbackScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>InterviewFeedback</Text>
+      <InterviewFeedbackOutput />
     </View>
   );
 };
@@ -16,8 +17,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
   },
 });

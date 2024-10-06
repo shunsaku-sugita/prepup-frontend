@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import CategoryCard from "./CategoryCard";
+import TitleText from "./TitleText";
 
 const CategoryOutput = () => {
   const { item, setItem } = useContext(AppContext);
@@ -9,7 +10,7 @@ const CategoryOutput = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose Category:</Text>
+      <TitleText text="Choose Category:" />
       <FlatList
         data={categoryData}
         keyExtractor={(item) => item}
@@ -27,11 +28,6 @@ export default CategoryOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
   },
   columnWrapper: {
     justifyContent: "space-between",

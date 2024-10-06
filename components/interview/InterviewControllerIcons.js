@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Audio } from "expo-av";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../common/IconButton";
 
 const InterviewControllerIcons = () => {
@@ -87,7 +87,8 @@ const InterviewControllerIcons = () => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.iconContainer}>
+        <Text>{recordingUri ? "Play!" : null}</Text>
         <IconButton
           icon="volume-medium-outline"
           color={recordingUri ? "black" : "#aaa"}
@@ -96,7 +97,8 @@ const InterviewControllerIcons = () => {
           recordingUri={recordingUri}
         />
       </View>
-      <View>
+      <View style={styles.iconContainer}>
+        <Text>{!isRecording ? "Press to answer!" : null}</Text>
         <IconButton
           icon="mic"
           color="black"
@@ -104,7 +106,8 @@ const InterviewControllerIcons = () => {
           onPress={isRecording ? stopRecording : startRecording}
         />
       </View>
-      <View>
+      <View style={styles.iconContainer}>
+        <Text></Text>
         <IconButton
           icon="chevron-forward"
           color="black"
@@ -124,9 +127,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     width: 360,
     marginBottom: 6,
+    paddingHorizontal: 28,
+  },
+  iconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

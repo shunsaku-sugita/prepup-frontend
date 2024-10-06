@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const SmallButton = ({ title, color, onPress }) => {
   return (
