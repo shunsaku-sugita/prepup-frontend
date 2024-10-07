@@ -24,9 +24,9 @@ const InterviewFeedbackCard = ({
               <>
                 <View style={styles.accordionHeaderLeftContainer}>
                   {isExpanded ? (
-                    <Ionicons name="chevron-up" color="black" size="24" />
+                    <Ionicons name="chevron-up" color="black" size={24} />
                   ) : (
-                    <Ionicons name="chevron-down" color="black" size="24" />
+                    <Ionicons name="chevron-down" color="black" size={24} />
                   )}
                   <AccordionTitleText style={styles.accordionTitleText}>
                     {titleText}
