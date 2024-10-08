@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const JobFilterBar = () => {
+const JobFilterBar = (props) => {
   return (
     <View>
-      <Text>JobFilterBar</Text>
+      <Text onPress={() => props.changeFilter(1)}>Filter By Location</Text>
+      <Text onPress={() => props.changeFilter(0)}>Saved Jobs</Text>
     </View>
   );
 };

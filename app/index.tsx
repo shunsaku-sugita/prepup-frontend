@@ -61,9 +61,17 @@ const InterviewOverview = ({ navigation }) => {
         name="JobSearch"
         component={JobSearchScreen}
         options={{
+          
           tabBarIcon: ({ color }) => (
             <Ionicons name="briefcase" color={color} size={30} />
           ),
+          // headerLeft: () =>
+          //     <IconButton
+          //       icon="arrow-back"
+          //       color="black"
+          //       size={28}
+          //       onPress={() => navigation.goBack()}
+          //     />
         }}
       />
       <BottomTab.Screen
@@ -104,6 +112,24 @@ export default function App() {
               headerLeft: () =>
                 // Check if the user can go back before showing the back button
                 navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ) : null,
+            })}
+          />
+ <Stack.Screen
+            name="JobSearchScreen"
+            component={JobSearchScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (  
                   <IconButton
                     icon="arrow-back"
                     color="black"
