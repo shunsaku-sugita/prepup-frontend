@@ -17,12 +17,11 @@ import CategoryScreen from "../screens/CategoryScreen";
 import QuizCategoryScreen from "../screens/QuizCategoryScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
-import CreateCategoryScreen from "../screens/CreateCategoryScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
-const InterviewOverview = ({ navigation }) => {
+const AppOverview = ({ navigation }) => {
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -92,8 +91,8 @@ export default function App() {
           }}
         >
           <Stack.Screen
-            name="InterviewOverview"
-            component={InterviewOverview}
+            name="AppOverview"
+            component={AppOverview}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -185,29 +184,10 @@ export default function App() {
             })}
           />
           <Stack.Screen
-            name="CreateCategory"
-            component={CreateCategoryScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.goBack()}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
             name="Notifications"
             component={NotificationsScreen}
             options={({ navigation }) => ({
               headerShown: true,
-              title: "",
               headerLeft: () =>
                 // Check if the user can go back before showing the back button
                 navigation.canGoBack() ? (

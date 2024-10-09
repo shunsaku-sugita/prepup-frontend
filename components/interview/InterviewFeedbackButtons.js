@@ -1,10 +1,34 @@
 import { useNavigation } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { useContext, useState } from "react";
+import { Modal, StyleSheet, View } from "react-native";
+import { AppContext } from "../../store/app-context";
+import BackToCategories from "../common/BackToCategories";
 import WideButton from "../common/WideButton";
+import CreateCategoryOutput from "./CreateCategoryOutput";
+import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
 
 const InterviewFeedbackButtons = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
+  const { item, setItem } = useContext(AppContext);
+
+  let categoryOutputScreen = (
+    <CreateCategoryOutput
+      setModalVisible={setModalVisible}
+      setIsSaved={setIsSaved}
+      setItem={setItem}
+    />
+  );
+  if (isSaved) {
+    categoryOutputScreen = (
+      <CreateCategorySuccessOutput
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <WideButton
@@ -15,16 +39,22 @@ const InterviewFeedbackButtons = () => {
       <WideButton
         title="Save the questions"
         color="white"
-        onPress={() => navigation.navigate("InterviewSimulator")}
+        onPress={() => setModalVisible(true)}
         icon="add-circle-outline"
         size={22}
       />
-      <TouchableOpacity
-        style={styles.textButton}
-        onPress={() => navigation.navigate("Category")}
+      <BackToCategories />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)} // Close modal when back button is pressed
       >
-        <Text style={styles.text}>Back to categories</Text>
-      </TouchableOpacity>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>{categoryOutputScreen}</View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -38,11 +68,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     rowGap: 15,
   },
-  textButton: {
-    marginVertical: 8,
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end", // Align the modal to the bottom of the screen
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparent background
   },
-  text: {
-    fontSize: 18,
-    color: "blue",
+  modalContent: {
+    height: "50%", // Half-screen height for the modal
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
