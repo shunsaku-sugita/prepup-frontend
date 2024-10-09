@@ -4,18 +4,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import JobCard from "./JobCard";
 
 
-const SavedJobCard = ({data}) => {
+const SavedJobCard = ({data,toggleBookmark}) => {
   return (
     <View>
-      <Text>SavedJobCard</Text>
-      <Ionicons name="bookmark" 
-      size={24} 
-      color="black" />
-
     <FlatList
         data={data}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => <JobCard job={item} />}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <JobCard job={item} toggleBookmark={toggleBookmark} />}
         numColumns={1}
         contentContainerStyle={styles.listContent} // Padding around the list
       />
