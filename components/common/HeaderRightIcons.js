@@ -1,4 +1,4 @@
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import IconButton from "./IconButton";
 

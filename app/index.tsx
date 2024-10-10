@@ -28,7 +28,6 @@ export default function App() {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            headerRight: () => <HeaderRightIcons color="black" />,
           }}
         >
           <Stack.Screen
@@ -37,6 +36,7 @@ export default function App() {
             options={{
               headerShown: true,
               headerLeft: () => <Greeting />,
+              headerRight: () => <HeaderRightIcons color="black" />,
             }}
           />
           <Stack.Screen
@@ -77,6 +77,7 @@ export default function App() {
             options={({ navigation }) => ({
               headerShown: true,
               title: "",
+              headerRight: null,
               headerLeft: () =>
                 // Check if the user can go back before showing the back button
                 navigation.canGoBack() ? (
@@ -111,6 +112,7 @@ export default function App() {
             options={({ navigation }) => ({
               headerShown: true,
               title: "",
+              headerRight: null,
               headerLeft: () =>
                 // Check if the user can go back before showing the back button
                 navigation.canGoBack() ? (
@@ -119,6 +121,25 @@ export default function App() {
                     color="black"
                     size={28}
                     onPress={() => navigation.navigate("Category")}
+                  />
+                ) : null,
+            })}
+          />
+          <Stack.Screen
+            name="QuizStarterScreen"
+            component={QuizStarterScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "",
+              headerRight: null,
+              headerLeft: () =>
+                // Check if the user can go back before showing the back button
+                navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
                   />
                 ) : null,
             })}
@@ -164,6 +185,7 @@ export default function App() {
             component={NotificationsScreen}
             options={({ navigation }) => ({
               headerShown: true,
+              title: "",
               headerLeft: () =>
                 // Check if the user can go back before showing the back button
                 navigation.canGoBack() ? (
