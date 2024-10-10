@@ -1,12 +1,10 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
-import { Ionicons } from "@expo/vector-icons";
 import IconButton from "../components/common/IconButton";
 import HeaderRightIcons from "../components/common/HeaderRightIcons";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -14,72 +12,15 @@ import ProfileScreen from "../screens/ProfileScreen";
 import Greeting from "../components/interview/Greeting";
 import AppContextProvider from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
-import QuizCategoryScreen from "../screens/QuizCategoryScreen";
+import QuizStarterScreen from "../screens/QuizStarterScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
+import { useNavigation } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
-const BottomTab = createBottomTabNavigator();
-
-const AppOverview = ({ navigation }) => {
-  return (
-    <BottomTab.Navigator
-      screenOptions={{
-        tabBarInactiveTintColor: "lightgray",
-        tabBarActiveTintColor: "black",
-        tabBarInactiveBackgroundColor: "white",
-        tabBarActiveBackgroundColor: "white",
-        tabBarStyle: { backgroundColor: "white" },
-        tabBarLabelStyle: { fontSize: 14 },
-        headerTitle: "",
-        headerRight: ({ tintColor }) => <HeaderRightIcons color={tintColor} />,
-      }}
-    >
-      {/* <BottomTab.Screen
-        name="InterviewSimulator"
-        component={InterviewSimulatorScreen}
-        options={{
-          title: "Simulator",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="chatbubble-ellipses" color={color} size={30} />
-          ),
-          // headerLeft: () => <Greeting />,
-        }}
-      /> */}
-      <BottomTab.Screen
-        name="Category"
-        component={CategoryScreen}
-        options={{
-          title: "Simulator",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="chatbubble-ellipses" color={color} size={30} />
-          ),
-          headerLeft: () => <Greeting />,
-        }}
-      />
-      <BottomTab.Screen
-        name="JobSearch"
-        component={JobSearchScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="briefcase" color={color} size={30} />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name="FlashCard"
-        component={QuizCategoryScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="sparkles-outline" color={color} size={30} />
-          ),
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-};
 
 export default function App() {
+  const navigation = useNavigation();
   return (
     <>
       <StatusBar style="auto" />
@@ -91,9 +32,44 @@ export default function App() {
           }}
         >
           <Stack.Screen
-            name="AppOverview"
-            component={AppOverview}
-            options={{ headerShown: false }}
+            name="Category"
+            component={CategoryScreen}
+            options={{
+              headerShown: true,
+              headerLeft: () => <Greeting />,
+            }}
+          />
+          <Stack.Screen
+            name="JobSearch"
+            component={JobSearchScreen}
+            options={{
+              headerShown: true,
+              title: "",
+              headerLeft: () => (
+                <IconButton
+                  icon="arrow-back"
+                  color="black"
+                  size={28}
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Flashcard"
+            component={QuizStarterScreen}
+            options={{
+              headerShown: true,
+              title: "",
+              headerLeft: () => (
+                <IconButton
+                  icon="arrow-back"
+                  color="black"
+                  size={28}
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+            }}
           />
           <Stack.Screen
             name="InterviewSimulator"
