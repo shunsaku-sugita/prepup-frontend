@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
+import QuizContentsOutput from "../components/flashcard/QuizContentsOutput";
 
 const QuizScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>QuizScreen</Text>
+      <QuizContentsOutput />
     </View>
   );
 };
@@ -16,8 +17,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
   },
 });

@@ -1,9 +1,11 @@
-import { Button, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const WideButton = ({ title, color, onPress }) => {
+const WideButton = ({ title, color, onPress, icon, size }) => {
   return (
-    <TouchableOpacity style={styles.buttonContainer}>
-      <Button title={title} color={color} onPress={onPress} />
+    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
+      {icon && <Ionicons name={icon} color={color} size={size} />}
+      <Text style={[styles.buttonText, { color: color }]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -12,11 +14,17 @@ export default WideButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    columnGap: 8,
     backgroundColor: "black",
-    borderRadius: 8,
-    marginTop: 4,
-    marginBottom: 2,
+    borderRadius: 6,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    width: 340,
+  },
+  buttonText: {
+    fontSize: 18,
   },
 });

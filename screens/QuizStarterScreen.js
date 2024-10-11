@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
+import QuizStarterOutput from "../components/flashcard/QuizStarterOutput";
 
-const CreateCategory = () => {
+const QuizStarterScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>CreateCategory</Text>
+      <QuizStarterOutput />
     </View>
   );
 };
 
-export default CreateCategory;
+export default QuizStarterScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -16,8 +17,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
   },
 });

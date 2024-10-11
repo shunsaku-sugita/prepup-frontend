@@ -1,9 +1,9 @@
-import { Button, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const SmallButton = ({ title, color, onPress }) => {
   return (
-    <TouchableOpacity style={styles.buttonContainer}>
-      <Button title={title} color={color} onPress={onPress} />
+    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
+      <Text style={[styles.buttonText, { color: color }]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -16,8 +16,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     marginTop: 4,
-    marginBottom: 2,
+    marginBottom: 4,
     marginHorizontal: 8,
+  },
+  buttonText: {
+    fontSize: 16,
   },
 });

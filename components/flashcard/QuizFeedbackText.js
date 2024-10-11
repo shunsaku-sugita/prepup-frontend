@@ -3,12 +3,20 @@ import React from "react";
 
 const QuizFeedbackText = () => {
   return (
-    <View>
-      <Text>QuizFeedbackText</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>
+        Congratulation! You are getting better on this specific knowledge. We
+        hope you keep practicing on the way until you get a new job. See you
+        next time!
+      </Text>
     </View>
   );
 };
 
 export default QuizFeedbackText;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 16,
+  },
+});

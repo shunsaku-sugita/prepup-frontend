@@ -1,4 +1,4 @@
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import IconButton from "./IconButton";
 
@@ -10,17 +10,13 @@ const HeaderRightIcons = ({ color }) => {
         icon="notifications-outline"
         color={color}
         size={30}
-        onPress={() => {
-          navigation.navigate("Notifications");
-        }}
+        onPress={() => navigation.navigate("Notifications")}
       />
       <IconButton
         icon="person-circle-outline"
         color={color}
         size={30}
-        onPress={() => {
-          navigation.navigate("Profile");
-        }}
+        onPress={() => navigation.navigate("Profile")}
       />
     </View>
   );
