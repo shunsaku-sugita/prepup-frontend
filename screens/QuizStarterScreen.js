@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
 import QuizStarterOutput from "../components/flashcard/QuizStarterOutput";
 
 const QuizStarterScreen = () => {
@@ -16,9 +15,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 18,
-  },
-  text: {
-    fontSize: 24,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

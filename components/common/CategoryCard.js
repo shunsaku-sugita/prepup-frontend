@@ -15,12 +15,11 @@ const CategoryCard = ({ category, index }) => {
 
   const deleteHandler = (index) => {
     // Create a new array excluding the item at the given index
-    const updatedCategories = item.quizCategories.filter((_, i) => i !== index);
-
+    const updatedCategories = item.categories.filter((_, i) => i !== index);
     // Update the state with the new array
     setItem((prevItem) => ({
       ...prevItem,
-      quizCategories: updatedCategories,
+      categories: updatedCategories,
     }));
   };
 
@@ -48,24 +47,25 @@ const CategoryCard = ({ category, index }) => {
       <View>
         <View style={styles.imageContainer}>
           <Image source={require("../../assets/images/img.png")} />
-        </View>
-        <View style={styles.cardBottom}>
-          <Text style={styles.categoryText}>{category}</Text>
-          <View style={index >= 3 && styles.buttonContainer}>
-            <SmallButton
-              title="Start"
-              color="white"
-              onPress={startInterviewHandler}
-            />
-            {index >= 3 && (
+          {index >= 3 && (
+            <View style={styles.trashIconContainer}>
               <Ionicons
                 name="trash"
                 color="black"
                 size={22}
+                style={styles.trashIcon}
                 onPress={() => deleteAlertHandler(index)}
               />
-            )}
-          </View>
+            </View>
+          )}
+        </View>
+        <View style={styles.cardBottom}>
+          <Text style={styles.categoryText}>{category}</Text>
+          <SmallButton
+            title="Start"
+            color="white"
+            onPress={startInterviewHandler}
+          />
         </View>
       </View>
     </View>
@@ -87,6 +87,20 @@ const styles = StyleSheet.create({
     padding: 0,
     minWidth: 150,
   },
+  trashIconContainer: {
+    position: "absolute",
+    backgroundColor: "white",
+    padding: 15,
+    borderWidth: 0.5,
+    borderRadius: 50,
+    right: 8,
+    top: 6,
+  },
+  trashIcon: {
+    position: "absolute",
+    right: 3.75,
+    top: 3.5,
+  },
   cardBottom: {
     padding: 6,
     justifyContent: "center",
@@ -95,9 +109,5 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     textAlign: "center",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
   },
 });

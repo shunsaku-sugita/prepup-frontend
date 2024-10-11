@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
     flex: 4,
     borderWidth: 1,
     borderRadius: 12,
-    width: "90%",
-    // marginBottom: 12,
+    borderColor: "#ccc",
+    width: "100%",
+    marginBottom: 25,
   },
   textContainer: {
     flex: 1,

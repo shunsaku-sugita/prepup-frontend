@@ -17,7 +17,7 @@ export default BackToCategories;
 
 const styles = StyleSheet.create({
   textButton: {
-    marginVertical: 8,
+    marginVertical: 12,
   },
   text: {
     fontSize: 18,

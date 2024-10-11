@@ -35,7 +35,7 @@ const CustomBottomTabs = () => {
 
 const CategoryOutput = () => {
   const { item, setItem } = useContext(AppContext);
-  const categoryItems = item.quizCategories;
+  const categoryItems = item.categories;
 
   return (
     <>

@@ -7,10 +7,12 @@ import ProgressBar from "../common/ProgressBar";
 const InterviewContentsOutput = () => {
   return (
     <View style={styles.container}>
-      <ProgressBar />
-      <InterviewQuestion />
-      <InterviewAnswerScript />
-      <InterviewControllerIcons />
+      <ProgressBar number="5" />
+      <View style={styles.innerContainer}>
+        <InterviewQuestion />
+        <InterviewAnswerScript />
+        <InterviewControllerIcons />
+      </View>
     </View>
   );
 };
@@ -24,7 +26,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 40,
     width: "100%",
+  },
+  innerContainer: {
+    flex: 6.5,
+    width: "85%",
+    alignItems: "center",
   },
 });

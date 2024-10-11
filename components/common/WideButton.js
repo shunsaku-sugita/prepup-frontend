@@ -19,10 +19,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     columnGap: 8,
     backgroundColor: "black",
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    // marginVertical: 10,
+    borderRadius: 6,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     width: 340,
   },
   buttonText: {

@@ -16,6 +16,7 @@ import QuizStarterScreen from "../screens/QuizStarterScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
 import { useNavigation } from "@react-navigation/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,200 +25,218 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <AppContextProvider>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen
-            name="Category"
-            component={CategoryScreen}
-            options={{
-              headerShown: true,
-              headerLeft: () => <Greeting />,
-              headerRight: () => <HeaderRightIcons color="black" />,
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AppContextProvider>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
             }}
-          />
-          <Stack.Screen
-            name="JobSearch"
-            component={JobSearchScreen}
-            options={{
-              headerShown: true,
-              title: "",
-              headerLeft: () => (
-                <IconButton
-                  icon="arrow-back"
-                  color="black"
-                  size={28}
-                  onPress={() => navigation.goBack()}
-                />
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="Flashcard"
-            component={QuizStarterScreen}
-            options={{
-              headerShown: true,
-              title: "",
-              headerLeft: () => (
-                <IconButton
-                  icon="arrow-back"
-                  color="black"
-                  size={28}
-                  onPress={() => navigation.goBack()}
-                />
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="InterviewSimulator"
-            component={InterviewSimulatorScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerRight: null,
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
+          >
+            <Stack.Screen
+              name="Category"
+              component={CategoryScreen}
+              options={{
+                headerShown: true,
+                headerLeft: () => <Greeting />,
+                headerRight: () => <HeaderRightIcons color="black" />,
+              }}
+            />
+            <Stack.Screen
+              name="JobSearch"
+              component={JobSearchScreen}
+              options={{
+                headerShown: true,
+                title: "",
+                headerLeft: () => (
                   <IconButton
                     icon="arrow-back"
                     color="black"
                     size={28}
-                    onPress={() => {
-                      Alert.alert(
-                        "Cancel the interview?",
-                        "The process is unsaved, you will lose it.",
-                        [
-                          {
-                            text: "Cancel",
-                          },
-                          {
-                            text: "Confirm",
-                            onPress: () => {
-                              navigation.goBack();
+                    onPress={() => navigation.goBack()}
+                  />
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="Flashcard"
+              component={QuizStarterScreen}
+              options={{
+                headerShown: true,
+                title: "",
+                headerLeft: () => (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    onPress={() => navigation.goBack()}
+                  />
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="InterviewSimulator"
+              component={InterviewSimulatorScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerRight: null,
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => {
+                        Alert.alert(
+                          "Cancel the interview?",
+                          "The process is unsaved, you will lose it.",
+                          [
+                            {
+                              text: "Cancel",
                             },
-                          },
-                        ]
-                      );
-                    }}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
-            name="InterviewFeedback"
-            component={InterviewFeedbackScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerRight: null,
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.navigate("Category")}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
-            name="QuizStarterScreen"
-            component={QuizStarterScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerRight: null,
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.goBack()}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
-            name="QuizScreen"
-            component={QuizScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.goBack()}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
-            name="QuizFeedback"
-            component={QuizFeedbackScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.goBack()}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
-            name="Notifications"
-            component={NotificationsScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.goBack()}
-                  />
-                ) : null,
-            })}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              title: "",
-              headerLeft: () =>
-                // Check if the user can go back before showing the back button
-                navigation.canGoBack() ? (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    onPress={() => navigation.goBack()}
-                  />
-                ) : null,
-            })}
-          />
-        </Stack.Navigator>
-      </AppContextProvider>
+                            {
+                              text: "Confirm",
+                              onPress: () => {
+                                navigation.goBack();
+                              },
+                            },
+                          ]
+                        );
+                      }}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="InterviewFeedback"
+              component={InterviewFeedbackScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerRight: null,
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => navigation.navigate("Category")}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="QuizStarterScreen"
+              component={QuizStarterScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerRight: null,
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => navigation.goBack()}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="QuizScreen"
+              component={QuizScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => {
+                        Alert.alert(
+                          "Cancel the flashcard?",
+                          "The process is unsaved, you will lose it.",
+                          [
+                            {
+                              text: "Cancel",
+                            },
+                            {
+                              text: "Confirm",
+                              onPress: () => {
+                                navigation.navigate("Category");
+                              },
+                            },
+                          ]
+                        );
+                      }}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="QuizFeedback"
+              component={QuizFeedbackScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => navigation.navigate("Category")}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => navigation.goBack()}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "",
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      onPress={() => navigation.goBack()}
+                    />
+                  ) : null,
+              })}
+            />
+          </Stack.Navigator>
+        </AppContextProvider>
+      </GestureHandlerRootView>
     </>
   );
 }

@@ -50,7 +50,7 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
                 setIsSaved(true);
                 setItem((prevItem) => ({
                   ...prevItem,
-                  quizCategories: [...prevItem.quizCategories, typedText],
+                  categories: [...prevItem.categories, typedText],
                 }));
               }
             }}

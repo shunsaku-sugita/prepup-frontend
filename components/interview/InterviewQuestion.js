@@ -6,7 +6,7 @@ import * as Speech from "expo-speech";
 
 const InterviewQuestion = () => {
   const { item, setItem } = useContext(AppContext);
-  let question = item.questionText[item.currentQuestionIndex];
+  let questionText = item.interviewQuestionText[item.currentQuestionIndex];
 
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -43,7 +43,7 @@ const InterviewQuestion = () => {
         />
       </View>
       <View style={styles.questionTextContainer}>
-        <Text style={styles.questionText}>{question}</Text>
+        <Text style={styles.questionText}>{questionText}</Text>
       </View>
     </View>
   );
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 12,
-    width: "90%",
+    borderColor: "#ccc",
+    // paddingRight: 4,
     marginBottom: 16,
   },
   questionIconContainer: {
