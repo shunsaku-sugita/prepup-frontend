@@ -63,7 +63,7 @@ const output=[{
 }
 ]
 const jobListOutput = () => {
-  const [filterType, setFilterType]=React.useState(0)
+  const [filterType, setFilterType]=React.useState(1)
   const [jobs, setJobs] = useState(output);
   const [searchQuery, setSearchQuery] = useState("");
 
