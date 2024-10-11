@@ -7,16 +7,16 @@ import * as Speech from "expo-speech";
 const InterviewQuestion = () => {
   const { item, setItem } = useContext(AppContext);
   let questionText = item.interviewQuestionText[item.currentQuestionIndex];
-
   const [isPlaying, setIsPlaying] = useState(false);
 
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
 
     if (!speaking && !isPlaying) {
-      // Speech is not playing, so start speaking
-      Speech.speak(question, {
-        onDone: () => setIsPlaying(false), // Reset state when speech is finished
+      // Start speaking the current question
+      Speech.speak(questionText, {
+        // Reset state when speech is finished
+        onDone: () => setIsPlaying(false),
       });
       setIsPlaying(true); // Mark as playing
     } else if (speaking) {
@@ -36,7 +36,7 @@ const InterviewQuestion = () => {
     <View style={styles.container}>
       <View style={styles.questionIconContainer}>
         <IconButton
-          icon={isPlaying ? "stop-circle-outline" : "play-circle-outline"}
+          icon={isPlaying ? "stop-circle-outline" : "record-voice-over"}
           color="black"
           size={45}
           onPress={speakHandler}
