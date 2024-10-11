@@ -24,8 +24,9 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
         cy={radius}
         r={radius - strokeWidth / 2}
         strokeWidth={strokeWidth}
-        strokeDasharray={`${circumference}, ${circumference}`}
+        strokeDasharray={`${circumference}`}
         strokeDashoffset={strokeDashoffset}
+        transform={`rotate(-90 ${radius} ${radius})`}
         strokeLinecap="round"
       />
       <View style={styles.containerStyle}>
@@ -38,7 +39,7 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
 const VoiceRecordButton = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordDuration, setRecordDuration] = useState(120);
-  const [intervalId, setIntervalId] = useState(null);
+  const [intervalId, setIntervalId] = useState(0);
 
   const startRecording = async () => {
     try {
@@ -92,7 +93,8 @@ const VoiceRecordButton = () => {
       <TouchableOpacity onPress={handlePress} style={styles.touchable}>
         <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
         <CircularProgress
-          percentage={(recordDuration / 120) * 100} // Starts at 100% and decreases
+          // percentage={(recordDuration / 120) * 100} // Starts at 100% and decreases
+          percentage={recordDuration}
           radius={45}
           strokeWidth={8}
         />
