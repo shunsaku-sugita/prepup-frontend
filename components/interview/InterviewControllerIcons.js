@@ -93,8 +93,8 @@ const InterviewControllerIcons = () => {
           icon="volume-medium-outline"
           color={recordingUri ? "black" : "#aaa"}
           size={35}
+          display={recordingUri ? false : true}
           onPress={playSound}
-          boolean={recordingUri ? false : true}
         />
       </View>
       <View style={styles.iconContainer}>
@@ -112,7 +112,7 @@ const InterviewControllerIcons = () => {
           icon="chevron-forward"
           color={recordingUri ? "black" : "#aaa"}
           size={30}
-          // boolean={recordingUri ? false : true}
+          // display={recordingUri ? false : true}
           onPress={() => {
             navigation.navigate("InterviewFeedback");
           }}
