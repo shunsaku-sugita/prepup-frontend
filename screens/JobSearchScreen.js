@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
+import JobListOutput from "@/components/jobfinder/JobListOutput"
 
 const JobSearchScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>JobSearch</Text>
+     <JobListOutput/>
     </View>
   );
 };
@@ -14,8 +15,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    padding:18,
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   text: {
     fontSize: 24,

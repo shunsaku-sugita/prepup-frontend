@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../common/IconButton";
+import VoiceRecordButton from "../interview/VoiceRecordButton";
 
 const InterviewControllerIcons = () => {
   const navigation = useNavigation();
@@ -105,6 +106,18 @@ const InterviewControllerIcons = () => {
           size={50}
           onPress={isRecording ? stopRecording : startRecording}
         />
+      </View>
+      <View>
+        {/* <IconButton
+          icon="mic-circle-outline"
+          color="black"
+          size={80}
+          onPress={() => {
+            null;
+          }}
+        /> */}
+        
+        <VoiceRecordButton />
       </View>
       <View style={styles.iconContainer}>
         <Text></Text>
