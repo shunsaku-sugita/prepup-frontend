@@ -6,10 +6,8 @@ import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
 import IconButton from "../components/common/IconButton";
-import HeaderRightIcons from "../components/common/HeaderRightIcons";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import Greeting from "../components/interview/Greeting";
 import AppContextProvider from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
@@ -25,7 +23,7 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView>
         <AppContextProvider>
           <Stack.Navigator
             screenOptions={{
@@ -36,9 +34,7 @@ export default function App() {
               name="Category"
               component={CategoryScreen}
               options={{
-                headerShown: true,
-                headerLeft: () => <Greeting />,
-                headerRight: () => <HeaderRightIcons color="black" />,
+                headerShown: false,
               }}
             />
             <Stack.Screen
@@ -52,6 +48,7 @@ export default function App() {
                     icon="arrow-back"
                     color="black"
                     size={28}
+                    display={false}
                     onPress={() => navigation.goBack()}
                   />
                 ),
@@ -68,6 +65,7 @@ export default function App() {
                     icon="arrow-back"
                     color="black"
                     size={28}
+                    display={false}
                     onPress={() => navigation.goBack()}
                   />
                 ),
@@ -87,6 +85,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => {
                         Alert.alert(
                           "Cancel the interview?",
@@ -122,6 +121,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => navigation.navigate("Category")}
                     />
                   ) : null,
@@ -141,6 +141,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => navigation.goBack()}
                     />
                   ) : null,
@@ -159,6 +160,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => {
                         Alert.alert(
                           "Cancel the flashcard?",
@@ -193,6 +195,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => navigation.navigate("Category")}
                     />
                   ) : null,
@@ -211,6 +214,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => navigation.goBack()}
                     />
                   ) : null,
@@ -229,6 +233,7 @@ export default function App() {
                       icon="arrow-back"
                       color="black"
                       size={28}
+                      display={false}
                       onPress={() => navigation.goBack()}
                     />
                   ) : null,

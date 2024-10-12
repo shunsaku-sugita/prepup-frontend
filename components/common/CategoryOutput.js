@@ -3,7 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppContext } from "../../store/app-context";
+import Greeting from "../interview/Greeting";
 import CategoryCard from "./CategoryCard";
+import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 
 // Custom Bottom Tabs Component
@@ -39,9 +41,15 @@ const CategoryOutput = () => {
 
   return (
     <>
+      <View style={styles.headerContainer}>
+        <Greeting />
+        <HeaderRightIcons color="black" />
+      </View>
       <ScrollView>
         <View style={styles.container}>
-          <TitleText text="Choose Category:" />
+          <View style={styles.title}>
+            <TitleText text="Choose Category:" />
+          </View>
           <View style={styles.listContent}>
             {categoryItems.map((category, index) => {
               // For every two items, wrap them in a row
@@ -77,10 +85,21 @@ const CategoryOutput = () => {
 export default CategoryOutput;
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    marginTop: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#ccc",
+  },
   container: {
     flex: 1,
-    justifyContent: "space-between", // Make sure tabs stay at the bottom
     paddingHorizontal: 18,
+  },
+  title: {
+    paddingHorizontal: 8,
   },
   bottomTabContainer: {
     flexDirection: "row",
