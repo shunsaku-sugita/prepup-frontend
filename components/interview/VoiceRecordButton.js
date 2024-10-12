@@ -8,6 +8,8 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
+  
+
   return (
     <Svg height={radius * 2} width={radius * 2}>
       <Circle
@@ -26,7 +28,7 @@ const CircularProgress = ({ percentage, radius, strokeWidth }) => {
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference}`}
         strokeDashoffset={strokeDashoffset}
-        transform={`rotate(-90 ${radius} ${radius})`}
+        transform={`rotate(-85 ${radius} ${radius})`}
         strokeLinecap="round"
       />
       <View style={styles.containerStyle}>
@@ -41,6 +43,7 @@ const VoiceRecordButton = () => {
   const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(0);
 
+
   const startRecording = async () => {
     try {
       const { status } = await Audio.requestPermissionsAsync();
@@ -51,7 +54,7 @@ const VoiceRecordButton = () => {
 
       // Start recording and initialize the duration
       setIsRecording(true);
-      setRecordDuration(120); // Start at 120 seconds
+      // setRecordDuration(120); // Start at 120 seconds
 
       // Start countdown immediately
       const id = setInterval(() => {
@@ -93,11 +96,11 @@ const VoiceRecordButton = () => {
       <TouchableOpacity onPress={handlePress} style={styles.touchable}>
         <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
         <CircularProgress
-          // percentage={(recordDuration / 120) * 100} // Starts at 100% and decreases
-          percentage={recordDuration}
-          radius={45}
-          strokeWidth={8}
-        />
+      key={recordDuration}  
+      percentage={(recordDuration / 120) * 100}  
+      radius={45}
+      strokeWidth={8}
+/>
       </TouchableOpacity>
     </View>
   );
