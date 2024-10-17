@@ -17,6 +17,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
             <Ionicons
               name="close"
               color="black"
+              marginTop="0"
               size={28}
               onPress={() => setModalVisible(false)}
             />
@@ -38,7 +39,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
               }}
             />
             <TouchableOpacity style={styles.applyButton}>
-              <Text style={styles.applyButtonText}>Apply Job</Text>
+              <Text style={styles.applyButtonText}>Apply</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.linkText}></View>
@@ -56,19 +57,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
-    marginTop: 30,
   },
   innerContainer: {
-    width: '100%', // Full width of the screen
-    height: '60%', // Only 60% of the screen height
-    backgroundColor: "#fff", // Solid white background for the modal content
-    borderTopLeftRadius: 20, // Rounded corners for top-left
-    borderTopRightRadius: 20, // Rounded corners for top-right
-    padding: 20,
-    justifyContent: "center", 
+    width: '100%', 
+    height: '60%', 
+    backgroundColor: "#fff", 
+    borderTopLeftRadius: 20, 
+    borderTopRightRadius: 20, 
+    
+    justifyContent: "flex-start", 
   },
   closeIcon: {
     alignItems: "flex-end",
+    marginBottom: 10,
+    
   },
   titleWrapper: {
     marginBottom: 8,

@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     width: '100%',
-    height: '60%', 
+    height: '80%', 
     backgroundColor: "#fff",
     borderTopLeftRadius: 20, 
     borderTopRightRadius: 20, 
