@@ -1,6 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import QuizTest from "./QuizTest";
 
 const QuizStarterOutput = () => {
   const navigation = useNavigation();
@@ -14,7 +13,6 @@ const QuizStarterOutput = () => {
         <Text style={styles.buttonText}>Start</Text>
       </TouchableOpacity>
     </View>
-    // <QuizTest />
   );
 };
 
