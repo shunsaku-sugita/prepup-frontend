@@ -4,6 +4,7 @@ import JobCard from "./JobCard"
 
 // handleJobPress
 const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
+  console.log("data", data)
   return (
     <View>
       <FlatList

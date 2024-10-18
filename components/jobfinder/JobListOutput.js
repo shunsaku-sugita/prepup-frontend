@@ -9,6 +9,7 @@ import JobSearchBar from "./JobSearchBar";
 import Toast from 'react-native-toast-message';
 import JobFilterTags from './JobFilterTags'
 import JobDetailsModal from "./JobDetailsModal"
+import {fetchJobs} from "../services/api"
 
 
 const output=[{
@@ -70,7 +71,7 @@ const output=[{
 ]
 const jobListOutput = () => {
   const [filterType, setFilterType]=React.useState(1)
-  const [jobs, setJobs] = useState(output);
+  const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
     // State for active filter tag
@@ -82,6 +83,22 @@ const jobListOutput = () => {
 
      // Use navigation hook
   const navigation = useNavigation();
+  React.useEffect(() => {
+    // const fetchJobs = async () => { await fetchJobs()
+    // }
+    // const jobs = fetchJobs()
+    // console.log(".......", jobs)
+    // setJobs(jobs)
+
+    const getJobs = async () => {
+      const jobsResult = await fetchJobs();
+      console.log(".......", jobsResult)
+  setJobs(jobsResult);
+    };
+  
+    getJobs();
+
+  }, [])
 
 
   const toggleBookmark = async (id) => {
@@ -115,15 +132,19 @@ const jobListOutput = () => {
   };
 
    // Filter saved jobs based on isSaved status
-   const savedJobs = jobs.filter((job) => job.isSaved);
-   const filteredJobs = jobs.filter((job) =>
-    job.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+
+  //  const savedJobs = jobs?.filter((job) => job.isSaved);
+  //  const filteredJobs = jobs?.filter((job) =>
+  //   job.title.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+  const savedJobs = []
+  const filteredJobs = []
 
   // filter tags - filtering 
-  const displayedJobs = activeFilter 
-    ? filteredJobs.filter(job => job.type === activeFilter.toLowerCase()) 
-    : filteredJobs;
+  // const displayedJobs = activeFilter 
+  //   ? filteredJobs.filter(job => job.type === activeFilter.toLowerCase()) 
+  //   : filteredJobs;
+  const displayedJobs = []
 
   // Handle job press to open modal
   const handleJobPress = (job) => {
@@ -150,7 +171,7 @@ const jobListOutput = () => {
       />
     ) : (
       <JobFilterLocationItem 
-      data={displayedJobs} 
+      data={jobs} 
       toggleBookmark={toggleBookmark} 
       handleJobPress={handleJobPress} 
     />

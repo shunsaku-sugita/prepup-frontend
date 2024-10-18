@@ -2,6 +2,7 @@
   "name": "prepup-fed",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "proxy": "http://localhost:4000",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",

@@ -45,7 +45,7 @@ export const fetchJobs = async (page = 1, where = "") => {
   try {
     storeTokenSecurely('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzBlZDE3NmJkNGViZWM3ZWYyMjY2YzkiLCJpYXQiOjE3MjkwMjQzNzUsImV4cCI6MTcyOTI4MzU3NX0.gGNWlf12bGqcDJdxIF5izIG5SzBM8LDXcuQulcxTSJ4');
     const token = await getTokenSecurely();
-    const response = await axios.get('http://localhost:4000/api/jobFinder/jobs', {
+    const response = await axios.get('http://10.0.2.2:4000/api/jobFinder/jobs', {
       headers: {
         authorization: token,
       },
@@ -53,11 +53,12 @@ export const fetchJobs = async (page = 1, where = "") => {
         ...(where && { where }),
         page: page
       }
-    });
+    })
 
     const jobs = response.data;
     console.log('Jobs:', jobs);
     return jobs;
+   
   } catch (error) {
     console.error('Error fetching jobs:', error);
   }
