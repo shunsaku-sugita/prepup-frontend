@@ -5,7 +5,11 @@ import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
 
-const InterviewControllerIcons = () => {
+const InterviewControllerIcons = ({
+  currentQuestionIndex,
+  interviewQuestions,
+  setItem,
+}) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
   const [sound, setSound] = useState(null);
@@ -86,6 +90,20 @@ const InterviewControllerIcons = () => {
     }
   };
 
+  const handleNext = () => {
+    if (currentQuestionIndex === interviewQuestions.length - 1) {
+      // If it's the last question, navigate to the feedback screen
+      navigation.navigate("InterviewFeedback");
+    } else {
+      if (currentQuestionIndex < interviewQuestions.length - 1) {
+        setItem((prevState) => ({
+          ...prevState,
+          currentQuestionIndex: prevState.currentQuestionIndex + 1,
+        }));
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
@@ -101,14 +119,14 @@ const InterviewControllerIcons = () => {
       <View style={styles.iconContainer}>
         <Text>{!isRecording ? "Press to answer!" : null}</Text>
         <IconButton
-          icon="mic"
+          icon={isRecording ? "stop-circle-outline" : "mic"}
           color="black"
           size={50}
           onPress={isRecording ? stopRecording : startRecording}
         />
       </View>
-      <View>
-        {/* <IconButton
+      {/* <View> */}
+      {/* <IconButton
           icon="mic-circle-outline"
           color="black"
           size={80}
@@ -116,9 +134,9 @@ const InterviewControllerIcons = () => {
             null;
           }}
         /> */}
-        
-        <VoiceRecordButton />
-      </View>
+
+      {/* <VoiceRecordButton /> */}
+      {/* </View> */}
       <View style={styles.iconContainer}>
         <Text></Text>
         <IconButton
@@ -126,9 +144,7 @@ const InterviewControllerIcons = () => {
           color={recordingUri ? "black" : "#aaa"}
           size={30}
           // display={recordingUri ? false : true}
-          onPress={() => {
-            navigation.navigate("InterviewFeedback");
-          }}
+          onPress={handleNext}
         />
       </View>
     </View>
