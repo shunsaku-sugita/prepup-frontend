@@ -3,15 +3,29 @@ import InterviewAnswerScript from "./InterviewAnswerScript";
 import InterviewControllerIcons from "./InterviewControllerIcons";
 import InterviewQuestion from "./InterviewQuestion";
 import ProgressBar from "../common/ProgressBar";
+import { AppContext } from "@/store/app-context";
+import { useContext } from "react";
 
 const InterviewContentsOutput = () => {
+  const { item, setItem } = useContext(AppContext);
+
+  const { currentQuestionIndex, interviewQuestions } = item;
+  let questionText = interviewQuestions[currentQuestionIndex];
+
   return (
     <View style={styles.container}>
-      <ProgressBar number="5" />
+      <ProgressBar
+        currentIndexNum={currentQuestionIndex}
+        totalNum={interviewQuestions.length}
+      />
       <View style={styles.innerContainer}>
-        <InterviewQuestion />
+        <InterviewQuestion questionText={questionText} />
         <InterviewAnswerScript />
-        <InterviewControllerIcons />
+        <InterviewControllerIcons
+          currentQuestionIndex={currentQuestionIndex}
+          interviewQuestions={interviewQuestions}
+          setItem={setItem}
+        />
       </View>
     </View>
   );

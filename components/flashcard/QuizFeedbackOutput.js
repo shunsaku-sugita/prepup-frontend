@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import QuizFeedbackRating from "./QuizFeedbackRating";
 import QuizFeedbackTitle from "./QuizFeedbackTitle";
@@ -7,8 +7,12 @@ import QuizFeedbackText from "./QuizFeedbackText";
 import WideButton from "../common/WideButton";
 import QuizFeedbackAnswerDescription from "./QuizFeedbackAnswerDescription";
 import BackToCategories from "../common/BackToCategories";
+import { AppContext } from "@/store/app-context";
 
 const QuizFeedbackOutput = () => {
+  const { item, setItem } = useContext(AppContext);
+  const { currentQuestionIndex } = item;
+
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -20,7 +24,13 @@ const QuizFeedbackOutput = () => {
         title="Try again"
         color="white"
         size={24}
-        onPress={() => navigation.navigate("QuizScreen")}
+        onPress={() => {
+          navigation.navigate("QuizScreen");
+          setItem((prevState) => ({
+            ...prevState,
+            currentQuestionIndex: 0,
+          }));
+        }}
       />
       <BackToCategories />
     </View>

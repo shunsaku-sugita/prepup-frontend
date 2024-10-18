@@ -7,7 +7,7 @@ import WideButton from "../common/WideButton";
 import CreateCategoryOutput from "./CreateCategoryOutput";
 import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
 
-const InterviewFeedbackButtons = () => {
+const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
@@ -34,7 +34,14 @@ const InterviewFeedbackButtons = () => {
       <WideButton
         title="Try again"
         color="white"
-        onPress={() => navigation.navigate("InterviewSimulator")}
+        // onPress={() => navigation.navigate("InterviewSimulator")}
+        onPress={() => {
+          navigation.navigate("InterviewSimulator");
+          setItem((prevState) => ({
+            ...prevState,
+            currentQuestionIndex: 0,
+          }));
+        }}
       />
       <WideButton
         title="Save the questions"

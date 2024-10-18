@@ -4,9 +4,11 @@ import { AppContext } from "../../store/app-context";
 import IconButton from "../common/IconButton";
 import * as Speech from "expo-speech";
 
-const InterviewQuestion = () => {
+const InterviewQuestion = ({ questionText }) => {
   const { item, setItem } = useContext(AppContext);
-  let questionText = item.interviewQuestionText[item.currentQuestionIndex];
+  // let questionText = item.interviewQuestions[item.currentQuestionIndex];
+  const { currentQuestionIndex, interviewQuestions } = item;
+  // let questionText = interviewQuestions[currentQuestionIndex];
   const [isPlaying, setIsPlaying] = useState(false);
 
   const speakHandler = async () => {

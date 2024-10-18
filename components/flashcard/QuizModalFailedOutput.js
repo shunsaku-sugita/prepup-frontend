@@ -10,24 +10,33 @@ const QuizModalFailedOutput = ({
   setModalVisible,
   setIsSelected,
   setSelectedAnswerIndex,
+  currentQuestionIndex,
+  quizQuestionOptions,
+  onNextQuestion,
 }) => {
   const navigation = useNavigation();
+
+  const handleNext = () => {
+    if (currentQuestionIndex === quizQuestionOptions.length - 1) {
+      // If it's last question, navigate to the feedback screen
+      navigation.navigate("QuizFeedback");
+    } else {
+      // Otherwise, proceed to the next question
+      // onNextQuestion(); // Call the function to move to the next question
+    }
+    setModalVisible(false);
+    setIsSelected(false);
+    setSelectedAnswerIndex(null);
+  };
+
   return (
     <View style={styles.container}>
       <Ionicons name="close-circle-outline" color="black" size={100} />
       <QuizModalTitle title="Try again!" />
       <QuizModalText text="Your correct answer is:" />
       <QuizModalAnswerDescription />
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => {
-          navigation.navigate("QuizFeedback");
-          setModalVisible(false);
-          setIsSelected(false);
-          setSelectedAnswerIndex(null);
-        }}
-      >
-        <Text style={styles.buttonText}>See Results</Text>
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleNext}>
+        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
   );
