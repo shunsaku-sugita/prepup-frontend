@@ -1,13 +1,16 @@
 import { StyleSheet, Text, View } from "react-native";
 import * as Progress from "react-native-progress";
 
-const ProgressBar = ({ number }) => {
-  const num = Number(number);
+const ProgressBar = ({ currentIndexNum, totalNum }) => {
+  const currentIndex = Number(currentIndexNum + 1);
+  const totalNumber = Number(totalNum);
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>1/{num}</Text>
+      <Text style={styles.text}>
+        {currentIndex}/{totalNumber}
+      </Text>
       <Progress.Bar
-        progress={1 / num} // sets the progress by %
+        progress={currentIndex / totalNumber} // sets the progress by %
         width={300}
         height={16}
         color="black"

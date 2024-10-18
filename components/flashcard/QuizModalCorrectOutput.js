@@ -1,30 +1,46 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import QuizModalTitle from "./QuizModalTitle";
 import QuizModalText from "./QuizModalText";
+import { AppContext } from "@/store/app-context";
 
 const QuizModalCorrectOutput = ({
   setModalVisible,
   setIsSelected,
   setSelectedAnswerIndex,
+  setItem,
 }) => {
+  const { item } = useContext(AppContext);
+  const { currentQuestionIndex, quizQuestionOptions } = item;
+
   const navigation = useNavigation();
+  console.log(currentQuestionIndex);
+
+  const handleNext = () => {
+    if (currentQuestionIndex === quizQuestionOptions.length - 1) {
+      // If it's the last question, navigate to the feedback screen
+      navigation.navigate("QuizFeedback");
+    } else {
+      if (currentQuestionIndex < quizQuestionOptions.length - 1) {
+        setItem((prevState) => ({
+          ...prevState,
+          currentQuestionIndex: prevState.currentQuestionIndex + 1,
+        }));
+      }
+    }
+    setModalVisible(false);
+    setIsSelected(false);
+    setSelectedAnswerIndex(null);
+  };
+
   return (
     <View style={styles.container}>
       <Ionicons name="checkmark-circle-outline" color="black" size={100} />
       <QuizModalTitle title="Correct!" />
       <QuizModalText text="Your answer is correct." />
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => {
-          navigation.navigate("QuizFeedback");
-          setModalVisible(false);
-          setIsSelected(false);
-          setSelectedAnswerIndex(null);
-        }}
-      >
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleNext}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>

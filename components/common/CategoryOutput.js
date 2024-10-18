@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppContext } from "../../store/app-context";
-import Greeting from "../interview/Greeting";
+import Greeting from "./Greeting";
 import CategoryCard from "./CategoryCard";
 import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
