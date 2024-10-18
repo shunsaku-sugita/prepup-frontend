@@ -1,8 +1,21 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// import { fetchJobs } from "../services/api";
+// import { useEffect, useState } from "react";
 
 const QuizStarterOutput = () => {
   const navigation = useNavigation();
+
+  // const [jobs, setJobs] = useState([]);
+
+  // useEffect(() => {
+  //   const loadJobs = async () => {
+  //     const jobsData = await fetchJobs(1, "New York");
+  //     setJobs(jobsData);
+  //   };
+  //   loadJobs();
+  // }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Let's practice general quizes.</Text>
@@ -12,6 +25,12 @@ const QuizStarterOutput = () => {
       >
         <Text style={styles.buttonText}>Start</Text>
       </TouchableOpacity>
+
+      {/* {jobs.map((job) => (
+        <View key={job.id}>
+          <Text>{job.title}</Text>
+        </View>
+      ))} */}
     </View>
   );
 };
