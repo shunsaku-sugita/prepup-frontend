@@ -6,4 +6,3 @@ export const PATH_PROFILE = "profile";
 
 export const TYPE_GENERATE_QUESTION = "generate-questions"
 export const TYPE_CATEGORY ="category"
-q
