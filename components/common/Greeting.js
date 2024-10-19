@@ -8,7 +8,7 @@ const Greeting = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Hi {userName}</Text>
+      <Text style={styles.titleText}>Hello {userName ? userName : "User"}</Text>
     </View>
   );
 };

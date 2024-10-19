@@ -25,14 +25,14 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
           />
         </View>
         <View style={styles.titleWrapper}>
-          <TitleText text="Create a Category" />
+          <TitleText text="Create Category" />
         </View>
-        <Text style={styles.upperText}>Category Name</Text>
+        <Text style={styles.upperText}>Title</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={textInputHandler}
           value={typedText}
-          placeholder="Give your category card a title."
+          placeholder="Enter a new category title."
           placeholderTextColor="gray"
           keyboardType="default"
         />
@@ -56,9 +56,6 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
             }}
           />
         </View>
-        <View style={styles.linkText}>
-          <BackToCategories />
-        </View>
       </View>
     </View>
   );
@@ -72,7 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
-    marginTop: 30,
+    marginTop: 20,
   },
   innerContainer: {
     justifyContent: "center",
@@ -81,10 +78,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   titleWrapper: {
-    marginBottom: 8,
+    marginBottom: 18,
   },
   upperText: {
     fontSize: 18,
+    marginBottom: 6,
   },
   textInput: {
     borderWidth: 2,
@@ -102,9 +100,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 16,
-    marginTop: 18,
-  },
-  linkText: {
-    alignItems: "center",
+    marginTop: 24,
   },
 });

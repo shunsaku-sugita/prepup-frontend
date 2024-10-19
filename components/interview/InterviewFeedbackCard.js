@@ -22,19 +22,19 @@ const InterviewFeedbackCard = ({
           {({ isExpanded }) => {
             return (
               <>
-                <View style={styles.accordionHeaderLeftContainer}>
-                  {isExpanded ? (
-                    <Ionicons name="chevron-up" color="black" size={24} />
-                  ) : (
-                    <Ionicons name="chevron-down" color="black" size={24} />
-                  )}
-                  <AccordionTitleText style={styles.accordionTitleText}>
-                    {titleText}
-                  </AccordionTitleText>
-                </View>
                 <AccordionTitleText style={styles.accordionTitleText}>
-                  {percentage}%
+                  {titleText}
                 </AccordionTitleText>
+                <View style={styles.accordionHeaderRightContainer}>
+                  <AccordionTitleText style={styles.accordionTitleText}>
+                    {percentage}%
+                  </AccordionTitleText>
+                  {isExpanded ? (
+                    <Ionicons name="chevron-up" color="black" size={22} />
+                  ) : (
+                    <Ionicons name="chevron-down" color="black" size={22} />
+                  )}
+                </View>
               </>
             );
           }}
@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   accordionItem: {
     borderColor: "black",
     borderWidth: 2,
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  accordionHeaderLeftContainer: {
+  accordionHeaderRightContainer: {
     flexDirection: "row",
     columnGap: 8,
     alignItems: "center",
@@ -80,9 +79,9 @@ const styles = StyleSheet.create({
   },
   accordionContent: {
     marginTop: 10,
-    paddingTop: 14,
-    borderTopWidth: 1,
-    borderTopColor: "#bbb",
+    paddingTop: 3,
+    // borderTopWidth: 1,
+    // borderTopColor: "#bbb",
   },
   accordionContentText: {
     fontSize: 15,

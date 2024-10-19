@@ -74,7 +74,6 @@ export const fetchJobs = async (page = 1, where = "") => {
     const jobs = response.data;
     console.log("Jobs:", jobs);
     return jobs;
-   
   } catch (error) {
     console.error("Error fetching jobs:", error);
   }

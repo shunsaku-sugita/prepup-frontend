@@ -1,8 +1,8 @@
 import { useNavigation } from "expo-router";
 import { useContext, useState } from "react";
+import { Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
-import BackToCategories from "../common/BackToCategories";
 import WideButton from "../common/WideButton";
 import CreateCategoryOutput from "./CreateCategoryOutput";
 import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
@@ -31,26 +31,26 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
 
   return (
     <View style={styles.container}>
-      <WideButton
-        title="Try again"
-        color="white"
-        // onPress={() => navigation.navigate("InterviewSimulator")}
-        onPress={() => {
-          navigation.navigate("InterviewSimulator");
-          setItem((prevState) => ({
-            ...prevState,
-            currentQuestionIndex: 0,
-          }));
-        }}
-      />
-      <WideButton
-        title="Save the questions"
-        color="white"
-        onPress={() => setModalVisible(true)}
-        icon="add-circle-outline"
-        size={22}
-      />
-      <BackToCategories />
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.saveText}>Save Practice</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tryAgainButton}
+          onPress={() => {
+            navigation.navigate("InterviewSimulator");
+            setItem((prevState) => ({
+              ...prevState,
+              currentQuestionIndex: 0,
+            }));
+          }}
+        >
+          <Text style={styles.tryAgainText}>Try Again</Text>
+        </TouchableOpacity>
+      </View>
 
       <Modal
         animationType="slide"
@@ -75,13 +75,48 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     rowGap: 15,
   },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    columnGap: 15,
+    width: 340,
+  },
+  saveButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 6,
+    padding: 10,
+    width: "48%",
+  },
+  saveText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  tryAgainButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 6,
+    padding: 10,
+    width: "48%",
+  },
+  tryAgainText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   modalContainer: {
     flex: 1,
     justifyContent: "flex-end", // Align the modal to the bottom of the screen
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparent background
   },
   modalContent: {
-    height: "50%", // Half-screen height for the modal
+    height: "45%", // Half-screen height for the modal
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

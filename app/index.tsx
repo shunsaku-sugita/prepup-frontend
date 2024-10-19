@@ -13,6 +13,8 @@ import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
+import StarQuizScreen from "../screens/StarQuizScreen";
+import StarQuizFeedbackScreen from "../screens/StarQuizFeedbackScreen";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -44,7 +46,7 @@ export default function App() {
               component={JobSearchScreen}
               options={{
                 headerShown: true,
-                title: "",
+                title: "Job Finder",
                 headerLeft: () => (
                   <IconButton
                     icon="arrow-back"
@@ -78,7 +80,7 @@ export default function App() {
               component={InterviewSimulatorScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "",
+                title: "Simulator",
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -90,7 +92,7 @@ export default function App() {
                       display={false}
                       onPress={() => {
                         Alert.alert(
-                          "Cancel the interview?",
+                          "Cancel the simulator?",
                           "The process is unsaved, you will lose it.",
                           [
                             {
@@ -114,7 +116,7 @@ export default function App() {
               component={InterviewFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "",
+                title: "Simulator Feedback",
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -190,6 +192,62 @@ export default function App() {
               options={({ navigation }) => ({
                 headerShown: true,
                 title: "",
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      display={false}
+                      onPress={() => navigation.navigate("Category")}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="StarQuiz"
+              component={StarQuizScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "Star Master",
+                headerRight: null,
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      display={false}
+                      onPress={() => {
+                        Alert.alert(
+                          "Cancel the Star Master?",
+                          "The process is unsaved, you will lose it.",
+                          [
+                            {
+                              text: "Cancel",
+                            },
+                            {
+                              text: "Confirm",
+                              onPress: () => {
+                                navigation.goBack();
+                              },
+                            },
+                          ]
+                        );
+                      }}
+                    />
+                  ) : null,
+              })}
+            />
+            <Stack.Screen
+              name="StarQuizFeedback"
+              component={StarQuizFeedbackScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "Star Master Feedback",
+                headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
