@@ -173,5 +173,6 @@ export const updateProfile = async (data) => {
       "Error updating user profile : ",
       error.response ? error.response.data : error.message
     );
+    return true;
   }
 };
