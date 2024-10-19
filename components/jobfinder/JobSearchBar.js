@@ -12,6 +12,9 @@ const JobSearchBar = ({searchQuery, setSearchQuery}) => {
         placeholder="Search"
         value={searchQuery}
         onChangeText={setSearchQuery}
+        onFocus={() => {
+        }}
+      
       />
 
       {searchQuery ? (

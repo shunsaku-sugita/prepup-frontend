@@ -3,21 +3,22 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 
-const JobCard = ({job, toggleBookmark}) => {
+const JobCard = ({ job, toggleBookmark, onPress }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text>Image</Text>
       <View style={styles.subContainer}>
-      <Text style={styles.title}>{job.title}</Text>
-      <Text>{job.date}</Text>
+        <Text style={styles.title}>{job.title}</Text>
+        <Text>{job.date}</Text>
       </View>
       <TouchableOpacity onPress={() => toggleBookmark(job.id)}>
-      <Ionicons
-       name={job.isSaved? "bookmark":"bookmark-outline"} 
-      size={24} 
-      color="black" />
+        <Ionicons
+          name={job.isSaved ? "bookmark" : "bookmark-outline"}
+          size={24}
+          color="black"
+        />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 
