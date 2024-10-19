@@ -16,6 +16,8 @@ import QuizScreen from "../screens/QuizScreen";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import Toast from "react-native-toast-message";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -241,6 +243,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </AppContextProvider>
+        <Toast/>
       </GestureHandlerRootView>
     </>
   );
