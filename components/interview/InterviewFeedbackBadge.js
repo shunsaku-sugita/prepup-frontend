@@ -5,7 +5,6 @@ import TitleText from "../common/TitleText";
 const InterviewFeedbackBadge = () => {
   return (
     <View style={styles.container}>
-      <TitleText text="Congraturations!" />
       <Ionicons name="trophy-outline" color="black" size={140} />
     </View>
   );

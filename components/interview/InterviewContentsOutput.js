@@ -20,7 +20,7 @@ const InterviewContentsOutput = () => {
       />
       <View style={styles.innerContainer}>
         <InterviewQuestion questionText={questionText} />
-        <InterviewAnswerScript />
+        {/* <InterviewAnswerScript /> */}
         <InterviewControllerIcons
           currentQuestionIndex={currentQuestionIndex}
           interviewQuestions={interviewQuestions}

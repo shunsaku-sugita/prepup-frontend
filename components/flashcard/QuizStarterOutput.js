@@ -1,20 +1,20 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-// import { fetchJobs } from "../services/api";
-// import { useEffect, useState } from "react";
+import { fetchJobs } from "../services/api";
+import { useEffect, useState } from "react";
 
 const QuizStarterOutput = () => {
   const navigation = useNavigation();
 
-  // const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
 
-  // useEffect(() => {
-  //   const loadJobs = async () => {
-  //     const jobsData = await fetchJobs(1, "New York");
-  //     setJobs(jobsData);
-  //   };
-  //   loadJobs();
-  // }, []);
+  useEffect(() => {
+    const loadJobs = async () => {
+      const jobsData = await fetchJobs(1, "New York");
+      setJobs(jobsData);
+    };
+    loadJobs();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -26,11 +26,11 @@ const QuizStarterOutput = () => {
         <Text style={styles.buttonText}>Start</Text>
       </TouchableOpacity>
 
-      {/* {jobs.map((job) => (
+      {jobs.map((job) => (
         <View key={job.id}>
           <Text>{job.title}</Text>
         </View>
-      ))} */}
+      ))}
     </View>
   );
 };

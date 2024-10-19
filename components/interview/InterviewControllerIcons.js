@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Audio } from "expo-av";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
+import InterviewAnswerScript from "./InterviewAnswerScript";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -43,6 +44,7 @@ const InterviewControllerIcons = ({
       );
       setRecording(recording); // recorded audio file is stored locally
       setIsRecording(true);
+      setRecordingUri(null);
       console.log("Recording started");
     } catch (err) {
       console.error("Failed to start recording", err);
@@ -102,50 +104,66 @@ const InterviewControllerIcons = ({
         }));
       }
     }
+    setRecordingUri(null);
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.iconContainer}>
-        <Text>{recordingUri ? "Play!" : null}</Text>
-        <IconButton
-          icon="volume-medium-outline"
-          color={recordingUri ? "black" : "#aaa"}
-          size={35}
-          display={recordingUri ? false : true}
-          onPress={playSound}
-        />
+  let mainContents = recordingUri ? (
+    <>
+      <InterviewAnswerScript />
+      <View style={styles.retryContainer}>
+        <Text style={styles.pressText}>Press to try again!</Text>
+        <View style={styles.retryIconContainer}>
+          <IconButton
+            icon="refresh"
+            color="black"
+            size={25}
+            onPress={startRecording}
+          />
+        </View>
       </View>
-      <View style={styles.iconContainer}>
-        <Text>{!isRecording ? "Press to answer!" : null}</Text>
+    </>
+  ) : (
+    <>
+      <Text style={styles.pressText}>
+        {!isRecording ? "Press to Answer!" : null}
+      </Text>
+      <View style={isRecording ? styles.micStopContainer : styles.micContainer}>
         <IconButton
-          icon={isRecording ? "stop-circle-outline" : "mic"}
+          icon={isRecording ? "stop-sharp" : "mic"}
           color="black"
-          size={50}
+          size={isRecording ? 40 : 50}
           onPress={isRecording ? stopRecording : startRecording}
         />
       </View>
-      {/* <View> */}
-      {/* <IconButton
-          icon="mic-circle-outline"
-          color="black"
-          size={80}
-          onPress={() => {
-            null;
-          }}
-        /> */}
+    </>
+  );
 
-      {/* <VoiceRecordButton /> */}
-      {/* </View> */}
-      <View style={styles.iconContainer}>
-        <Text></Text>
-        <IconButton
-          icon="chevron-forward"
-          color={recordingUri ? "black" : "#aaa"}
-          size={30}
-          // display={recordingUri ? false : true}
+  return (
+    <View style={styles.container}>
+      <View
+        style={
+          recordingUri ? styles.mainContainerWithScript : styles.mainContainer
+        }
+      >
+        {mainContents}
+      </View>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={
+            recordingUri ? styles.listenButton : styles.listenButtonOpacity
+          }
+          disabled={recordingUri ? false : true}
+          onPress={playSound}
+        >
+          <Text style={styles.listenText}>Listen</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={recordingUri ? styles.nextButton : styles.nextButtonOpacity}
+          disabled={recordingUri ? false : true}
           onPress={handleNext}
-        />
+        >
+          <Text style={styles.nextText}>Next</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -155,16 +173,113 @@ export default InterviewControllerIcons;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flex: 6,
     alignItems: "center",
     width: "90%",
     marginBottom: 6,
     paddingHorizontal: 28,
   },
-  iconContainer: {
+  mainContainer: {
+    flex: 5,
     justifyContent: "center",
     alignItems: "center",
+    rowGap: 6,
+    marginBottom: 130,
+  },
+  mainContainerWithScript: {
+    flex: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    rowGap: 6,
+    marginBottom: 20,
+  },
+  pressText: {
+    fontSize: 15,
+  },
+  retryContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    rowGap: 8,
+  },
+  retryIconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 50,
+    backgroundColor: "#ccc",
+    padding: 15,
+  },
+  micContainer: {
+    borderWidth: 12,
+    borderColor: "black",
+    borderRadius: 100,
+    padding: 30,
+  },
+  micStopContainer: {
+    borderWidth: 12,
+    borderColor: "black",
+    borderRadius: 100,
+    padding: 35,
+    marginTop: 2.5,
+  },
+  buttonsContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    columnGap: 10,
+    width: "100%",
+  },
+  listenButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 6,
+    padding: 10,
+    width: "65%",
+  },
+  listenButtonOpacity: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 6,
+    padding: 10,
+    width: "65%",
+    opacity: 0.3,
+  },
+  listenText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  nextButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 6,
+    padding: 10,
+    width: "65%",
+  },
+  nextButtonOpacity: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: 6,
+    padding: 10,
+    width: "65%",
+    opacity: 0.3,
+  },
+  nextText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

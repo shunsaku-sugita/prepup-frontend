@@ -21,27 +21,19 @@ const CreateCategorySuccessOutput = ({ modalVisible, setModalVisible }) => {
             onPress={() => setModalVisible(!modalVisible)}
           />
         </View>
-        <View style={styles.titleWrapper}>
-          <TitleText text="Create a Category" />
+        <View style={styles.iconWrapper}>
+          <Ionicons name="checkmark-circle" color="black" size={50} />
         </View>
         <View style={styles.textWrapper}>
-          <TitleText text="Category card has been successfully added!" />
+          <TitleText text="Category board has been successfully added!" />
         </View>
         <View style={styles.button}>
           <WideButton
-            title="Back to category board"
+            title="Back to Category"
             color="white"
             onPress={() => navigation.navigate("Category")}
             size={24}
           />
-        </View>
-        <View style={styles.linkText}>
-          <TouchableOpacity
-            style={styles.textButton}
-            onPress={() => setModalVisible(!modalVisible)}
-          >
-            <Text style={styles.cancelText}>Cancel</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -56,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
-    marginTop: 40,
+    marginTop: 20,
   },
   innerContainer: {
     justifyContent: "center",
@@ -64,8 +56,10 @@ const styles = StyleSheet.create({
   closeIcon: {
     alignItems: "flex-end",
   },
-  titleWrapper: {
-    marginBottom: 8,
+  iconWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 18,
   },
   textWrapper: {
     marginBottom: 10,
@@ -74,13 +68,7 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 16,
   },
-  linkText: {
-    alignItems: "center",
-  },
   textButton: {
     marginVertical: 8,
-  },
-  cancelText: {
-    fontSize: 18,
   },
 });

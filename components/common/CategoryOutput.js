@@ -19,7 +19,7 @@ const CustomBottomTabs = () => {
         onPress={() => navigation.navigate("JobSearch")}
       >
         <View style={styles.iconContainer}>
-          <Ionicons name="briefcase" size={30} color="black" />
+          <Ionicons name="briefcase" size={30} color="white" />
         </View>
       </TouchableOpacity>
 
@@ -28,7 +28,7 @@ const CustomBottomTabs = () => {
         onPress={() => navigation.navigate("Flashcard")}
       >
         <View style={styles.iconContainer}>
-          <Ionicons name="sparkles" size={30} color="black" />
+          <Ionicons name="star" size={30} color="white" />
         </View>
       </TouchableOpacity>
     </View>
@@ -102,12 +102,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   bottomTabContainer: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "white",
-    padding: 12,
-    borderTopWidth: 0.5,
-    borderColor: "#ccc",
+    paddingHorizontal: 10,
+    paddingVertical: 12,
     marginBottom: 20,
   },
   iconContainer: {
@@ -115,6 +118,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 8,
     marginHorizontal: 18,
+    backgroundColor: "black",
   },
   listContent: {
     paddingBottom: 16,

@@ -42,7 +42,7 @@ export default function App() {
               component={JobSearchScreen}
               options={{
                 headerShown: true,
-                title: "",
+                title: "Job Finder",
                 headerLeft: () => (
                   <IconButton
                     icon="arrow-back"
@@ -76,7 +76,7 @@ export default function App() {
               component={InterviewSimulatorScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "",
+                title: "Simulator",
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -112,7 +112,7 @@ export default function App() {
               component={InterviewFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "",
+                title: "Feedback",
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button

@@ -11,25 +11,21 @@ const InterviewFeedbackOutput = () => {
   const { currentQuestionIndex } = item;
 
   return (
-    <ScrollView style={styles.screen}>
-      <GestureHandlerRootView style={styles.container}>
-        <InterviewFeedbackBadge />
-        <InterviewFeedbackRatings />
-        <InterviewFeedbackButtons currentQuestionIndex={currentQuestionIndex} />
-      </GestureHandlerRootView>
-    </ScrollView>
+    <GestureHandlerRootView style={styles.container}>
+      <InterviewFeedbackBadge />
+      <InterviewFeedbackRatings />
+      <InterviewFeedbackButtons currentQuestionIndex={currentQuestionIndex} />
+    </GestureHandlerRootView>
   );
 };
 
 export default InterviewFeedbackOutput;
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginVertical: 10,
   },
 });

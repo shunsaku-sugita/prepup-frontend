@@ -38,7 +38,7 @@ const InterviewQuestion = ({ questionText }) => {
     <View style={styles.container}>
       <View style={styles.questionIconContainer}>
         <IconButton
-          icon={isPlaying ? "stop-circle-outline" : "record-voice-over"}
+          icon={isPlaying ? "stop-circle-outline" : "play-circle"}
           color="black"
           size={45}
           onPress={speakHandler}
@@ -55,12 +55,12 @@ export default InterviewQuestion;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1.5,
+    flex: 1,
     flexDirection: "row",
-    borderWidth: 1,
-    borderRadius: 12,
-    borderColor: "#ccc",
-    // paddingRight: 4,
+    // borderWidth: 1,
+    // borderRadius: 12,
+    // borderColor: "#ccc",
+    paddingRight: 6,
     marginBottom: 16,
   },
   questionIconContainer: {
@@ -72,8 +72,10 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "start",
+    // paddingRight: 4,
   },
   questionText: {
     fontSize: 20,
+    fontWeight: "bold",
   },
 });

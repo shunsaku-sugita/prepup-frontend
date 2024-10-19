@@ -4,7 +4,7 @@ export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
   const [item, setItem] = useState({
-    userName: "Bill",
+    // userName: "Bill",
     interviewQuestions: [
       "Please tell me about yourself.",
       "What is your strength?",
