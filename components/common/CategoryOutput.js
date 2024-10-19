@@ -25,7 +25,8 @@ const CustomBottomTabs = () => {
 
       <TouchableOpacity
         style={styles.tabButton}
-        onPress={() => navigation.navigate("Flashcard")}
+        onPress={() => navigation.navigate("StarQuiz")}
+        // onPress={() => navigation.navigate("Flashcard")}
       >
         <View style={styles.iconContainer}>
           <Ionicons name="star" size={30} color="white" />
@@ -56,14 +57,9 @@ const CategoryOutput = () => {
               if (index % 2 === 0) {
                 return (
                   <View key={index} style={styles.row}>
-                    <CategoryCard
-                      key={index}
-                      index={index}
-                      category={category}
-                    />
+                    <CategoryCard index={index} category={category} />
                     {categoryItems[index + 1] && (
                       <CategoryCard
-                        key={index + 1}
                         index={index + 1}
                         category={categoryItems[index + 1]}
                       />

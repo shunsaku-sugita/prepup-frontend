@@ -48,25 +48,8 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
             }));
           }}
         >
-          <Text style={styles.tryAgainText}>Next</Text>
+          <Text style={styles.tryAgainText}>Try Again</Text>
         </TouchableOpacity>
-        {/* <WideButton
-          title="Try again"
-          color="white"
-          onPress={() => {
-            navigation.navigate("InterviewSimulator");
-            setItem((prevState) => ({
-              ...prevState,
-              currentQuestionIndex: 0,
-            }));
-          }}
-        />
-        <WideButton
-          title="Save Practice"
-          color="white"
-          onPress={() => setModalVisible(true)}
-          size={22}
-        /> */}
       </View>
 
       <Modal

@@ -18,17 +18,17 @@ const QuizStarterOutput = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Let's practice general quizes.</Text>
+      {/* <Text style={styles.text}>Let's practice general quizes.</Text>
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={() => navigation.navigate("QuizScreen")}
       >
         <Text style={styles.buttonText}>Start</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {jobs.map((job) => (
         <View key={job.id}>
-          <Text>{job.title}</Text>
+          <Text style={styles.text}>{job.title}</Text>
         </View>
       ))}
     </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
   },
   buttonContainer: {
     justifyContent: "center",

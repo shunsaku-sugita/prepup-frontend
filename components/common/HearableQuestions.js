@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AppContext } from "../../store/app-context";
-import IconButton from "../common/IconButton";
+import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 
-const InterviewQuestion = ({ questionText }) => {
+const HearableQuestions = ({ questionText }) => {
   const { item, setItem } = useContext(AppContext);
   // let questionText = item.interviewQuestions[item.currentQuestionIndex];
   const { currentQuestionIndex, interviewQuestions } = item;
@@ -51,15 +51,12 @@ const InterviewQuestion = ({ questionText }) => {
   );
 };
 
-export default InterviewQuestion;
+export default HearableQuestions;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    // borderWidth: 1,
-    // borderRadius: 12,
-    // borderColor: "#ccc",
     paddingRight: 6,
     marginBottom: 16,
   },
@@ -72,7 +69,6 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "start",
-    // paddingRight: 4,
   },
   questionText: {
     fontSize: 20,

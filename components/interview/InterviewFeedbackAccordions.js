@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import InterviewFeedbackCard from "./InterviewFeedbackCard";
 import { Accordion } from "@/components/ui/accordion";
 
-const InterviewFeedbackRatings = () => {
+const InterviewFeedbackAccordions = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -37,7 +37,7 @@ const InterviewFeedbackRatings = () => {
   );
 };
 
-export default InterviewFeedbackRatings;
+export default InterviewFeedbackAccordions;
 
 const styles = StyleSheet.create({
   container: {

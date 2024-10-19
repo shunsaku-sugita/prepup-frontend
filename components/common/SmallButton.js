@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "black",
-    borderRadius: 8,
+    borderRadius: 6,
     paddingVertical: 8,
     paddingHorizontal: 20,
     marginTop: 4,
@@ -24,5 +24,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
+    fontWeight: "bold",
   },
 });

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import InterviewAnswerScript from "./InterviewAnswerScript";
 import InterviewControllerIcons from "./InterviewControllerIcons";
-import InterviewQuestion from "./InterviewQuestion";
+import HearableQuestions from "../common/HearableQuestions";
 import ProgressBar from "../common/ProgressBar";
 import { AppContext } from "@/store/app-context";
 import { useContext } from "react";
@@ -19,8 +19,7 @@ const InterviewContentsOutput = () => {
         totalNum={interviewQuestions.length}
       />
       <View style={styles.innerContainer}>
-        <InterviewQuestion questionText={questionText} />
-        {/* <InterviewAnswerScript /> */}
+        <HearableQuestions questionText={questionText} />
         <InterviewControllerIcons
           currentQuestionIndex={currentQuestionIndex}
           interviewQuestions={interviewQuestions}

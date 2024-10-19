@@ -51,8 +51,8 @@ const CategoryCard = ({ category, index }) => {
             <View style={styles.trashIconContainer}>
               <Ionicons
                 name="trash"
-                color="black"
-                size={22}
+                color="white"
+                size={20}
                 style={styles.trashIcon}
                 onPress={() => deleteAlertHandler(index)}
               />
@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
   },
   trashIconContainer: {
     position: "absolute",
-    backgroundColor: "white",
-    padding: 15,
+    backgroundColor: "black",
+    padding: 17,
     borderWidth: 0.5,
     borderRadius: 50,
     right: 8,
@@ -98,16 +98,18 @@ const styles = StyleSheet.create({
   },
   trashIcon: {
     position: "absolute",
-    right: 3.75,
-    top: 3.5,
+    right: 6.5,
+    top: 6.5,
   },
   cardBottom: {
-    padding: 6,
+    padding: 4,
+    paddingHorizontal: 0,
     justifyContent: "center",
     minWidth: 150,
   },
   categoryText: {
     fontSize: 16,
-    textAlign: "center",
+    fontWeight: "bold",
+    paddingHorizontal: 8,
   },
 });

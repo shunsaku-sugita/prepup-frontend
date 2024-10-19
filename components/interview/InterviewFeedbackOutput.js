@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import InterviewFeedbackBadge from "./InterviewFeedbackBadge";
 import InterviewFeedbackButtons from "./InterviewFeedbackButtons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import InterviewFeedbackRatings from "./InterviewFeedbackRatings";
+import InterviewFeedbackAccordions from "./InterviewFeedbackAccordions";
 import { AppContext } from "@/store/app-context";
 import { useContext } from "react";
 
@@ -13,7 +13,7 @@ const InterviewFeedbackOutput = () => {
   return (
     <GestureHandlerRootView style={styles.container}>
       <InterviewFeedbackBadge />
-      <InterviewFeedbackRatings />
+      <InterviewFeedbackAccordions />
       <InterviewFeedbackButtons currentQuestionIndex={currentQuestionIndex} />
     </GestureHandlerRootView>
   );
