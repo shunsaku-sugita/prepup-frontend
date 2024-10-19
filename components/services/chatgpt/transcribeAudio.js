@@ -1,4 +1,4 @@
-import { GPT_MODEL } from "../../../config/apiConfig";
+import { GPT_MODEL } from "../../../chatGptCred";
 
 const transcribeAudio = async (audioUri) => {
   try {

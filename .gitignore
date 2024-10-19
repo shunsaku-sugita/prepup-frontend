@@ -142,4 +142,5 @@ package-lock.json
 *.expo
 
 #apiConfig
-config/
+config/apiConfig.js
+chatGptCred.js

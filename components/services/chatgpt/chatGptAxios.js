@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CHATGPT_API_KEY, CHATGPT_API_URL } from '../../../config/apiConfig';
+import { CHATGPT_API_KEY, CHATGPT_API_URL } from '../../../chatGptCred';
 
 const chatGptAxios = axios.create({
   baseURL: `${CHATGPT_API_URL}`,
