@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import IconButton from "./IconButton";
@@ -27,7 +28,8 @@ export default HeaderRightIcons;
 const styles = StyleSheet.create({
   headerRightContainer: {
     flexDirection: "row",
-    columnGap: 10,
-    paddingRight: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 10,
   },
 });
