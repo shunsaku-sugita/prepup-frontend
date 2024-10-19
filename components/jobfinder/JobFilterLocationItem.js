@@ -6,8 +6,9 @@ import JobCard from "./JobCard"
 const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
   console.log("data", data)
   return (
+    
     <View>
-      <FlatList
+      <FlatList 
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (

@@ -22,7 +22,6 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
   );
 };
 
-
 export default JobCard;
 
 const styles = StyleSheet.create({

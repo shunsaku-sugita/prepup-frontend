@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Modal, TouchableOpacity, Button } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import JobFilterBar from "./JobFilterBar";
@@ -12,67 +12,72 @@ import JobDetailsModal from "./JobDetailsModal"
 import {fetchJobs} from "../services/api"
 
 
-const output=[{
-  id:"1",
-  title: "UI/UX",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-},
-{
-   id:"2",
-  title: "Product Designer",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-},
-{
-   id:"3",
-  title: "Web Designer",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-},
-{
-  id:"4",
-  title: "UI/UX",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-},
-{
-   id:"5",
-  title: "Product Designer",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-},
-{
-   id:"6",
-  title: "Web Designer",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-},
-{
-  id:"7",
-  title: "UI/UX",
-  description: "Design user interfaces and improve user experience.",
-  date: "Added September 20, 2024",
-  image: "",
-  isSaved: false
-}
-]
+
+// const output=[{
+//   id:"1",
+//   title: "UI/UX",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// },
+// {
+//    id:"2",
+//   title: "Product Designer",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// },
+// {
+//    id:"3",
+//   title: "Web Designer",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// },
+// {
+//   id:"4",
+//   title: "UI/UX",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// },
+// {
+//    id:"5",
+//   title: "Product Designer",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// },
+// {
+//    id:"6",
+//   title: "Web Designer",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// },
+// {
+//   id:"7",
+//   title: "UI/UX",
+//   description: "Design user interfaces and improve user experience.",
+//   date: "Added September 20, 2024",
+//   image: "",
+//   isSaved: false
+// }
+// ]
 const jobListOutput = () => {
   const [filterType, setFilterType]=React.useState(1)
   const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false); 
+  const [page, setPage] = useState(1);
+  
 
     // State for active filter tag
   const [activeFilter, setActiveFilter] = useState(null); 
@@ -83,28 +88,46 @@ const jobListOutput = () => {
 
      // Use navigation hook
   const navigation = useNavigation();
+
   React.useEffect(() => {
-    // const fetchJobs = async () => { await fetchJobs()
-    // }
-    // const jobs = fetchJobs()
-    // console.log(".......", jobs)
-    // setJobs(jobs)
-
     const getJobs = async () => {
-      const jobsResult = await fetchJobs();
-      console.log(".......", jobsResult)
-  setJobs(jobsResult);
+    const jobsResult = await fetchJobs();
+    // console.log(".......", jobsResult)
+    setJobs(jobsResult);
+    setPage(1);
     };
-  
-    getJobs();
 
+    getJobs();
   }, [])
+
+  // Fetch more jobs when "Load More" is clicked
+  const loadMoreJobs = async () => {
+    if (isLoading) return; // Prevent multiple requests
+  
+    setIsLoading(true);
+    try {
+      const nextPage = page + 1;
+      const newJobs = await fetchJobs(nextPage, ""); // Fetch jobs for the next page and set a limit of 5
+  
+      if (newJobs.length > 0) {
+        setJobs(prevJobs => [...prevJobs, ...newJobs]); // Append new jobs to the existing list
+        setPage(nextPage); // Update the current page
+      }
+    } catch (error) {
+      console.error('Error loading more jobs:', error);
+    } finally {
+      setIsLoading(false); // Ensure loading state is cleared
+    }
+  };
+  
 
 
   const toggleBookmark = async (id) => {
     const updatedJobs = jobs.map((job) =>
       job.id === id ? { ...job, isSaved: !job.isSaved } : job
     );
+
+    
 
     // Comment for showing the pop up message 
     // setJobs(updatedJobs);
@@ -137,6 +160,8 @@ const jobListOutput = () => {
   //  const filteredJobs = jobs?.filter((job) =>
   //   job.title.toLowerCase().includes(searchQuery.toLowerCase())
   // );
+
+  
   const savedJobs = []
   const filteredJobs = []
 
@@ -154,7 +179,7 @@ const jobListOutput = () => {
 
   return (
 
-    <View>
+    <View >
       {/* JobSearchBar */}
       <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
        {/* JobFilterBar */}
@@ -170,11 +195,25 @@ const jobListOutput = () => {
       )} toggleBookmark={toggleBookmark}
       />
     ) : (
+    <View>
       <JobFilterLocationItem 
       data={jobs} 
       toggleBookmark={toggleBookmark} 
       handleJobPress={handleJobPress} 
     />
+
+    {/* Load More Button */}
+  <Button 
+    title={isLoading ? "Loading..." : "Load More"} 
+    onPress={loadMoreJobs} 
+    disabled={isLoading}
+  />
+</View>
+
+     
+    
+     
+
     )}
 
  {/* Job Details Modal */}
