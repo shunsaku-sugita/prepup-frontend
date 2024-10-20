@@ -2,14 +2,32 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
+// Function to extract initials from company name
+const getInitials = (companyName) => {
+  if (!companyName) return "N/A";
+  const nameParts = companyName.split(" ");
+  const initials = nameParts.map(part => part[0]).join("");
+  return initials.toUpperCase();
+};
+
 
 const JobCard = ({ job, toggleBookmark, onPress }) => {
+  const initials = getInitials(job.company);
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text>Image</Text>
+      {/* logo */}
+      <View style={styles.logoContainer}>
+        <Text style={styles.logoText}>{initials}</Text>
+      </View>
+
       <View style={styles.subContainer}>
         <Text style={styles.title}>{job.title}</Text>
-        <Text>{job.date}</Text>
+        <Text style={styles.createdDate}>{`Added ${job.createdDate}`}</Text>
+        <Text>
+        <Text style={{ fontWeight: 'bold' }}>Portal: </Text>
+        Adzuna
+        </Text>
       </View>
       <TouchableOpacity onPress={() => toggleBookmark(job.id)}>
         <Ionicons
@@ -37,7 +55,7 @@ const styles = StyleSheet.create({
   },
 
   subContainer: {
-    width:"80%",
+    width:"75%",
     paddingLeft:40,
 
   },
@@ -46,6 +64,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
 
-  }
+  },
+
+  createdDate: {
+    fontSize: 14,
+    color: 'gray', 
+  },
+
+  logoContainer: {
+    width: 64, 
+    height: 64,
+    
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white", 
+  },
 
 });
