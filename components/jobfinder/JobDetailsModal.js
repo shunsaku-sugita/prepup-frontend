@@ -1,14 +1,21 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
-import React from "react";
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Modal } from "react-native";
+import React  from "react";
 import TitleText from "../common/TitleText"; 
 import WideButton from "../common/WideButton"; 
 import { Ionicons } from "@expo/vector-icons";
+import { WebView } from "react-native-webview";
+import { useState } from "react";
 
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
-    
+    const [webViewVisible, setWebViewVisible] = useState(false);
     if (!job) {
       return null; 
     }
+
+    // Function to handle applying to the job
+    const handleApplyPress = () => {
+        setWebViewVisible(true); // Open the WebView when Apply is pressed
+    };
   
     return (
       <View style={styles.container}>
@@ -40,12 +47,31 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
                 navigation.navigate("InterviewSimulator");
               }}
             />
-            <TouchableOpacity style={styles.applyButton}>
+            <TouchableOpacity style={styles.applyButton} onPress={handleApplyPress}>
               <Text style={styles.applyButtonText}>Apply</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.linkText}></View>
         </View>
+
+ {/* Modal for WebView */}
+ <Modal
+                visible={webViewVisible}
+                animationType="slide"
+                onRequestClose={() => setWebViewVisible(false)}
+                transparent={false}
+            >
+                <View style={{ flex: 1 }}>
+                    <WebView 
+                        source={{ uri: job.url }} 
+                        style={{ flex: 1 }} 
+                    />
+                    <TouchableOpacity onPress={() => setWebViewVisible(false)} style={styles.closeWebView}>
+                        <Text style={styles.closeWebViewText}>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+
       </View>
     );
   };
@@ -106,4 +132,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
+  closeWebView: {
+    position: "absolute",
+    top: 40,
+    right: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 5,
+    elevation: 5,
+},
+closeWebViewText: {
+    color: "black",
+    fontSize: 16,
+},
 });
