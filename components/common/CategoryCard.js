@@ -1,17 +1,24 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import SmallButton from "./SmallButton";
 
 const CategoryCard = ({ category, index }) => {
   const navigation = useNavigation();
+  const { item, setItem, resetUriArray } = useContext(AppContext);
+
   const startInterviewHandler = () => {
     navigation.navigate("InterviewSimulator");
+    // Update the state with the new array
+    setItem((prevState) => ({
+      ...prevState,
+      currentQuestionIndex: 0,
+    }));
+    // reset the uriArray that is already created
+    resetUriArray();
   };
-
-  const { item, setItem } = useContext(AppContext);
 
   const deleteHandler = (index) => {
     // Create a new array excluding the item at the given index
@@ -25,8 +32,8 @@ const CategoryCard = ({ category, index }) => {
 
   const deleteAlertHandler = (index) => {
     Alert.alert(
-      "Are you sure to delete this category card?",
-      "The questions saved in the category will be deleted.",
+      "Are you sure you want to delete the category?",
+      "Deleting the category will remove it permanently and cannot be undone. Please confirm if you want to proceed.",
       [
         {
           text: "Cancel",
@@ -81,7 +88,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 8,
     margin: 8,
-    minWidth: 150,
+    minWidth: Platform.OS === "ios" ? 150 : 165,
+    backgroundColor: "white", // Ensure a background color is set
+    // shadow for android
+    elevation: 8,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 4,
+    shadowOpacity: 0.4,
   },
   imageContainer: {
     padding: 0,

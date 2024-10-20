@@ -1,10 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Audio } from "expo-av";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
 import InterviewAnswerScript from "./InterviewAnswerScript";
+import { AppContext } from "@/store/app-context";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -21,6 +28,8 @@ const InterviewControllerIcons = ({
   const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(0);
 
+  const { uriArray, setUriArray } = useContext(AppContext);
+
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
     return sound
@@ -28,7 +37,7 @@ const InterviewControllerIcons = ({
           sound.unloadAsync();
         }
       : undefined;
-  }, [sound]);
+  }, [sound, uriArray]);
 
   const startRecording = async () => {
     try {
@@ -113,7 +122,19 @@ const InterviewControllerIcons = ({
     }
   };
 
-  const handleNext = () => {
+  const nextHandler = () => {
+    if (recordingUri) {
+      // Add the recording URI to the array
+      setUriArray((prevArray) => {
+        const updatedArray = [...prevArray, recordingUri];
+        console.log(updatedArray);
+        return updatedArray;
+      });
+      // Clear the recording URI for the next recording
+      setRecordingUri(null);
+    }
+
+    // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
       // If it's the last question, navigate to the feedback screen
       navigation.navigate("InterviewFeedback");
@@ -125,7 +146,6 @@ const InterviewControllerIcons = ({
         }));
       }
     }
-    setRecordingUri(null);
   };
 
   const minutes = Math.floor(recordDuration / 60);
@@ -175,7 +195,7 @@ const InterviewControllerIcons = ({
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={
-            recordingUri ? styles.listenButton : styles.listenButtonOpacity
+            recordingUri ? styles.listenButton : styles.listenButtonDisabled
           }
           disabled={recordingUri ? false : true}
           onPress={playSound}
@@ -183,9 +203,9 @@ const InterviewControllerIcons = ({
           <Text style={styles.listenText}>Listen</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={recordingUri ? styles.nextButton : styles.nextButtonOpacity}
+          style={recordingUri ? styles.nextButton : styles.nextButtonDisabled}
           disabled={recordingUri ? false : true}
-          onPress={handleNext}
+          onPress={nextHandler}
         >
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
@@ -212,7 +232,7 @@ const styles = StyleSheet.create({
     marginBottom: 130,
   },
   mainContainerWithScript: {
-    flex: 5,
+    flex: Platform.OS === "ios" ? 6.6 : 6.4,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 6,
@@ -266,7 +286,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "65%",
   },
-  listenButtonOpacity: {
+  listenButtonDisabled: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
@@ -291,7 +311,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "65%",
   },
-  nextButtonOpacity: {
+  nextButtonDisabled: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "black",

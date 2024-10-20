@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     // shadow for iOS
     shadowColor: "black",
     shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    shadowOpacity: 0.4,
   },
   listContent: {
     paddingBottom: 16,
