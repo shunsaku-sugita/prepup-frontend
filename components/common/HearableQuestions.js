@@ -1,16 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { AppContext } from "../../store/app-context";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 
 const HearableQuestions = ({ questionText }) => {
-  const { item, setItem } = useContext(AppContext);
-  // let questionText = item.interviewQuestions[item.currentQuestionIndex];
-  const { currentQuestionIndex, interviewQuestions } = item;
-  // let questionText = interviewQuestions[currentQuestionIndex];
   const [isPlaying, setIsPlaying] = useState(false);
-
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
 
@@ -57,8 +51,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    paddingRight: 6,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 15,
     marginBottom: 16,
+    width: "95%",
   },
   questionIconContainer: {
     flex: 2,
@@ -68,7 +65,7 @@ const styles = StyleSheet.create({
   questionTextContainer: {
     flex: 7,
     justifyContent: "center",
-    alignItems: "start",
+    alignItems: "flex-start",
   },
   questionText: {
     fontSize: 20,

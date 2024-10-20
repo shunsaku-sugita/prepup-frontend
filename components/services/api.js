@@ -58,7 +58,7 @@ export const signup = async (email, password, givenName, familyName) => {
 export const fetchJobs = async (page = 1, where = "") => {
   try {
     storeTokenSecurely(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzBlZDE3NmJkNGViZWM3ZWYyMjY2YzkiLCJpYXQiOjE3MjkwMjQzNzUsImV4cCI6MTcyOTI4MzU3NX0.gGNWlf12bGqcDJdxIF5izIG5SzBM8LDXcuQulcxTSJ4"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzA5OTAxYjJjMWFlM2U4ZTY0MmJjYTYiLCJpYXQiOjE3Mjg2Nzk5NjUsImV4cCI6MTgyODkzOTE2NX0.zKa2jczPvt4ZIkWZmKPfZbS3FzAJb6HeAWXwNCLbpao"
     );
     const token = await getTokenSecurely();
     const response = await axios.get(BASE_URL + "/jobFinder/jobs", {

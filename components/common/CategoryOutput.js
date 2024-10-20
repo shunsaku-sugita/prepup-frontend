@@ -1,12 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import Greeting from "./Greeting";
 import CategoryCard from "./CategoryCard";
 import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
+import { getInterviewCategory } from "../services/api";
 
 // Custom Bottom Tabs Component
 const CustomBottomTabs = () => {
@@ -39,6 +40,17 @@ const CustomBottomTabs = () => {
 const CategoryOutput = () => {
   const { item, setItem } = useContext(AppContext);
   const categoryItems = item.categories;
+
+  // const [categories, setCategories] = useState([]);
+
+  // useEffect(() => {
+  //   const loadCategories = async () => {
+  //     const categoriesData = await getInterviewCategory();
+  //     setCategories(categoriesData);
+  //     console.log(categories);
+  //   };
+  //   loadCategories();
+  // }, []);
 
   return (
     <>
@@ -115,6 +127,13 @@ const styles = StyleSheet.create({
     padding: 8,
     marginHorizontal: 18,
     backgroundColor: "black",
+    // shadow for android
+    elevation: 8,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
   },
   listContent: {
     paddingBottom: 16,

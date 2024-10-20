@@ -18,6 +18,9 @@ const InterviewControllerIcons = ({
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const [recordDuration, setRecordDuration] = useState(120);
+  const [intervalId, setIntervalId] = useState(0);
+
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
     return sound
@@ -42,6 +45,20 @@ const InterviewControllerIcons = ({
       const { recording } = await Audio.Recording.createAsync(
         Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
       );
+
+      // Start countdown immediately
+      const id = setInterval(() => {
+        setRecordDuration((prevDuration) => {
+          if (prevDuration > 0) {
+            return prevDuration - 1; // Decrement by 1 every second
+          } else {
+            clearInterval(id); // Stop the interval at 0
+            return 0; // Ensure it stays at 0
+          }
+        });
+      }, 1000);
+      setIntervalId(id);
+
       setRecording(recording); // recorded audio file is stored locally
       setIsRecording(true);
       setRecordingUri(null);
@@ -61,6 +78,10 @@ const InterviewControllerIcons = ({
         const uri = recording.getURI(); // Get the URI of the recorded file
         setRecordingUri(uri);
         setIsRecording(false);
+
+        clearInterval(intervalId);
+        setRecordDuration(120); // Reset the duration to 2 minutes if stopped
+
         console.log("Recording stopped and stored at:", uri);
         console.log("Recording status after stopping:", status); // Log the status
       } catch (error) {
@@ -107,6 +128,9 @@ const InterviewControllerIcons = ({
     setRecordingUri(null);
   };
 
+  const minutes = Math.floor(recordDuration / 60);
+  const seconds = (recordDuration % 60).toString().padStart(2, "0");
+
   let mainContents = recordingUri ? (
     <>
       <InterviewAnswerScript />
@@ -125,7 +149,7 @@ const InterviewControllerIcons = ({
   ) : (
     <>
       <Text style={styles.pressText}>
-        {!isRecording ? "Press to Answer!" : null}
+        {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
       </Text>
       <View style={isRecording ? styles.micStopContainer : styles.micContainer}>
         <IconButton
@@ -147,6 +171,7 @@ const InterviewControllerIcons = ({
       >
         {mainContents}
       </View>
+      {/* <VoiceRecordButton /> */}
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={
@@ -195,6 +220,7 @@ const styles = StyleSheet.create({
   },
   pressText: {
     fontSize: 15,
+    marginBottom: 2,
   },
   retryContainer: {
     justifyContent: "center",
@@ -221,7 +247,6 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 100,
     padding: 35,
-    marginTop: 2.5,
   },
   buttonsContainer: {
     flex: 1,

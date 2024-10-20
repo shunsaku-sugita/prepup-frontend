@@ -210,7 +210,7 @@ export default function App() {
               component={StarQuizScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Star Master",
+                title: "STAR Master",
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -222,7 +222,7 @@ export default function App() {
                       display={false}
                       onPress={() => {
                         Alert.alert(
-                          "Cancel the Star Master?",
+                          "Cancel the STAR Master?",
                           "The process is unsaved, you will lose it.",
                           [
                             {
@@ -301,7 +301,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </AppContextProvider>
-        <Toast/>
+        <Toast />
       </GestureHandlerRootView>
     </>
   );

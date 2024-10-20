@@ -18,8 +18,9 @@ const InterviewContentsOutput = () => {
         currentIndexNum={currentQuestionIndex}
         totalNum={interviewQuestions.length}
       />
+
+      <HearableQuestions questionText={questionText} />
       <View style={styles.innerContainer}>
-        <HearableQuestions questionText={questionText} />
         <InterviewControllerIcons
           currentQuestionIndex={currentQuestionIndex}
           interviewQuestions={interviewQuestions}

@@ -26,7 +26,7 @@ export default ProgressBar;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.5,
+    flex: 0.4,
     flexDirection: "row",
     columnGap: 8,
     marginBottom: 16,

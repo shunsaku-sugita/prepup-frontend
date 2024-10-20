@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     top: 6.5,
   },
   cardBottom: {
-    padding: 4,
+    padding: 5,
     paddingHorizontal: 0,
     justifyContent: "center",
     minWidth: 150,
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     fontWeight: "bold",
-    paddingHorizontal: 8,
+    paddingHorizontal: 9,
+    paddingVertical: 2,
   },
 });

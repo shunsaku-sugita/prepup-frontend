@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 import {
   AccordionItem,
   AccordionHeader,
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Ionicons } from "@expo/vector-icons";
 
-const InterviewFeedbackCard = ({
+const StarQuizFeedbackCard = ({
   value,
   titleText,
   percentage,
@@ -27,7 +28,7 @@ const InterviewFeedbackCard = ({
                 </AccordionTitleText>
                 <View style={styles.accordionHeaderRightContainer}>
                   <AccordionTitleText style={styles.accordionTitleText}>
-                    {percentage}%
+                    {/* {percentage}% */}
                   </AccordionTitleText>
                   {isExpanded ? (
                     <Ionicons name="chevron-up" color="black" size={22} />
@@ -49,7 +50,7 @@ const InterviewFeedbackCard = ({
   );
 };
 
-export default InterviewFeedbackCard;
+export default StarQuizFeedbackCard;
 
 const styles = StyleSheet.create({
   container: {
