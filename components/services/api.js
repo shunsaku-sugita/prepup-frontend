@@ -5,6 +5,7 @@ import {
   BASE_URL,
   PATH_INTERVIEW,
   PATH_PROFILE,
+  PATH_JOBFINDER,
   TYPE_CATEGORY,
   TYPE_GENERATE_QUESTION,
 } from "../../config/apiConfig";
@@ -55,51 +56,93 @@ export const signup = async (email, password, givenName, familyName) => {
   }
 };
 
-export const fetchJobs = async (page = 1, where = "") => {
+// Job Finder APIs
+export const fetchJobs = async (page = 1) => {
   try {
-    storeTokenSecurely(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzA5OTAxYjJjMWFlM2U4ZTY0MmJjYTYiLCJpYXQiOjE3Mjg2Nzk5NjUsImV4cCI6MTgyODkzOTE2NX0.zKa2jczPvt4ZIkWZmKPfZbS3FzAJb6HeAWXwNCLbpao"
-    );
-    const token = await getTokenSecurely();
-    const response = await axios.get(BASE_URL + "/jobFinder/jobs", {
-      headers: {
-        authorization: token,
-      },
-      params: {
-        ...(where && { where }),
-        page: page,
-      },
-    });
-
-    const jobs = response.data;
-    console.log("Jobs:", jobs);
-    return jobs;
+    const endpoint = `/${PATH_JOBFINDER}/search/${page}`;
+    const response = await apiClient.get(endpoint);
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch jobs");
+    }
   } catch (error) {
     console.error("Error fetching jobs:", error);
+    throw error;
   }
 };
 
-export const fetchJobsByKeyword = async (page = 1, where = "", keywords) => {
+
+export const fetchJobsByKeyword = async (page = 1, keywords) => {
   try {
-    const token = await getTokenSecurely();
-    const response = await axios.get(BASE_URL + "/jobFinder/jobs/keyword", {
-      headers: {
-        authorization: token,
-      },
+    const endpoint = `/${PATH_JOBFINDER}/search/keyword/${page}`;
+    const response = await apiClient.get(endpoint, {
       params: {
-        page: page,
-        what: keywords,
-        ...(where && { where }),
+        keywords: keywords,
       },
     });
 
-    const jobs = response.data;
-    console.log("Jobs:", jobs);
-    return jobs;
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch jobs");
+    }
   } catch (error) {
     console.error("Error fetching jobs:", error);
+    throw error;
   }
 };
+
+export const bookmarkJob = async (jobDetails) => {
+  try {
+    const endpoint = `/${PATH_JOBFINDER}/bookmark`;
+    const response = await apiClient.post(endpoint, jobDetails);
+
+    if (response.status === 200) {
+      console.log("Job bookmarked successfully:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to bookmark job");
+    }
+  } catch (error) {
+    console.error("Error bookmarking job:", error);
+    throw error;
+  }
+}
+
+export const unbookmarkJob = async (jobId) => {
+  try {
+    const endpoint = `/${PATH_JOBFINDER}/bookmark/${jobId}`;
+    const response = await apiClient.delete(endpoint);
+
+    if (response.status === 200) {
+      console.log("Job unbookmarked successfully:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to unbookmark job");
+    }
+  } catch (error) {
+    console.error("Error unbookmarking job:", error);
+    throw error;
+  }
+}
+
+export const fetchSavedJobs = async () => {
+  try {
+    const endpoint = `/${PATH_JOBFINDER}/bookmarked`;
+    const response = await apiClient.get(endpoint);
+
+    if (response.status === 200) {
+      console.log("Fetch bookmarked jobs successfully:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch bookmarked job");
+    }
+  } catch (error) {
+    console.error("Error fetching bookmarked job:", error);
+    throw error;
+  }
+}
 
 export const generateQuestionByJobDescription = async (
   adzunaJobId,
