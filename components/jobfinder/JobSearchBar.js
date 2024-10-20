@@ -5,11 +5,10 @@ import { Ionicons } from '@expo/vector-icons';
 const JobSearchBar = ({searchQuery, setSearchQuery}) => {
   return (
     <View style={styles.searchContainer}>
-      <Ionicons name="search" size={24} color="black" style={styles.searchIcon} />
 
       <TextInput
         style={styles.searchInput}
-        placeholder="Search"
+        placeholder="Search Jobs"
         value={searchQuery}
         onChangeText={setSearchQuery}
         onFocus={() => {
@@ -17,11 +16,13 @@ const JobSearchBar = ({searchQuery, setSearchQuery}) => {
       
       />
 
-      {searchQuery ? (
+{searchQuery ? (
         <TouchableOpacity onPress={() => setSearchQuery('')}>
-          <Ionicons name="close" size={24} color="black" />
+          <Ionicons name="close" size={24} color="black" style={styles.icon} />
         </TouchableOpacity>
-      ) : null}
+      ) : (
+        <Ionicons name="search" size={24} color="black" style={styles.icon} />
+      )}
     </View>
   );
 };
@@ -35,16 +36,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 8,
-    padding: 10,
+    padding: 8,
   
     marginBottom: 10, 
   },
   searchInput: {
     flex: 1,
-    marginLeft: 10,
+    paddingRight: 10,
     fontSize: 16,
   },
-  searchIcon: {
-    paddingRight: 8,
+  icon: {
+    paddingLeft: 10,
+    
   },
 });

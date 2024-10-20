@@ -59,6 +59,7 @@ export const signup = async (email, password, givenName, familyName) => {
 // Job Finder APIs
 export const fetchJobs = async (page = 1) => {
   try {
+<<<<<<< HEAD
     const endpoint = `/${PATH_JOBFINDER}/search/${page}`;
     const response = await apiClient.get(endpoint);
     if (response.status === 200) {
@@ -66,6 +67,26 @@ export const fetchJobs = async (page = 1) => {
     } else {
       throw new Error("Failed to fetch jobs");
     }
+=======
+    storeTokenSecurely(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzA5OTAxYjJjMWFlM2U4ZTY0MmJjYTYiLCJpYXQiOjE3Mjg2Nzk5NjUsImV4cCI6MTgyODkzOTE2NX0.zKa2jczPvt4ZIkWZmKPfZbS3FzAJb6HeAWXwNCLbpao"
+    );
+    const token = await getTokenSecurely();
+    const response = await axios.get(BASE_URL + "/jobFinder/search/1", {
+      headers: {
+        authorization: token,
+      },
+      params: {
+        ...(where && { where }),
+        page: page,
+      },
+    });
+
+    const jobs = response.data;
+    console.log("Jobs:", jobs);
+    return jobs;
+   
+>>>>>>> dev-bl-local
   } catch (error) {
     console.error("Error fetching jobs:", error);
     throw error;

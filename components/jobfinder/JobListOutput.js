@@ -10,66 +10,10 @@ import Toast from 'react-native-toast-message';
 import JobFilterTags from './JobFilterTags'
 import JobDetailsModal from "./JobDetailsModal"
 import {fetchJobs} from "../services/api"
+import JobCard from "./JobCard"; 
 
 
 
-// const output=[{
-//   id:"1",
-//   title: "UI/UX",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// },
-// {
-//    id:"2",
-//   title: "Product Designer",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// },
-// {
-//    id:"3",
-//   title: "Web Designer",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// },
-// {
-//   id:"4",
-//   title: "UI/UX",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// },
-// {
-//    id:"5",
-//   title: "Product Designer",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// },
-// {
-//    id:"6",
-//   title: "Web Designer",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// },
-// {
-//   id:"7",
-//   title: "UI/UX",
-//   description: "Design user interfaces and improve user experience.",
-//   date: "Added September 20, 2024",
-//   image: "",
-//   isSaved: false
-// }
-// ]
 const jobListOutput = () => {
   const [filterType, setFilterType]=React.useState(1)
   const [jobs, setJobs] = useState([]);
