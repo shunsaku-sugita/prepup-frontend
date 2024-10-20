@@ -51,6 +51,7 @@ const StarQuizCarousel = ({
     // Split the text into words and filter out any empty strings
     // "split(/\s+/)" splits the string into an array of words, ignoring successive spaces. "/\s+/" is a regular expression that matches one or more whitespace characters (spaces, tabs, etc.).
     const words = text.trim().split(/\s+/).filter(Boolean);
+
     // Update the answer and word count if within limit
     if (words.length <= 150 || text.length < currentAnswer.length) {
       setIsWordLimit(false);

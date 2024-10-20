@@ -22,7 +22,7 @@ const CreateCategorySuccessOutput = ({ modalVisible, setModalVisible }) => {
           />
         </View>
         <View style={styles.iconWrapper}>
-          <Ionicons name="checkmark-circle" color="black" size={50} />
+          <Ionicons name="checkmark-circle" color="gray" size={50} />
         </View>
         <View style={styles.textWrapper}>
           <TitleText text="Category board has been successfully added!" />

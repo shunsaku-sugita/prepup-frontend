@@ -11,6 +11,11 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
     setTypedText(enteredText);
   };
 
+  // check if the input contains at least one word or number
+  const isValidInput = () => {
+    return /\w+/.test(typedText.trim()); // This regex checks for any word character or number
+  };
+
   // onPress function
 
   return (
@@ -32,7 +37,7 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
           style={styles.textInput}
           onChangeText={textInputHandler}
           value={typedText}
-          placeholder="Enter a new category title."
+          placeholder="Enter a category title."
           placeholderTextColor="gray"
           keyboardType="default"
         />
@@ -40,11 +45,12 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
         {/* {(!typedText.trim()) && (
           <Text style={styles.lowerText}>* Input a category title.</Text>
         )} */}
-        <View style={styles.button}>
+        <View style={styles.buttonContainer}>
           <WideButton
             title="Save"
             color="white"
             size={24}
+            display={!isValidInput()} // Disable if input is invalid
             onPress={() => {
               if (typedText.trim()) {
                 setIsSaved(true);
@@ -82,6 +88,7 @@ const styles = StyleSheet.create({
   },
   upperText: {
     fontSize: 18,
+    fontWeight: "bold",
     marginBottom: 6,
   },
   textInput: {
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "red",
   },
-  button: {
+  buttonContainer: {
     marginVertical: 16,
     marginTop: 24,
   },

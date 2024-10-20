@@ -1,6 +1,6 @@
 import { useNavigation } from "expo-router";
 import { useContext, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Platform, Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import WideButton from "../common/WideButton";
@@ -11,7 +11,7 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
-  const { item, setItem } = useContext(AppContext);
+  const { item, setItem, resetUriArray } = useContext(AppContext);
 
   let categoryOutputScreen = (
     <CreateCategoryOutput
@@ -46,6 +46,8 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
               ...prevState,
               currentQuestionIndex: 0,
             }));
+            // reset the uriArray that is already created
+            resetUriArray();
           }}
         >
           <Text style={styles.tryAgainText}>Try Again</Text>
@@ -70,7 +72,7 @@ export default InterviewFeedbackButtons;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: Platform.OS === "ios" ? 1.6 : 1.4,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 15,

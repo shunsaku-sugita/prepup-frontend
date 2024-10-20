@@ -3,6 +3,11 @@ import { createContext, useState } from "react";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
+  const [uriArray, setUriArray] = useState([]);
+  const resetUriArray = () => {
+    setUriArray([]);
+  };
+
   const [item, setItem] = useState({
     // userName: "Bill",
     interviewQuestions: [
@@ -33,7 +38,10 @@ const AppContextProvider = ({ children }) => {
   });
 
   return (
-    <AppContext.Provider value={{ item, setItem }}>
+    <AppContext.Provider
+      // can provide states and functions grobally
+      value={{ item, setItem, uriArray, setUriArray, resetUriArray }}
+    >
       {children}
     </AppContext.Provider>
   );
