@@ -6,8 +6,4 @@ export const PATH_PROFILE = "profile";
 export const PATH_JOBFINDER = "jobFinder"
 
 export const TYPE_GENERATE_QUESTION = "generate-questions"
-<<<<<<< HEAD
 export const TYPE_CATEGORY = "category"
-=======
-export const TYPE_CATEGORY ="category"
->>>>>>> dev-bl-local
