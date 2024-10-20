@@ -61,7 +61,7 @@ export const fetchJobs = async (page = 1, where = "") => {
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzA5OTAxYjJjMWFlM2U4ZTY0MmJjYTYiLCJpYXQiOjE3Mjg2Nzk5NjUsImV4cCI6MTgyODkzOTE2NX0.zKa2jczPvt4ZIkWZmKPfZbS3FzAJb6HeAWXwNCLbpao"
     );
     const token = await getTokenSecurely();
-    const response = await axios.get(BASE_URL + "/jobFinder/jobs", {
+    const response = await axios.get(BASE_URL + "/jobFinder/search/1", {
       headers: {
         authorization: token,
       },

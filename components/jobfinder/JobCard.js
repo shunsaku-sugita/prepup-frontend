@@ -12,13 +12,13 @@ const getInitials = (companyName) => {
 
 
 const JobCard = ({ job, toggleBookmark, onPress }) => {
-  const initials = getInitials(job.company);
+  // const initials = getInitials(job.company);
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {/* logo */}
       <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>{initials}</Text>
+        <Text style={styles.logoText}>{job.companyInitial}</Text>
       </View>
 
       <View style={styles.subContainer}>

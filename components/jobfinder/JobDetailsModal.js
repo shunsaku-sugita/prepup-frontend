@@ -25,6 +25,8 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           <View style={styles.titleWrapper}>
             <TitleText text={job.title} />
           </View>
+          <Text style={styles.companyDescriptionText}>Company: {job.company}</Text>
+          <Text style={styles.descriptionText}>Description:</Text>
           <Text style={styles.descriptionText}>{job.description}</Text>
           <View style={styles.buttonContainer}>
             <WideButton
@@ -74,11 +76,14 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     marginBottom: 8,
-    alignItems: "center",
+    alignItems: "left",
+  },
+  companyDescriptionText: {
+    fontSize: 16,
+    marginBottom: 8,
   },
   descriptionText: {
     fontSize: 16,
-    marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: 'column', // Arrange buttons vertically
