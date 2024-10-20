@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import React from "react";
 import JobCard from "./JobCard";
 
-const JobFilterLocationItem = ({ data, toggleBookmark }) => {
+const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
   return (
     <View>
       <FlatList

@@ -35,7 +35,7 @@ const jobListOutput = () => {
 
   React.useEffect(() => {
     const getJobs = async () => {
-    const jobsResult = await fetchJobs();
+    const jobsResult = await fetchJobs(1);
     // console.log(".......", jobsResult)
     setJobs(jobsResult);
     setPage(1);
