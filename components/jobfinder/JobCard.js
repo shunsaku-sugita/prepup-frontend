@@ -2,13 +2,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
-// Function to extract initials from company name
-const getInitials = (companyName) => {
-  if (!companyName) return "N/A";
-  const nameParts = companyName.split(" ");
-  const initials = nameParts.map(part => part[0]).join("");
-  return initials.toUpperCase();
-};
+// // Function to extract initials from company name
+// const getInitials = (companyName) => {
+//   if (!companyName) return "N/A";
+//   const nameParts = companyName.split(" ");
+//   const initials = nameParts.map(part => part[0]).join("");
+//   return initials.toUpperCase();
+// };
 
 
 const JobCard = ({ job, toggleBookmark, onPress }) => {
@@ -33,7 +33,9 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
         <Ionicons
           name={job.isSaved ? "bookmark" : "bookmark-outline"}
           size={24}
-          color="black"
+          color={job.isSaved ? "blue" : "black"}
+          onPress={() => toggleBookmark(job)}
+         
         />
       </TouchableOpacity>
     </TouchableOpacity>
