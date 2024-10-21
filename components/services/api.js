@@ -183,16 +183,18 @@ export const getInterviewCategory = async () => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
 
-    apiClient.get(endpoint).then((response) => {
+    const response = await apiClient.get(endpoint)
+
       if (response.status == 200) {
         return response.data;
       }
-    });
+
   } catch (error) {
     console.error(
       "Error getting job category : ",
       error.response ? error.response.data : error.message
     );
+    return undefined;
   }
 };
 
@@ -208,14 +210,53 @@ export const getInterviewCategory = async () => {
 export const updateProfile = async (data) => {
   try {
     const endpoint = "/" + PATH_PROFILE + "/";
-    apiClient.put(endpoint).then((response) => {
+    const response = apiClient.put(endpoint);
+
+    if(response == 200){
       return true;
-    });
+    }
+
   } catch (error) {
     console.error(
       "Error updating user profile : ",
       error.response ? error.response.data : error.message
     );
-    return true;
+    return false;
   }
 };
+
+export const analyzeAnswer = (answers) => {
+  try {
+    const endpoint = "/"+PATH_INTERVIEW+"/"+TYPE_ANALYZE_ANSWERS
+    const response = apiClient.post(endpoint, answers)
+
+    if(response == 200){
+      return response.data;
+    }
+  } catch (error) {
+    console.error(
+      "Error while analyzing answers : ",
+      error.response ? error.response.data : error.message
+    );
+    return undefined;
+  }
+}
+
+export const saveInterviewQuestions = (categoryName, questions) => {
+  try {
+    const endpoint = "/"+PATH_INTERVIEW+"/"+TYPE_CATEGORY
+    const response = apiClient.post(endpoint, {categoryName, questions});
+
+    if(response == 200){
+      return true;
+    }
+
+  } catch (error) {
+    console.error(
+      "Error while saveing interview: ",
+      error.response ? error.response.data : error.message
+    );
+
+    return false;
+  }
+}

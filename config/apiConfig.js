@@ -7,3 +7,4 @@ export const PATH_JOBFINDER = "jobFinder"
 
 export const TYPE_GENERATE_QUESTION = "generate-questions"
 export const TYPE_CATEGORY = "category"
+export const TYPE_ANALYZE_ANSWERS = "analyze-answers"
