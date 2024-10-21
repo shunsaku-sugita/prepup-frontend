@@ -72,7 +72,6 @@ export const fetchJobs = async (page = 1) => {
   }
 };
 
-
 export const fetchJobsByKeyword = async (page = 1, keywords) => {
   try {
     const endpoint = `/${PATH_JOBFINDER}/search/keyword/${page}`;
@@ -108,7 +107,7 @@ export const bookmarkJob = async (jobDetails) => {
     console.error("Error bookmarking job:", error);
     throw error;
   }
-}
+};
 
 export const unbookmarkJob = async (jobId) => {
   try {
@@ -125,7 +124,7 @@ export const unbookmarkJob = async (jobId) => {
     console.error("Error unbookmarking job:", error);
     throw error;
   }
-}
+};
 
 export const fetchSavedJobs = async () => {
   try {
@@ -142,7 +141,7 @@ export const fetchSavedJobs = async () => {
     console.error("Error fetching bookmarked job:", error);
     throw error;
   }
-}
+};
 
 export const generateQuestionByJobDescription = async (
   adzunaJobId,
@@ -183,11 +182,11 @@ export const getInterviewCategory = async () => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
 
-    apiClient.get(endpoint).then((response) => {
-      if (response.status == 200) {
-        return response.data;
-      }
-    });
+    const response = await apiClient.get(endpoint);
+
+    if (response.status == 200) {
+      return response.data;
+    }
   } catch (error) {
     console.error(
       "Error getting job category : ",

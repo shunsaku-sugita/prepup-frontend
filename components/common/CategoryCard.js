@@ -5,29 +5,37 @@ import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import SmallButton from "./SmallButton";
 
-const CategoryCard = ({ category, index }) => {
+const CategoryCard = ({ index, category, categories, setCategories }) => {
   const navigation = useNavigation();
-  const { item, setItem, resetUriArray } = useContext(AppContext);
+  const {
+    resetUriArray,
+    setCurrentQuestionIndex,
+    selectedCategoryQuestions,
+    setSelectedCategoryQuestions,
+  } = useContext(AppContext);
 
-  const startInterviewHandler = () => {
+  const startInterviewHandler = (index) => {
     navigation.navigate("InterviewSimulator");
-    // Update the state with the new array
-    setItem((prevState) => ({
-      ...prevState,
-      currentQuestionIndex: 0,
-    }));
+
+    // reset the current question index to 0
+    setCurrentQuestionIndex(0);
     // reset the uriArray that is already created
     resetUriArray();
+    // Directly access the selected category using the index
+    const selectedCategoryObj = categories[index];
+    // Extract the array of question texts
+    const selectedQuestionTexts = selectedCategoryObj.questions.map(
+      (item) => item.question
+    );
+    setSelectedCategoryQuestions(selectedQuestionTexts);
+    // console.log("===> Questions of selected category: ", questionTexts);
   };
 
   const deleteHandler = (index) => {
     // Create a new array excluding the item at the given index
-    const updatedCategories = item.categories.filter((_, i) => i !== index);
+    const updatedCategories = categories.filter((_, idx) => idx !== index);
     // Update the state with the new array
-    setItem((prevItem) => ({
-      ...prevItem,
-      categories: updatedCategories,
-    }));
+    setCategories(updatedCategories);
   };
 
   const deleteAlertHandler = (index) => {
@@ -71,7 +79,7 @@ const CategoryCard = ({ category, index }) => {
           <SmallButton
             title="Start"
             color="white"
-            onPress={startInterviewHandler}
+            onPress={() => startInterviewHandler(index)}
           />
         </View>
       </View>

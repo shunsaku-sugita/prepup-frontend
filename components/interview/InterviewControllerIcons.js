@@ -12,11 +12,12 @@ import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
 import InterviewAnswerScript from "./InterviewAnswerScript";
 import { AppContext } from "@/store/app-context";
+import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
   interviewQuestions,
-  setItem,
+  setCurrentQuestionIndex,
 }) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
@@ -28,7 +29,8 @@ const InterviewControllerIcons = ({
   const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(0);
 
-  const { uriArray, setUriArray } = useContext(AppContext);
+  // const { uriArray, setUriArray } = useContext(AppContext);
+  const [transcription, setTranscription] = useState("Transcribing...");
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
@@ -37,10 +39,11 @@ const InterviewControllerIcons = ({
           sound.unloadAsync();
         }
       : undefined;
-  }, [sound, uriArray]);
+  }, [sound]);
 
   const startRecording = async () => {
     try {
+      setTranscription("Transcribing...");
       // Ask for permissions to access the microphone
       await Audio.requestPermissionsAsync();
 
@@ -93,6 +96,10 @@ const InterviewControllerIcons = ({
 
         console.log("Recording stopped and stored at:", uri);
         console.log("Recording status after stopping:", status); // Log the status
+
+        // Get and display transcription from audio uri
+        const audioText = await transcribeAudio(uri);
+        setTranscription(audioText);
       } catch (error) {
         console.error("Failed to stop recording", error);
       }
@@ -124,26 +131,17 @@ const InterviewControllerIcons = ({
 
   const nextHandler = () => {
     if (recordingUri) {
-      // Add the recording URI to the array
-      setUriArray((prevArray) => {
-        const updatedArray = [...prevArray, recordingUri];
-        console.log(updatedArray);
-        return updatedArray;
-      });
       // Clear the recording URI for the next recording
       setRecordingUri(null);
     }
-
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
       // If it's the last question, navigate to the feedback screen
       navigation.navigate("InterviewFeedback");
     } else {
       if (currentQuestionIndex < interviewQuestions.length - 1) {
-        setItem((prevState) => ({
-          ...prevState,
-          currentQuestionIndex: prevState.currentQuestionIndex + 1,
-        }));
+        // Increment the current question index
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       }
     }
   };
@@ -153,7 +151,7 @@ const InterviewControllerIcons = ({
 
   let mainContents = recordingUri ? (
     <>
-      <InterviewAnswerScript />
+      <InterviewAnswerScript transcription={transcription} />
       <View style={styles.retryContainer}>
         <Text style={styles.pressText}>Press to try again!</Text>
         <View style={styles.retryIconContainer}>

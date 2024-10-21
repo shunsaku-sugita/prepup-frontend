@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { Platform, Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
-import WideButton from "../common/WideButton";
 import CreateCategoryOutput from "./CreateCategoryOutput";
 import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
 
@@ -11,13 +10,15 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
-  const { item, setItem, resetUriArray } = useContext(AppContext);
+  const { setCurrentQuestionIndex, setSelectedCategoryQuestions } =
+    useContext(AppContext);
 
   let categoryOutputScreen = (
     <CreateCategoryOutput
       setModalVisible={setModalVisible}
       setIsSaved={setIsSaved}
-      setItem={setItem}
+      setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+      // setItem={setItem}
     />
   );
   if (isSaved) {
@@ -41,13 +42,8 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
         <TouchableOpacity
           style={styles.tryAgainButton}
           onPress={() => {
+            setCurrentQuestionIndex(0);
             navigation.navigate("InterviewSimulator");
-            setItem((prevState) => ({
-              ...prevState,
-              currentQuestionIndex: 0,
-            }));
-            // reset the uriArray that is already created
-            resetUriArray();
           }}
         >
           <Text style={styles.tryAgainText}>Try Again</Text>

@@ -5,7 +5,11 @@ import WideButton from "../common/WideButton";
 import BackToCategories from "../common/BackToCategories";
 import { Ionicons } from "@expo/vector-icons";
 
-const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
+const CreateCategoryOutput = ({
+  setModalVisible,
+  setIsSaved,
+  setSelectedCategoryQuestions,
+}) => {
   const [typedText, setTypedText] = useState("");
   const textInputHandler = (enteredText) => {
     setTypedText(enteredText);

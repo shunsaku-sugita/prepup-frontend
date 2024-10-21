@@ -5,6 +5,7 @@ import * as Speech from "expo-speech";
 
 const HearableQuestions = ({ questionText }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
 
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 15,
     marginBottom: 16,
-    width: "95%",
+    width: "90%",
   },
   questionIconContainer: {
     flex: 2,
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "flex-start",
+    paddingRight: 8,
   },
   questionText: {
     fontSize: 20,
