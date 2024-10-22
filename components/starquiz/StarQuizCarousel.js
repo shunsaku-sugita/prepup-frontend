@@ -144,7 +144,6 @@ const StarQuizCarousel = ({
                 name="arrow-forward"
                 size={16}
                 style={styles.arrorIcon}
-                style={styles.arrorIcon}
               />
             </View>
           </View>
