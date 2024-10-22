@@ -8,8 +8,9 @@ import { useNavigation } from "expo-router";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
-  const { item, setItem } = useContext(AppContext);
 
+  // "item" needs to be replaced with real data fetched from Backend
+  const { item, setItem } = useContext(AppContext);
   const { currentQuestionIndex, interviewQuestions } = item;
   let questionText = interviewQuestions[currentQuestionIndex];
 
@@ -18,6 +19,11 @@ const StarQuizOutput = () => {
   const [taskAnswer, setTaskAnswer] = useState("");
   const [actionAnswer, setActionAnswer] = useState("");
   const [resultAnswer, setResultAnswer] = useState("");
+
+  const [answersArray, setAnswersArray] = useState([]);
+  const saveAnswersHandler = () => {
+    setAnswersArray([situationAnswer, taskAnswer, actionAnswer, resultAnswer]);
+  };
 
   const skipOrDoneButtonHandler = () => {
     const randomIndex = Math.floor(Math.random() * 5);
@@ -38,6 +44,7 @@ const StarQuizOutput = () => {
           {
             text: "Confirm",
             onPress: () => {
+              saveAnswersHandler(); // save answers into an array
               navigation.navigate("StarQuizFeedback");
               setSituationAnswer("");
               setTaskAnswer("");
@@ -47,6 +54,7 @@ const StarQuizOutput = () => {
           },
         ]
       );
+      console.log(answersArray);
     }
   };
 
