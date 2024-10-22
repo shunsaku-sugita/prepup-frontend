@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import { AppContext } from "../../store/app-context";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Greeting from "./Greeting";
 import CategoryCard from "./CategoryCard";
 import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 import { getInterviewCategory } from "../services/api";
+import { AppContext } from "@/store/app-context";
 
 // Custom Bottom Tabs Component
 const CustomBottomTabs = () => {
@@ -27,7 +27,6 @@ const CustomBottomTabs = () => {
       <TouchableOpacity
         style={styles.tabButton}
         onPress={() => navigation.navigate("StarQuiz")}
-        // onPress={() => navigation.navigate("Flashcard")}
       >
         <View style={styles.iconContainer}>
           <Ionicons name="star" size={30} color="white" />
@@ -38,19 +37,16 @@ const CustomBottomTabs = () => {
 };
 
 const CategoryOutput = () => {
-  const { item, setItem } = useContext(AppContext);
-  const categoryItems = item.categories;
+  const { categories, setCategories } = useContext(AppContext);
 
-  // const [categories, setCategories] = useState([]);
-
-  // useEffect(() => {
-  //   const loadCategories = async () => {
-  //     const categoriesData = await getInterviewCategory();
-  //     setCategories(categoriesData);
-  //     console.log(categories);
-  //   };
-  //   loadCategories();
-  // }, []);
+  useEffect(() => {
+    const loadCategories = async () => {
+      const data = await getInterviewCategory();
+      const categoriesData = data.category;
+      setCategories(categoriesData);
+    };
+    loadCategories();
+  }, []);
 
   return (
     <>
@@ -58,33 +54,26 @@ const CategoryOutput = () => {
         <Greeting />
         <HeaderRightIcons color="black" />
       </View>
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.title}>
-            <TitleText text="Choose Category:" />
-          </View>
-          <View style={styles.listContent}>
-            {categoryItems.map((category, index) => {
-              // For every two items, wrap them in a row
-              if (index % 2 === 0) {
-                return (
-                  <View key={index} style={styles.row}>
-                    <CategoryCard index={index} category={category} />
-                    {categoryItems[index + 1] && (
-                      <CategoryCard
-                        index={index + 1}
-                        category={categoryItems[index + 1]}
-                      />
-                    )}
-                  </View>
-                );
-              }
-              // Return null for odd index to avoid duplication
-              return null;
-            })}
-          </View>
+      <View style={styles.container}>
+        <View style={styles.title}>
+          <TitleText text="Choose Category:" />
         </View>
-      </ScrollView>
+        <FlatList
+          data={categories}
+          keyExtractor={(item) => item.categoryName}
+          numColumns={2}
+          renderItem={({ item, index }) => (
+            <View style={styles.cardContainer}>
+              <CategoryCard
+                index={index}
+                category={item.categoryName}
+                categories={categories}
+                setCategories={setCategories}
+              />
+            </View>
+          )}
+        />
+      </View>
       <CustomBottomTabs />
     </>
   );
@@ -132,13 +121,10 @@ const styles = StyleSheet.create({
     // shadow for iOS
     shadowColor: "black",
     shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    shadowOpacity: 0.4,
   },
-  listContent: {
-    paddingBottom: 16,
-  },
-  row: {
+  cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 2,

@@ -72,7 +72,6 @@ export const fetchJobs = async (page = 1) => {
   }
 };
 
-
 export const fetchJobsByKeyword = async (page = 1, keywords) => {
   try {
     const endpoint = `/${PATH_JOBFINDER}/search/keyword/${page}`;
@@ -108,7 +107,7 @@ export const bookmarkJob = async (jobDetails) => {
     console.error("Error bookmarking job:", error);
     throw error;
   }
-}
+};
 
 export const unbookmarkJob = async (jobId) => {
   try {
@@ -125,7 +124,7 @@ export const unbookmarkJob = async (jobId) => {
     console.error("Error unbookmarking job:", error);
     throw error;
   }
-}
+};
 
 export const fetchSavedJobs = async () => {
   try {
@@ -142,7 +141,7 @@ export const fetchSavedJobs = async () => {
     console.error("Error fetching bookmarked job:", error);
     throw error;
   }
-}
+};
 
 export const generateQuestionByJobDescription = async (
   adzunaJobId,
@@ -183,12 +182,11 @@ export const getInterviewCategory = async () => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
 
-    const response = await apiClient.get(endpoint)
+    const response = await apiClient.get(endpoint);
 
-      if (response.status == 200) {
-        return response.data;
-      }
-
+    if (response.status == 200) {
+      return response.data;
+    }
   } catch (error) {
     console.error(
       "Error getting job category : ",
@@ -212,10 +210,9 @@ export const updateProfile = async (data) => {
     const endpoint = "/" + PATH_PROFILE + "/";
     const response = apiClient.put(endpoint);
 
-    if(response == 200){
+    if (response == 200) {
       return true;
     }
-
   } catch (error) {
     console.error(
       "Error updating user profile : ",
@@ -227,10 +224,10 @@ export const updateProfile = async (data) => {
 
 export const analyzeAnswer = (answers) => {
   try {
-    const endpoint = "/"+PATH_INTERVIEW+"/"+TYPE_ANALYZE_ANSWERS
-    const response = apiClient.post(endpoint, answers)
+    const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_ANALYZE_ANSWERS;
+    const response = apiClient.post(endpoint, answers);
 
-    if(response == 200){
+    if (response == 200) {
       return response.data;
     }
   } catch (error) {
@@ -240,17 +237,16 @@ export const analyzeAnswer = (answers) => {
     );
     return undefined;
   }
-}
+};
 
 export const saveInterviewQuestions = (categoryName, questions) => {
   try {
-    const endpoint = "/"+PATH_INTERVIEW+"/"+TYPE_CATEGORY
-    const response = apiClient.post(endpoint, {categoryName, questions});
+    const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
+    const response = apiClient.post(endpoint, { categoryName, questions });
 
-    if(response == 200){
+    if (response == 200) {
       return true;
     }
-
   } catch (error) {
     console.error(
       "Error while saveing interview: ",
@@ -259,4 +255,4 @@ export const saveInterviewQuestions = (categoryName, questions) => {
 
     return false;
   }
-}
+};

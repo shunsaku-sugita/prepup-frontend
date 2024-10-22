@@ -1,18 +1,11 @@
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 
-const InterviewAnswerScript = () => {
+const InterviewAnswerScript = ({ transcription }) => {
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <ScrollView>
-          <Text style={styles.text}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            odio ligula, consequat eget convallis quis, varius sodales ipsum.
-            Sed congue nulla eu dictum dapibus. Vivamus nec pellentesque ipsum.
-            Donec et hendrerit ex. Cras lobortis, est sit amet commodo gravida,
-            felis nisi commodo nunc, sit amet viverra justo lorem a enim.
-          </Text>
+          <Text style={styles.text}>{transcription}</Text>
         </ScrollView>
       </View>
     </View>

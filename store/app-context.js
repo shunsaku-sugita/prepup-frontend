@@ -3,6 +3,13 @@ import { createContext, useState } from "react";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedCategoryQuestions, setSelectedCategoryQuestions] = useState(
+    []
+  );
+  const [categories, setCategories] = useState([]);
+  const [questionAnswerArray, setQuestionAnswerArray] = useState([]);
+
   const [item, setItem] = useState({
     // userName: "Bill",
     interviewQuestions: [
@@ -33,7 +40,21 @@ const AppContextProvider = ({ children }) => {
   });
 
   return (
-    <AppContext.Provider value={{ item, setItem }}>
+    <AppContext.Provider
+      // can provide states and functions grobally
+      value={{
+        item,
+        setItem,
+        currentQuestionIndex,
+        setCurrentQuestionIndex,
+        selectedCategoryQuestions,
+        setSelectedCategoryQuestions,
+        questionAnswerArray,
+        setQuestionAnswerArray,
+        categories,
+        setCategories,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
