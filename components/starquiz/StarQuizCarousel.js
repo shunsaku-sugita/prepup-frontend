@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import IconButton from "../common/IconButton";
 import * as Speech from "expo-speech";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 
 const StarQuizCarousel = ({
   situationAnswer,
@@ -139,7 +140,12 @@ const StarQuizCarousel = ({
             <View></View>
             <View style={styles.swipeContainer}>
               <Text style={styles.swipeText}>Swipe right</Text>
-              <IconButton icon="arrow-forward" size={16} />
+              <Ionicons
+                name="arrow-forward"
+                size={16}
+                style={styles.arrorIcon}
+                style={styles.arrorIcon}
+              />
             </View>
           </View>
         </View>
@@ -205,12 +211,16 @@ const StarQuizCarousel = ({
           </View>
           <View style={styles.cardFooterContainer}>
             <View style={styles.swipeContainer}>
-              <IconButton icon="arrow-back" size={16} />
+              <Ionicons name="arrow-back" size={16} style={styles.arrorIcon} />
               <Text style={styles.swipeText}>Swipe left</Text>
             </View>
             <View style={styles.swipeContainer}>
               <Text style={styles.swipeText}>Swipe right</Text>
-              <IconButton icon="arrow-forward" size={16} />
+              <Ionicons
+                name="arrow-forward"
+                size={16}
+                style={styles.arrorIcon}
+              />
             </View>
           </View>
         </View>
@@ -278,12 +288,16 @@ const StarQuizCarousel = ({
           </View>
           <View style={styles.cardFooterContainer}>
             <View style={styles.swipeContainer}>
-              <IconButton icon="arrow-back" size={16} />
+              <Ionicons name="arrow-back" size={16} style={styles.arrorIcon} />
               <Text style={styles.swipeText}>Swipe left</Text>
             </View>
             <View style={styles.swipeContainer}>
               <Text style={styles.swipeText}>Swipe right</Text>
-              <IconButton icon="arrow-forward" size={16} />
+              <Ionicons
+                name="arrow-forward"
+                size={16}
+                style={styles.arrorIcon}
+              />
             </View>
           </View>
         </View>
@@ -351,7 +365,7 @@ const StarQuizCarousel = ({
           </View>
           <View style={styles.cardFooterContainer}>
             <View style={styles.swipeContainer}>
-              <IconButton icon="arrow-back" size={16} />
+              <Ionicons name="arrow-back" size={16} style={styles.arrorIcon} />
               <Text style={styles.swipeText}>Swipe left</Text>
             </View>
             <View></View>
@@ -366,7 +380,7 @@ export default StarQuizCarousel;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 6,
+    flex: 7,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -374,15 +388,12 @@ const styles = StyleSheet.create({
     marginBottom: 140,
     width: "90%",
   },
-  carouselContainer: {
-    // flex: 1,
-    // height: 500,
-  },
+  carouselContainer: {},
   cardContainer: {
     flex: 1,
     backgroundColor: "#ddd",
     marginHorizontal: 7, // horizontal gap between cards
-    width: 310,
+    width: 315,
     paddingVertical: 18,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -401,10 +412,14 @@ const styles = StyleSheet.create({
   swipeContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
+    gap: 2,
   },
   swipeText: {
     fontSize: 16,
+  },
+  arrorIcon: {
+    paddingTop: 2,
   },
   textInputContainer: {
     backgroundColor: "white",

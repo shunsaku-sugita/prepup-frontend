@@ -1,12 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Greeting from "./Greeting";
 import CategoryCard from "./CategoryCard";
 import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 import { getInterviewCategory } from "../services/api";
+import { AppContext } from "@/store/app-context";
 
 // Custom Bottom Tabs Component
 const CustomBottomTabs = () => {
@@ -36,7 +37,7 @@ const CustomBottomTabs = () => {
 };
 
 const CategoryOutput = () => {
-  const [categories, setCategories] = useState([]);
+  const { categories, setCategories } = useContext(AppContext);
 
   useEffect(() => {
     const loadCategories = async () => {

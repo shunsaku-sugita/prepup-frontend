@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 const InterviewAnswerScript = ({ transcription }) => {
   return (

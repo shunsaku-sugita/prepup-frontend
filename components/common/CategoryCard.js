@@ -8,10 +8,10 @@ import SmallButton from "./SmallButton";
 const CategoryCard = ({ index, category, categories, setCategories }) => {
   const navigation = useNavigation();
   const {
-    resetUriArray,
     setCurrentQuestionIndex,
     selectedCategoryQuestions,
     setSelectedCategoryQuestions,
+    setQuestionAnswerArray,
   } = useContext(AppContext);
 
   const startInterviewHandler = (index) => {
@@ -19,8 +19,9 @@ const CategoryCard = ({ index, category, categories, setCategories }) => {
 
     // reset the current question index to 0
     setCurrentQuestionIndex(0);
-    // reset the uriArray that is already created
-    resetUriArray();
+    // reset the questionAnswerArray
+    setQuestionAnswerArray([]);
+
     // Directly access the selected category using the index
     const selectedCategoryObj = categories[index];
     // Extract the array of question texts
@@ -28,7 +29,6 @@ const CategoryCard = ({ index, category, categories, setCategories }) => {
       (item) => item.question
     );
     setSelectedCategoryQuestions(selectedQuestionTexts);
-    // console.log("===> Questions of selected category: ", questionTexts);
   };
 
   const deleteHandler = (index) => {

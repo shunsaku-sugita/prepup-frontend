@@ -8,13 +8,13 @@ import { useContext, useEffect, useState } from "react";
 import { getInterviewCategory } from "../services/api";
 
 const InterviewContentsOutput = () => {
-  // const { item, setItem } = useContext(AppContext);
   const {
-    resetUriArray,
     currentQuestionIndex,
     setCurrentQuestionIndex,
     selectedCategoryQuestions,
     setSelectedCategoryQuestions,
+    questionAnswerArray,
+    setQuestionAnswerArray,
   } = useContext(AppContext);
 
   const questionText = selectedCategoryQuestions[currentQuestionIndex];
@@ -68,13 +68,17 @@ const InterviewContentsOutput = () => {
         currentIndexNum={currentQuestionIndex}
         totalNum={selectedCategoryQuestions.length}
       />
-
-      <HearableQuestions questionText={questionText} />
+      <View style={styles.questions}>
+        <HearableQuestions questionText={questionText} />
+      </View>
       <View style={styles.innerContainer}>
         <InterviewControllerIcons
           currentQuestionIndex={currentQuestionIndex}
           interviewQuestions={selectedCategoryQuestions}
+          questionText={questionText}
           setCurrentQuestionIndex={setCurrentQuestionIndex}
+          questionAnswerArray={questionAnswerArray}
+          setQuestionAnswerArray={setQuestionAnswerArray}
         />
       </View>
     </View>
@@ -93,8 +97,11 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     width: "100%",
   },
+  questions: {
+    flex: 2,
+  },
   innerContainer: {
-    flex: 6.5,
+    flex: 7.5,
     width: "85%",
     alignItems: "center",
   },

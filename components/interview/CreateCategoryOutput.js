@@ -2,13 +2,15 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
-import BackToCategories from "../common/BackToCategories";
 import { Ionicons } from "@expo/vector-icons";
 
 const CreateCategoryOutput = ({
   setModalVisible,
   setIsSaved,
+  selectedCategoryQuestions,
   setSelectedCategoryQuestions,
+  categories,
+  setCategories,
 }) => {
   const [typedText, setTypedText] = useState("");
   const textInputHandler = (enteredText) => {
@@ -58,11 +60,17 @@ const CreateCategoryOutput = ({
             onPress={() => {
               if (typedText.trim()) {
                 setIsSaved(true);
-                setItem((prevItem) => ({
-                  ...prevItem,
-                  categories: [...prevItem.categories, typedText],
-                }));
+                setCategories((prevCategories) => [
+                  ...prevCategories,
+                  {
+                    categoryName: typedText,
+                    questions: [
+                      { question: "I'm a Test Question. Does it bother you?" },
+                    ],
+                  },
+                ]);
               }
+              console.log(categories);
             }}
           />
         </View>

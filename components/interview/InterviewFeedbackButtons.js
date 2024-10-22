@@ -6,19 +6,26 @@ import { AppContext } from "../../store/app-context";
 import CreateCategoryOutput from "./CreateCategoryOutput";
 import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
 
-const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
+const InterviewFeedbackButtons = ({
+  setCurrentQuestionIndex,
+  selectedCategoryQuestions,
+  setSelectedCategoryQuestions,
+  setQuestionAnswerArray,
+  categories,
+  setCategories,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
-  const { setCurrentQuestionIndex, setSelectedCategoryQuestions } =
-    useContext(AppContext);
 
   let categoryOutputScreen = (
     <CreateCategoryOutput
       setModalVisible={setModalVisible}
       setIsSaved={setIsSaved}
-      setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-      // setItem={setItem}
+      categories={categories}
+      setCategories={setCategories}
+      // selectedCategoryQuestions={selectedCategoryQuestions}
+      // setSelectedCategoryQuestions={setSelectedCategoryQuestions}
     />
   );
   if (isSaved) {
@@ -43,6 +50,7 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
           style={styles.tryAgainButton}
           onPress={() => {
             setCurrentQuestionIndex(0);
+            setQuestionAnswerArray([]);
             navigation.navigate("InterviewSimulator");
           }}
         >

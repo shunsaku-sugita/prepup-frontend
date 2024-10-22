@@ -3,11 +3,12 @@ import { createContext, useState } from "react";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedCategoryQuestions, setSelectedCategoryQuestions] = useState(
     []
   );
+  const [categories, setCategories] = useState([]);
+  const [questionAnswerArray, setQuestionAnswerArray] = useState([]);
 
   const [item, setItem] = useState({
     // userName: "Bill",
@@ -48,6 +49,10 @@ const AppContextProvider = ({ children }) => {
         setCurrentQuestionIndex,
         selectedCategoryQuestions,
         setSelectedCategoryQuestions,
+        questionAnswerArray,
+        setQuestionAnswerArray,
+        categories,
+        setCategories,
       }}
     >
       {children}

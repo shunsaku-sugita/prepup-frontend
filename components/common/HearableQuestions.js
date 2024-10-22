@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 
 const HearableQuestions = ({ questionText }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
 
@@ -40,7 +39,9 @@ const HearableQuestions = ({ questionText }) => {
         />
       </View>
       <View style={styles.questionTextContainer}>
-        <Text style={styles.questionText}>{questionText}</Text>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <Text style={styles.questionText}>{questionText}</Text>
+        </ScrollView>
       </View>
     </View>
   );
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 15,
     marginBottom: 16,
-    width: "90%",
+    width: "95%",
   },
   questionIconContainer: {
     flex: 2,
@@ -67,7 +68,10 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "flex-start",
-    paddingRight: 8,
+  },
+  scrollView: {
+    flex: 1,
+    justifyContent: "center",
   },
   questionText: {
     fontSize: 20,

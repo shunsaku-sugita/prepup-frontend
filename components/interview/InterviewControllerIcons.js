@@ -11,13 +11,15 @@ import {
 import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
 import InterviewAnswerScript from "./InterviewAnswerScript";
-import { AppContext } from "@/store/app-context";
 import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
   interviewQuestions,
+  questionText,
   setCurrentQuestionIndex,
+  questionAnswerArray,
+  setQuestionAnswerArray,
 }) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
@@ -134,6 +136,18 @@ const InterviewControllerIcons = ({
       // Clear the recording URI for the next recording
       setRecordingUri(null);
     }
+
+    // Save the current question and answer transcription to questionAnswerArray
+    setQuestionAnswerArray((prevArray) => [
+      ...prevArray,
+      { question: questionText, answer: transcription },
+    ]);
+    // Check the updated array
+    console.log("Updated questionAnswerArray: ", [
+      ...questionAnswerArray,
+      { question: questionText, answer: transcription },
+    ]);
+
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
       // If it's the last question, navigate to the feedback screen
@@ -201,8 +215,16 @@ const InterviewControllerIcons = ({
           <Text style={styles.listenText}>Listen</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={recordingUri ? styles.nextButton : styles.nextButtonDisabled}
-          disabled={recordingUri ? false : true}
+          style={
+            recordingUri && transcription && transcription !== "Transcribing..."
+              ? styles.nextButton
+              : styles.nextButtonDisabled
+          }
+          disabled={
+            recordingUri && transcription && transcription !== "Transcribing..."
+              ? false
+              : true
+          }
           onPress={nextHandler}
         >
           <Text style={styles.nextText}>Next</Text>
