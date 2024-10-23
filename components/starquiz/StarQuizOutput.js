@@ -116,12 +116,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   questionContainer: {
-    flex: 1.5,
+    flex: 2,
   },
   buttons: {
-    flex: 1,
+    flex: 1.5,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 15,
+    // marginBottom: 10,
   },
 });

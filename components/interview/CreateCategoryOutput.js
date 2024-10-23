@@ -2,13 +2,24 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
-import BackToCategories from "../common/BackToCategories";
 import { Ionicons } from "@expo/vector-icons";
 
-const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
+const CreateCategoryOutput = ({
+  setModalVisible,
+  setIsSaved,
+  selectedCategoryQuestions,
+  setSelectedCategoryQuestions,
+  categories,
+  setCategories,
+}) => {
   const [typedText, setTypedText] = useState("");
   const textInputHandler = (enteredText) => {
     setTypedText(enteredText);
+  };
+
+  // check if the input contains at least one word or number
+  const isValidInput = () => {
+    return /\w+/.test(typedText.trim()); // This regex checks for any word character or number
   };
 
   // onPress function
@@ -32,7 +43,7 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
           style={styles.textInput}
           onChangeText={textInputHandler}
           value={typedText}
-          placeholder="Enter a new category title."
+          placeholder="Enter a category title."
           placeholderTextColor="gray"
           keyboardType="default"
         />
@@ -40,19 +51,26 @@ const CreateCategoryOutput = ({ setModalVisible, setIsSaved, setItem }) => {
         {/* {(!typedText.trim()) && (
           <Text style={styles.lowerText}>* Input a category title.</Text>
         )} */}
-        <View style={styles.button}>
+        <View style={styles.buttonContainer}>
           <WideButton
             title="Save"
             color="white"
             size={24}
+            display={!isValidInput()} // Disable if input is invalid
             onPress={() => {
               if (typedText.trim()) {
                 setIsSaved(true);
-                setItem((prevItem) => ({
-                  ...prevItem,
-                  categories: [...prevItem.categories, typedText],
-                }));
+                setCategories((prevCategories) => [
+                  ...prevCategories,
+                  {
+                    categoryName: typedText,
+                    questions: [
+                      { question: "I'm a Test Question. Does it bother you?" },
+                    ],
+                  },
+                ]);
               }
+              console.log(categories);
             }}
           />
         </View>
@@ -82,6 +100,7 @@ const styles = StyleSheet.create({
   },
   upperText: {
     fontSize: 18,
+    fontWeight: "bold",
     marginBottom: 6,
   },
   textInput: {
@@ -98,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "red",
   },
-  button: {
+  buttonContainer: {
     marginVertical: 16,
     marginTop: 24,
   },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { Alert, StyleSheet } from "react-native";
@@ -8,7 +8,7 @@ import JobSearchScreen from "../screens/JobSearchScreen";
 import IconButton from "../components/common/IconButton";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import AppContextProvider from "../store/app-context";
+import AppContextProvider, { AppContext } from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 
@@ -39,7 +39,9 @@ const HearableQuestions = ({ questionText }) => {
         />
       </View>
       <View style={styles.questionTextContainer}>
-        <Text style={styles.questionText}>{questionText}</Text>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <Text style={styles.questionText}>{questionText}</Text>
+        </ScrollView>
       </View>
     </View>
   );
@@ -66,6 +68,10 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "flex-start",
+  },
+  scrollView: {
+    flex: 1,
+    justifyContent: "center",
   },
   questionText: {
     fontSize: 20,

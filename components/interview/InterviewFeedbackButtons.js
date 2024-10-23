@@ -1,23 +1,31 @@
 import { useNavigation } from "expo-router";
 import { useContext, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Platform, Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
-import WideButton from "../common/WideButton";
 import CreateCategoryOutput from "./CreateCategoryOutput";
 import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
 
-const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
+const InterviewFeedbackButtons = ({
+  setCurrentQuestionIndex,
+  selectedCategoryQuestions,
+  setSelectedCategoryQuestions,
+  setQuestionAnswerArray,
+  categories,
+  setCategories,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
-  const { item, setItem } = useContext(AppContext);
 
   let categoryOutputScreen = (
     <CreateCategoryOutput
       setModalVisible={setModalVisible}
       setIsSaved={setIsSaved}
-      setItem={setItem}
+      categories={categories}
+      setCategories={setCategories}
+      // selectedCategoryQuestions={selectedCategoryQuestions}
+      // setSelectedCategoryQuestions={setSelectedCategoryQuestions}
     />
   );
   if (isSaved) {
@@ -41,11 +49,9 @@ const InterviewFeedbackButtons = ({ currentQuestionIndex }) => {
         <TouchableOpacity
           style={styles.tryAgainButton}
           onPress={() => {
+            setCurrentQuestionIndex(0);
+            setQuestionAnswerArray([]);
             navigation.navigate("InterviewSimulator");
-            setItem((prevState) => ({
-              ...prevState,
-              currentQuestionIndex: 0,
-            }));
           }}
         >
           <Text style={styles.tryAgainText}>Try Again</Text>
@@ -70,7 +76,7 @@ export default InterviewFeedbackButtons;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: Platform.OS === "ios" ? 1.6 : 1.4,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 15,

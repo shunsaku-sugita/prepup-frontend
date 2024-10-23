@@ -1,32 +1,47 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import SmallButton from "./SmallButton";
 
-const CategoryCard = ({ category, index }) => {
+const CategoryCard = ({ index, category, categories, setCategories }) => {
   const navigation = useNavigation();
-  const startInterviewHandler = () => {
-    navigation.navigate("InterviewSimulator");
-  };
+  const {
+    setCurrentQuestionIndex,
+    selectedCategoryQuestions,
+    setSelectedCategoryQuestions,
+    setQuestionAnswerArray,
+  } = useContext(AppContext);
 
-  const { item, setItem } = useContext(AppContext);
+  const startInterviewHandler = (index) => {
+    navigation.navigate("InterviewSimulator");
+
+    // reset the current question index to 0
+    setCurrentQuestionIndex(0);
+    // reset the questionAnswerArray
+    setQuestionAnswerArray([]);
+
+    // Directly access the selected category using the index
+    const selectedCategoryObj = categories[index];
+    // Extract the array of question texts
+    const selectedQuestionTexts = selectedCategoryObj.questions.map(
+      (item) => item.question
+    );
+    setSelectedCategoryQuestions(selectedQuestionTexts);
+  };
 
   const deleteHandler = (index) => {
     // Create a new array excluding the item at the given index
-    const updatedCategories = item.categories.filter((_, i) => i !== index);
+    const updatedCategories = categories.filter((_, idx) => idx !== index);
     // Update the state with the new array
-    setItem((prevItem) => ({
-      ...prevItem,
-      categories: updatedCategories,
-    }));
+    setCategories(updatedCategories);
   };
 
   const deleteAlertHandler = (index) => {
     Alert.alert(
-      "Are you sure to delete this category card?",
-      "The questions saved in the category will be deleted.",
+      "Are you sure you want to delete the category?",
+      "Deleting the category will remove it permanently and cannot be undone. Please confirm if you want to proceed.",
       [
         {
           text: "Cancel",
@@ -64,7 +79,7 @@ const CategoryCard = ({ category, index }) => {
           <SmallButton
             title="Start"
             color="white"
-            onPress={startInterviewHandler}
+            onPress={() => startInterviewHandler(index)}
           />
         </View>
       </View>
@@ -81,7 +96,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 8,
     margin: 8,
-    minWidth: 150,
+    minWidth: Platform.OS === "ios" ? 150 : 165,
+    backgroundColor: "white", // Ensure a background color is set
+    // shadow for android
+    elevation: 8,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 4,
+    shadowOpacity: 0.4,
   },
   imageContainer: {
     padding: 0,

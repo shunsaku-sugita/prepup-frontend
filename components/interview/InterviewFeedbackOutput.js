@@ -7,14 +7,29 @@ import { AppContext } from "@/store/app-context";
 import { useContext } from "react";
 
 const InterviewFeedbackOutput = () => {
-  const { item } = useContext(AppContext);
-  const { currentQuestionIndex } = item;
+  const {
+    currentQuestionIndex,
+    setCurrentQuestionIndex,
+    selectedCategoryQuestions,
+    setSelectedCategoryQuestions,
+    setQuestionAnswerArray,
+    categories,
+    setCategories,
+  } = useContext(AppContext);
 
   return (
     <GestureHandlerRootView style={styles.container}>
       <InterviewFeedbackBadge />
       <InterviewFeedbackAccordions />
-      <InterviewFeedbackButtons currentQuestionIndex={currentQuestionIndex} />
+      <InterviewFeedbackButtons
+        currentQuestionIndex={currentQuestionIndex}
+        setCurrentQuestionIndex={setCurrentQuestionIndex}
+        selectedCategoryQuestions={selectedCategoryQuestions}
+        setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+        setQuestionAnswerArray={setQuestionAnswerArray}
+        categories={categories}
+        setCategories={setCategories}
+      />
     </GestureHandlerRootView>
   );
 };

@@ -1,15 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Audio } from "expo-av";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
 import InterviewAnswerScript from "./InterviewAnswerScript";
+import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
   interviewQuestions,
-  setItem,
+  questionText,
+  setCurrentQuestionIndex,
+  questionAnswerArray,
+  setQuestionAnswerArray,
 }) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
@@ -20,6 +30,9 @@ const InterviewControllerIcons = ({
 
   const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(0);
+
+  // const { uriArray, setUriArray } = useContext(AppContext);
+  const [transcription, setTranscription] = useState("Transcribing...");
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
@@ -32,6 +45,7 @@ const InterviewControllerIcons = ({
 
   const startRecording = async () => {
     try {
+      setTranscription("Transcribing...");
       // Ask for permissions to access the microphone
       await Audio.requestPermissionsAsync();
 
@@ -84,6 +98,10 @@ const InterviewControllerIcons = ({
 
         console.log("Recording stopped and stored at:", uri);
         console.log("Recording status after stopping:", status); // Log the status
+
+        // Get and display transcription from audio uri
+        const audioText = await transcribeAudio(uri);
+        setTranscription(audioText);
       } catch (error) {
         console.error("Failed to stop recording", error);
       }
@@ -113,19 +131,33 @@ const InterviewControllerIcons = ({
     }
   };
 
-  const handleNext = () => {
+  const nextHandler = () => {
+    if (recordingUri) {
+      // Clear the recording URI for the next recording
+      setRecordingUri(null);
+    }
+
+    // Save the current question and answer transcription to questionAnswerArray
+    setQuestionAnswerArray((prevArray) => [
+      ...prevArray,
+      { question: questionText, answer: transcription },
+    ]);
+    // Check the updated array
+    console.log("Updated questionAnswerArray: ", [
+      ...questionAnswerArray,
+      { question: questionText, answer: transcription },
+    ]);
+
+    // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
       // If it's the last question, navigate to the feedback screen
       navigation.navigate("InterviewFeedback");
     } else {
       if (currentQuestionIndex < interviewQuestions.length - 1) {
-        setItem((prevState) => ({
-          ...prevState,
-          currentQuestionIndex: prevState.currentQuestionIndex + 1,
-        }));
+        // Increment the current question index
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       }
     }
-    setRecordingUri(null);
   };
 
   const minutes = Math.floor(recordDuration / 60);
@@ -133,7 +165,7 @@ const InterviewControllerIcons = ({
 
   let mainContents = recordingUri ? (
     <>
-      <InterviewAnswerScript />
+      <InterviewAnswerScript transcription={transcription} />
       <View style={styles.retryContainer}>
         <Text style={styles.pressText}>Press to try again!</Text>
         <View style={styles.retryIconContainer}>
@@ -175,7 +207,7 @@ const InterviewControllerIcons = ({
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={
-            recordingUri ? styles.listenButton : styles.listenButtonOpacity
+            recordingUri ? styles.listenButton : styles.listenButtonDisabled
           }
           disabled={recordingUri ? false : true}
           onPress={playSound}
@@ -183,9 +215,17 @@ const InterviewControllerIcons = ({
           <Text style={styles.listenText}>Listen</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={recordingUri ? styles.nextButton : styles.nextButtonOpacity}
-          disabled={recordingUri ? false : true}
-          onPress={handleNext}
+          style={
+            recordingUri && transcription && transcription !== "Transcribing..."
+              ? styles.nextButton
+              : styles.nextButtonDisabled
+          }
+          disabled={
+            recordingUri && transcription && transcription !== "Transcribing..."
+              ? false
+              : true
+          }
+          onPress={nextHandler}
         >
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
@@ -212,7 +252,7 @@ const styles = StyleSheet.create({
     marginBottom: 130,
   },
   mainContainerWithScript: {
-    flex: 5,
+    flex: Platform.OS === "ios" ? 6.6 : 6.4,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 6,
@@ -266,7 +306,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "65%",
   },
-  listenButtonOpacity: {
+  listenButtonDisabled: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
@@ -291,7 +331,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "65%",
   },
-  nextButtonOpacity: {
+  nextButtonDisabled: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "black",

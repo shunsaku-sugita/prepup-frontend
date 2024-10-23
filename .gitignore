@@ -144,3 +144,5 @@ package-lock.json
 #apiConfig
 config/apiConfig.js
 chatGptCred.js
+
+*.swp

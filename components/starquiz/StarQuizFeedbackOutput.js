@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   retryButton: {
-    flex: 1,
+    flex: 0.9,
   },
 });
