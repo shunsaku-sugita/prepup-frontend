@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 const StarQuizFeedbackCard = ({
   value,
   titleText,
-  percentage,
+  // percentage,
   contentText,
 }) => {
   return (
@@ -27,9 +27,9 @@ const StarQuizFeedbackCard = ({
                   {titleText}
                 </AccordionTitleText>
                 <View style={styles.accordionHeaderRightContainer}>
-                  <AccordionTitleText style={styles.accordionTitleText}>
-                    {/* {percentage}% */}
-                  </AccordionTitleText>
+                  {/* <AccordionTitleText style={styles.accordionTitleText}> */}
+                  {/* {percentage}% */}
+                  {/* </AccordionTitleText> */}
                   {isExpanded ? (
                     <Ionicons name="chevron-up" color="black" size={22} />
                   ) : (
