@@ -6,6 +6,7 @@ import ProgressBar from "../common/ProgressBar";
 import { AppContext } from "@/store/app-context";
 import { useContext, useEffect, useState } from "react";
 import { getInterviewCategory } from "../services/api";
+import { analyzeAnswer } from "../services/api";
 
 const InterviewContentsOutput = () => {
   const {
@@ -15,6 +16,8 @@ const InterviewContentsOutput = () => {
     setSelectedCategoryQuestions,
     questionAnswerArray,
     setQuestionAnswerArray,
+    analyzedAnswer,
+    setAnalyzedAnswer,
   } = useContext(AppContext);
 
   const questionText = selectedCategoryQuestions[currentQuestionIndex];
@@ -79,6 +82,8 @@ const InterviewContentsOutput = () => {
           setCurrentQuestionIndex={setCurrentQuestionIndex}
           questionAnswerArray={questionAnswerArray}
           setQuestionAnswerArray={setQuestionAnswerArray}
+          analyzedAnswer={analyzedAnswer}
+          setAnalyzedAnswer={setAnalyzedAnswer}
         />
       </View>
     </View>

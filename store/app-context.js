@@ -9,6 +9,7 @@ const AppContextProvider = ({ children }) => {
   );
   const [categories, setCategories] = useState([]);
   const [questionAnswerArray, setQuestionAnswerArray] = useState([]);
+  const [analyzedAnswer, setAnalyzedAnswer] = useState([]);
 
   const [item, setItem] = useState({
     // userName: "Bill",
@@ -53,6 +54,8 @@ const AppContextProvider = ({ children }) => {
         setQuestionAnswerArray,
         categories,
         setCategories,
+        analyzedAnswer,
+        setAnalyzedAnswer,
       }}
     >
       {children}
