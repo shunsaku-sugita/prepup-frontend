@@ -97,6 +97,7 @@ export const bookmarkJob = async (jobDetails) => {
     const endpoint = `/${PATH_JOBFINDER}/bookmark`;
     const response = await apiClient.post(endpoint, jobDetails);
 
+
     if (response.status === 200) {
       console.log("Job bookmarked successfully:", response.data);
       return response.data;

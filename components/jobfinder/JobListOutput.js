@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Modal, TouchableOpacity, Button, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from '@react-navigation/native';
 import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";
@@ -8,7 +8,7 @@ import JobSearchBar from "./JobSearchBar";
 import Toast from 'react-native-toast-message';
 import JobFilterTags from './JobFilterTags'
 import JobDetailsModal from "./JobDetailsModal"
-import { bookmarkJob, unbookmarkJob, fetchSavedJobs, fetchJobs } from '../services/api'; 
+import { bookmarkJob, unbookmarkJob, fetchSavedJobs, fetchJobs, fetchJobsByKeyword, } from '../services/api'; 
 import JobCard from "./JobCard"; 
 
 
@@ -35,32 +35,32 @@ const jobListOutput = () => {
 
   React.useEffect(() => {
     const getJobs = async () => {
-    const jobsResult = await fetchJobs();
-    // console.log(".......", jobsResult)
-    setJobs(jobsResult);
-    setPage(1);
+      const jobsResult = await fetchJobs();
+      setJobs(jobsResult);
+      setPage(1);
     };
 
     getJobs();
-  }, []);
-
-  React.useEffect(() => {
-    const getSavedJobs = async () => {
-      try {
-        const savedJobsResponse = await fetchSavedJobs();
-        setSavedJobs(savedJobsResponse); // Set saved jobs from backend
-      } catch (error) {
-        console.error("Error fetching saved jobs:", error);
-      }
-    };
-
     getSavedJobs();
   }, []);
+
+  const getSavedJobs = async () => {
+    try {
+      const savedJobsResponse = await fetchSavedJobs();
+      if (Array.isArray(savedJobsResponse)) {
+        setSavedJobs(savedJobsResponse);
+      } else {
+        setSavedJobs([]);
+      }
+    } catch (error) {
+      console.error("Error fetching saved jobs:", error);
+      setSavedJobs([]);
+    }
+  };
 
   // Fetch more jobs when "Load More" is clicked
   const loadMoreJobs = async () => {
     if (isLoading) return; // Prevent multiple requests
-  
     setIsLoading(true);
     try {
       const nextPage = page + 1;
@@ -77,8 +77,42 @@ const jobListOutput = () => {
     }
   };
 
+  useEffect(() => {
+    const loadJobs = async () => {
+      try {
+        const allJobs = await fetchJobs(); // Fetch jobs from the API
+        const saved = await fetchSavedJobs(); // Fetch saved jobs from the database
+
+        const updatedJobs = allJobs.map((job) => {
+          // Check if job is saved by comparing it to saved jobs list
+          const isSaved = saved.some((savedJob) => savedJob.jobId === job.jobId);
+          return { ...job, isSaved }; // Add isSaved flag to job
+        });
+
+        setJobs(updatedJobs); // Set jobs with updated bookmark state
+        setSavedJobs(saved); // Keep the saved jobs in state for reference
+      } catch (error) {
+        console.error('Error loading jobs or saved jobs:', error);
+      }
+    };
+
+    loadJobs(); // Call the function to load jobs when the component mounts
+  }, []);
+
+
   const toggleBookmark = async (job) => {
     const jobId = job.jobId;
+
+    const jobDetails = {
+      jobId: job.jobId,
+      title: job.title,
+      company: job.company,
+      companyInitial: job.companyInitial,
+      description: job.description,
+      createdDate: job.createdDate,
+      url: job.url,
+      isBookmarked: !job.isSaved // Toggle the saved state
+  };
 
     const updatedJobs = jobs.map((item) =>
     item.jobId === jobId ? { ...item, isSaved: !item.isSaved } : item
@@ -88,27 +122,25 @@ const jobListOutput = () => {
 
     try {
       if (job.isSaved) {
-        await unbookmarkJob(jobId); 
+        await unbookmarkJob(jobId);
       } else {
-        await bookmarkJob({ 
-        jobId: job.jobId,
-        title: job.title,
-        company: job.company,
-        companyInitial: job.companyInitial,
-        description: job.description,
-        createdDate: job.createdDate,
-        url: job.url
-      });
-      }
-      const updatedSavedJobs = await fetchSavedJobs();
-      setSavedJobs(updatedSavedJobs);
-    } catch (error) {
-      console.error("Error updating bookmark:", error);
+        await bookmarkJob(jobDetails); // Ensure the jobDetails are correct here
     }
 
-    // Comment for showing the pop up message 
-    // setJobs(updatedJobs);
-    // await AsyncStorage.setItem("jobs", JSON.stringify(updatedJobs)); // Update AsyncStorage
+    await getSavedJobs();
+  } catch (error) {
+    console.error("Error updating bookmark:", error);
+    if (error.response) {
+      console.error("Server responded with:", error.response.data);
+  }
+
+    // Rollback the optimistic UI update on error
+    const rollbackJobs = jobs.map((item) =>
+      item.jobId === jobId ? { ...item, isSaved: job.isSaved } : item
+    );
+    setJobs(rollbackJobs);
+  }
+
 
     // Show toast message based on the bookmark state
     const updatedJob = updatedJobs.find((item) => item.jobId === jobId);if (updatedJob.isSaved) {
@@ -129,30 +161,11 @@ const jobListOutput = () => {
         visibilityTime: 1500,
       });
     }
-
-    setJobs(updatedJobs);
   };
 
   const filteredSavedJobs = savedJobs.filter((job) =>
     job.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-   // Filter saved jobs based on isSaved status
-
-  //  const savedJobs = jobs?.filter((job) => job.isSaved);
-  //  const filteredJobs = jobs?.filter((job) =>
-  //   job.title.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-
-  
-  // const savedJobs = []
-  // const filteredJobs = []
-
-  // filter tags - filtering 
-  // const displayedJobs = activeFilter 
-  //   ? filteredJobs.filter(job => job.type === activeFilter.toLowerCase()) 
-  //   : filteredJobs;
-  const displayedJobs = []
 
   // Handle job press to open modal
   const handleJobPress = (job) => {
@@ -186,6 +199,8 @@ const jobListOutput = () => {
       }} 
     />
 
+ 
+
     {/* Load More Button */}
   <Button 
     title={isLoading ? "Loading..." : "Load More"} 
@@ -216,7 +231,9 @@ const jobListOutput = () => {
       </Modal>
   </View>
   );
+
 };
+
 
 export default jobListOutput;
 
