@@ -12,6 +12,7 @@ import IconButton from "../common/IconButton";
 import VoiceRecordButton from "../interview/VoiceRecordButton";
 import InterviewAnswerScript from "./InterviewAnswerScript";
 import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
+import { analyzeAnswer } from "../services/api";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -20,6 +21,8 @@ const InterviewControllerIcons = ({
   setCurrentQuestionIndex,
   questionAnswerArray,
   setQuestionAnswerArray,
+  analyzedAnswer,
+  setAnalyzedAnswer,
 }) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
@@ -31,7 +34,6 @@ const InterviewControllerIcons = ({
   const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(0);
 
-  // const { uriArray, setUriArray } = useContext(AppContext);
   const [transcription, setTranscription] = useState("Transcribing...");
 
   useEffect(() => {
@@ -131,7 +133,7 @@ const InterviewControllerIcons = ({
     }
   };
 
-  const nextHandler = () => {
+  const nextHandler = async () => {
     if (recordingUri) {
       // Clear the recording URI for the next recording
       setRecordingUri(null);
@@ -143,13 +145,22 @@ const InterviewControllerIcons = ({
       { question: questionText, answer: transcription },
     ]);
     // Check the updated array
-    console.log("Updated questionAnswerArray: ", [
-      ...questionAnswerArray,
-      { question: questionText, answer: transcription },
-    ]);
+    // console.log("Updated questionAnswerArray: ", [
+    //   ...questionAnswerArray,
+    //   { question: questionText, answer: transcription },
+    // ]);
 
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
+      // use analyzeAnswer endpoint to pass questionAnswerArray
+      const analyzedFeedback = await analyzeAnswer([
+        ...questionAnswerArray,
+        { question: questionText, answer: transcription },
+      ]);
+
+      // if it's the last question, pass sets of questions/answers and get feedback
+      setAnalyzedAnswer(analyzedFeedback);
+
       // If it's the last question, navigate to the feedback screen
       navigation.navigate("InterviewFeedback");
     } else {
@@ -158,6 +169,7 @@ const InterviewControllerIcons = ({
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       }
     }
+    console.log(analyzedAnswer);
   };
 
   const minutes = Math.floor(recordDuration / 60);

@@ -9,6 +9,7 @@ import {
   PATH_STATMASTER,
   TYPE_CATEGORY,
   TYPE_GENERATE_QUESTION,
+  TYPE_ANALYZE_ANSWERS,
 } from "../../config/apiConfig";
 import { socket } from "./socket";
 
@@ -210,7 +211,7 @@ export const getInterviewCategory = async () => {
 export const updateProfile = async (data) => {
   try {
     const endpoint = "/" + PATH_PROFILE + "/";
-    const response = apiClient.put(endpoint);
+    const response = await apiClient.put(endpoint);
 
     if (response == 200) {
       return true;
@@ -224,12 +225,14 @@ export const updateProfile = async (data) => {
   }
 };
 
-export const analyzeAnswer = (answers) => {
+export const analyzeAnswer = async (answers) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_ANALYZE_ANSWERS;
-    const response = apiClient.post(endpoint, answers);
+    const response = await apiClient.post(endpoint, { answers });
 
-    if (response == 200) {
+    if (response.status == 200) {
+      console.log("WHAT IS DATA HERE ========> ");
+      console.log(response.data);
       return response.data;
     }
   } catch (error) {
@@ -246,7 +249,7 @@ export const saveInterviewQuestions = (categoryName, questions) => {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
     const response = apiClient.post(endpoint, { categoryName, questions });
 
-    if (response == 200) {
+    if (response.status == 200) {
       return true;
     }
   } catch (error) {

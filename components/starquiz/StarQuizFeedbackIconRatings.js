@@ -51,7 +51,7 @@ const StarQuizFeedbackIconRatings = () => {
   //   setRating(4);
   // } else if (averageRating >= 80 && averageRating < 90) {
   //   setRating(4.5);
-  // } else if (averageRating >= 90 && averageRating < 100) {
+  // } else if (averageRating >= 90 && averageRating <= 100) {
   //   setRating(5);
   // }
 

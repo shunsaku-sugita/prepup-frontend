@@ -15,12 +15,13 @@ const InterviewFeedbackOutput = () => {
     setQuestionAnswerArray,
     categories,
     setCategories,
+    analyzedAnswer,
   } = useContext(AppContext);
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <InterviewFeedbackBadge />
-      <InterviewFeedbackAccordions />
+      <InterviewFeedbackBadge analyzedAnswer={analyzedAnswer} />
+      <InterviewFeedbackAccordions analyzedAnswer={analyzedAnswer} />
       <InterviewFeedbackButtons
         currentQuestionIndex={currentQuestionIndex}
         setCurrentQuestionIndex={setCurrentQuestionIndex}

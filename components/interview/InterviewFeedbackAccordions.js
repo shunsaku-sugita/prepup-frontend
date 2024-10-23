@@ -2,7 +2,12 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import InterviewFeedbackCard from "./InterviewFeedbackCard";
 import { Accordion } from "@/components/ui/accordion";
 
-const InterviewFeedbackAccordions = () => {
+const InterviewFeedbackAccordions = ({ analyzedAnswer }) => {
+  const fluencyScore = analyzedAnswer.scores.speaking;
+  const confidenceScore = analyzedAnswer.scores.confidence;
+  const clarityScore = analyzedAnswer.scores.clarity;
+  const concisenessScore = analyzedAnswer.scores.conciseness;
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -10,25 +15,25 @@ const InterviewFeedbackAccordions = () => {
           <InterviewFeedbackCard
             value="a"
             titleText="Fluency"
-            percentage="80"
+            percentage={fluencyScore}
             contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
           />
           <InterviewFeedbackCard
             value="b"
             titleText="Confidence"
-            percentage="90"
+            percentage={confidenceScore}
             contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
           />
           <InterviewFeedbackCard
             value="c"
             titleText="Clarity"
-            percentage="75"
+            percentage={clarityScore}
             contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
           />
           <InterviewFeedbackCard
             value="d"
-            titleText="Professionalism"
-            percentage="90"
+            titleText="Conciseness"
+            percentage={concisenessScore}
             contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
           />
         </Accordion>
