@@ -11,6 +11,7 @@ const JobSearchBar = ({searchQuery, setSearchQuery}) => {
         placeholder="Search Jobs"
         value={searchQuery}
         onChangeText={setSearchQuery}
+        placeholderTextColor="#4D63B5"
         onFocus={() => {
         }}
       
@@ -18,10 +19,10 @@ const JobSearchBar = ({searchQuery, setSearchQuery}) => {
 
 {searchQuery ? (
         <TouchableOpacity onPress={() => setSearchQuery('')}>
-          <Ionicons name="close" size={24} color="black" style={styles.icon} />
+          <Ionicons name="close" size={20} color="#4D63B5" style={styles.icon} />
         </TouchableOpacity>
       ) : (
-        <Ionicons name="search" size={24} color="black" style={styles.icon} />
+        <Ionicons name="search" size={20} color="#4D63B5" style={styles.icon} />
       )}
     </View>
   );
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: '#4D63B5',
     borderRadius: 8,
     padding: 8,
   
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 10,
     fontSize: 16,
+    color:"#4D63B5"
   },
   icon: {
     paddingLeft: 10,

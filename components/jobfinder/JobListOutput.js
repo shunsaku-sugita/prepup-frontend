@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal, TouchableOpacity, Button } from "react-native";
+import { StyleSheet, Text, View, Modal, TouchableOpacity, Button, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import JobFilterBar from "./JobFilterBar";
@@ -35,7 +35,7 @@ const jobListOutput = () => {
 
   React.useEffect(() => {
     const getJobs = async () => {
-    const jobsResult = await fetchJobs(3);
+    const jobsResult = await fetchJobs();
     // console.log(".......", jobsResult)
     setJobs(jobsResult);
     setPage(1);
@@ -64,16 +64,16 @@ const jobListOutput = () => {
     setIsLoading(true);
     try {
       const nextPage = page + 1;
-      const newJobs = await fetchJobs(nextPage, ""); // Fetch jobs for the next page and set a limit of 5
+      const newJobs = await fetchJobs(nextPage); 
   
       if (newJobs.length > 0) {
-        setJobs(prevJobs => [...prevJobs, ...newJobs]); // Append new jobs to the existing list
-        setPage(nextPage); // Update the current page
+        setJobs(prevJobs => [...prevJobs, ...newJobs]); 
+        setPage(nextPage); 
       }
     } catch (error) {
       console.error('Error loading more jobs:', error);
     } finally {
-      setIsLoading(false); // Ensure loading state is cleared
+      setIsLoading(false); 
     }
   };
 
@@ -162,7 +162,7 @@ const jobListOutput = () => {
 
   return (
 
-    <View >
+    <View style={{ flex: 1 }} >
       {/* JobSearchBar */}
       <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
        {/* JobFilterBar */}
@@ -175,7 +175,8 @@ const jobListOutput = () => {
       // Pass only saved jobs to SavedJobCard
       <SavedJobCard data={filteredSavedJobs} toggleBookmark={toggleBookmark} />
     ) : (
-    <View>
+      
+    <View style={styles.container}>
       <JobFilterLocationItem 
       data={jobs} 
       toggleBookmark={toggleBookmark} 
@@ -191,11 +192,7 @@ const jobListOutput = () => {
     onPress={loadMoreJobs} 
     disabled={isLoading}
   />
-</View>
-
-     
-    
-     
+  </View>
 
     )}
 
@@ -207,7 +204,7 @@ const jobListOutput = () => {
         onRequestClose={() => setModalVisible(false)}
       >
 
-<View style={styles.modalOverlay}> 
+  <View style={styles.modalOverlay}> 
     <View style={styles.innerContainer}>
     <JobDetailsModal
           job={selectedJob}
@@ -216,9 +213,7 @@ const jobListOutput = () => {
         />
     </View>
   </View>
-       
       </Modal>
-
   </View>
   );
 };
@@ -239,6 +234,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20, 
     padding: 20,
     justifyContent: "center",
+  },
+
+  container: {
+    flex:1
   },
 });
 

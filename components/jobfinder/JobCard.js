@@ -39,6 +39,7 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
         />
       </TouchableOpacity>
     </TouchableOpacity>
+    
   );
 };
 
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
    borderColor: 'black',
    alignContent:"center",
    alignItems:"center",
+   margin:0,
   },
 
   subContainer: {
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 64, 
     height: 64,
+  
     
     backgroundColor: "#ccc",
     justifyContent: "center",

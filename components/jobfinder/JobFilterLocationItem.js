@@ -4,7 +4,7 @@ import JobCard from "./JobCard";
 
 const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
   return (
-    <View>
+    <View style={styles.jobList}>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -27,5 +27,11 @@ export default JobFilterLocationItem;
 const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 16,
+  },
+  jobList:{
+    flex: 1, 
+   
+    
+
   },
 });
