@@ -145,11 +145,10 @@ const InterviewControllerIcons = ({
       { question: questionText, answer: transcription },
     ]);
     // Check the updated array
-    console.log("Updated questionAnswerArray: ", [
-      ...questionAnswerArray,
-      { question: questionText, answer: transcription },
-    ]);
-    // console.log(questionAnswerArray);
+    // console.log("Updated questionAnswerArray: ", [
+    //   ...questionAnswerArray,
+    //   { question: questionText, answer: transcription },
+    // ]);
 
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
