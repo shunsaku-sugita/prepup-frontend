@@ -6,6 +6,7 @@ import {
   PATH_INTERVIEW,
   PATH_PROFILE,
   PATH_JOBFINDER,
+  PATH_STATMASTER,
   TYPE_CATEGORY,
   TYPE_GENERATE_QUESTION,
 } from "../../config/apiConfig";
@@ -143,6 +144,7 @@ export const fetchSavedJobs = async () => {
   }
 };
 
+// Interview Simulator APIs
 export const generateQuestionByJobDescription = async (
   adzunaJobId,
   setProgressUpdate
@@ -254,5 +256,22 @@ export const saveInterviewQuestions = (categoryName, questions) => {
     );
 
     return false;
+  }
+};
+
+// STAR Master APIs
+export const getStarMasterQuestion = async () => {
+  try {
+    const endpoint = "/" + PATH_STATMASTER + "/question";
+    const response = await apiClient.get(endpoint);
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch questions");
+    }
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+    throw error;
   }
 };
