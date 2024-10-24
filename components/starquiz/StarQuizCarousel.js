@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import IconButton from "../common/IconButton";
 import * as Speech from "expo-speech";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
 
 const StarQuizCarousel = ({
   situationAnswer,
@@ -22,12 +21,12 @@ const StarQuizCarousel = ({
   resultAnswer,
   setResultAnswer,
 }) => {
-  const [situationWordCount, setSituationWordCount] = useState(0);
-  const [taskWordCount, setTaskWordCount] = useState(0);
-  const [actionWordCount, setActionWordCount] = useState(0);
-  const [resultWordCount, setResultWordCount] = useState(0);
+  const [situationCountNumber, setSituationCountNumber] = useState(0);
+  const [taskCountNumber, setTaskCountNumber] = useState(0);
+  const [actionCountNumber, setActionCountNumber] = useState(0);
+  const [resultCountNumber, setResultCountNumber] = useState(0);
 
-  const [isWordLimit, setIsWordLimit] = useState(false);
+  const [isCharacterLimit, setIsCharacterLimit] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -48,22 +47,37 @@ const StarQuizCarousel = ({
     }
   };
 
-  const textChangeHandler = (text, setAnswer, currentAnswer, setWordCount) => {
+  const textChangeHandler = (
+    text,
+    setAnswer,
+    currentAnswer,
+    setCountNumber
+  ) => {
+    // don't allow users to type over 100 characters
+    if (text.length > 500) {
+      if (text.length > currentAnswer.length) {
+        return;
+      }
+    }
+    // update the character count, TextInput field and limit count numbers
+    setCountNumber(text.length);
+    setAnswer(text);
+    setIsCharacterLimit(text.length === 500);
+
     // Split the text into words and filter out any empty strings
     // "split(/\s+/)" splits the string into an array of words, ignoring successive spaces. "/\s+/" is a regular expression that matches one or more whitespace characters (spaces, tabs, etc.).
-    const words = text.trim().split(/\s+/).filter(Boolean);
-
-    // Update the answer and word count if within limit
-    if (words.length <= 150 || text.length < currentAnswer.length) {
-      setIsWordLimit(false);
-      setWordCount(words.length);
-      setAnswer(text); // update any TextInput fields
-    }
-    if (words.length === 150) {
-      setIsWordLimit(true);
-      // Only allow deletions, and don't allow additions
-      setAnswer(text);
-    }
+    // const words = text.trim().split(/\s+/).filter(Boolean);
+    // // Update the answer and word count if within limit
+    // if (words.length <= 100 || text.length < currentAnswer.length) {
+    //   setIsCharacterLimit(false);
+    //   setCountNumber(text.length);
+    //   setAnswer(words); // update any TextInput fields
+    // }
+    // if (words.length === 100) {
+    //   setIsCharacterLimit(true);
+    //   // Only allow deletions, and don't allow additions
+    //   setAnswer(words);
+    // }
   };
 
   return (
@@ -92,17 +106,18 @@ const StarQuizCarousel = ({
               placeholderTextColor="#565656"
               keyboardType="default"
               value={situationAnswer}
+              maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setSituationAnswer,
                   situationAnswer,
-                  setSituationWordCount
+                  setSituationCountNumber
                 )
               }
             />
           </View>
-          <View style={styles.resetWordCountContainer}>
+          <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
               disabled={!situationAnswer && true}
@@ -132,19 +147,15 @@ const StarQuizCarousel = ({
                 Reset
               </Text>
             </TouchableOpacity>
-            <Text style={isWordLimit && styles.wordCountLimit}>
-              {situationWordCount}/150
+            <Text style={isCharacterLimit && styles.wordCountLimit}>
+              {situationCountNumber}/500
             </Text>
           </View>
           <View style={styles.cardFooterContainer}>
             <View></View>
             <View style={styles.swipeContainer}>
               <Text style={styles.swipeText}>Swipe right</Text>
-              <Ionicons
-                name="arrow-forward"
-                size={16}
-                style={styles.arrorIcon}
-              />
+              <IconButton icon="arrow-forward" size={16} />
             </View>
           </View>
         </View>
@@ -167,17 +178,18 @@ const StarQuizCarousel = ({
               placeholderTextColor="#565656"
               keyboardType="default"
               value={taskAnswer}
+              maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setTaskAnswer,
                   taskAnswer,
-                  setTaskWordCount
+                  setTaskCountNumber
                 )
               }
             />
           </View>
-          <View style={styles.resetWordCountContainer}>
+          <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
               onPress={() => {
@@ -204,22 +216,18 @@ const StarQuizCarousel = ({
                 Reset
               </Text>
             </TouchableOpacity>
-            <Text style={isWordLimit && styles.wordCountLimit}>
-              {taskWordCount}/150
+            <Text style={isCharacterLimit && styles.wordCountLimit}>
+              {taskCountNumber}/500
             </Text>
           </View>
           <View style={styles.cardFooterContainer}>
             <View style={styles.swipeContainer}>
-              <Ionicons name="arrow-back" size={16} style={styles.arrorIcon} />
+              <IconButton icon="arrow-back" size={16} />
               <Text style={styles.swipeText}>Swipe left</Text>
             </View>
             <View style={styles.swipeContainer}>
               <Text style={styles.swipeText}>Swipe right</Text>
-              <Ionicons
-                name="arrow-forward"
-                size={16}
-                style={styles.arrorIcon}
-              />
+              <IconButton icon="arrow-forward" size={16} />
             </View>
           </View>
         </View>
@@ -242,17 +250,18 @@ const StarQuizCarousel = ({
               placeholderTextColor="#565656"
               keyboardType="default"
               value={actionAnswer}
+              maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setActionAnswer,
                   actionAnswer,
-                  setActionWordCount
+                  setActionCountNumber
                 )
               }
             />
           </View>
-          <View style={styles.resetWordCountContainer}>
+          <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
               onPress={() => {
@@ -281,22 +290,18 @@ const StarQuizCarousel = ({
                 Reset
               </Text>
             </TouchableOpacity>
-            <Text style={isWordLimit && styles.wordCountLimit}>
-              {actionWordCount}/150
+            <Text style={isCharacterLimit && styles.wordCountLimit}>
+              {actionCountNumber}/500
             </Text>
           </View>
           <View style={styles.cardFooterContainer}>
             <View style={styles.swipeContainer}>
-              <Ionicons name="arrow-back" size={16} style={styles.arrorIcon} />
+              <IconButton icon="arrow-back" size={16} />
               <Text style={styles.swipeText}>Swipe left</Text>
             </View>
             <View style={styles.swipeContainer}>
               <Text style={styles.swipeText}>Swipe right</Text>
-              <Ionicons
-                name="arrow-forward"
-                size={16}
-                style={styles.arrorIcon}
-              />
+              <IconButton icon="arrow-forward" size={16} />
             </View>
           </View>
         </View>
@@ -319,17 +324,18 @@ const StarQuizCarousel = ({
               placeholderTextColor="#565656"
               keyboardType="default"
               value={resultAnswer}
+              maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setResultAnswer,
                   resultAnswer,
-                  setResultWordCount
+                  setResultCountNumber
                 )
               }
             />
           </View>
-          <View style={styles.resetWordCountContainer}>
+          <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
               onPress={() => {
@@ -358,13 +364,13 @@ const StarQuizCarousel = ({
                 Reset
               </Text>
             </TouchableOpacity>
-            <Text style={isWordLimit && styles.wordCountLimit}>
-              {resultWordCount}/150
+            <Text style={isCharacterLimit && styles.wordCountLimit}>
+              {resultCountNumber}/500
             </Text>
           </View>
           <View style={styles.cardFooterContainer}>
             <View style={styles.swipeContainer}>
-              <Ionicons name="arrow-back" size={16} style={styles.arrorIcon} />
+              <IconButton icon="arrow-back" size={16} />
               <Text style={styles.swipeText}>Swipe left</Text>
             </View>
             <View></View>
@@ -379,7 +385,7 @@ export default StarQuizCarousel;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 7,
+    flex: 6,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -387,12 +393,15 @@ const styles = StyleSheet.create({
     marginBottom: 140,
     width: "90%",
   },
-  carouselContainer: {},
+  carouselContainer: {
+    // flex: 1,
+    // height: 500,
+  },
   cardContainer: {
     flex: 1,
     backgroundColor: "#ddd",
     marginHorizontal: 7, // horizontal gap between cards
-    width: 315,
+    width: 310,
     paddingVertical: 18,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -406,19 +415,15 @@ const styles = StyleSheet.create({
   cardFooterContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: 4,
   },
   swipeContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "flex-start",
-    gap: 2,
+    alignItems: "center",
   },
   swipeText: {
     fontSize: 16,
-  },
-  arrorIcon: {
-    paddingTop: 2,
   },
   textInputContainer: {
     backgroundColor: "white",
@@ -426,7 +431,7 @@ const styles = StyleSheet.create({
     padding: 10,
     height: "75%",
   },
-  resetWordCountContainer: {
+  resetCountNumberContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",

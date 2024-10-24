@@ -1,18 +1,29 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import HearableQuestions from "../common/HearableQuestions";
-import { AppContext } from "@/store/app-context";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
+import { getStarMasterQuestion } from "../services/api";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
+  const [starQuestionText, setStarQuestionText] = useState("");
 
-  // "item" needs to be replaced with real data fetched from Backend
-  const { item, setItem } = useContext(AppContext);
-  const { currentQuestionIndex, interviewQuestions } = item;
-  let questionText = interviewQuestions[currentQuestionIndex];
+  const fetchStarQuestion = async () => {
+    try {
+      const starQuestionData = await getStarMasterQuestion();
+      const starRandomQuestion = starQuestionData.question;
+      setStarQuestionText(starRandomQuestion);
+    } catch (error) {
+      console.error("Error fetching STAR question:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch the random question initially
+    fetchStarQuestion();
+  }, []);
 
   // Separate states for four input fields to pass as props (pass them to <StarQuizCarousel />)
   const [situationAnswer, setSituationAnswer] = useState("");
@@ -26,13 +37,9 @@ const StarQuizOutput = () => {
   };
 
   const skipOrDoneButtonHandler = () => {
-    const randomIndex = Math.floor(Math.random() * 5);
-
     if (!situationAnswer && !taskAnswer && !actionAnswer && !resultAnswer) {
-      setItem((prevState) => ({
-        ...prevState,
-        currentQuestionIndex: randomIndex,
-      }));
+      // fetch the random question whenever press the skip button
+      fetchStarQuestion();
     } else {
       Alert.alert(
         "Submit and get a feedback?",
@@ -61,7 +68,7 @@ const StarQuizOutput = () => {
   return (
     <View style={styles.container}>
       <View style={styles.questionContainer}>
-        <HearableQuestions questionText={questionText} />
+        <HearableQuestions questionText={starQuestionText} />
       </View>
       <StarQuizCarousel
         situationAnswer={situationAnswer}
