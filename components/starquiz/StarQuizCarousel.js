@@ -12,14 +12,17 @@ import * as Speech from "expo-speech";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const StarQuizCarousel = ({
-  situationAnswer,
+  situationAnswerRef,
   setSituationAnswer,
-  taskAnswer,
+  taskAnswerRef,
   setTaskAnswer,
-  actionAnswer,
+  actionAnswerRef,
   setActionAnswer,
-  resultAnswer,
+  resultAnswerRef,
   setResultAnswer,
+  answers,
+  setAnswers,
+  handleBlur,
 }) => {
   const [situationCountNumber, setSituationCountNumber] = useState(0);
   const [taskCountNumber, setTaskCountNumber] = useState(0);
@@ -50,8 +53,9 @@ const StarQuizCarousel = ({
   const textChangeHandler = (
     text,
     setAnswer,
-    currentAnswer,
-    setCountNumber
+    ref,
+    setCountNumber,
+    answerKey
   ) => {
     // don't allow users to type over 100 characters
     if (text.length > 500) {
@@ -59,10 +63,20 @@ const StarQuizCarousel = ({
         return;
       }
     }
+
+    // update the reference with the new value
+    ref.current = text;
+
     // update the character count, TextInput field and limit count numbers
     setCountNumber(text.length);
     setAnswer(text);
     setIsCharacterLimit(text.length === 500);
+
+    // update the answers in the state
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [answerKey]: text, // update the specific field
+    }));
 
     // Split the text into words and filter out any empty strings
     // "split(/\s+/)" splits the string into an array of words, ignoring successive spaces. "/\s+/" is a regular expression that matches one or more whitespace characters (spaces, tabs, etc.).
@@ -92,10 +106,10 @@ const StarQuizCarousel = ({
             <View>
               <IconButton
                 icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={situationAnswer ? "black" : "#aaa"}
+                color={situationAnswerRef.current ? "black" : "#aaa"}
                 size={20}
-                display={!situationAnswer && true}
-                onPress={() => speakHandler(situationAnswer)}
+                display={!situationAnswerRef.current && true}
+                onPress={() => speakHandler(situationAnswerRef.current)}
               />
             </View>
           </View>
@@ -105,22 +119,24 @@ const StarQuizCarousel = ({
               placeholder="Write your answer here."
               placeholderTextColor="#565656"
               keyboardType="default"
-              value={situationAnswer}
+              value={answers.situation}
               maxLength={500}
-              onChangeText={(text) =>
+              onChangeText={(text) => {
                 textChangeHandler(
                   text,
                   setSituationAnswer,
-                  situationAnswer,
-                  setSituationCountNumber
-                )
-              }
+                  situationAnswerRef,
+                  setSituationCountNumber,
+                  "situation"
+                );
+              }}
+              onBlur={() => handleBlur("situation")}
             />
           </View>
           <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
-              disabled={!situationAnswer && true}
+              disabled={!situationAnswerRef.current && true}
               onPress={() => {
                 Alert.alert(
                   "Reset the Situation text field?",
@@ -132,7 +148,15 @@ const StarQuizCarousel = ({
                     {
                       text: "Confirm",
                       onPress: () => {
+                        // clear the answer both in state and the ref
                         setSituationAnswer("");
+                        situationAnswerRef.current = "";
+
+                        // update the answers object
+                        setAnswers((prevAnswers) => ({
+                          ...prevAnswers,
+                          situation: "", // Reset the specific field
+                        }));
                       },
                     },
                   ]
@@ -141,7 +165,9 @@ const StarQuizCarousel = ({
             >
               <Text
                 style={
-                  situationAnswer ? styles.resetText : styles.resetTextDiabled
+                  situationAnswerRef
+                    ? styles.resetText
+                    : styles.resetTextDiabled
                 }
               >
                 Reset
@@ -165,10 +191,10 @@ const StarQuizCarousel = ({
             <Text style={styles.title}>Task:</Text>
             <IconButton
               icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-              color={taskAnswer ? "black" : "#aaa"}
+              color={taskAnswerRef.current ? "black" : "#aaa"}
               size={20}
-              display={!taskAnswer && true}
-              onPress={() => speakHandler(taskAnswer)}
+              display={!taskAnswerRef.current && true}
+              onPress={() => speakHandler(taskAnswerRef.current)}
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -177,16 +203,18 @@ const StarQuizCarousel = ({
               placeholder="Write your answer here."
               placeholderTextColor="#565656"
               keyboardType="default"
-              value={taskAnswer}
+              value={answers.task}
               maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setTaskAnswer,
-                  taskAnswer,
-                  setTaskCountNumber
+                  taskAnswerRef,
+                  setTaskCountNumber,
+                  "task"
                 )
               }
+              onBlur={() => handleBlur("task")}
             />
           </View>
           <View style={styles.resetCountNumberContainer}>
@@ -203,7 +231,15 @@ const StarQuizCarousel = ({
                     {
                       text: "Confirm",
                       onPress: () => {
+                        // clear the answer both in state and the ref
                         setTaskAnswer("");
+                        taskAnswerRef.current = "";
+
+                        // update the answers object
+                        setAnswers((prevAnswers) => ({
+                          ...prevAnswers,
+                          task: "",
+                        }));
                       },
                     },
                   ]
@@ -211,7 +247,11 @@ const StarQuizCarousel = ({
               }}
             >
               <Text
-                style={taskAnswer ? styles.resetText : styles.resetTextDiabled}
+                style={
+                  taskAnswerRef.current
+                    ? styles.resetText
+                    : styles.resetTextDiabled
+                }
               >
                 Reset
               </Text>
@@ -237,10 +277,10 @@ const StarQuizCarousel = ({
             <Text style={styles.title}>Action:</Text>
             <IconButton
               icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-              color={actionAnswer ? "black" : "#aaa"}
+              color={actionAnswerRef.current ? "black" : "#aaa"}
               size={20}
-              display={!actionAnswer && true}
-              onPress={() => speakHandler(actionAnswer)}
+              display={!actionAnswerRef.current && true}
+              onPress={() => speakHandler(actionAnswerRef.current)}
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -249,16 +289,18 @@ const StarQuizCarousel = ({
               placeholder="Write your answer here."
               placeholderTextColor="#565656"
               keyboardType="default"
-              value={actionAnswer}
+              value={answers.action}
               maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setActionAnswer,
-                  actionAnswer,
-                  setActionCountNumber
+                  actionAnswerRef,
+                  setActionCountNumber,
+                  "action"
                 )
               }
+              onBlur={() => handleBlur("action")}
             />
           </View>
           <View style={styles.resetCountNumberContainer}>
@@ -275,7 +317,15 @@ const StarQuizCarousel = ({
                     {
                       text: "Confirm",
                       onPress: () => {
+                        // clear the answer both in state and the ref
                         setActionAnswer("");
+                        actionAnswerRef.current = "";
+
+                        // update the answers object
+                        setAnswers((prevAnswers) => ({
+                          ...prevAnswers,
+                          action: "",
+                        }));
                       },
                     },
                   ]
@@ -284,7 +334,9 @@ const StarQuizCarousel = ({
             >
               <Text
                 style={
-                  actionAnswer ? styles.resetText : styles.resetTextDiabled
+                  actionAnswerRef.current
+                    ? styles.resetText
+                    : styles.resetTextDiabled
                 }
               >
                 Reset
@@ -311,10 +363,10 @@ const StarQuizCarousel = ({
             <Text style={styles.title}>Result:</Text>
             <IconButton
               icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-              color={resultAnswer ? "black" : "#aaa"}
+              color={resultAnswerRef.current ? "black" : "#aaa"}
               size={20}
-              display={!resultAnswer && true}
-              onPress={() => speakHandler(resultAnswer)}
+              display={!resultAnswerRef.current && true}
+              onPress={() => speakHandler(resultAnswerRef.current)}
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -323,16 +375,18 @@ const StarQuizCarousel = ({
               placeholder="Write your answer here."
               placeholderTextColor="#565656"
               keyboardType="default"
-              value={resultAnswer}
+              value={answers.result}
               maxLength={500}
               onChangeText={(text) =>
                 textChangeHandler(
                   text,
                   setResultAnswer,
-                  resultAnswer,
-                  setResultCountNumber
+                  resultAnswerRef,
+                  setResultCountNumber,
+                  "result"
                 )
               }
+              onBlur={() => handleBlur("result")}
             />
           </View>
           <View style={styles.resetCountNumberContainer}>
@@ -349,7 +403,15 @@ const StarQuizCarousel = ({
                     {
                       text: "Confirm",
                       onPress: () => {
+                        // clear the answer both in state and the ref
                         setResultAnswer("");
+                        resultAnswerRef.current = "";
+
+                        // update the answers object
+                        setAnswers((prevAnswers) => ({
+                          ...prevAnswers,
+                          result: "",
+                        }));
                       },
                     },
                   ]
@@ -358,7 +420,9 @@ const StarQuizCarousel = ({
             >
               <Text
                 style={
-                  resultAnswer ? styles.resetText : styles.resetTextDiabled
+                  resultAnswerRef.current
+                    ? styles.resetText
+                    : styles.resetTextDiabled
                 }
               >
                 Reset

@@ -11,6 +11,17 @@ const AppContextProvider = ({ children }) => {
   const [questionAnswerArray, setQuestionAnswerArray] = useState([]);
   const [analyzedAnswer, setAnalyzedAnswer] = useState([]);
 
+  const [situationAnswer, setSituationAnswer] = useState("");
+  const [taskAnswer, setTaskAnswer] = useState("");
+  const [actionAnswer, setActionAnswer] = useState("");
+  const [resultAnswer, setResultAnswer] = useState("");
+  const [answers, setAnswers] = useState({
+    situation: "",
+    task: "",
+    action: "",
+    result: "",
+  });
+
   // const [item, setItem] = useState({
   //   // userName: "Bill",
   //   interviewQuestions: [
@@ -54,6 +65,16 @@ const AppContextProvider = ({ children }) => {
         setCategories,
         analyzedAnswer,
         setAnalyzedAnswer,
+        situationAnswer,
+        setSituationAnswer,
+        taskAnswer,
+        setTaskAnswer,
+        actionAnswer,
+        setActionAnswer,
+        resultAnswer,
+        setResultAnswer,
+        answers,
+        setAnswers,
       }}
     >
       {children}
