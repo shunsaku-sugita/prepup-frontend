@@ -274,7 +274,31 @@ export const getStarMasterQuestion = async () => {
       throw new Error("Failed to fetch questions");
     }
   } catch (error) {
-    console.error("Error fetching questions:", error);
-    throw error;
+    console.error(
+      "Error while fetching a question: ",
+      error.response ? error.response.data : error.message
+    );
+    return undefined;
   }
 };
+
+export const anayzeStarMasterAnsewers = async (question, answers) => {
+  try {
+    const endpoint = "/" + PATH_STATMASTER + "/analyze";
+    const response = await apiClient.post(endpoint, { question, answers });
+
+    if (response.status === 200) {
+      console.log("WHAT IS DATA HERE ========> ");
+      console.log(response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to analyze answers");
+    }
+  } catch (error) {
+    console.error(
+      "Error while analyzing answers: ",
+      error.response ? error.response.data : error.message
+    );
+    return undefined;
+  }
+}
