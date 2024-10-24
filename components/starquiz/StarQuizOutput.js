@@ -1,14 +1,41 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import HearableQuestions from "../common/HearableQuestions";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import { getStarMasterQuestion } from "../services/api";
+import { AppContext } from "@/store/app-context";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
   const [starQuestionText, setStarQuestionText] = useState("");
+
+  // useRef to prevent re-renders during typing
+  const situationAnswerRef = useRef("");
+  const taskAnswerRef = useRef("");
+  const actionAnswerRef = useRef("");
+  const resultAnswerRef = useRef("");
+
+  // Separate states for four input fields, and combined answers state
+  const {
+    situationAnswer,
+    setSituationAnswer,
+    taskAnswer,
+    setTaskAnswer,
+    actionAnswer,
+    setActionAnswer,
+    resultAnswer,
+    setResultAnswer,
+    answers,
+    setAnswers,
+  } = useContext(AppContext);
 
   const fetchStarQuestion = async () => {
     try {
@@ -25,16 +52,35 @@ const StarQuizOutput = () => {
     fetchStarQuestion();
   }, []);
 
-  // Separate states for four input fields to pass as props (pass them to <StarQuizCarousel />)
-  const [situationAnswer, setSituationAnswer] = useState("");
-  const [taskAnswer, setTaskAnswer] = useState("");
-  const [actionAnswer, setActionAnswer] = useState("");
-  const [resultAnswer, setResultAnswer] = useState("");
-
-  const [answersArray, setAnswersArray] = useState([]);
-  const saveAnswersHandler = () => {
-    setAnswersArray([situationAnswer, taskAnswer, actionAnswer, resultAnswer]);
+  // the state is only updated once the input field loses focus (onBlur), avoiding re-renders on every keystroke
+  const handleBlur = (field) => {
+    switch (field) {
+      case "situation":
+        setSituationAnswer(situationAnswerRef.current);
+        break;
+      case "task":
+        setTaskAnswer(taskAnswerRef.current);
+        break;
+      case "action":
+        setActionAnswer(actionAnswerRef.current);
+        break;
+      case "result":
+        setResultAnswer(resultAnswerRef.current);
+        break;
+      default:
+        break;
+    }
   };
+
+  const saveAnswersHandler = useCallback(() => {
+    const newAnswersArray = [
+      situationAnswer,
+      taskAnswer,
+      actionAnswer,
+      resultAnswer,
+    ];
+    console.log("Updated Answers Array:", newAnswersArray);
+  }, [situationAnswer, taskAnswer, actionAnswer, resultAnswer]);
 
   const skipOrDoneButtonHandler = () => {
     if (!situationAnswer && !taskAnswer && !actionAnswer && !resultAnswer) {
@@ -61,7 +107,6 @@ const StarQuizOutput = () => {
           },
         ]
       );
-      console.log(answersArray);
     }
   };
 
@@ -71,14 +116,17 @@ const StarQuizOutput = () => {
         <HearableQuestions questionText={starQuestionText} />
       </View>
       <StarQuizCarousel
-        situationAnswer={situationAnswer}
+        situationAnswerRef={situationAnswerRef}
         setSituationAnswer={setSituationAnswer}
-        taskAnswer={taskAnswer}
+        taskAnswerRef={taskAnswerRef}
         setTaskAnswer={setTaskAnswer}
-        actionAnswer={actionAnswer}
+        actionAnswerRef={actionAnswerRef}
         setActionAnswer={setActionAnswer}
-        resultAnswer={resultAnswer}
+        resultAnswerRef={resultAnswerRef}
         setResultAnswer={setResultAnswer}
+        answers={answers}
+        setAnswers={setAnswers}
+        handleBlur={handleBlur}
       />
       <View style={styles.buttons}>
         <WideButton
@@ -138,6 +186,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     rowGap: 15,
-    // marginBottom: 10,
   },
 });

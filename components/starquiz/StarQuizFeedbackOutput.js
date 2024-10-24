@@ -1,11 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import StarQuizFeedbackIconRatings from "./StarQuizFeedbackIconRatings";
 import StarQuizFeedbackAccordions from "./StarQuizFeedbackAccordions";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
+import { AppContext } from "@/store/app-context";
 
 const StarQuizFeedbackOutput = () => {
+  const {
+    setSituationAnswer,
+    setTaskAnswer,
+    setActionAnswer,
+    setResultAnswer,
+    setAnswers,
+  } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (
@@ -16,7 +24,20 @@ const StarQuizFeedbackOutput = () => {
         <WideButton
           title="Try again"
           color="white"
-          onPress={() => navigation.navigate("StarQuiz")}
+          onPress={() => {
+            setSituationAnswer("");
+            setTaskAnswer("");
+            setActionAnswer("");
+            setResultAnswer("");
+            setAnswers((prevAnswers) => ({
+              ...prevAnswers,
+              situation: "",
+              task: "",
+              action: "",
+              result: "",
+            }));
+            navigation.navigate("StarQuiz");
+          }}
         />
       </View>
     </View>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
+import LoadingOverlay from "./LoadingOverlay";
 
 const HearableQuestions = ({ questionText }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -20,30 +21,34 @@ const HearableQuestions = ({ questionText }) => {
       Speech.stop();
       setIsPlaying(false); // Reset the state to not playing
     }
-
-    // Can switch the question text
-    // setItem((prevItem) => ({
-    //   ...prevItem,
-    //   currentQuestionIndex: prevItem.currentQuestionIndex === 0 ? 1 : 0,
-    // }));
   };
 
+  // let questionContent = questionText ? (
+  //   <LoadingOverlay />
+  // ) : ();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.questionIconContainer}>
-        <IconButton
-          icon={isPlaying ? "stop-circle-outline" : "play-circle"}
-          color="black"
-          size={45}
-          onPress={speakHandler}
-        />
-      </View>
-      <View style={styles.questionTextContainer}>
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <Text style={styles.questionText}>{questionText}</Text>
-        </ScrollView>
-      </View>
-    </View>
+    <>
+      {questionText ? (
+        <View style={styles.container}>
+          <View style={styles.questionIconContainer}>
+            <IconButton
+              icon={isPlaying ? "stop-circle-outline" : "play-circle"}
+              color="black"
+              size={45}
+              onPress={speakHandler}
+            />
+          </View>
+          <View style={styles.questionTextContainer}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              <Text style={styles.questionText}>{questionText}</Text>
+            </ScrollView>
+          </View>
+        </View>
+      ) : (
+        <LoadingOverlay />
+      )}
+    </>
   );
 };
 
