@@ -61,7 +61,7 @@ const StarQuizOutput = () => {
       actionAnswerRef.current = "";
       resultAnswerRef.current = "";
 
-      // scroll to the leftmost (start) position
+      // always scroll to the leftmost (start) position by default
       if (scrollViewRef.current) {
         scrollViewRef.current.scrollTo({ x: 0, animated: true });
       }
@@ -110,7 +110,7 @@ const StarQuizOutput = () => {
         structuredData.answers
       );
       if (starMasterFeedback) {
-        console.log("Received Feedback: ", starMasterFeedback);
+        // console.log("Received Feedback: ", starMasterFeedback);
         // navigate to the feedback screen, passing the feedback as a parameter
         navigation.navigate("StarQuizFeedback", { starMasterFeedback });
       }

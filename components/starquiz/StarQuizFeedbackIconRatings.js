@@ -7,12 +7,7 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
   const [ratingStarNumber, setRatingStarNumber] = useState(0);
   const [ratingPhrase, setRatingPhrase] = useState("");
 
-  const ratingPhrases = [
-    "Keep Trying!",
-    "Nice Work!",
-    "Well Done!",
-    "Excellent!",
-  ];
+  const ratingPhrases = ["Keep Trying!", "Well Done!", "Impressive Work!"];
 
   // feedback average score
   const averageScore = starMasterFeedback.score;
@@ -47,15 +42,14 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
     return;
   };
 
+  // 0-59%: Keep Trying / 60-89%: Well done / 90-100%: Impressive work
   const selectPrase = () => {
-    if (ratingStarNumber <= 2) {
+    if (ratingStarNumber <= 3) {
       setRatingPhrase(ratingPhrases[0]);
-    } else if (ratingStarNumber === 2.5 || ratingStarNumber === 3) {
+    } else if (ratingStarNumber >= 3.5 && ratingStarNumber <= 4.5) {
       setRatingPhrase(ratingPhrases[1]);
-    } else if (ratingStarNumber === 3.5 || ratingStarNumber === 4) {
+    } else if (ratingStarNumber === 5) {
       setRatingPhrase(ratingPhrases[2]);
-    } else if (ratingStarNumber === 4.5 || ratingStarNumber === 5) {
-      setRatingPhrase(ratingPhrases[3]);
     }
     return;
   };
