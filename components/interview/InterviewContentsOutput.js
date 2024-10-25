@@ -19,6 +19,7 @@ const InterviewContentsOutput = () => {
 
   const questionText = selectedCategoryQuestions[currentQuestionIndex];
 
+
   return (
     <View style={styles.container}>
       <ProgressBar

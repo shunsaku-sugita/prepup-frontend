@@ -1,17 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
 import { Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
 import { generateQuestionByJobDescription } from "../services/api";
 import { socket } from "../services/socket";
+import { AppContext } from "@/store/app-context";
 
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [webViewVisible, setWebViewVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progressUpdate, setProgressUpdate] = useState(null);
   const [trackingId, setTrackingId] = useState(null); // NEW state for tracking ID
+  const { setSelectedCategoryQuestions } = useContext(AppContext);
   console.log("Job object received:", job);
 
   if (!job) {
@@ -52,7 +54,6 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         position: 'top',
         visibilityTime: 2000,
       });
-    } finally {
       setLoading(false); // Hide loading indicator after the request
     }
   };
@@ -74,8 +75,11 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         // Update the progress state with the latest data
         setProgressUpdate(data);
 
+
         // Once the job status is completed, navigate to the InterviewSimulator screen
-        if (data.status === "Job processing complete!") {
+        if (data.status === "Job processing complete!" && data.data) {
+            setLoading(false);
+            setSelectedCategoryQuestions(data.data);
           setModalVisible(false); // Close the modal
           navigation.navigate("InterviewSimulator", {
             questions: data.data, // Pass the questions received from the server
@@ -90,7 +94,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         socket.off(trackingId);
       }
     };
-  }, [trackingId, job.adzunaJobId]);
+  }, [trackingId, job, setProgressUpdate, setSelectedCategoryQuestions]);
 
   return (
     <View style={styles.container}>

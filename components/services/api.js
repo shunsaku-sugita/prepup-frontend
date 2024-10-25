@@ -146,86 +146,108 @@ export const fetchSavedJobs = async () => {
   }
 };
 
-// Interview Simulator APIs
-export const generateQuestionByJobDescription = async (
-  adzunaJobId,
-  setProgressUpdate
-) => {
+// Interview Simulator APIs(original)
+// export const generateQuestionByJobDescription = async (
+//   adzunaJobId,
+//   setProgressUpdate
+// ) => {
+//   try {
+//     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_GENERATE_QUESTION;
+//     const data = { adzunaJobId: adzunaJobId, categoryName: "test" }; // TODO : REMOVE CATEGORY NAME FROM HERE - Khushal @ 18th Oct
+
+//     apiClient.post(endpoint, data).then((response) => {
+//       if (response.status == 200) {
+//         const progressTrackingId = response.data.trackingId;
+
+//         socket.on("connect", () => {
+//           console.log("Connected to Socket.IO server");
+//         });
+//         socket.emit("job-status", progressTrackingId);
+
+//         socket.on(progressTrackingId, (data) => {
+//           console.log(`Job Status Update for ${jobId}:`, data);
+//           setProgressUpdate(data);
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     console.error(
+//       "Error Generating Questions : ",
+//       error.response ? error.response.data : error.message
+//     );
+
+//     socket.on("disconnect", () => {
+//       console.log("Disconnected from Socket.IO server");
+//     });
+//   }
+// };
+
+
+
+// THIS WORKS
+export const generateQuestionByJobDescription = async (adzunaJobId, setProgressUpdate) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_GENERATE_QUESTION;
-    const data = { adzunaJobId: adzunaJobId, categoryName: "test" }; // TODO : REMOVE CATEGORY NAME FROM HERE - Khushal @ 18th Oct
+    const data = { adzunaJobId: adzunaJobId, categoryName: "test" }; // Sending Adzuna Job ID and category
 
-    apiClient.post(endpoint, data).then((response) => {
-      if (response.status == 200) {
-        const progressTrackingId = response.data.trackingId;
+    // Log data for confirmation
+    console.log("Data being sent to API:", data);
 
-        socket.on("connect", () => {
-          console.log("Connected to Socket.IO server");
-        });
-        socket.emit("job-status", progressTrackingId);
+    // Make the API call to initiate question generation
+    const response = await apiClient.post(endpoint, data);
 
-        socket.on(progressTrackingId, (data) => {
-          console.log(`Job Status Update for ${jobId}:`, data);
-          setProgressUpdate(data);
-        });
-      }
-    });
+    // Debugging: Log the full API response to verify the returned data
+    console.log("Full API Response from generateQuestionByJobDescription:", response);
+
+    // Check if the response is successful and contains a tracking ID
+    if (response.status === 200 && response.data && response.data.trackingId) {
+      const progressTrackingId = response.data.trackingId;
+
+      // Log the received tracking ID for confirmation
+      console.log("Received tracking ID:", progressTrackingId);
+
+      // Set up the socket connection and listeners
+      socket.on("connect", () => {
+        console.log("Connected to Socket.IO server");
+      });
+
+      // Emit an event to start tracking the job status
+      socket.emit("job-status", progressTrackingId);
+
+      // Listen for updates using the tracking ID
+      socket.on(progressTrackingId, (data) => {
+        console.log(`Job Status Update for Job ID ${adzunaJobId}:`, data);
+
+        // Update the progress state with the latest data using the provided callback
+        setProgressUpdate(data);
+
+        // Log the status for debugging
+        if (data.status) {
+          console.log("Job status:", data.status);
+        }
+      });
+
+      // Return the tracking ID for further use if necessary
+      return { trackingId: progressTrackingId };
+    } else {
+      // Handle missing tracking ID
+      console.error("Invalid API response, missing tracking ID:", response.data);
+      throw new Error("No tracking ID received");
+    }
   } catch (error) {
-    console.error(
-      "Error Generating Questions : ",
-      error.response ? error.response.data : error.message
-    );
+    // Log error details for debugging
+    console.error("Error Generating Questions in generateQuestionByJobDescription:", error.response ? error.response.data : error.message);
 
+    // Ensure the socket disconnects on error to clean up
     socket.on("disconnect", () => {
       console.log("Disconnected from Socket.IO server");
     });
+
+    // Re-throw the error to be caught by the calling function
+    throw error;
   }
 };
 
-// export const generateQuestionByJobDescription = async (adzunaJobId, setProgressUpdate) => {
-//   try {
-//     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_GENERATE_QUESTION;
-//     const data = { adzunaJobId: adzunaJobId, categoryName: "test" };
-
-//     // Log the data being sent to the API for confirmation
-//     console.log("Data being sent to API:", data);
-
-//     // Make the API call to generate questions
-//     const response = await apiClient.post(endpoint, data);
-
-//     // Debugging: Log the full response to verify the returned data
-//     console.log("Full API Response from generateQuestionByJobDescription:", response);
-
-//     // Check if the response is successful and contains a tracking ID
-//     if (response.status === 200 && response.data && response.data.trackingId) {
-//       const progressTrackingId = response.data.trackingId;
-
-//       // Log the received tracking ID for confirmation
-//       console.log("Received tracking ID in generateQuestionByJobDescription:", progressTrackingId);
-
-//       // Set up socket connection and listeners
-//       socket.on("connect", () => {
-//         console.log("Connected to Socket.IO server");
-//       });
-
-//       // Emit the event to start tracking job status
-//       socket.emit("job-status", progressTrackingId);
-
-//       // Return the tracking ID for further use
-//       return { trackingId: progressTrackingId };
-//     } else {
-//       // Log the response to help identify the issue
-//       console.error("Invalid API response, missing tracking ID:", response.data);
-//       throw new Error("No tracking ID received");
-//     }
-//   } catch (error) {
-//     // Log error details for debugging
-//     console.error("Error Generating Questions in generateQuestionByJobDescription:", error);
-
-//     // Re-throw the error so the calling function can handle it
-//     throw error;
-//   }
-// };
 
 
 export const getInterviewCategory = async () => {
