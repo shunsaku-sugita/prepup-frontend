@@ -70,7 +70,7 @@ export const fetchJobs = async (page = 1) => {
     }
   } catch (error) {
     console.error("Error fetching jobs:", error);
-    throw error;
+    return [];
   }
 };
 
@@ -90,7 +90,7 @@ export const fetchJobsByKeyword = async (page = 1, keywords) => {
     }
   } catch (error) {
     console.error("Error fetching jobs:", error);
-    throw error;
+    return [];
   }
 };
 
@@ -108,7 +108,7 @@ export const bookmarkJob = async (jobDetails) => {
     }
   } catch (error) {
     console.error("Error bookmarking job:", error);
-    throw error;
+    return undefined;
   }
 };
 
@@ -125,7 +125,7 @@ export const unbookmarkJob = async (jobId) => {
     }
   } catch (error) {
     console.error("Error unbookmarking job:", error);
-    throw error;
+    return undefined;
   }
 };
 
@@ -142,7 +142,7 @@ export const fetchSavedJobs = async () => {
     }
   } catch (error) {
     console.error("Error fetching bookmarked job:", error);
-    throw error;
+    return [];
   }
 };
 
