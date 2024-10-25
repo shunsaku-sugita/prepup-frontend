@@ -348,4 +348,4 @@ export const anayzeStarMasterAnsewers = async (question, answers) => {
     );
     return undefined;
   }
-}
+};

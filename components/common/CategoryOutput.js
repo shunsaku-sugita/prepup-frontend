@@ -57,7 +57,7 @@ const CategoryOutput = () => {
       const data = await getInterviewCategory();
       const categoriesData = data.category;
       setCategories(categoriesData);
-      console.log(categories);
+      // console.log(categories);
     };
     loadCategories();
   }, []);
