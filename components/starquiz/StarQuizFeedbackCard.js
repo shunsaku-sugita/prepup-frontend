@@ -10,12 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Ionicons } from "@expo/vector-icons";
 
-const StarQuizFeedbackCard = ({
-  value,
-  titleText,
-  // percentage,
-  contentText,
-}) => {
+const StarQuizFeedbackCard = ({ value, titleText, contentText }) => {
   return (
     <AccordionItem value={value} style={styles.accordionItem}>
       <AccordionHeader>
@@ -27,9 +22,6 @@ const StarQuizFeedbackCard = ({
                   {titleText}
                 </AccordionTitleText>
                 <View style={styles.accordionHeaderRightContainer}>
-                  {/* <AccordionTitleText style={styles.accordionTitleText}> */}
-                  {/* {percentage}% */}
-                  {/* </AccordionTitleText> */}
                   {isExpanded ? (
                     <Ionicons name="chevron-up" color="black" size={22} />
                   ) : (
@@ -82,11 +74,9 @@ const styles = StyleSheet.create({
   accordionContent: {
     marginTop: 10,
     paddingTop: 3,
-    // borderTopWidth: 1,
-    // borderTopColor: "#bbb",
   },
   accordionContentText: {
-    fontSize: 15,
+    fontSize: 15.5,
     lineHeight: 21,
   },
 });

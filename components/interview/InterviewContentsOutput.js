@@ -4,16 +4,13 @@ import InterviewControllerIcons from "./InterviewControllerIcons";
 import HearableQuestions from "../common/HearableQuestions";
 import ProgressBar from "../common/ProgressBar";
 import { AppContext } from "@/store/app-context";
-import { useContext, useEffect, useState } from "react";
-import { getInterviewCategory } from "../services/api";
-import { analyzeAnswer } from "../services/api";
+import { useContext } from "react";
 
 const InterviewContentsOutput = () => {
   const {
     currentQuestionIndex,
     setCurrentQuestionIndex,
     selectedCategoryQuestions,
-    setSelectedCategoryQuestions,
     questionAnswerArray,
     setQuestionAnswerArray,
     analyzedAnswer,
@@ -21,49 +18,6 @@ const InterviewContentsOutput = () => {
   } = useContext(AppContext);
 
   const questionText = selectedCategoryQuestions[currentQuestionIndex];
-  // const { currentQuestionIndex, interviewQuestions } = item;
-  // let questionText = interviewQuestions[currentQuestionIndex];
-
-  // const [occupationalQuestions, setOccupationalQuestions] = useState([]);
-  // const [generalQuestions, setGeneralQuestions] = useState([]);
-  // const [behavioralQuestions, setBehavioralQuestions] = useState([]);
-
-  // useEffect(() => {
-  //   const loadCategories = async () => {
-  //     const data = await getInterviewCategory();
-  //     const categoriesData = data.category;
-
-  //     // Extract questions for each category
-  //     categoriesData.forEach((category) => {
-  //       // const question = category.questions[index].question;
-  //       if (category.categoryName === "React developer") {
-  //         setOccupationalQuestions((prevState) => [
-  //           ...prevState,
-  //           ...category.questions.map((q) => q.question),
-  //         ]);
-  //       } else if (category.categoryName === "General") {
-  //         setGeneralQuestions((prevState) => [
-  //           ...prevState,
-  //           ...category.questions.map((q) => q.question),
-  //         ]);
-  //       } else if (category.categoryName === "Behavioral") {
-  //         setBehavioralQuestions((prevState) => [
-  //           ...prevState,
-  //           ...category.questions.map((q) => q.question),
-  //         ]);
-  //       }
-  //     });
-  //   };
-  //   loadCategories();
-  // }, []);
-
-  // Debugging: Logging the updated state with a separate useEffect
-  // useEffect(() => {
-  //   console.log("============================");
-  //   console.log("React developer questions:", occupationalQuestions);
-  //   console.log("General questions:", generalQuestions);
-  //   console.log("Behavioral questions:", behavioralQuestions);
-  // }, [occupationalQuestions, generalQuestions, behavioralQuestions]);
 
   return (
     <View style={styles.container}>
@@ -106,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   innerContainer: {
-    flex: 7.5,
+    flex: 8,
     width: "85%",
     alignItems: "center",
   },

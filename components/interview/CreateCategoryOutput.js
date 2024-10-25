@@ -64,6 +64,7 @@ const CreateCategoryOutput = ({
                   ...prevCategories,
                   {
                     categoryName: typedText,
+                    // replace with the real data
                     questions: [
                       { question: "I'm a Test Question. Does it bother you?" },
                     ],

@@ -1,9 +1,22 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion } from "@/components/ui/accordion";
 import StarQuizFeedbackCard from "./StarQuizFeedbackCard";
 
-const StarQuizFeedbackAccordions = () => {
+const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
+  const [situationFeedbackComment, setSituationFeedbackComment] = useState("");
+  const [taskFeedbackComment, setTaskFeedbackComment] = useState("");
+  const [actionFeedbackComment, setActionFeedbackComment] = useState("");
+  const [resultFeedbackComment, setResultFeedbackComment] = useState("");
+
+  useEffect(() => {
+    // update feedback comments for S*T*A*R
+    setSituationFeedbackComment(starMasterFeedback.feedback.situation);
+    setTaskFeedbackComment(starMasterFeedback.feedback.task);
+    setActionFeedbackComment(starMasterFeedback.feedback.action);
+    setResultFeedbackComment(starMasterFeedback.feedback.result);
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -11,26 +24,22 @@ const StarQuizFeedbackAccordions = () => {
           <StarQuizFeedbackCard
             value="a"
             titleText="Situation"
-            // percentage="80"
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component. Let me just make this example text a little bit longer than original like this."
+            contentText={situationFeedbackComment}
           />
           <StarQuizFeedbackCard
             value="b"
             titleText="Task"
-            // percentage="90"
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component. Let me just make this example text a little bit longer than original like this."
+            contentText={taskFeedbackComment}
           />
           <StarQuizFeedbackCard
             value="c"
             titleText="Action"
-            // percentage="75"
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component. Let me just make this example text a little bit longer than original like this."
+            contentText={actionFeedbackComment}
           />
           <StarQuizFeedbackCard
             value="d"
             titleText="Result"
-            // percentage="90"
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component. Let me just make this example text a little bit longer than original like this."
+            contentText={resultFeedbackComment}
           />
         </Accordion>
       </ScrollView>
@@ -45,8 +54,8 @@ const styles = StyleSheet.create({
     flex: 6,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: 10,
+    marginBottom: 40,
   },
   accordionContainer: {
     width: 340,

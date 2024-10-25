@@ -3,10 +3,16 @@ import InterviewFeedbackCard from "./InterviewFeedbackCard";
 import { Accordion } from "@/components/ui/accordion";
 
 const InterviewFeedbackAccordions = ({ analyzedAnswer }) => {
-  const fluencyScore = analyzedAnswer.scores.speaking;
-  const confidenceScore = analyzedAnswer.scores.confidence;
-  const clarityScore = analyzedAnswer.scores.clarity;
-  const concisenessScore = analyzedAnswer.scores.conciseness;
+  const fluencyScore = analyzedAnswer.analysis.fluency.score;
+  const confidenceScore = analyzedAnswer.analysis.confidence.score;
+  const clarityScore = analyzedAnswer.analysis.clarity.score;
+  const concisenessScore = analyzedAnswer.analysis.conciseness.score;
+
+  const fluencyFeedbackComment = analyzedAnswer.analysis.fluency.feedback;
+  const confidenceFeedbackComment = analyzedAnswer.analysis.confidence.feedback;
+  const clarityFeedbackComment = analyzedAnswer.analysis.clarity.feedback;
+  const concisenessFeedbackComment =
+    analyzedAnswer.analysis.conciseness.feedback;
 
   return (
     <View style={styles.container}>
@@ -16,25 +22,25 @@ const InterviewFeedbackAccordions = ({ analyzedAnswer }) => {
             value="a"
             titleText="Fluency"
             percentage={fluencyScore}
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
+            contentText={fluencyFeedbackComment}
           />
           <InterviewFeedbackCard
             value="b"
             titleText="Confidence"
             percentage={confidenceScore}
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
+            contentText={confidenceFeedbackComment}
           />
           <InterviewFeedbackCard
             value="c"
             titleText="Clarity"
             percentage={clarityScore}
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
+            contentText={clarityFeedbackComment}
           />
           <InterviewFeedbackCard
             value="d"
             titleText="Conciseness"
             percentage={concisenessScore}
-            contentText="Yes, you can disable the whole accordion by setting the isDisabled prop to true on the Accordion component."
+            contentText={concisenessFeedbackComment}
           />
         </Accordion>
       </ScrollView>

@@ -1,79 +1,73 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import TitleText from "../common/TitleText";
 import StarRating from "react-native-star-rating-widget";
 
-const StarQuizFeedbackIconRatings = () => {
-  const [rating, setRating] = useState(1.5);
+const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
+  const [ratingStarNumber, setRatingStarNumber] = useState(0);
+  const [ratingPhrase, setRatingPhrase] = useState("");
+
   const ratingPhrases = [
     "Keep Trying!",
     "Nice Work!",
     "Well Done!",
-    "Excellent!!",
+    "Excellent!",
   ];
 
-  const [situationRating, setSituationRating] = useState(0);
-  const [taskRating, setTaskRating] = useState(0);
-  const [actionRating, setActionRating] = useState(0);
-  const [resultRating, setResultRating] = useState(0);
+  // feedback average score
+  const averageScore = starMasterFeedback.score;
 
-  const [averageRating, setAverageRating] = useState(0);
+  useEffect(() => {
+    calcStarRating();
+    selectPrase();
+  }, []);
 
-  // useEffect(() => {
-  // fetch first
+  const calcStarRating = () => {
+    if (averageScore < 10) {
+      setRatingStarNumber(0.5);
+    } else if (averageScore >= 10 && averageScore < 20) {
+      setRatingStarNumber(1);
+    } else if (averageScore >= 20 && averageScore < 30) {
+      setRatingStarNumber(1.5);
+    } else if (averageScore >= 30 && averageScore < 40) {
+      setRatingStarNumber(2);
+    } else if (averageScore >= 40 && averageScore < 50) {
+      setRatingStarNumber(2.5);
+    } else if (averageScore >= 50 && averageScore < 60) {
+      setRatingStarNumber(3);
+    } else if (averageScore >= 60 && averageScore < 70) {
+      setRatingStarNumber(3.5);
+    } else if (averageScore >= 70 && averageScore < 80) {
+      setRatingStarNumber(4);
+    } else if (averageScore >= 80 && averageScore < 90) {
+      setRatingStarNumber(4.5);
+    } else if (averageScore >= 90 && averageScore <= 100) {
+      setRatingStarNumber(5);
+    }
+    return;
+  };
 
-  // }, []);
-
-  // const calcAverageRating = (
-  //   situationRating,
-  //   taskRating,
-  //   actionRating,
-  //   resultRating
-  // ) => {
-  //   return setAverageRating((situationRating + taskRating + actionRating + resultRating) / 4);
-  // };
-
-  // if (averageRating < 10) {
-  //   setRating(0.5);
-  // } else if (averageRating >= 10 && averageRating < 20) {
-  //   setRating(1);
-  // } else if (averageRating >= 20 && averageRating < 30) {
-  //   setRating(1.5);
-  // } else if (averageRating >= 30 && averageRating < 40) {
-  //   setRating(2);
-  // } else if (averageRating >= 40 && averageRating < 50) {
-  //   setRating(2.5);
-  // } else if (averageRating >= 50 && averageRating < 60) {
-  //   setRating(3);
-  // } else if (averageRating >= 60 && averageRating < 70) {
-  //   setRating(3.5);
-  // } else if (averageRating >= 70 && averageRating < 80) {
-  //   setRating(4);
-  // } else if (averageRating >= 80 && averageRating < 90) {
-  //   setRating(4.5);
-  // } else if (averageRating >= 90 && averageRating <= 100) {
-  //   setRating(5);
-  // }
-
-  let ratingPhraseText = ratingPhrases[0];
-  // if (rating <= 2) {
-  //   ratingPhraseText = ratingPhrases[0];
-  // } else if (rating === 2.5 && rating === 3) {
-  //   ratingPhraseText = ratingPhrases[1];
-  // } else if (rating === 3.5 && rating === 4) {
-  //   ratingPhraseText = ratingPhrases[2];
-  // } else if (rating === 4.5 && rating === 5) {
-  //   ratingPhraseText = ratingPhrases[3];
-  // }
+  const selectPrase = () => {
+    if (ratingStarNumber <= 2) {
+      setRatingPhrase(ratingPhrases[0]);
+    } else if (ratingStarNumber === 2.5 || ratingStarNumber === 3) {
+      setRatingPhrase(ratingPhrases[1]);
+    } else if (ratingStarNumber === 3.5 || ratingStarNumber === 4) {
+      setRatingPhrase(ratingPhrases[2]);
+    } else if (ratingStarNumber === 4.5 || ratingStarNumber === 5) {
+      setRatingPhrase(ratingPhrases[3]);
+    }
+    return;
+  };
 
   return (
     <View style={styles.container}>
-      <TitleText text={ratingPhraseText} />
-      <View style={styles.starRatingContainer}>
+      <TitleText text={ratingPhrase} />
+      <View>
         <StarRating
           // required props: rating and onChange
-          rating={rating}
-          onChange={() => setRating(rating)}
+          rating={ratingStarNumber}
+          onChange={() => setRatingStarNumber(ratingStarNumber)}
           color="black"
         />
       </View>
@@ -90,5 +84,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  starRatingContainer: {},
 });

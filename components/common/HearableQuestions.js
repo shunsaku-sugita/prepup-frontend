@@ -23,10 +23,6 @@ const HearableQuestions = ({ questionText }) => {
     }
   };
 
-  // let questionContent = questionText ? (
-  //   <LoadingOverlay />
-  // ) : ();
-
   return (
     <>
       {questionText ? (

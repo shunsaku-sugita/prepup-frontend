@@ -23,6 +23,7 @@ const StarQuizCarousel = ({
   answers,
   setAnswers,
   handleBlur,
+  scrollViewRef,
 }) => {
   const [situationCountNumber, setSituationCountNumber] = useState(0);
   const [taskCountNumber, setTaskCountNumber] = useState(0);
@@ -77,26 +78,12 @@ const StarQuizCarousel = ({
       ...prevAnswers,
       [answerKey]: text, // update the specific field
     }));
-
-    // Split the text into words and filter out any empty strings
-    // "split(/\s+/)" splits the string into an array of words, ignoring successive spaces. "/\s+/" is a regular expression that matches one or more whitespace characters (spaces, tabs, etc.).
-    // const words = text.trim().split(/\s+/).filter(Boolean);
-    // // Update the answer and word count if within limit
-    // if (words.length <= 100 || text.length < currentAnswer.length) {
-    //   setIsCharacterLimit(false);
-    //   setCountNumber(text.length);
-    //   setAnswer(words); // update any TextInput fields
-    // }
-    // if (words.length === 100) {
-    //   setIsCharacterLimit(true);
-    //   // Only allow deletions, and don't allow additions
-    //   setAnswer(words);
-    // }
   };
 
   return (
     <View style={styles.container}>
       <ScrollView
+        ref={scrollViewRef}
         horizontal={true}
         contentContainerStyle={styles.carouselContainer}
       >
@@ -165,7 +152,7 @@ const StarQuizCarousel = ({
             >
               <Text
                 style={
-                  situationAnswerRef
+                  situationAnswerRef.current
                     ? styles.resetText
                     : styles.resetTextDiabled
                 }
@@ -220,6 +207,7 @@ const StarQuizCarousel = ({
           <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
+              disabled={!taskAnswerRef.current && true}
               onPress={() => {
                 Alert.alert(
                   "Reset the Task text field?",
@@ -306,6 +294,7 @@ const StarQuizCarousel = ({
           <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
+              disabled={!actionAnswerRef.current && true}
               onPress={() => {
                 Alert.alert(
                   "Reset the Action text field?",
@@ -392,6 +381,7 @@ const StarQuizCarousel = ({
           <View style={styles.resetCountNumberContainer}>
             <TouchableOpacity
               style={styles.resetTextContainer}
+              disabled={!resultAnswerRef.current && true}
               onPress={() => {
                 Alert.alert(
                   "Reset the Result text field?",
@@ -453,8 +443,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    marginBottom: 140,
+    marginTop: 10,
+    marginBottom: 100,
     width: "90%",
   },
   carouselContainer: {

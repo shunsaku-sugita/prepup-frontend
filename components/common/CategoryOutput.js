@@ -11,6 +11,7 @@ import { AppContext } from "@/store/app-context";
 
 // Custom Bottom Tabs Component
 const CustomBottomTabs = () => {
+  const { setAnswers } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (
@@ -26,7 +27,19 @@ const CustomBottomTabs = () => {
 
       <TouchableOpacity
         style={styles.tabButton}
-        onPress={() => navigation.navigate("StarQuiz")}
+        onPress={() => {
+          // reset the input field of STAR master
+          setAnswers((prevAnswers) => ({
+            ...prevAnswers,
+            situation: "",
+            task: "",
+            action: "",
+            result: "",
+          }));
+
+          // navigete to the STAR master screen
+          navigation.navigate("StarQuiz");
+        }}
       >
         <View style={styles.iconContainer}>
           <Ionicons name="star" size={30} color="white" />
@@ -44,6 +57,7 @@ const CategoryOutput = () => {
       const data = await getInterviewCategory();
       const categoriesData = data.category;
       setCategories(categoriesData);
+      console.log(categories);
     };
     loadCategories();
   }, []);
@@ -66,7 +80,7 @@ const CategoryOutput = () => {
             <View style={styles.cardContainer}>
               <CategoryCard
                 index={index}
-                category={item.categoryName}
+                categoryName={item.categoryName}
                 categories={categories}
                 setCategories={setCategories}
               />

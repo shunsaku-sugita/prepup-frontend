@@ -5,11 +5,10 @@ import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import SmallButton from "./SmallButton";
 
-const CategoryCard = ({ index, category, categories, setCategories }) => {
+const CategoryCard = ({ index, categoryName, categories, setCategories }) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
-    selectedCategoryQuestions,
     setSelectedCategoryQuestions,
     setQuestionAnswerArray,
   } = useContext(AppContext);
@@ -75,9 +74,11 @@ const CategoryCard = ({ index, category, categories, setCategories }) => {
           )}
         </View>
         <View style={styles.cardBottom}>
-          <Text style={styles.categoryText}>{category}</Text>
+          <Text style={styles.categoryText}>
+            {categoryName ? categoryName : "My Occupation"}
+          </Text>
           <SmallButton
-            title="Start"
+            title={categoryName ? "Start" : "Add"}
             color="white"
             onPress={() => startInterviewHandler(index)}
           />

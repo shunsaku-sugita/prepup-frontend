@@ -1,27 +1,24 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import HearableQuestions from "../common/HearableQuestions";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
-import { getStarMasterQuestion } from "../services/api";
+import {
+  anayzeStarMasterAnsewers,
+  getStarMasterQuestion,
+} from "../services/api";
 import { AppContext } from "@/store/app-context";
+import { useIsFocused } from "@react-navigation/native";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
   const [starQuestionText, setStarQuestionText] = useState("");
 
-  // useRef to prevent re-renders during typing
-  const situationAnswerRef = useRef("");
-  const taskAnswerRef = useRef("");
-  const actionAnswerRef = useRef("");
-  const resultAnswerRef = useRef("");
+  // track if the screen is in focus
+  const isFocused = useIsFocused();
+  // create a ref for the ScrollView (to always come back to/start from the leftmost screen)
+  const scrollViewRef = useRef(null);
 
   // Separate states for four input fields, and combined answers state
   const {
@@ -35,8 +32,13 @@ const StarQuizOutput = () => {
     setResultAnswer,
     answers,
     setAnswers,
+    situationAnswerRef,
+    taskAnswerRef,
+    actionAnswerRef,
+    resultAnswerRef,
   } = useContext(AppContext);
 
+  // fetch a random question when the page is mounted
   const fetchStarQuestion = async () => {
     try {
       const starQuestionData = await getStarMasterQuestion();
@@ -48,9 +50,25 @@ const StarQuizOutput = () => {
   };
 
   useEffect(() => {
+    if (isFocused) {
+      // reset input fields when the screen comes into focus
+      setSituationAnswer("");
+      setTaskAnswer("");
+      setActionAnswer("");
+      setResultAnswer("");
+      situationAnswerRef.current = "";
+      taskAnswerRef.current = "";
+      actionAnswerRef.current = "";
+      resultAnswerRef.current = "";
+
+      // scroll to the leftmost (start) position
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({ x: 0, animated: true });
+      }
+    }
     // Fetch the random question initially
     fetchStarQuestion();
-  }, []);
+  }, [isFocused]);
 
   // the state is only updated once the input field loses focus (onBlur), avoiding re-renders on every keystroke
   const handleBlur = (field) => {
@@ -72,15 +90,34 @@ const StarQuizOutput = () => {
     }
   };
 
-  const saveAnswersHandler = useCallback(() => {
-    const newAnswersArray = [
-      situationAnswer,
-      taskAnswer,
-      actionAnswer,
-      resultAnswer,
-    ];
-    console.log("Updated Answers Array:", newAnswersArray);
-  }, [situationAnswer, taskAnswer, actionAnswer, resultAnswer]);
+  // submit typed answers and get feedback text and average score
+  const fetchStarMasterFeedback = async () => {
+    try {
+      // create a structured data to communicate with the endpoint
+      const structuredData = {
+        question: starQuestionText,
+        // answers: answers,
+        answers: {
+          situation: situationAnswerRef.current,
+          task: taskAnswerRef.current,
+          action: actionAnswerRef.current,
+          result: resultAnswerRef.current,
+        },
+      };
+      // call the method and pass the structured data
+      const starMasterFeedback = await anayzeStarMasterAnsewers(
+        structuredData.question,
+        structuredData.answers
+      );
+      if (starMasterFeedback) {
+        console.log("Received Feedback: ", starMasterFeedback);
+        // navigate to the feedback screen, passing the feedback as a parameter
+        navigation.navigate("StarQuizFeedback", { starMasterFeedback });
+      }
+    } catch (error) {
+      console.error("Error fetching STAR feedback:", error);
+    }
+  };
 
   const skipOrDoneButtonHandler = () => {
     if (!situationAnswer && !taskAnswer && !actionAnswer && !resultAnswer) {
@@ -96,13 +133,9 @@ const StarQuizOutput = () => {
           },
           {
             text: "Confirm",
-            onPress: () => {
-              saveAnswersHandler(); // save answers into an array
-              navigation.navigate("StarQuizFeedback");
-              setSituationAnswer("");
-              setTaskAnswer("");
-              setActionAnswer("");
-              setResultAnswer("");
+            onPress: async () => {
+              // call the fetch method and navigate to the next screen, passing the feedback as a parameter
+              await fetchStarMasterFeedback();
             },
           },
         ]
@@ -127,6 +160,7 @@ const StarQuizOutput = () => {
         answers={answers}
         setAnswers={setAnswers}
         handleBlur={handleBlur}
+        scrollViewRef={scrollViewRef}
       />
       <View style={styles.buttons}>
         <WideButton
@@ -152,7 +186,7 @@ const StarQuizOutput = () => {
                 {
                   text: "Confirm",
                   onPress: () => {
-                    navigation.goBack();
+                    navigation.navigate("Category");
                   },
                 },
               ]
@@ -180,11 +214,15 @@ const styles = StyleSheet.create({
   },
   questionContainer: {
     flex: 2,
+    marginTop: 5,
   },
   buttons: {
     flex: 1.5,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 15,
+  },
+  text: {
+    color: "blue",
   },
 });

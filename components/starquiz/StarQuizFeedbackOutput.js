@@ -6,29 +6,19 @@ import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import { AppContext } from "@/store/app-context";
 
-const StarQuizFeedbackOutput = () => {
-  const {
-    setSituationAnswer,
-    setTaskAnswer,
-    setActionAnswer,
-    setResultAnswer,
-    setAnswers,
-  } = useContext(AppContext);
+const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
+  const { setAnswers } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <StarQuizFeedbackIconRatings />
-      <StarQuizFeedbackAccordions />
+      <StarQuizFeedbackIconRatings starMasterFeedback={starMasterFeedback} />
+      <StarQuizFeedbackAccordions starMasterFeedback={starMasterFeedback} />
       <View style={styles.retryButton}>
         <WideButton
           title="Try again"
           color="white"
           onPress={() => {
-            setSituationAnswer("");
-            setTaskAnswer("");
-            setActionAnswer("");
-            setResultAnswer("");
             setAnswers((prevAnswers) => ({
               ...prevAnswers,
               situation: "",

@@ -248,17 +248,33 @@ export default function App() {
                 headerShown: true,
                 title: "Star Master Feedback",
                 headerRight: null,
-                headerLeft: () =>
+                headerLeft: () => (
                   // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.navigate("Category")}
-                    />
-                  ) : null,
+                  // navigation.canGoBack() ? (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    display={false}
+                    onPress={() => {
+                      Alert.alert(
+                        "Go back to the Category?",
+                        "Please confirm if you want to proceed.",
+                        [
+                          {
+                            text: "Cancel",
+                          },
+                          {
+                            text: "Confirm",
+                            onPress: () => {
+                              navigation.navigate("Category");
+                            },
+                          },
+                        ]
+                      );
+                    }}
+                  />
+                ),
               })}
             />
             <Stack.Screen

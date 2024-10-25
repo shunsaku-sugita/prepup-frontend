@@ -62,7 +62,7 @@ const InterviewControllerIcons = ({
         Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
       );
 
-      // Start countdown immediately
+      // start countdown immediately
       const id = setInterval(() => {
         setRecordDuration((prevDuration) => {
           if (prevDuration > 0) {
@@ -144,11 +144,6 @@ const InterviewControllerIcons = ({
       ...prevArray,
       { question: questionText, answer: transcription },
     ]);
-    // Check the updated array
-    // console.log("Updated questionAnswerArray: ", [
-    //   ...questionAnswerArray,
-    //   { question: questionText, answer: transcription },
-    // ]);
 
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
@@ -199,7 +194,7 @@ const InterviewControllerIcons = ({
         <IconButton
           icon={isRecording ? "stop-sharp" : "mic"}
           color="black"
-          size={isRecording ? 40 : 50}
+          size={isRecording ? 30 : 50}
           onPress={isRecording ? stopRecording : startRecording}
         />
       </View>
@@ -253,7 +248,7 @@ const styles = StyleSheet.create({
     flex: 6,
     alignItems: "center",
     width: "90%",
-    marginBottom: 6,
+    marginBottom: 10,
     paddingHorizontal: 28,
   },
   mainContainer: {
@@ -295,7 +290,7 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   micStopContainer: {
-    borderWidth: 12,
+    borderWidth: 10,
     borderColor: "black",
     borderRadius: 100,
     padding: 35,
@@ -306,6 +301,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     columnGap: 10,
+    marginTop: 16,
     width: "100%",
   },
   listenButton: {
