@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import JobListOutput from "@/components/jobfinder/JobListOutput";
 import Toast from "react-native-toast-message";
 

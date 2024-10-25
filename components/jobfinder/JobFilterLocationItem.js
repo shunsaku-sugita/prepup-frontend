@@ -2,12 +2,12 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import React from "react";
 import JobCard from "./JobCard";
 
-const JobFilterLocationItem = ({ data, toggleBookmark }) => {
+const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
   return (
-    <View>
+    <View style={styles.jobList}>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.jobId}
         renderItem={({ item }) => (
           <JobCard
             job={item}
@@ -27,5 +27,11 @@ export default JobFilterLocationItem;
 const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 16,
+  },
+  jobList:{
+    flex: 1, 
+   
+    
+
   },
 });
