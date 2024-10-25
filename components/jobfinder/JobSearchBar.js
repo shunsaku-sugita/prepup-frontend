@@ -1,24 +1,37 @@
-import { StyleSheet, TextInput, View, TouchableOpacity } from "react-native";
-import React from "react";
+import { StyleSheet, TextInput, View, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from '@expo/vector-icons';
 
-const JobSearchBar = ({searchQuery, setSearchQuery}) => {
+const JobSearchBar = ({ searchQuery, setSearchQuery }) => {
+  const [localQuery, setLocalQuery] = useState(searchQuery);
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      setSearchQuery(localQuery); // Update parent searchQuery after debounce
+      setIsTyping(false);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(delayDebounce); // Clear the timeout if the user types within 500ms
+  }, [localQuery, setSearchQuery]); // Include dependencies here
+
   return (
     <View style={styles.searchContainer}>
-
       <TextInput
         style={styles.searchInput}
         placeholder="Search Jobs"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        placeholderTextColor="#4D63B5"
-        onFocus={() => {
+        value={localQuery} // Use localQuery here
+        onChangeText={(text) => {
+          setLocalQuery(text);
+          setIsTyping(true);
         }}
-      
+        placeholderTextColor="#4D63B5"
       />
 
-{searchQuery ? (
-        <TouchableOpacity onPress={() => setSearchQuery('')}>
+      {isTyping ? (
+        <ActivityIndicator size="small" color="#4D63B5" style={styles.icon} />
+      ) : localQuery ? (
+        <TouchableOpacity onPress={() => setLocalQuery('')}>
           <Ionicons name="close" size={20} color="#4D63B5" style={styles.icon} />
         </TouchableOpacity>
       ) : (
@@ -38,7 +51,6 @@ const styles = StyleSheet.create({
     borderColor: '#4D63B5',
     borderRadius: 8,
     padding: 8,
-  
     marginBottom: 10, 
   },
   searchInput: {
@@ -49,6 +61,5 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingLeft: 10,
-    
   },
 });

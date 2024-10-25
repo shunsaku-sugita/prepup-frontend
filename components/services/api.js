@@ -179,6 +179,52 @@ export const generateQuestionByJobDescription = async (
   }
 };
 
+// export const generateQuestionByJobDescription = async (adzunaJobId, setProgressUpdate) => {
+//   try {
+//     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_GENERATE_QUESTION;
+//     const data = { adzunaJobId: adzunaJobId, categoryName: "test" };
+
+//     // Log the data being sent to the API for confirmation
+//     console.log("Data being sent to API:", data);
+
+//     // Make the API call to generate questions
+//     const response = await apiClient.post(endpoint, data);
+
+//     // Debugging: Log the full response to verify the returned data
+//     console.log("Full API Response from generateQuestionByJobDescription:", response);
+
+//     // Check if the response is successful and contains a tracking ID
+//     if (response.status === 200 && response.data && response.data.trackingId) {
+//       const progressTrackingId = response.data.trackingId;
+
+//       // Log the received tracking ID for confirmation
+//       console.log("Received tracking ID in generateQuestionByJobDescription:", progressTrackingId);
+
+//       // Set up socket connection and listeners
+//       socket.on("connect", () => {
+//         console.log("Connected to Socket.IO server");
+//       });
+
+//       // Emit the event to start tracking job status
+//       socket.emit("job-status", progressTrackingId);
+
+//       // Return the tracking ID for further use
+//       return { trackingId: progressTrackingId };
+//     } else {
+//       // Log the response to help identify the issue
+//       console.error("Invalid API response, missing tracking ID:", response.data);
+//       throw new Error("No tracking ID received");
+//     }
+//   } catch (error) {
+//     // Log error details for debugging
+//     console.error("Error Generating Questions in generateQuestionByJobDescription:", error);
+
+//     // Re-throw the error so the calling function can handle it
+//     throw error;
+//   }
+// };
+
+
 export const getInterviewCategory = async () => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;

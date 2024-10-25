@@ -7,7 +7,7 @@ const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
     <View style={styles.jobList}>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.jobId}
         renderItem={({ item }) => (
           <JobCard
             job={item}
