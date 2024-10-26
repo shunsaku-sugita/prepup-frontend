@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
-const Greeting = () => {
+const Greeting = ({ userName }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Hello User</Text>
+      <Text style={styles.titleText}>Hello {userName ? userName : "User"}</Text>
     </View>
   );
 };

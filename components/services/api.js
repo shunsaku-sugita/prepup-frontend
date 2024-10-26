@@ -99,7 +99,6 @@ export const bookmarkJob = async (jobDetails) => {
     const endpoint = `/${PATH_JOBFINDER}/bookmark`;
     const response = await apiClient.post(endpoint, jobDetails);
 
-
     if (response.status === 200) {
       console.log("Job bookmarked successfully:", response.data);
       return response.data;
@@ -182,10 +181,11 @@ export const fetchSavedJobs = async () => {
 //   }
 // };
 
-
-
 // THIS WORKS
-export const generateQuestionByJobDescription = async (adzunaJobId, setProgressUpdate) => {
+export const generateQuestionByJobDescription = async (
+  adzunaJobId,
+  setProgressUpdate
+) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_GENERATE_QUESTION;
     const data = { adzunaJobId: adzunaJobId, categoryName: "test" }; // Sending Adzuna Job ID and category
@@ -197,7 +197,10 @@ export const generateQuestionByJobDescription = async (adzunaJobId, setProgressU
     const response = await apiClient.post(endpoint, data);
 
     // Debugging: Log the full API response to verify the returned data
-    console.log("Full API Response from generateQuestionByJobDescription:", response);
+    console.log(
+      "Full API Response from generateQuestionByJobDescription:",
+      response
+    );
 
     // Check if the response is successful and contains a tracking ID
     if (response.status === 200 && response.data && response.data.trackingId) {
@@ -231,12 +234,18 @@ export const generateQuestionByJobDescription = async (adzunaJobId, setProgressU
       return { trackingId: progressTrackingId };
     } else {
       // Handle missing tracking ID
-      console.error("Invalid API response, missing tracking ID:", response.data);
+      console.error(
+        "Invalid API response, missing tracking ID:",
+        response.data
+      );
       throw new Error("No tracking ID received");
     }
   } catch (error) {
     // Log error details for debugging
-    console.error("Error Generating Questions in generateQuestionByJobDescription:", error.response ? error.response.data : error.message);
+    console.error(
+      "Error Generating Questions in generateQuestionByJobDescription:",
+      error.response ? error.response.data : error.message
+    );
 
     // Ensure the socket disconnects on error to clean up
     socket.on("disconnect", () => {
@@ -247,8 +256,6 @@ export const generateQuestionByJobDescription = async (adzunaJobId, setProgressU
     throw error;
   }
 };
-
-
 
 export const getInterviewCategory = async () => {
   try {
@@ -369,5 +376,22 @@ export const anayzeStarMasterAnsewers = async (question, answers) => {
       error.response ? error.response.data : error.message
     );
     return undefined;
+  }
+};
+
+export const getProfile = async () => {
+  try {
+    const endpoint = "/" + PATH_PROFILE + "/";
+    const response = await apiClient.get(endpoint);
+
+    if (response.status == 200) {
+      return response.data.user;
+    }
+  } catch (error) {
+    console.error(
+      "Error while getting user profile : ",
+      error.response ? error.response.data : error.message
+    );
+    return false;
   }
 };

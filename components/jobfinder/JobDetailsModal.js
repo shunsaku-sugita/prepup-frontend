@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
@@ -29,15 +36,17 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const handlePracticeInterview = async () => {
     setLoading(true); // Show loading indicator
     try {
-      
-      const adzunaJobId = job.jobId; 
+      const adzunaJobId = job.jobId;
       if (!adzunaJobId) {
         throw new Error("Missing job ID");
       }
-      const response = await generateQuestionByJobDescription(adzunaJobId, setProgressUpdate);
+      const response = await generateQuestionByJobDescription(
+        adzunaJobId,
+        setProgressUpdate
+      );
 
       console.log("API Response in handlePracticeInterview:", response);
-      
+
       // Store the received tracking ID in state
       if (response && response.trackingId) {
         setTrackingId(response.trackingId);
@@ -48,10 +57,10 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
       console.error("Error generating interview questions:", error);
       // Optionally show a toast or alert to the user
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to start practice interview. Please try again.',
-        position: 'top',
+        type: "error",
+        text1: "Error",
+        text2: "Failed to start practice interview. Please try again.",
+        position: "top",
         visibilityTime: 2000,
       });
       setLoading(false); // Hide loading indicator after the request
@@ -67,7 +76,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
 
     // Check if there is an active tracking ID and set up listeners
     if (trackingId && job) {
-        const currentJobId = job.jobId; 
+      const currentJobId = job.jobId;
       // Set up a socket listener for the progress update
       socket.on(trackingId, (data) => {
         console.log(`Job Status Update for ${currentJobId}:`, data);
@@ -75,11 +84,10 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         // Update the progress state with the latest data
         setProgressUpdate(data);
 
-
         // Once the job status is completed, navigate to the InterviewSimulator screen
         if (data.status === "Job processing complete!" && data.data) {
-            setLoading(false);
-            setSelectedCategoryQuestions(data.data);
+          setLoading(false);
+          setSelectedCategoryQuestions(data.data);
           setModalVisible(false); // Close the modal
           navigation.navigate("InterviewSimulator", {
             questions: data.data, // Pass the questions received from the server
@@ -110,7 +118,9 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         <View style={styles.titleWrapper}>
           <TitleText text={job.title} />
         </View>
-        <Text style={styles.companyDescriptionText}>Company: {job.company}</Text>
+        <Text style={styles.companyDescriptionText}>
+          Company: {job.company}
+        </Text>
         <Text style={styles.descriptionText}>Description:</Text>
         <Text style={styles.descriptionText}>{job.description}</Text>
         <View style={styles.buttonContainer}>
@@ -124,7 +134,10 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
               onPress={handlePracticeInterview} // Start generating questions
             />
           )}
-          <TouchableOpacity style={styles.applyButton} onPress={handleApplyPress}>
+          <TouchableOpacity
+            style={styles.applyButton}
+            onPress={handleApplyPress}
+          >
             <Text style={styles.applyButtonText}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -138,7 +151,10 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         >
           <View style={{ flex: 1 }}>
             <WebView source={{ uri: job.url }} style={{ flex: 1 }} />
-            <TouchableOpacity onPress={() => setWebViewVisible(false)} style={styles.closeWebView}>
+            <TouchableOpacity
+              onPress={() => setWebViewVisible(false)}
+              style={styles.closeWebView}
+            >
               <Text style={styles.closeWebViewText}>Close</Text>
             </TouchableOpacity>
           </View>

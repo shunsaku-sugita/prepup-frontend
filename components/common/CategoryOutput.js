@@ -6,7 +6,7 @@ import Greeting from "./Greeting";
 import CategoryCard from "./CategoryCard";
 import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
-import { getInterviewCategory } from "../services/api";
+import { getInterviewCategory, getProfile } from "../services/api";
 import { AppContext } from "@/store/app-context";
 
 // Custom Bottom Tabs Component
@@ -51,12 +51,16 @@ const CustomBottomTabs = () => {
 
 const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
       const categoriesData = data.category;
       setCategories(categoriesData);
+
+      const userData = await getProfile();
+      setUserName(userData.givenName);
       // console.log(categories);
     };
     loadCategories();
@@ -65,7 +69,7 @@ const CategoryOutput = () => {
   return (
     <>
       <View style={styles.headerContainer}>
-        <Greeting />
+        <Greeting userName={userName} />
         <HeaderRightIcons color="black" />
       </View>
       <View style={styles.container}>
