@@ -18,9 +18,10 @@ import { AppContext } from "@/store/app-context";
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [webViewVisible, setWebViewVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [progressUpdate, setProgressUpdate] = useState(null);
+  // const [progressUpdate, setProgressUpdate] = useState(null);
   const [trackingId, setTrackingId] = useState(null); // NEW state for tracking ID
-  const { setSelectedCategoryQuestions } = useContext(AppContext);
+  const { progressUpdate, setProgressUpdate, setSelectedCategoryQuestions } =
+    useContext(AppContext);
   console.log("Job object received:", job);
 
   if (!job) {
@@ -88,6 +89,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         if (data.status === "Job processing complete!" && data.data) {
           setLoading(false);
           setSelectedCategoryQuestions(data.data);
+
           setModalVisible(false); // Close the modal
           navigation.navigate("InterviewSimulator", {
             questions: data.data, // Pass the questions received from the server

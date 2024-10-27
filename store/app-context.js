@@ -7,6 +7,7 @@ const AppContextProvider = ({ children }) => {
   const [selectedCategoryQuestions, setSelectedCategoryQuestions] = useState(
     []
   );
+  const [progressUpdate, setProgressUpdate] = useState(null);
   const [categories, setCategories] = useState([]);
   const [questionAnswerArray, setQuestionAnswerArray] = useState([]);
   const [analyzedAnswer, setAnalyzedAnswer] = useState([]);
@@ -56,6 +57,8 @@ const AppContextProvider = ({ children }) => {
         taskAnswerRef,
         actionAnswerRef,
         resultAnswerRef,
+        progressUpdate,
+        setProgressUpdate,
       }}
     >
       {children}

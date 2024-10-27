@@ -3,8 +3,8 @@ import { useContext, useState } from "react";
 import { Platform, Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
-import CreateCategoryOutput from "./CreateCategoryOutput";
-import CreateCategorySuccessOutput from "./CreateCategorySuccessOutput";
+import CreateCategoryModal from "./CreateCategoryModal";
+import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
 
 const InterviewFeedbackButtons = ({
   setCurrentQuestionIndex,
@@ -18,21 +18,25 @@ const InterviewFeedbackButtons = ({
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
 
-  let categoryOutputScreen = (
-    <CreateCategoryOutput
+  console.log("=== Questions(Feedback page) ===>" + selectedCategoryQuestions);
+
+  let categoryOutputModal = (
+    <CreateCategoryModal
       setModalVisible={setModalVisible}
       setIsSaved={setIsSaved}
       categories={categories}
       setCategories={setCategories}
-      // selectedCategoryQuestions={selectedCategoryQuestions}
-      // setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+      selectedCategoryQuestions={selectedCategoryQuestions}
+      setSelectedCategoryQuestions={setSelectedCategoryQuestions}
     />
   );
   if (isSaved) {
-    categoryOutputScreen = (
-      <CreateCategorySuccessOutput
+    categoryOutputModal = (
+      <CreateCategorySuccessModal
+        categories={categories}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        selectedCategoryQuestions={selectedCategoryQuestions}
       />
     );
   }
@@ -65,7 +69,7 @@ const InterviewFeedbackButtons = ({
         onRequestClose={() => setModalVisible(false)} // Close modal when back button is pressed
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>{categoryOutputScreen}</View>
+          <View style={styles.modalContent}>{categoryOutputModal}</View>
         </View>
       </Modal>
     </View>

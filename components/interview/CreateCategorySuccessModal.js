@@ -5,7 +5,12 @@ import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-const CreateCategorySuccessOutput = ({ modalVisible, setModalVisible }) => {
+const CreateCategorySuccessModal = ({
+  categories,
+  modalVisible,
+  setModalVisible,
+  selectedCategoryQuestions,
+}) => {
   const navigation = useNavigation();
 
   // onPress function
@@ -40,7 +45,7 @@ const CreateCategorySuccessOutput = ({ modalVisible, setModalVisible }) => {
   );
 };
 
-export default CreateCategorySuccessOutput;
+export default CreateCategorySuccessModal;
 
 const styles = StyleSheet.create({
   container: {

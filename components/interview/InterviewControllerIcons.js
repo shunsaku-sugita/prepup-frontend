@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import {
   StyleSheet,
@@ -23,6 +23,9 @@ const InterviewControllerIcons = ({
   setQuestionAnswerArray,
   analyzedAnswer,
   setAnalyzedAnswer,
+  progressUpdate,
+  setProgressUpdate,
+  setSelectedCategoryQuestions,
 }) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
@@ -35,6 +38,9 @@ const InterviewControllerIcons = ({
   const [intervalId, setIntervalId] = useState(0);
 
   const [transcription, setTranscription] = useState("Transcribing...");
+  console.log(
+    "===  === Interview Questions ===  ===  ===>> " + interviewQuestions
+  );
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played

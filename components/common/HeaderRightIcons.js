@@ -7,12 +7,12 @@ const HeaderRightIcons = ({ color }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.headerRightContainer}>
-      <IconButton
+      {/* <IconButton
         icon="notifications-outline"
         color={color}
         size={30}
-        onPress={() => navigation.navigate("Notifications")}
-      />
+        onPress={() => navigation.navigate("SignIn-first")}
+      /> */}
       <IconButton
         icon="person-circle-outline"
         color={color}

@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import InterviewAnswerScript from "./InterviewAnswerScript";
 import InterviewControllerIcons from "./InterviewControllerIcons";
 import HearableQuestions from "../common/HearableQuestions";
 import ProgressBar from "../common/ProgressBar";
@@ -18,7 +17,6 @@ const InterviewContentsOutput = () => {
   } = useContext(AppContext);
 
   const questionText = selectedCategoryQuestions[currentQuestionIndex];
-
 
   return (
     <View style={styles.container}>
