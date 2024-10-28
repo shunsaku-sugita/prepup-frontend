@@ -29,18 +29,28 @@ const SigninFirstScreen = () => {
         <Text style={styles.createButtonText}>Create an Account</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.homeNavigationButton}
-        onPress={() => navigation.navigate("Category")}
-      >
-        <Text style={styles.homeNavigationText}>Shortcut to Home!</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.homeNavigationButton}
-        onPress={() => navigation.navigate("OnboardingOne")}
-      >
-        <Text style={styles.homeNavigationText}>Shortcut to Onboarding!</Text>
-      </TouchableOpacity>
+      {/* tentative buttons for development purpose */}
+      <View style={styles.buttonsContainer}>
+        <Text style={styles.buttonsContainerText}>Buttons for Development</Text>
+        <View style={styles.rowGapContainer}>
+          <TouchableOpacity
+            style={styles.homeNavigationButton}
+            onPress={() => navigation.navigate("Category")}
+          >
+            <Text style={styles.homeNavigationText}>
+              Shortcut to Home(Category)
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.onboardingNavigationButton}
+            onPress={() => navigation.navigate("OnboardingOne")}
+          >
+            <Text style={styles.onboardingNavigationText}>
+              Shortcut to Onboarding
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -78,10 +88,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "blue",
   },
-  homeNavigationButton: {
-    // marginTop: 40,
+  buttonsContainer: {
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 20,
   },
+  buttonsContainerText: {
+    marginBottom: 8,
+    fontWeight: "500",
+  },
+  rowGapContainer: {
+    rowGap: 2,
+  },
+  homeNavigationButton: {},
   homeNavigationText: {
+    textDecorationLine: "underline",
+  },
+  onboardingNavigationButton: {},
+  onboardingNavigationText: {
     textDecorationLine: "underline",
   },
 });

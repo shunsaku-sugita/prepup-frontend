@@ -26,11 +26,16 @@ const SplashScreen = () => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         {showFirstLogo ? (
-          <Image source={require("../assets/images/img.png")} />
+          <>
+            <Image source={require("../assets/images/img.png")} />
+            <TitleText text="Splash Screen1" />
+          </>
         ) : (
-          <Image source={require("../assets/images/react-logo.png")} />
+          <>
+            <Image source={require("../assets/images/react-logo.png")} />
+            <TitleText text="Splash Screen2" />
+          </>
         )}
-        <TitleText text="Splash Screen" />
       </View>
     </View>
   );
