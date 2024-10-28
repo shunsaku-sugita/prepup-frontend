@@ -6,16 +6,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { signup } from "@/components/services/api";
 
 const RegistrationScreen = () => {
+  const [enteredFirstname, setEnteredFirstname] = useState("");
+  const [enteredLastname, setEnteredLastname] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
 
+  const [firstnameIsValid, setFirstnameIsValid] = useState(false);
   const [emailIsValid, setEmailIsValid] = useState(false);
+  const [usernameIsValid, setUsernameIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
 
   const [passwordIsSecure, setPasswordIsSecure] = useState(false);
@@ -23,10 +29,20 @@ const RegistrationScreen = () => {
 
   const navigation = useNavigation();
 
+  // first name validation function(allows letters but requires at least one letter)
+  const firstnameValidation = (firstname) => {
+    const firstnameRegex = /^[a-zA-Z]+$/;
+    return firstnameRegex.test(firstname.trim());
+  };
   // general email validation function
   const emailValidation = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
+  };
+  // username validation function(allows letters and numbers but requires at least one letter)
+  const usernameValidation = (username) => {
+    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
+    return usernameRegex.test(username.trim());
   };
   // password validation function for 8+ characters, letters, numbers, and symbols
   const passwordValidation = (password) => {
@@ -35,16 +51,45 @@ const RegistrationScreen = () => {
     return passwordRegex.test(password);
   };
 
-  const registerHandler = () => {
+  // real-time validation for firstname
+  useEffect(() => {
+    const isFirstNameValid = firstnameValidation(enteredFirstname);
+    setFirstnameIsValid(isFirstNameValid);
+  }, [enteredFirstname]);
+  // real-time validation for email
+  useEffect(() => {
     const isEmailValid = emailValidation(enteredEmail);
-    const isPasswordValid = passwordValidation(enteredPassword);
-
     setEmailIsValid(isEmailValid);
+  }, [enteredEmail]);
+  // real-time validation for username
+  useEffect(() => {
+    const isUserNameValid = usernameValidation(enteredUsername);
+    setUsernameIsValid(isUserNameValid);
+  }, [enteredUsername]);
+  // real-time validation for password
+  useEffect(() => {
+    const isPasswordValid = passwordValidation(enteredPassword);
     setPasswordIsValid(isPasswordValid);
+  }, [enteredPassword]);
+
+  const registerHandler = async () => {
     setIsSubmitted(true);
 
-    if (emailIsValid && passwordIsValid) {
-      // use sign-up(register) API
+    if (
+      firstnameIsValid &&
+      emailIsValid &&
+      usernameIsValid &&
+      passwordIsValid
+    ) {
+      // ===>> use sign-up(register) API?
+      const testSignupResult = await signup(
+        enteredEmail,
+        enteredPassword,
+        enteredFirstname,
+        enteredLastname
+      );
+      console.log(testSignupResult);
+
       navigation.navigate("RegistrationSuccess");
     }
   };
@@ -52,6 +97,55 @@ const RegistrationScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.mainContents}>
+        <View style={styles.nameHorizontalContainer}>
+          {/* firstname field */}
+          <View style={styles.nameFormContainer}>
+            <View>
+              <Text style={styles.fieldLabel}>First Name *</Text>
+            </View>
+            <View
+              style={
+                !firstnameIsValid && isSubmitted
+                  ? styles.fieldAlert
+                  : styles.nameField
+              }
+            >
+              <TextInput
+                placeholder="First Name"
+                placeholderTextColor={"#aaa"}
+                keyboardType="default"
+                value={enteredFirstname}
+                onChangeText={(text) => setEnteredFirstname(text)}
+              />
+            </View>
+            {!firstnameIsValid && isSubmitted && (
+              <View style={styles.firstnameAlertContainer}>
+                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Text style={styles.alertText}>
+                  Please type one word with letters.
+                </Text>
+              </View>
+            )}
+          </View>
+
+          {/* lastname field */}
+          <View style={styles.nameFormContainer}>
+            <View>
+              <Text style={styles.fieldLabel}>Last Name</Text>
+            </View>
+            <View style={styles.nameField}>
+              <TextInput
+                placeholder="Last Name (Optional)"
+                placeholderTextColor={"#aaa"}
+                keyboardType="default"
+                value={enteredLastname}
+                onChangeText={(text) => setEnteredLastname(text)}
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* email field */}
         <View style={styles.formContainer}>
           <View>
             <Text style={styles.fieldLabel}>Email *</Text>
@@ -59,12 +153,12 @@ const RegistrationScreen = () => {
           <View
             style={
               !emailIsValid && isSubmitted
-                ? styles.emailFieldAlert
+                ? styles.fieldAlert
                 : styles.emailField
             }
           >
             <TextInput
-              placeholder="example@email.com"
+              placeholder="youremail@example.com"
               placeholderTextColor={"#aaa"}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -76,11 +170,47 @@ const RegistrationScreen = () => {
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
               <Text style={styles.alertText}>
-                This field cannot be left blank. Please try again.
+                Invalid email. Please try again.
               </Text>
             </View>
           )}
         </View>
+
+        {/* username field */}
+        <View style={styles.formContainer}>
+          <View>
+            <Text style={styles.fieldLabel}>Username *</Text>
+          </View>
+          <View
+            style={
+              !usernameIsValid && isSubmitted
+                ? styles.fieldAlert
+                : styles.emailField
+            }
+          >
+            <TextInput
+              placeholder="Enter a username"
+              placeholderTextColor={"#aaa"}
+              keyboardType="default"
+              autoCapitalize="none"
+              value={enteredUsername}
+              onChangeText={(text) => setEnteredUsername(text)}
+            />
+          </View>
+          <View>
+            <Text>Choose a unique username with letters or numbers.</Text>
+          </View>
+          {!usernameIsValid && isSubmitted && (
+            <View style={styles.alertContainer}>
+              <Ionicons name="alert-circle-outline" color="red" size={20} />
+              <Text style={styles.alertText}>
+                This field cannot be left blank.
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* password field */}
         <View style={styles.formContainer}>
           <View>
             <Text style={styles.fieldLabel}>Password *</Text>
@@ -88,7 +218,7 @@ const RegistrationScreen = () => {
           <View
             style={
               !passwordIsValid && isSubmitted
-                ? styles.passwordFieldAlert
+                ? styles.fieldAlert
                 : styles.passwordField
             }
           >
@@ -100,6 +230,8 @@ const RegistrationScreen = () => {
               secureTextEntry={passwordIsSecure}
               value={enteredPassword}
               onChangeText={(text) => setEnteredPassword(text)}
+              maxLength={30}
+              style={{ width: "90%" }}
             />
             <Ionicons
               name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -118,19 +250,21 @@ const RegistrationScreen = () => {
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
               <Text style={styles.alertText}>
-                This field cannot be left blank. Please try again.
+                Invalid password. Please try again.
               </Text>
             </View>
           )}
         </View>
       </View>
 
-      <WideButton
-        title="Regiser"
-        color="white"
-        // need to check if user's info matches to our database
-        onPress={registerHandler}
-      />
+      <View style={styles.bottomButton}>
+        <WideButton
+          title="Regiser"
+          color="white"
+          // need to check if user's info matches to our database
+          onPress={registerHandler}
+        />
+      </View>
     </View>
   );
 };
@@ -144,11 +278,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingBottom: 100,
+    // paddingBottom: 70,
   },
   mainContents: {
-    flex: 5,
+    flex: 6,
     rowGap: 20,
+    marginTop: 30,
+  },
+  nameHorizontalContainer: {
+    flexDirection: "row",
+    width: 340,
+    columnGap: 6,
+  },
+  nameFormContainer: {
+    width: "49%",
   },
   formContainer: {
     width: 340,
@@ -156,6 +299,17 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     fontWeight: "bold",
+  },
+  nameField: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#bbb",
+    borderRadius: 4,
+    width: "100%",
+    paddingHorizontal: 8,
+    paddingVertical: 12,
   },
   emailField: {
     flexDirection: "row",
@@ -168,7 +322,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
   },
-  emailFieldAlert: {
+  fieldAlert: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -190,16 +344,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
   },
-  passwordFieldAlert: {
+  firstnameAlertContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: "red",
-    borderRadius: 4,
-    width: "100%",
-    paddingHorizontal: 8,
-    paddingVertical: 12,
+    columnGap: 2,
+    width: "90%",
   },
   alertContainer: {
     flexDirection: "row",
@@ -211,11 +361,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: 500,
   },
-  simpleButton: {
-    marginTop: 10,
-  },
-  simpleButtonText: {
-    fontSize: 16,
-    color: "blue",
+  bottomButton: {
+    flex: 1,
   },
 });

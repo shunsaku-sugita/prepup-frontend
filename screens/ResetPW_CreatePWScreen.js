@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,6 +23,7 @@ const ResetPW_CreatePWScreen = () => {
   const [confirmPasswordIsSecure, setConfirmPasswordIsSecure] = useState(false);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const navigation = useNavigation();
@@ -34,20 +35,38 @@ const ResetPW_CreatePWScreen = () => {
     return passwordRegex.test(password);
   };
 
-  const ConfirmHandler = () => {
+  // real-time validation for password
+  useEffect(() => {
     const isPasswordValid = passwordValidation(enteredPassword);
-    const isConfirmPasswordValid = passwordValidation(confirmPassword);
-    const doPasswordsMatch = enteredPassword === confirmPassword;
-
     setPasswordIsValid(isPasswordValid);
+  }, [enteredPassword]);
+
+  // real-time validation for confirm password
+  useEffect(() => {
+    const isConfirmPasswordValid = passwordValidation(confirmPassword);
     setConfirmPasswordIsValid(isConfirmPasswordValid);
+  }, [confirmPassword]);
+
+  const ConfirmHandler = () => {
+    const doPasswordsMatch = enteredPassword === confirmPassword;
     setPasswordsMatch(doPasswordsMatch);
     setIsSubmitted(true);
 
+    // Reset the error message initially
+    setErrorMessage("");
+
+    if (!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) {
+      setErrorMessage(
+        "Invalid password or two passwords don't match. Please try again."
+      );
+      return;
+    }
+
     if (passwordIsValid && confirmPasswordIsValid && passwordsMatch) {
       // ==>> need to use update password API?
+
+      // Proceed if both passwords are valid and match
       navigation.navigate("ResetPW_Success");
-      setPasswordsMatch(false);
     }
   };
 
@@ -80,6 +99,8 @@ const ResetPW_CreatePWScreen = () => {
               secureTextEntry={passwordIsSecure}
               value={enteredPassword}
               onChangeText={(text) => setEnteredPassword(text)}
+              maxLength={30}
+              style={{ width: "90%" }}
             />
             <Ionicons
               name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -94,14 +115,13 @@ const ResetPW_CreatePWScreen = () => {
               symbols(@$!%*?&).
             </Text>
           </View>
-          {!passwordIsValid && isSubmitted && (
-            <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                This field cannot be left blank. Please try again.
-              </Text>
-            </View>
-          )}
+          {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
+            isSubmitted && (
+              <View style={styles.alertContainer}>
+                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Text style={styles.alertText}>{errorMessage}</Text>
+              </View>
+            )}
         </View>
 
         <View style={styles.formContainer}>
@@ -123,6 +143,8 @@ const ResetPW_CreatePWScreen = () => {
               secureTextEntry={confirmPasswordIsSecure}
               value={confirmPassword}
               onChangeText={(text) => setConfirmPassword(text)}
+              maxLength={30}
+              style={{ width: "90%" }}
             />
             <Ionicons
               name={confirmPasswordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -136,14 +158,13 @@ const ResetPW_CreatePWScreen = () => {
           <View>
             <Text>Both passwords must match.</Text>
           </View>
-          {!confirmPasswordIsValid && isSubmitted && (
-            <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                This field cannot be left blank. Please try again.
-              </Text>
-            </View>
-          )}
+          {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
+            isSubmitted && (
+              <View style={styles.alertContainer}>
+                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Text style={styles.alertText}>{errorMessage}</Text>
+              </View>
+            )}
         </View>
       </View>
 
@@ -158,16 +179,16 @@ const ResetPW_CreatePWScreen = () => {
           style={styles.simpleButton}
           onPress={() => {
             Alert.alert(
-              "Cancel creating new password and go back to Sign in?",
-              "The process is unsaved, you will lose it.",
+              "Are you sure you want to go back?",
+              "Your changes won't be saved. Do you want to proceed?",
               [
                 {
                   text: "Cancel",
                 },
                 {
-                  text: "Confirm",
+                  text: "Continue",
                   onPress: () => {
-                    navigation.navigate("SignIn-first");
+                    navigation.navigate("ResetPW_request");
                   },
                 },
               ]

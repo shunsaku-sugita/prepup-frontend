@@ -19,7 +19,9 @@ import SigninFirstScreen from "../screens/SigninFirstScreen";
 import SigninSecondScreen from "../screens/SigninSecondScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import RegistrationSuccessScreen from "../screens/RegistrationSuccessScreen";
-import OnboardingScreen from "../screens/OnboardingScreen";
+import OnboardingOneScreen from "../screens/OnboardingOneScreen";
+import OnboardingTwoScreen from "../screens/OnboardingTwoScreen";
+import OnboardingThreeScreen from "../screens/OnboardingThreeScreen";
 import ResetPW_RequestScreen from "../screens/ResetPW_RequestScreen";
 import ResetPW_VerifycodeScreen from "../screens/ResetPW_VerifycodeScreen";
 import ResetPW_CreatePWScreen from "../screens/ResetPW_CreatePWScreen";
@@ -306,22 +308,24 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="Onboarding"
-              component={OnboardingScreen}
-              options={({ navigation }) => ({
-                headerShown: true,
-                title: "Registration",
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
+              name="OnboardingOne"
+              component={OnboardingOneScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name="OnboardingTwo"
+              component={OnboardingTwoScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name="OnboardingThree"
+              component={OnboardingThreeScreen}
+              options={() => ({
+                headerShown: false,
               })}
             />
             <Stack.Screen
@@ -376,7 +380,23 @@ export default function App() {
                       color="black"
                       size={28}
                       display={false}
-                      onPress={() => navigation.goBack()}
+                      onPress={() => {
+                        Alert.alert(
+                          "Are you sure you want to go back?",
+                          "Your changes won't be saved. Do you want to proceed?",
+                          [
+                            {
+                              text: "Cancel",
+                            },
+                            {
+                              text: "Continue",
+                              onPress: () => {
+                                navigation.navigate("ResetPW_request");
+                              },
+                            },
+                          ]
+                        );
+                      }}
                     />
                   ) : null,
               })}

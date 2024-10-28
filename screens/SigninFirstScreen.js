@@ -35,6 +35,12 @@ const SigninFirstScreen = () => {
       >
         <Text style={styles.homeNavigationText}>Shortcut to Home!</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.homeNavigationButton}
+        onPress={() => navigation.navigate("OnboardingOne")}
+      >
+        <Text style={styles.homeNavigationText}>Shortcut to Onboarding!</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -73,7 +79,7 @@ const styles = StyleSheet.create({
     color: "blue",
   },
   homeNavigationButton: {
-    marginTop: 40,
+    // marginTop: 40,
   },
   homeNavigationText: {
     textDecorationLine: "underline",

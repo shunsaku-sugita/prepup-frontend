@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,16 +18,19 @@ const ResetPW_RequestScreen = () => {
 
   const navigation = useNavigation();
 
-  // general email validation function
+  // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
   };
 
-  const VerifyHandler = () => {
+  // real-time validation for email
+  useEffect(() => {
     const isEmailValid = emailValidation(enteredEmail);
-
     setEmailIsValid(isEmailValid);
+  }, [enteredEmail]);
+
+  const VerifyHandler = () => {
     setIsSubmitted(true);
 
     if (emailIsValid) {
@@ -58,7 +61,7 @@ const ResetPW_RequestScreen = () => {
             }
           >
             <TextInput
-              placeholder="example@email.com"
+              placeholder="youremail@example.com"
               placeholderTextColor={"#aaa"}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -70,7 +73,7 @@ const ResetPW_RequestScreen = () => {
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
               <Text style={styles.alertText}>
-                This field cannot be left blank. Please try again.
+                Invalid email. Please try again.
               </Text>
             </View>
           )}

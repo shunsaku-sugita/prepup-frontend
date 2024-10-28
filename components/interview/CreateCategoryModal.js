@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
 import { Ionicons } from "@expo/vector-icons";
-import { saveInterviewQuestions } from "../services/api";
+// import { saveInterviewQuestions } from "../services/api";
 
 const CreateCategoryModal = ({
   setModalVisible,
@@ -12,6 +12,7 @@ const CreateCategoryModal = ({
   setSelectedCategoryQuestions,
   categories,
   setCategories,
+  saveInterviewQuestions,
 }) => {
   const [typedText, setTypedText] = useState("");
   const textInputHandler = (enteredText) => {
@@ -23,36 +24,41 @@ const CreateCategoryModal = ({
     return /\w+/.test(typedText.trim()); // This regex checks for any word character or number
   };
 
-  // const saveInterviewQuestionsHandler = (typedText, selectedCategoryQuestions) => {
-  //   const data = saveInterviewQuestions(typedText, selectedCategoryQuestions);
-  // ;
+  // onPress handler function to save category/questions
+  const saveCategoryQuestionsHandler = async () => {
+    if (!typedText.trim()) return;
 
-  // onPress handler function
-  // const saveCategoryHandler = async () => {
-  //   if (!typedText.trim()) return;
+    setIsSaved(true);
 
-  //   setIsSaved(true);
+    // Check if selectedCategoryQuestions is an array
+    const questionsArray = Array.isArray(selectedCategoryQuestions)
+      ? selectedCategoryQuestions.map((question) => question.trim())
+      : []; // default to an empty array if it's not an array
 
-  //   // Attempt to save the new category with API
-  //   const success = await saveInterviewQuestions(
-  //     typedText,
-  //     selectedCategoryQuestions
-  //   );
+    // // Attempt to save the new category with API
+    const success = await saveInterviewQuestions(typedText, questionsArray);
 
-  //   if (success) {
-  //     // If successful, update local categories state
-  //     setCategories((prevCategories) => [
-  //       ...prevCategories,
-  //       {
-  //         categoryName: typedText,
-  //         questions: selectedCategoryQuestions,
-  //       },
-  //     ]);
-  //     console.log("Category saved successfully!");
-  //   } else {
-  //     console.error("Failed to save category.");
-  //   }
-  // };
+    console.log("TEST SUCCESS LOG 1 ==> " + success);
+
+    console.log("TEST SUCCESS LOG 2 ==> ", {
+      categoryName: typedText,
+      questions: questionsArray,
+    });
+
+    if (success) {
+      // If successful, update local categories state
+      setCategories((prevCategories) => [
+        ...prevCategories,
+        {
+          categoryName: typedText,
+          questions: questionsArray,
+        },
+      ]);
+      console.log("Category saved successfully! ===> " + categories);
+    } else {
+      console.error("Failed to save category.");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -87,24 +93,24 @@ const CreateCategoryModal = ({
             color="white"
             size={24}
             display={!isValidInput()} // Disable if input is invalid
-            // onPress={saveCategoryHandler}
-            onPress={() => {
-              if (typedText.trim()) {
-                setIsSaved(true);
-                // setCategories((prevCategories) => [
-                //   ...prevCategories,
-                //   {
-                //     categoryName: typedText,
-                //     // replace with the real data
-                //     questions: [
-                //       // { question: "I'm a Test Question. Does it bother you?" },
-                //       selectedCategoryQuestions,
-                //     ],
-                //   },
-                // ]);
-              }
-              console.log("Current all categories ==> " + categories);
-            }}
+            onPress={saveCategoryQuestionsHandler}
+            // onPress={() => {
+            //   if (typedText.trim()) {
+            //     setIsSaved(true);
+            // setCategories((prevCategories) => [
+            //   ...prevCategories,
+            //   {
+            //     categoryName: typedText,
+            //     // replace with the real data
+            //     questions: [
+            //       // { question: "I'm a Test Question. Does it bother you?" },
+            //       selectedCategoryQuestions,
+            //     ],
+            //   },
+            // ]);
+            //   }
+            //   console.log("Current all categories ==> " + categories);
+            // }}
           />
         </View>
       </View>

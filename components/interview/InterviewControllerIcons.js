@@ -38,9 +38,9 @@ const InterviewControllerIcons = ({
   const [intervalId, setIntervalId] = useState(0);
 
   const [transcription, setTranscription] = useState("Transcribing...");
-  console.log(
-    "===  === Interview Questions ===  ===  ===>> " + interviewQuestions
-  );
+  // console.log(
+  //   "===  === Interview Questions ===  ===  ===>> " + interviewQuestions
+  // );
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played

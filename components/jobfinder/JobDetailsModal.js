@@ -20,8 +20,12 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [loading, setLoading] = useState(false);
   // const [progressUpdate, setProgressUpdate] = useState(null);
   const [trackingId, setTrackingId] = useState(null); // NEW state for tracking ID
-  const { progressUpdate, setProgressUpdate, setSelectedCategoryQuestions } =
-    useContext(AppContext);
+  const {
+    progressUpdate,
+    setProgressUpdate,
+    setSelectedCategoryQuestions,
+    setCurrentQuestionIndex,
+  } = useContext(AppContext);
   console.log("Job object received:", job);
 
   if (!job) {
@@ -45,6 +49,9 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         adzunaJobId,
         setProgressUpdate
       );
+
+      // reset the questions index to zero
+      setCurrentQuestionIndex(0);
 
       console.log("API Response in handlePracticeInterview:", response);
 

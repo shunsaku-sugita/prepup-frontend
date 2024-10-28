@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,10 +25,13 @@ const ResetPW_VerifycodeScreen = () => {
     return codeRegex.test(code.trim());
   };
 
-  const VerifyHandler = () => {
+  // real-time validation for 6 digits code
+  useEffect(() => {
     const isCodeValid = codeValidation(enteredCode);
-
     setCodeIsValid(isCodeValid);
+  }, [enteredCode]);
+
+  const VerifyHandler = () => {
     setIsSubmitted(true);
 
     if (codeIsValid) {
@@ -75,7 +78,8 @@ const ResetPW_VerifycodeScreen = () => {
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
               <Text style={styles.alertText}>
-                This field cannot be left blank. Please try again.
+                This field should be filled with 6 digits numbers. Please try
+                again.
               </Text>
             </View>
           )}

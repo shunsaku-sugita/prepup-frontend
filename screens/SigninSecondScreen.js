@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,7 +23,7 @@ const SigninSecondScreen = () => {
 
   const navigation = useNavigation();
 
-  // general email validation function
+  // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
@@ -35,12 +35,19 @@ const SigninSecondScreen = () => {
     return passwordRegex.test(password);
   };
 
-  const signInHandler = () => {
+  // real-time validation for email
+  useEffect(() => {
     const isEmailValid = emailValidation(enteredEmail);
-    const isPasswordValid = passwordValidation(enteredPassword);
-
     setEmailIsValid(isEmailValid);
+  }, [enteredEmail]);
+
+  // real-time validation for password
+  useEffect(() => {
+    const isPasswordValid = passwordValidation(enteredPassword);
     setPasswordIsValid(isPasswordValid);
+  }, [enteredPassword]);
+
+  const signInHandler = () => {
     setIsSubmitted(true);
 
     if (emailIsValid && passwordIsValid) {
@@ -61,13 +68,11 @@ const SigninSecondScreen = () => {
         </View>
         <View
           style={
-            !emailIsValid && isSubmitted
-              ? styles.emailFieldAlert
-              : styles.emailField
+            !emailIsValid && isSubmitted ? styles.fieldAlert : styles.emailField
           }
         >
           <TextInput
-            placeholder="example@email.com"
+            placeholder="youremail@example.com"
             placeholderTextColor={"#aaa"}
             keyboardType="email-address"
             autoCapitalize="none"
@@ -79,7 +84,7 @@ const SigninSecondScreen = () => {
           <View style={styles.alertContainer}>
             <Ionicons name="alert-circle-outline" color="red" size={20} />
             <Text style={styles.alertText}>
-              This field cannot be left blank. Please try again.
+              Invalid email. Please try again.
             </Text>
           </View>
         )}
@@ -92,7 +97,7 @@ const SigninSecondScreen = () => {
         <View
           style={
             !passwordIsValid && isSubmitted
-              ? styles.passwordFieldAlert
+              ? styles.fieldAlert
               : styles.passwordField
           }
         >
@@ -104,6 +109,8 @@ const SigninSecondScreen = () => {
             secureTextEntry={passwordIsSecure}
             value={enteredPassword}
             onChangeText={(text) => setEnteredPassword(text)}
+            maxLength={30}
+            style={{ width: "90%" }}
           />
           <Ionicons
             name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -182,7 +189,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
   },
-  emailFieldAlert: {
+  fieldAlert: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -199,17 +206,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#bbb",
-    borderRadius: 4,
-    width: "100%",
-    paddingHorizontal: 8,
-    paddingVertical: 12,
-  },
-  passwordFieldAlert: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "red",
     borderRadius: 4,
     width: "100%",
     paddingHorizontal: 8,

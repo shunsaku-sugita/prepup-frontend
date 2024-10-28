@@ -5,6 +5,7 @@ import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import CreateCategoryModal from "./CreateCategoryModal";
 import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
+import { saveInterviewQuestions } from "../services/api";
 
 const InterviewFeedbackButtons = ({
   setCurrentQuestionIndex,
@@ -18,7 +19,9 @@ const InterviewFeedbackButtons = ({
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
 
-  console.log("=== Questions(Feedback page) ===>" + selectedCategoryQuestions);
+  // console.log(
+  //   "selectedCategoryQuestions(Feedback page) ===> " + selectedCategoryQuestions
+  // );
 
   let categoryOutputModal = (
     <CreateCategoryModal
@@ -28,6 +31,7 @@ const InterviewFeedbackButtons = ({
       setCategories={setCategories}
       selectedCategoryQuestions={selectedCategoryQuestions}
       setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+      saveInterviewQuestions={saveInterviewQuestions}
     />
   );
   if (isSaved) {

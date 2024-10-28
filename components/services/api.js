@@ -320,10 +320,13 @@ export const analyzeAnswer = async (answers) => {
   }
 };
 
-export const saveInterviewQuestions = (categoryName, questions) => {
+export const saveInterviewQuestions = async (categoryName, questions) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
-    const response = apiClient.post(endpoint, { categoryName, questions });
+    const response = await apiClient.post(endpoint, {
+      categoryName,
+      questions,
+    });
 
     if (response.status == 200) {
       return true;
@@ -333,7 +336,6 @@ export const saveInterviewQuestions = (categoryName, questions) => {
       "Error while saveing interview: ",
       error.response ? error.response.data : error.message
     );
-
     return false;
   }
 };
