@@ -62,6 +62,7 @@ const SigninSecondScreen = () => {
         <Image source={require("../assets/images/img.png")} />
       </View>
 
+      {/* email field */}
       <View style={styles.formContainer}>
         <View>
           <Text style={styles.fieldLabel}>Email *</Text>
@@ -90,6 +91,7 @@ const SigninSecondScreen = () => {
         )}
       </View>
 
+      {/* password field */}
       <View style={styles.formContainer}>
         <View>
           <Text style={styles.fieldLabel}>Password *</Text>
@@ -135,24 +137,26 @@ const SigninSecondScreen = () => {
         )}
       </View>
 
-      <WideButton
-        title="Sign In"
-        color="white"
-        // need to check if user's info matches to our database
-        onPress={signInHandler}
-      />
-      <TouchableOpacity
-        style={styles.simpleButton}
-        onPress={() => navigation.navigate("ResetPW_request")}
-      >
-        <Text style={styles.simpleButtonText}>Forget Password ?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.simpleButton}
-        // onPress={}
-      >
-        <Text style={styles.simpleButtonText}>Login with Google Account</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <WideButton
+          title="Sign In"
+          color="white"
+          // need to check if user's info matches to our database
+          onPress={signInHandler}
+        />
+        <TouchableOpacity
+          style={styles.simpleButton}
+          onPress={() => navigation.navigate("ResetPW_request")}
+        >
+          <Text style={styles.simpleButtonText}>Forget Password ?</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.simpleButton}
+          // onPress={}
+        >
+          <Text style={styles.simpleButtonText}>Login with Google Account</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   imageContainer: {
     marginBottom: 40,
@@ -221,8 +225,13 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: 500,
   },
+  buttonsContainer: {
+    marginTop: 20,
+    alignItems: "center",
+    rowGap: 20,
+  },
   simpleButton: {
-    marginTop: 10,
+    // marginTop: 10,
   },
   simpleButtonText: {
     fontSize: 16,

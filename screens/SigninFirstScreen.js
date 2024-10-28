@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingBottom: 50,
+    paddingBottom: 0,
   },
   imageContainer: {
     marginBottom: 50,
