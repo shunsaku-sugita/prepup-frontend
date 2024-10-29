@@ -29,6 +29,12 @@ const RegistrationScreen = () => {
 
   const navigation = useNavigation();
 
+  const [isFirstnameFocused, setIsFirstnameFocused] = useState(false);
+  const [isLastnameFocused, setIsLastnameFocused] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isUsernameFocused, setIsUsernameFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   // first name validation function(allows letters but requires at least one letter)
   const firstnameValidation = (firstname) => {
     const firstnameRegex = /^[a-zA-Z]+$/;
@@ -46,8 +52,7 @@ const RegistrationScreen = () => {
   };
   // password validation function for 8+ characters, letters, numbers, and symbols
   const passwordValidation = (password) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,}$/;
     return passwordRegex.test(password);
   };
 
@@ -104,11 +109,15 @@ const RegistrationScreen = () => {
               <Text style={styles.fieldLabel}>First Name *</Text>
             </View>
             <View
-              style={
+              style={[
                 !firstnameIsValid && isSubmitted
                   ? styles.fieldAlert
-                  : styles.nameField
-              }
+                  : styles.nameField,
+                isFirstnameFocused && {
+                  borderWidth: 2,
+                  borderColor: "blue",
+                },
+              ]}
             >
               <TextInput
                 placeholder="First Name"
@@ -116,6 +125,8 @@ const RegistrationScreen = () => {
                 keyboardType="default"
                 value={enteredFirstname}
                 onChangeText={(text) => setEnteredFirstname(text)}
+                onFocus={() => setIsFirstnameFocused(true)}
+                onBlur={() => setIsFirstnameFocused(false)}
               />
             </View>
             {!firstnameIsValid && isSubmitted && (
@@ -133,13 +144,23 @@ const RegistrationScreen = () => {
             <View>
               <Text style={styles.fieldLabel}>Last Name</Text>
             </View>
-            <View style={styles.nameField}>
+            <View
+              style={[
+                styles.nameField,
+                isLastnameFocused && {
+                  borderWidth: 2,
+                  borderColor: "blue",
+                },
+              ]}
+            >
               <TextInput
                 placeholder="Last Name (Optional)"
                 placeholderTextColor={"#aaa"}
                 keyboardType="default"
                 value={enteredLastname}
                 onChangeText={(text) => setEnteredLastname(text)}
+                onFocus={() => setIsLastnameFocused(true)}
+                onBlur={() => setIsLastnameFocused(false)}
               />
             </View>
           </View>
@@ -151,19 +172,25 @@ const RegistrationScreen = () => {
             <Text style={styles.fieldLabel}>Email *</Text>
           </View>
           <View
-            style={
+            style={[
               !emailIsValid && isSubmitted
                 ? styles.fieldAlert
-                : styles.emailField
-            }
+                : styles.emailField,
+              isEmailFocused && {
+                borderWidth: 2,
+                borderColor: "blue",
+              },
+            ]}
           >
             <TextInput
-              placeholder="youremail@example.com"
+              placeholder="Enter your email address"
               placeholderTextColor={"#aaa"}
               keyboardType="email-address"
               autoCapitalize="none"
               value={enteredEmail}
               onChangeText={(text) => setEnteredEmail(text)}
+              onFocus={() => setIsEmailFocused(true)}
+              onBlur={() => setIsEmailFocused(false)}
             />
           </View>
           {!emailIsValid && isSubmitted && (
@@ -182,11 +209,15 @@ const RegistrationScreen = () => {
             <Text style={styles.fieldLabel}>Username *</Text>
           </View>
           <View
-            style={
+            style={[
               !usernameIsValid && isSubmitted
                 ? styles.fieldAlert
-                : styles.emailField
-            }
+                : styles.emailField,
+              isUsernameFocused && {
+                borderWidth: 2,
+                borderColor: "blue",
+              },
+            ]}
           >
             <TextInput
               placeholder="Enter a username"
@@ -195,6 +226,8 @@ const RegistrationScreen = () => {
               autoCapitalize="none"
               value={enteredUsername}
               onChangeText={(text) => setEnteredUsername(text)}
+              onFocus={() => setIsUsernameFocused(true)}
+              onBlur={() => setIsUsernameFocused(false)}
             />
           </View>
           <View>
@@ -216,11 +249,15 @@ const RegistrationScreen = () => {
             <Text style={styles.fieldLabel}>Password *</Text>
           </View>
           <View
-            style={
+            style={[
               !passwordIsValid && isSubmitted
                 ? styles.fieldAlert
-                : styles.passwordField
-            }
+                : styles.passwordField,
+              isPasswordFocused && {
+                borderWidth: 2,
+                borderColor: "blue",
+              },
+            ]}
           >
             <TextInput
               placeholder="Enter a password"
@@ -232,6 +269,8 @@ const RegistrationScreen = () => {
               onChangeText={(text) => setEnteredPassword(text)}
               maxLength={30}
               style={{ width: "90%" }}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
             />
             <Ionicons
               name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -243,7 +282,7 @@ const RegistrationScreen = () => {
           <View>
             <Text>
               Minimum of 8 characters with a mix of letters, numbers, and
-              symbols(@$!%*?&).
+              symbols.
             </Text>
           </View>
           {!passwordIsValid && isSubmitted && (

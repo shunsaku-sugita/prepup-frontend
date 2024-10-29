@@ -78,8 +78,8 @@ const ResetPW_VerifycodeScreen = () => {
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
               <Text style={styles.alertText}>
-                This field should be filled with 6 digits numbers. Please try
-                again.
+                Code did not match. This field should be filled with 6 digits
+                numbers.
               </Text>
             </View>
           )}
@@ -98,7 +98,8 @@ const ResetPW_VerifycodeScreen = () => {
           onPress={resendCodeHandler}
         >
           <Text style={styles.simpleButtonText}>
-            Didn't receive the code? Resend a code
+            Didn't receive the code?{" "}
+            <Text style={styles.resendCodeText}>Resend Code</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -176,5 +177,8 @@ const styles = StyleSheet.create({
   simpleButtonText: {
     fontSize: 16,
     color: "blue",
+  },
+  resendCodeText: {
+    textDecorationLine: "underline",
   },
 });

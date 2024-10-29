@@ -28,10 +28,13 @@ const ResetPW_CreatePWScreen = () => {
 
   const navigation = useNavigation();
 
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
+    useState(false);
+
   // password validation function for 8+ characters, letters, numbers, and symbols
   const passwordValidation = (password) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,}$/;
     return passwordRegex.test(password);
   };
 
@@ -56,9 +59,7 @@ const ResetPW_CreatePWScreen = () => {
     setErrorMessage("");
 
     if (!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) {
-      setErrorMessage(
-        "Invalid password or two passwords don't match. Please try again."
-      );
+      setErrorMessage("Invalid password or two passwords don't match.");
       return;
     }
 
@@ -85,11 +86,15 @@ const ResetPW_CreatePWScreen = () => {
             <Text style={styles.fieldLabel}>Password *</Text>
           </View>
           <View
-            style={
+            style={[
               !passwordIsValid && isSubmitted
                 ? styles.passwordFieldAlert
-                : styles.passwordField
-            }
+                : styles.passwordField,
+              isPasswordFocused && {
+                borderWidth: 2,
+                borderColor: "blue",
+              },
+            ]}
           >
             <TextInput
               placeholder="Enter a password"
@@ -101,6 +106,8 @@ const ResetPW_CreatePWScreen = () => {
               onChangeText={(text) => setEnteredPassword(text)}
               maxLength={30}
               style={{ width: "90%" }}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
             />
             <Ionicons
               name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -112,7 +119,7 @@ const ResetPW_CreatePWScreen = () => {
           <View>
             <Text>
               Minimum of 8 characters with a mix of letters, numbers, and
-              symbols(@$!%*?&).
+              symbols.
             </Text>
           </View>
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
@@ -129,11 +136,15 @@ const ResetPW_CreatePWScreen = () => {
             <Text style={styles.fieldLabel}>Confirm Password *</Text>
           </View>
           <View
-            style={
+            style={[
               !confirmPasswordIsValid && isSubmitted
                 ? styles.passwordFieldAlert
-                : styles.passwordField
-            }
+                : styles.passwordField,
+              isConfirmPasswordFocused && {
+                borderWidth: 2,
+                borderColor: "blue",
+              },
+            ]}
           >
             <TextInput
               placeholder="Enter a password"
@@ -145,6 +156,8 @@ const ResetPW_CreatePWScreen = () => {
               onChangeText={(text) => setConfirmPassword(text)}
               maxLength={30}
               style={{ width: "90%" }}
+              onFocus={() => setIsConfirmPasswordFocused(true)}
+              onBlur={() => setIsConfirmPasswordFocused(false)}
             />
             <Ionicons
               name={confirmPasswordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -155,9 +168,9 @@ const ResetPW_CreatePWScreen = () => {
               }
             />
           </View>
-          <View>
+          {/* <View>
             <Text>Both passwords must match.</Text>
-          </View>
+          </View> */}
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
@@ -179,8 +192,8 @@ const ResetPW_CreatePWScreen = () => {
           style={styles.simpleButton}
           onPress={() => {
             Alert.alert(
-              "Are you sure you want to go back?",
-              "Your changes won't be saved. Do you want to proceed?",
+              "Discard password changes?",
+              "Your current password will not be changed.",
               [
                 {
                   text: "Cancel",

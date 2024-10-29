@@ -11,7 +11,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-const SigninSecondScreen = () => {
+const SigninScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
 
@@ -23,6 +23,9 @@ const SigninSecondScreen = () => {
 
   const navigation = useNavigation();
 
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,8 +33,7 @@ const SigninSecondScreen = () => {
   };
   // password validation function for 8+ characters, letters, numbers, and symbols
   const passwordValidation = (password) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,}$/;
     return passwordRegex.test(password);
   };
 
@@ -68,17 +70,25 @@ const SigninSecondScreen = () => {
           <Text style={styles.fieldLabel}>Email *</Text>
         </View>
         <View
-          style={
-            !emailIsValid && isSubmitted ? styles.fieldAlert : styles.emailField
-          }
+          style={[
+            !emailIsValid && isSubmitted
+              ? styles.fieldAlert
+              : styles.emailField,
+            isEmailFocused && {
+              borderWidth: 2,
+              borderColor: "blue",
+            },
+          ]}
         >
           <TextInput
-            placeholder="youremail@example.com"
-            placeholderTextColor={"#aaa"}
+            placeholder="Enter your email adddress"
+            placeholderTextColor={"#6f6f6f"}
             keyboardType="email-address"
             autoCapitalize="none"
             value={enteredEmail}
             onChangeText={(text) => setEnteredEmail(text)}
+            onFocus={() => setIsEmailFocused(true)}
+            onBlur={() => setIsEmailFocused(false)}
           />
         </View>
         {!emailIsValid && isSubmitted && (
@@ -97,22 +107,30 @@ const SigninSecondScreen = () => {
           <Text style={styles.fieldLabel}>Password *</Text>
         </View>
         <View
-          style={
+          style={[
             !passwordIsValid && isSubmitted
               ? styles.fieldAlert
-              : styles.passwordField
-          }
+              : styles.passwordField,
+            isPasswordFocused && {
+              borderWidth: 2,
+              borderColor: "blue",
+            },
+          ]}
         >
           <TextInput
             placeholder="Enter a password"
-            placeholderTextColor={"#aaa"}
+            placeholderTextColor={"#6f6f6f"}
             keyboardType="default"
             autoCapitalize="none"
             secureTextEntry={passwordIsSecure}
             value={enteredPassword}
             onChangeText={(text) => setEnteredPassword(text)}
             maxLength={30}
-            style={{ width: "90%" }}
+            style={{
+              width: "90%",
+            }}
+            onFocus={() => setIsPasswordFocused(true)}
+            onBlur={() => setIsPasswordFocused(false)}
           />
           <Ionicons
             name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
@@ -123,8 +141,7 @@ const SigninSecondScreen = () => {
         </View>
         <View>
           <Text>
-            Minimum of 8 characters with a mix of letters, numbers, and
-            symbols(@$!%*?&).
+            Minimum of 8 characters with a mix of letters, numbers, and symbols.
           </Text>
         </View>
         {!passwordIsValid && isSubmitted && (
@@ -145,23 +162,56 @@ const SigninSecondScreen = () => {
           onPress={signInHandler}
         />
         <TouchableOpacity
-          style={styles.simpleButton}
-          onPress={() => navigation.navigate("ResetPW_request")}
+          style={styles.googleButton}
+          // onPress={}
         >
-          <Text style={styles.simpleButtonText}>Forget Password ?</Text>
+          <Text style={styles.googleButtonText}>Continue with Google</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.simpleButton}
-          // onPress={}
+          onPress={() => navigation.navigate("ResetPW_request")}
         >
-          <Text style={styles.simpleButtonText}>Login with Google Account</Text>
+          <Text style={styles.simpleButtonText}>Forget Password</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.createAccountButton}
+          onPress={() => navigation.navigate("Registration")}
+        >
+          <Text style={styles.createButtonText}>
+            Don't have an account? Sign up here
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* tentative buttons for development purpose */}
+      <View style={styles.devButtonsContainer}>
+        <Text style={styles.devButtonsContainerText}>
+          Buttons for Development
+        </Text>
+        <View style={styles.rowGapContainer}>
+          <TouchableOpacity
+            style={styles.homeNavigationButton}
+            onPress={() => navigation.navigate("Category")}
+          >
+            <Text style={styles.homeNavigationText}>
+              Shortcut to Home(Category)
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.onboardingNavigationButton}
+            onPress={() => navigation.navigate("OnboardingOne")}
+          >
+            <Text style={styles.onboardingNavigationText}>
+              Shortcut to Onboarding
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
 
-export default SigninSecondScreen;
+export default SigninScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -170,7 +220,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingBottom: 50,
+    paddingBottom: 20,
   },
   imageContainer: {
     marginBottom: 40,
@@ -230,11 +280,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
     rowGap: 20,
   },
+  googleButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ddd",
+    borderRadius: 6,
+    padding: 10,
+    width: 340,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   simpleButton: {
     // marginTop: 10,
   },
   simpleButtonText: {
     fontSize: 16,
     color: "blue",
+  },
+  createAccountButton: {
+    marginTop: 30,
+  },
+  createButtonText: {
+    color: "#454545",
+  },
+  devButtonsContainer: {
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    // marginTop: 20,
+  },
+  devButtonsContainerText: {
+    marginBottom: 8,
+    fontWeight: "500",
+  },
+  rowGapContainer: {
+    rowGap: 2,
+  },
+  // homeNavigationButton: {},
+  homeNavigationText: {
+    textDecorationLine: "underline",
+  },
+  // onboardingNavigationButton: {},
+  onboardingNavigationText: {
+    textDecorationLine: "underline",
   },
 });

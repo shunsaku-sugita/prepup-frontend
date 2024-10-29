@@ -13,7 +13,7 @@ const SplashScreen = () => {
     }, 2000);
 
     const secondLogoTimer = setTimeout(() => {
-      navigataion.navigate("SignIn-first");
+      navigataion.navigate("SignIn-preloader");
     }, 4000);
 
     return () => {

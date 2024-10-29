@@ -15,7 +15,7 @@ const RegistrationSuccessScreen = () => {
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Registration Successful!" />
-          <Text>You can now proceed to the home screen.</Text>
+          <Text>Your account has been registered.</Text>
         </View>
       </View>
       <View style={styles.buttonContainer}>

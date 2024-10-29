@@ -15,8 +15,8 @@ import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
-import SigninFirstScreen from "../screens/SigninFirstScreen";
-import SigninSecondScreen from "../screens/SigninSecondScreen";
+import SigninPreloaderScreen from "../screens/SigninPreloaderScreen";
+import SigninScreen from "../screens/SigninScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import RegistrationSuccessScreen from "../screens/RegistrationSuccessScreen";
 import OnboardingOneScreen from "../screens/OnboardingOneScreen";
@@ -244,30 +244,20 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="SignIn-first"
-              component={SigninFirstScreen}
+              name="SignIn-preloader"
+              component={SigninPreloaderScreen}
               options={{
                 headerShown: false,
               }}
             />
             <Stack.Screen
-              name="SignIn-second"
-              component={SigninSecondScreen}
-              options={({ navigation }) => ({
+              name="SignIn"
+              component={SigninScreen}
+              options={{
                 headerShown: true,
                 title: "Sign In",
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
-              })}
+                headerBackVisible: false,
+              }}
             />
             <Stack.Screen
               name="Registration"
@@ -382,8 +372,8 @@ export default function App() {
                       display={false}
                       onPress={() => {
                         Alert.alert(
-                          "Are you sure you want to go back?",
-                          "Your changes won't be saved. Do you want to proceed?",
+                          "Discard password changes?",
+                          "Your current password will not be changed.",
                           [
                             {
                               text: "Cancel",
