@@ -173,9 +173,8 @@ const jobListOutput = () => {
         Toast.show({
           type: 'info',
           text1: 'Removed from Saved Jobs',
-          text2: `${job.title} has been removed from your saved jobs.`,
           position: 'top',
-          visibilityTime: 1500,
+          visibilityTime: 3000,
         });
       } else {
         // Bookmark the job
@@ -195,9 +194,8 @@ const jobListOutput = () => {
         Toast.show({
           type: 'success',
           text1: 'Added to Saved Jobs',
-          text2: `${job.title} has been bookmarked successfully!`,
           position: 'top',
-          visibilityTime: 1500,
+          visibilityTime: 3000,
         });
       }
     } catch (error) {
