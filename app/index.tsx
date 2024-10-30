@@ -10,6 +10,7 @@ import IconButton from "../components/common/IconButton";
 import SplashScreen from "../screens/SplashScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import EditProfileScreen from"../screens/EditProfileScreen"
 import AppContextProvider, { AppContext } from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
@@ -61,6 +62,11 @@ export default function App() {
               options={{
                 headerShown: false,
               }}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfileScreen}
+              options={{ title: "Edit Profile", headerShown: true }}
             />
             <Stack.Screen
               name="JobSearch"
