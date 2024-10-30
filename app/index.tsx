@@ -11,6 +11,7 @@ import SplashScreen from "../screens/SplashScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from"../screens/EditProfileScreen"
+import CreateNewPWScreen from "../screens/CreateNewPWScreen"
 import AppContextProvider, { AppContext } from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
@@ -67,6 +68,25 @@ export default function App() {
               name="EditProfile"
               component={EditProfileScreen}
               options={{ title: "Edit Profile", headerShown: true }}
+            />
+             <Stack.Screen
+              name="CreateNewPW"
+              component={CreateNewPWScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                title: "Create New Password",
+                headerLeft: () =>
+                  // Check if the user can go back before showing the back button
+                  navigation.canGoBack() ? (
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      display={false}
+                      onPress={() => navigation.goBack()}
+                    />
+                  ) : null,
+              })}
             />
             <Stack.Screen
               name="JobSearch"

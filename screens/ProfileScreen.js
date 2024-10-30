@@ -19,8 +19,7 @@ const ProfileScreen = () => {
   const [username, setUsername] = useState("juangarcia");
   const [email, setEmail] = useState("jg@gmail.com");
   const [occupation, setOccupation] = useState("Software Developer");
-  const [password, setPassword] = useState("**********");
-  const [passwordIsSecure, setPasswordIsSecure] = useState(true); // Toggle password visibility
+  const [password, setPassword] = useState("**********"); // Display full masked password
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [termsAccepted, setTermsAccepted] = useState(true);
   const [privacyAccepted, setPrivacyAccepted] = useState(true);
@@ -72,7 +71,7 @@ const ProfileScreen = () => {
           <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       ),
     },
@@ -87,26 +86,14 @@ const ProfileScreen = () => {
               <View style={styles.fieldRow}>
                 <Text style={styles.fieldLabel}>Change Password</Text>
                 <View style={styles.passwordContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={password}
-                    secureTextEntry={passwordIsSecure}
-                    editable={false}
-                  />
-                  <TouchableOpacity onPress={() => setPasswordIsSecure(!passwordIsSecure)}>
-                    <Ionicons
-                      name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
-                      size={20}
-                      color="black"
-                    />
-                  </TouchableOpacity>
+                <Text style={styles.passwordText}>**********</Text>
                 </View>
               </View>
             </View>
           </View>
           <TouchableOpacity 
             style={styles.editButton}
-            onPress={() => navigation.navigate("ResetPW_CreatePW")}>
+            onPress={() => navigation.navigate("CreateNewPW")}>
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
           </TouchableOpacity>
@@ -214,7 +201,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     borderWidth:1,
     borderColor:"#E0E0E0"
-   
   },
   whiteBackground: {
     backgroundColor: "#fff",
@@ -312,7 +298,6 @@ const styles = StyleSheet.create({
   passwordInput: {
     fontSize: 14,
     color: "#333",
-    marginRight: 8,
   },
   logoutContainer: {
     flex: 1,
