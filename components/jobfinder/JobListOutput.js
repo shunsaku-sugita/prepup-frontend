@@ -14,6 +14,7 @@ import SavedJobCard from "./SavedJobCard";
 import JobFilterLocationItem from "./JobFilterLocationItem";
 import JobSearchBar from "./JobSearchBar";
 import Toast from 'react-native-toast-message';
+import {toastConfig} from './ToastComponent'
 import JobFilterTags from './JobFilterTags';
 import JobDetailsModal from "./JobDetailsModal";
 import {
@@ -35,18 +36,11 @@ const jobListOutput = () => {
   const [page, setPage] = useState(1);
   const [savedJobs, setSavedJobs] = useState([]);
   const [error, setError] = useState("");
-
-  // State for active filter tag
-  // const [activeFilter, setActiveFilter] = useState(null);
-
-  // State for job details modal
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  // Use navigation hook
   const navigation = useNavigation();
 
-  // Fetch saved jobs from API
   const getSavedJobs = async () => {
     try {
       const savedJobsResponse = await fetchSavedJobs();
@@ -60,7 +54,6 @@ const jobListOutput = () => {
     }
   };
 
-  // Fetch jobs by keyword or all jobs based on search query
   const fetchJobsByKeywordEffect = async (page = 1) => {
     setIsLoading(true);
     setError("");
@@ -68,21 +61,17 @@ const jobListOutput = () => {
     try {
       let fetchedJobs = [];
       if (!searchQuery) {
-        // If searchQuery is empty, fetch all jobs
         fetchedJobs = await fetchJobs(page);
       } else {
-        // If there's a search query, fetch filtered jobs
         fetchedJobs = await fetchJobsByKeyword(page, searchQuery);
       }
 
-      // Check if each job is saved and add the `isSaved` flag accordingly
       const updatedFetchedJobs = fetchedJobs.map((job) => {
         const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
         return { ...job, isSaved };
       });
 
-     
-        setJobs(updatedFetchedJobs); // Replace with new results if it's the first 
+      setJobs(updatedFetchedJobs);
     } catch (err) {
       console.error("Error fetching jobs:", err);
     } finally {
@@ -90,22 +79,19 @@ const jobListOutput = () => {
     }
   };
 
-   // Ensure savedJobs are fetched before jobs to maintain synchronization
-   const loadJobsAndSavedJobs = async () => {
+  const loadJobsAndSavedJobs = async () => {
     await getSavedJobs();
     fetchJobsByKeywordEffect();
   };
 
-  // Load jobs and saved jobs when the component is focused
   useFocusEffect(
     React.useCallback(() => {
       loadJobsAndSavedJobs();
     }, [searchQuery, filterType])
   );
 
-  // Load more jobs for pagination
   const loadMoreJobs = async () => {
-    if (isLoading) return; // Prevent multiple requests
+    if (isLoading) return;
     setIsLoading(true);
     try {
       const nextPage = page + 1;
@@ -129,11 +115,8 @@ const jobListOutput = () => {
     }
   };
 
-  // Toggle Bookmark
   const toggleBookmark = async (job) => {
     const jobId = job.jobId;
-
-    // Prepare jobDetails for bookmarking
     const jobDetails = {
       jobId: job.jobId,
       title: job.title,
@@ -144,26 +127,17 @@ const jobListOutput = () => {
       url: job.url,
     };
 
-    console.log("Attempting to toggle bookmark for job:", jobDetails);
-
-    // Check if the job is already saved in `savedJobs`
     const isAlreadySaved = savedJobs.some((savedJob) => savedJob.jobId === jobId);
-    console.log("Is job already saved:", isAlreadySaved);
 
     try {
       setIsBookmarking(true);
 
       if (isAlreadySaved) {
-        // Unbookmark the job
-        console.log("Unbookmarking job with jobId:", jobId);
         await unbookmarkJob(jobId);
-
-        // If successful, remove the job from savedJobs
         setSavedJobs((prevSavedJobs) =>
           prevSavedJobs.filter((savedJob) => savedJob.jobId !== jobId)
         );
 
-        // Update the `jobs` list to reflect the removed bookmark
         setJobs((prevJobs) =>
           prevJobs.map((item) =>
             item.jobId === jobId ? { ...item, isSaved: false } : item
@@ -172,19 +146,15 @@ const jobListOutput = () => {
 
         Toast.show({
           type: 'info',
-          text1: 'Removed from Saved Jobs',
+          text1: 'Job removed from saved jobs',
+          text2: '',
           position: 'top',
           visibilityTime: 3000,
         });
       } else {
-        // Bookmark the job
-        console.log("Bookmarking job with details:", jobDetails);
         await bookmarkJob(jobDetails);
-
-        // If successful, add the job to savedJobs
         setSavedJobs((prevSavedJobs) => [...prevSavedJobs, jobDetails]);
 
-        // Update the `jobs` list to reflect the added bookmark
         setJobs((prevJobs) =>
           prevJobs.map((item) =>
             item.jobId === jobId ? { ...item, isSaved: true } : item
@@ -193,7 +163,8 @@ const jobListOutput = () => {
 
         Toast.show({
           type: 'success',
-          text1: 'Added to Saved Jobs',
+          text1: 'Job added to saved jobs',
+          text2: '',
           position: 'top',
           visibilityTime: 3000,
         });
@@ -204,7 +175,6 @@ const jobListOutput = () => {
         console.error("Server responded with:", error.response.data);
       }
 
-      // Revert the UI state on error to ensure the user sees the correct state
       const rollbackJobs = jobs.map((item) =>
         item.jobId === jobId ? { ...item, isSaved: isAlreadySaved } : item
       );
@@ -214,7 +184,6 @@ const jobListOutput = () => {
     }
   };
 
-  // Handle job press to open modal
   const handleJobPress = (job) => {
     setSelectedJob(job);
     setModalVisible(true);
@@ -222,15 +191,15 @@ const jobListOutput = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      {/* Add the Toast configuration */}
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
+
       {/* JobSearchBar */}
       <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {/* JobFilterBar */}
       <JobFilterBar changeFilter={(type) => setFilterType(type)} />
-      {/* JobFilterTags */}
-      {/* <JobFilterTags activeFilter={activeFilter} setActiveFilter={setActiveFilter} /> */}
 
       {filterType === 0 ? (
-        // Pass only saved jobs to SavedJobCard
         <SavedJobCard data={savedJobs.filter((job) =>
           job.title.toLowerCase().includes(searchQuery.toLowerCase())
         )} toggleBookmark={toggleBookmark} />
@@ -246,7 +215,6 @@ const jobListOutput = () => {
               setModalVisible(true);
             }}
           />
-          {/* Load More Button */}
           <Button
             title={isLoading ? "Loading..." : "Load More"}
             onPress={loadMoreJobs}
@@ -255,7 +223,6 @@ const jobListOutput = () => {
         </View>
       )}
 
-      {/* Job Details Modal */}
       <Modal
         animationType="slide"
         transparent={true}
