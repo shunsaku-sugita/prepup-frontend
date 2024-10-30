@@ -10,21 +10,21 @@ import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { signinWithGoogle } from '../components/services/signinWithGoogle';
-import { WEB_CLIENT_ID, IOS_CLIENT_ID, } from "../config/googleConfig";
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from "@react-native-google-signin/google-signin";
+// import { signinWithGoogle } from "../components/services/signinWithGoogle";
+// import { WEB_CLIENT_ID, IOS_CLIENT_ID } from "../config/googleConfig";
 
-GoogleSignin.configure({
-  webClientId: WEB_CLIENT_ID,
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-  offlineAccess: true,
-  forceCodeForRefreshToken: true,
-  iosClientId: IOS_CLIENT_ID
-});
+// GoogleSignin.configure({
+//   webClientId: WEB_CLIENT_ID,
+//   scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+//   offlineAccess: true,
+//   forceCodeForRefreshToken: true,
+//   iosClientId: IOS_CLIENT_ID,
+// });
 
 const SigninScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -190,7 +190,7 @@ const SigninScreen = () => {
         />
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={signinWithGoogle}
+          // onPress={signinWithGoogle}
         >
           <Image source={require("../assets/images/google-signin-icon.png")} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
