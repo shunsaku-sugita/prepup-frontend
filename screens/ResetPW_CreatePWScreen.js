@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
@@ -31,6 +32,8 @@ const ResetPW_CreatePWScreen = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
     useState(false);
+
+  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
 
   // password validation function for 8+ characters, letters, numbers, and symbols
   const passwordValidation = (password) => {
@@ -59,7 +62,7 @@ const ResetPW_CreatePWScreen = () => {
     setErrorMessage("");
 
     if (!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) {
-      setErrorMessage("Invalid password or two passwords don't match.");
+      setErrorMessage("Invalid password or password don't match.");
       return;
     }
 
@@ -81,10 +84,29 @@ const ResetPW_CreatePWScreen = () => {
           </Text>
         </View>
 
+        {/* password form */}
         <View style={styles.formContainer}>
-          <View>
+          <View style={styles.titleQuestionContainer}>
             <Text style={styles.fieldLabel}>Password *</Text>
+            <TouchableOpacity
+              style={styles.questionIcon}
+              onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
+            >
+              <Image source={require("../assets/images/question-icon.png")} />
+            </TouchableOpacity>
           </View>
+          {/* Tooltip */}
+          {showPasswordTooltip && (
+            <View style={styles.tooltipWrapper}>
+              <View style={styles.triangle} />
+              <View style={styles.tooltipContainer}>
+                <Text style={styles.tooltipText}>
+                  Minimum of 8 characters with a mix of letters, numbers, and
+                  symbols.
+                </Text>
+              </View>
+            </View>
+          )}
           <View
             style={[
               !passwordIsValid && isSubmitted
@@ -116,12 +138,6 @@ const ResetPW_CreatePWScreen = () => {
               onPress={() => setPasswordIsSecure(!passwordIsSecure)}
             />
           </View>
-          <View>
-            <Text>
-              Minimum of 8 characters with a mix of letters, numbers, and
-              symbols.
-            </Text>
-          </View>
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
@@ -131,6 +147,7 @@ const ResetPW_CreatePWScreen = () => {
             )}
         </View>
 
+        {/* confirm password form */}
         <View style={styles.formContainer}>
           <View>
             <Text style={styles.fieldLabel}>Confirm Password *</Text>
@@ -239,6 +256,42 @@ const styles = StyleSheet.create({
     width: 340,
     rowGap: 4,
   },
+  titleQuestionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  questionIcon: {
+    marginBottom: 2,
+  },
+  tooltipWrapper: {
+    position: "absolute",
+    top: 25,
+    right: 5,
+    alignItems: "center",
+    zIndex: 10,
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    left: 90,
+    borderLeftWidth: 15,
+    borderRightWidth: 5,
+    borderBottomWidth: 12,
+    borderStyle: "solid",
+    backgroundColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#333",
+  },
+  tooltipContainer: {
+    backgroundColor: "#333",
+    padding: 8,
+    borderRadius: 5,
+    maxWidth: 220,
+    marginTop: -5, // slight overlap to connect the triangle with the tooltip box
+  },
+  tooltipText: { color: "#fff", fontSize: 14 },
   fieldLabel: {
     fontWeight: "bold",
   },

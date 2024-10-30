@@ -35,6 +35,9 @@ const RegistrationScreen = () => {
   const [isUsernameFocused, setIsUsernameFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
+  const [showUsernameTooltip, setShowUsernameTooltip] = useState(false);
+  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
+
   // first name validation function(allows letters but requires at least one letter)
   const firstnameValidation = (firstname) => {
     const firstnameRegex = /^[a-zA-Z]+$/;
@@ -132,9 +135,7 @@ const RegistrationScreen = () => {
             {!firstnameIsValid && isSubmitted && (
               <View style={styles.firstnameAlertContainer}>
                 <Ionicons name="alert-circle-outline" color="red" size={20} />
-                <Text style={styles.alertText}>
-                  Please type one word with letters.
-                </Text>
+                <Text style={styles.alertText}>Invalid firstname.</Text>
               </View>
             )}
           </View>
@@ -196,18 +197,34 @@ const RegistrationScreen = () => {
           {!emailIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                Invalid email. Please try again.
-              </Text>
+              <Text style={styles.alertText}>Invalid email.</Text>
             </View>
           )}
         </View>
 
         {/* username field */}
         <View style={styles.formContainer}>
-          <View>
+          <View style={styles.titleQuestionContainer}>
             <Text style={styles.fieldLabel}>Username *</Text>
+            <TouchableOpacity
+              style={styles.questionIcon}
+              onPress={() => setShowUsernameTooltip(!showUsernameTooltip)}
+            >
+              <Image source={require("../assets/images/question-icon.png")} />
+            </TouchableOpacity>
           </View>
+          {/* Tooltip */}
+          {showUsernameTooltip && (
+            <View style={styles.tooltipWrapper}>
+              <View style={styles.triangle} />
+              <View style={styles.tooltipContainer}>
+                <Text style={styles.tooltipText}>
+                  Choose a unique username for your account with letters and/or
+                  numbers.
+                </Text>
+              </View>
+            </View>
+          )}
           <View
             style={[
               !usernameIsValid && isSubmitted
@@ -230,24 +247,37 @@ const RegistrationScreen = () => {
               onBlur={() => setIsUsernameFocused(false)}
             />
           </View>
-          <View>
-            <Text>Choose a unique username with letters or numbers.</Text>
-          </View>
           {!usernameIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                This field cannot be left blank.
-              </Text>
+              <Text style={styles.alertText}>Invalid username.</Text>
             </View>
           )}
         </View>
 
         {/* password field */}
         <View style={styles.formContainer}>
-          <View>
+          <View style={styles.titleQuestionContainer}>
             <Text style={styles.fieldLabel}>Password *</Text>
+            <TouchableOpacity
+              style={styles.questionIcon}
+              onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
+            >
+              <Image source={require("../assets/images/question-icon.png")} />
+            </TouchableOpacity>
           </View>
+          {/* Tooltip */}
+          {showPasswordTooltip && (
+            <View style={styles.tooltipWrapper}>
+              <View style={styles.triangle} />
+              <View style={styles.tooltipContainer}>
+                <Text style={styles.tooltipText}>
+                  Minimum of 8 characters with a mix of letters, numbers, and
+                  symbols.
+                </Text>
+              </View>
+            </View>
+          )}
           <View
             style={[
               !passwordIsValid && isSubmitted
@@ -279,18 +309,10 @@ const RegistrationScreen = () => {
               onPress={() => setPasswordIsSecure(!passwordIsSecure)}
             />
           </View>
-          <View>
-            <Text>
-              Minimum of 8 characters with a mix of letters, numbers, and
-              symbols.
-            </Text>
-          </View>
           {!passwordIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                Invalid password. Please try again.
-              </Text>
+              <Text style={styles.alertText}>Invalid password.</Text>
             </View>
           )}
         </View>
@@ -336,6 +358,42 @@ const styles = StyleSheet.create({
     width: 340,
     rowGap: 4,
   },
+  titleQuestionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  questionIcon: {
+    marginBottom: 2,
+  },
+  tooltipWrapper: {
+    position: "absolute",
+    top: 25,
+    right: 5,
+    alignItems: "center",
+    zIndex: 10,
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    left: 90,
+    borderLeftWidth: 15,
+    borderRightWidth: 5,
+    borderBottomWidth: 12,
+    borderStyle: "solid",
+    backgroundColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#333",
+  },
+  tooltipContainer: {
+    backgroundColor: "#333",
+    padding: 8,
+    borderRadius: 5,
+    maxWidth: 220,
+    marginTop: -5, // slight overlap to connect the triangle with the tooltip box
+  },
+  tooltipText: { color: "#fff", fontSize: 14 },
   fieldLabel: {
     fontWeight: "bold",
   },
