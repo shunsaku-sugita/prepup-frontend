@@ -11,11 +11,6 @@ const OnboardingOne = () => {
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
           <Image source={require("../assets/images/img.png")} />
-          <View style={styles.carouselCircles}>
-            <View style={styles.circleActive} />
-            <View style={styles.circle} />
-            <View style={styles.circle} />
-          </View>
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Interview Simulator" />
@@ -23,16 +18,21 @@ const OnboardingOne = () => {
             AI generated quick interviews with analytical feedback.
           </Text>
         </View>
+        <View style={styles.carouselCircles}>
+          <View style={styles.circleActive} />
+          <View style={styles.circle} />
+          <View style={styles.circle} />
+        </View>
       </View>
       <View style={styles.buttonContainer}>
-        {/* <WideButton
+        <WideButton
           title="Continue"
           color="white"
           onPress={() => navigation.navigate("OnboardingTwo")}
-        /> */}
+        />
         <TouchableOpacity
           style={styles.simpleButton}
-          onPress={() => navigation.navigate("OnboardingThree")}
+          onPress={() => navigation.navigate("Category")}
         >
           <Text style={styles.simpleButtonText}>Skip</Text>
         </TouchableOpacity>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 50,
-    rowGap: 25,
+    marginBottom: 80,
   },
   carouselCircles: {
     flexDirection: "row",

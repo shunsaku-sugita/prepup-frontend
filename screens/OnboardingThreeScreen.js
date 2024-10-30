@@ -11,17 +11,17 @@ const OnboardingThree = () => {
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
           <Image source={require("../assets/images/img.png")} />
-          <View style={styles.carouselCircles}>
-            <View style={styles.circle} />
-            <View style={styles.circle} />
-            <View style={styles.circleActive} />
-          </View>
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="S.T.A.R Master" />
           <Text style={styles.description}>
             A set of questions that helps you answer for different situations.
           </Text>
+        </View>
+        <View style={styles.carouselCircles}>
+          <View style={styles.circle} />
+          <View style={styles.circle} />
+          <View style={styles.circleActive} />
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 50,
-    rowGap: 25,
+    marginBottom: 80,
   },
   carouselCircles: {
     flexDirection: "row",
