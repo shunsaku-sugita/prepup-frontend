@@ -41,8 +41,6 @@ const SigninScreen = () => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
-  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
-
   // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -120,25 +118,7 @@ const SigninScreen = () => {
       <View style={styles.formContainer}>
         <View style={styles.titleQuestionContainer}>
           <Text style={styles.fieldLabel}>Password *</Text>
-          <TouchableOpacity
-            style={styles.questionIcon}
-            onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
-          >
-            <Image source={require("../assets/images/question-icon.png")} />
-          </TouchableOpacity>
         </View>
-        {/* Tooltip */}
-        {showPasswordTooltip && (
-          <View style={styles.tooltipWrapper}>
-            <View style={styles.triangle} />
-            <View style={styles.tooltipContainer}>
-              <Text style={styles.tooltipText}>
-                Minimum of 8 characters with a mix of letters, numbers, and
-                symbols.
-              </Text>
-            </View>
-          </View>
-        )}
         <View
           style={[
             !passwordIsValid && isSubmitted
