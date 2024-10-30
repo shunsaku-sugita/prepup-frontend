@@ -25,11 +25,11 @@ const OnboardingOne = () => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <WideButton
+        {/* <WideButton
           title="Continue"
           color="white"
           onPress={() => navigation.navigate("OnboardingTwo")}
-        />
+        /> */}
         <TouchableOpacity
           style={styles.simpleButton}
           onPress={() => navigation.navigate("OnboardingThree")}

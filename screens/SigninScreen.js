@@ -26,6 +26,8 @@ const SigninScreen = () => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
+  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
+
   // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -66,7 +68,7 @@ const SigninScreen = () => {
 
       {/* email field */}
       <View style={styles.formContainer}>
-        <View>
+        <View style={styles.titleQuestionContainer}>
           <Text style={styles.fieldLabel}>Email *</Text>
         </View>
         <View
@@ -94,18 +96,34 @@ const SigninScreen = () => {
         {!emailIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
             <Ionicons name="alert-circle-outline" color="red" size={20} />
-            <Text style={styles.alertText}>
-              Invalid email. Please try again.
-            </Text>
+            <Text style={styles.alertText}>Incorrect email.</Text>
           </View>
         )}
       </View>
 
       {/* password field */}
       <View style={styles.formContainer}>
-        <View>
+        <View style={styles.titleQuestionContainer}>
           <Text style={styles.fieldLabel}>Password *</Text>
+          <TouchableOpacity
+            style={styles.questionIcon}
+            onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
+          >
+            <Image source={require("../assets/images/question-icon.png")} />
+          </TouchableOpacity>
         </View>
+        {/* Tooltip */}
+        {showPasswordTooltip && (
+          <View style={styles.tooltipWrapper}>
+            <View style={styles.triangle} />
+            <View style={styles.tooltipContainer}>
+              <Text style={styles.tooltipText}>
+                Minimum of 8 characters with a mix of letters, numbers, and
+                symbols.
+              </Text>
+            </View>
+          </View>
+        )}
         <View
           style={[
             !passwordIsValid && isSubmitted
@@ -139,21 +157,15 @@ const SigninScreen = () => {
             onPress={() => setPasswordIsSecure(!passwordIsSecure)}
           />
         </View>
-        <View>
-          <Text>
-            Minimum of 8 characters with a mix of letters, numbers, and symbols.
-          </Text>
-        </View>
         {!passwordIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
             <Ionicons name="alert-circle-outline" color="red" size={20} />
-            <Text style={styles.alertText}>
-              This field cannot be left blank. Please try again.
-            </Text>
+            <Text style={styles.alertText}>Incorrect password.</Text>
           </View>
         )}
       </View>
 
+      {/* buttons and link */}
       <View style={styles.buttonsContainer}>
         <WideButton
           title="Sign In"
@@ -165,6 +177,7 @@ const SigninScreen = () => {
           style={styles.googleButton}
           // onPress={}
         >
+          <Image source={require("../assets/images/google-signin-icon.png")} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -173,39 +186,32 @@ const SigninScreen = () => {
         >
           <Text style={styles.simpleButtonText}>Forget Password</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.createAccountButton}
-          onPress={() => navigation.navigate("Registration")}
-        >
-          <Text style={styles.createButtonText}>
-            Don't have an account? Sign up here
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.signupTextContainer}>
+          <Text style={styles.signupText}>Don't have an account?</Text>
+          <TouchableOpacity
+            style={styles.signupLinkButton}
+            onPress={() => navigation.navigate("Registration")}
+          >
+            <Text style={styles.signupLinkText}>Sign up</Text>
+          </TouchableOpacity>
+          <Text>here</Text>
+        </View>
       </View>
 
       {/* tentative buttons for development purpose */}
       <View style={styles.devButtonsContainer}>
-        <Text style={styles.devButtonsContainerText}>
-          Buttons for Development
-        </Text>
-        <View style={styles.rowGapContainer}>
-          <TouchableOpacity
-            style={styles.homeNavigationButton}
-            onPress={() => navigation.navigate("Category")}
-          >
-            <Text style={styles.homeNavigationText}>
-              Shortcut to Home(Category)
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.onboardingNavigationButton}
-            onPress={() => navigation.navigate("OnboardingOne")}
-          >
-            <Text style={styles.onboardingNavigationText}>
-              Shortcut to Onboarding
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.homeNavigationButton}
+          onPress={() => navigation.navigate("Category")}
+        >
+          <Text style={styles.homeNavigationText}>Home(Category)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.onboardingNavigationButton}
+          onPress={() => navigation.navigate("OnboardingOne")}
+        >
+          <Text style={styles.onboardingNavigationText}>Onboarding</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -220,7 +226,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingBottom: 20,
+    // paddingBottom: 10,
   },
   imageContainer: {
     marginBottom: 40,
@@ -229,8 +235,49 @@ const styles = StyleSheet.create({
     width: 340,
     rowGap: 4,
   },
-  fieldLabel: {
-    fontWeight: "bold",
+  titleQuestionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  questionIcon: {
+    marginBottom: 2,
+  },
+  tooltipWrapper: {
+    position: "absolute",
+    top: 25,
+    right: 5,
+    alignItems: "center",
+    zIndex: 10,
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    left: 90,
+    borderLeftWidth: 15,
+    borderRightWidth: 5,
+    borderBottomWidth: 12,
+    borderStyle: "solid",
+    backgroundColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#333",
+  },
+  tooltipContainer: {
+    backgroundColor: "#333",
+    padding: 8,
+    borderRadius: 5,
+    maxWidth: 220,
+    marginTop: -5, // slight overlap to connect the triangle with the tooltip box
+  },
+  tooltipText: { color: "#fff", fontSize: 14 },
+  passwordField: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
   },
   emailField: {
     flexDirection: "row",
@@ -278,11 +325,13 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     marginTop: 20,
     alignItems: "center",
-    rowGap: 20,
+    rowGap: 10,
   },
   googleButton: {
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
+    columnGap: 8,
     backgroundColor: "#ddd",
     borderRadius: 6,
     padding: 10,
@@ -293,30 +342,34 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   simpleButton: {
-    // marginTop: 10,
+    marginVertical: 15,
   },
   simpleButtonText: {
     fontSize: 16,
     color: "blue",
   },
-  createAccountButton: {
-    marginTop: 30,
+  signupTextContainer: {
+    flexDirection: "row",
+    columnGap: 6,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  createButtonText: {
+  signupText: {
     color: "#454545",
+  },
+  signupLinkButton: {
+    // backgroundColor: "#ddd",
+  },
+  signupLinkText: {
+    color: "black",
+    fontWeight: "600",
   },
   devButtonsContainer: {
     borderWidth: 1,
     borderRadius: 6,
-    padding: 10,
-    // marginTop: 20,
-  },
-  devButtonsContainerText: {
-    marginBottom: 8,
-    fontWeight: "500",
-  },
-  rowGapContainer: {
-    rowGap: 2,
+    padding: 6,
+    columnGap: 20,
+    flexDirection: "row",
   },
   // homeNavigationButton: {},
   homeNavigationText: {

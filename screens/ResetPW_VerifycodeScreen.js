@@ -77,10 +77,7 @@ const ResetPW_VerifycodeScreen = () => {
           {!codeIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                Code did not match. This field should be filled with 6 digits
-                numbers.
-              </Text>
+              <Text style={styles.alertText}>Code does not match.</Text>
             </View>
           )}
         </View>
@@ -93,15 +90,15 @@ const ResetPW_VerifycodeScreen = () => {
           // need to check if user's info matches to our database
           onPress={VerifyHandler}
         />
-        <TouchableOpacity
-          style={styles.simpleButton}
-          onPress={resendCodeHandler}
-        >
-          <Text style={styles.simpleButtonText}>
-            Didn't receive the code?{" "}
+        <View style={styles.codeTextContainer}>
+          <Text style={styles.simpleButtonText}>Didn't receive code? </Text>
+          <TouchableOpacity
+            style={styles.simpleButton}
+            onPress={resendCodeHandler}
+          >
             <Text style={styles.resendCodeText}>Resend Code</Text>
-          </Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -171,14 +168,22 @@ const styles = StyleSheet.create({
     rowGap: 10,
     marginBottom: 50,
   },
+  codeTextContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   simpleButton: {
     marginTop: 10,
   },
   simpleButtonText: {
     fontSize: 16,
+    fontWeight: "500",
     color: "blue",
   },
   resendCodeText: {
+    color: "blue",
     textDecorationLine: "underline",
+    marginBottom: 10,
   },
 });

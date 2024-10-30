@@ -72,9 +72,7 @@ const ResetPW_RequestScreen = () => {
           {!emailIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
               <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>
-                Invalid email. Please try again.
-              </Text>
+              <Text style={styles.alertText}>Invalid email.</Text>
             </View>
           )}
         </View>
