@@ -10,6 +10,12 @@ import {
   TYPE_CATEGORY,
   TYPE_GENERATE_QUESTION,
   TYPE_ANALYZE_ANSWERS,
+  PATH_AUTH,
+  TYPE_SIGNIN,
+  TYPE_SIGNUP,
+  TYPE_OTP,
+  SUB_PATH_FORGOT_PASSWORD,
+  TYPE_RESET,
 } from "../../config/apiConfig";
 import { socket } from "./socket";
 
@@ -18,43 +24,6 @@ const storeTokenSecurely = async (token) => {
     await SecureStore.setItemAsync("authToken", token);
   } catch (error) {
     console.error("Error storing token securely:", error.message);
-  }
-};
-
-const getTokenSecurely = async () => {
-  try {
-    return await SecureStore.getItemAsync("authToken");
-  } catch (error) {
-    console.error("Error getting token securely:", error.message);
-  }
-};
-
-export const signup = async (email, password, givenName, familyName) => {
-  const signupData = {
-    email,
-    password,
-    givenName,
-    familyName,
-  };
-
-  try {
-    const response = await axios.post(
-      "http://localhost:3000/api/auth/signup",
-      signupData
-    );
-    const token = response.data.authorization;
-
-    if (token) {
-      await storeTokenSecurely(token);
-      console.log("Token stored successfully");
-    } else {
-      console.error("Token not received");
-    }
-  } catch (error) {
-    console.error(
-      "Error during signup:",
-      error.response ? error.response.data : error.message
-    );
   }
 };
 
@@ -289,15 +258,14 @@ export const updateProfile = async (data) => {
     const endpoint = "/" + PATH_PROFILE + "/";
     const response = await apiClient.put(endpoint);
 
-    if (response == 200) {
-      return true;
-    }
+    return response;
+
   } catch (error) {
     console.error(
       "Error updating user profile : ",
       error.response ? error.response.data : error.message
     );
-    return false;
+    return response;
   }
 };
 
@@ -339,6 +307,25 @@ export const saveInterviewQuestions = async (categoryName, questions) => {
     return false;
   }
 };
+
+export const deleteInterviewCategory = async (categoryId) => {
+  try {
+    const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
+    const response = await apiClient.delete(endpoint, {categoryId});
+
+    if (response.status == 200) {
+      return true;
+    }
+
+  } catch (error) {
+    console.error(
+      "Error while deleting Interview Category: ",
+      error.response ? error.response.data : error.message
+    );
+
+    return false;
+  }
+}
 
 // STAR Master APIs
 export const getStarMasterQuestion = async () => {
@@ -394,6 +381,152 @@ export const getProfile = async () => {
       "Error while getting user profile : ",
       error.response ? error.response.data : error.message
     );
-    return false;
+    return undefined;
   }
 };
+
+//  data = {
+//     "email" : "test107@gmail.com",
+//     "password" : "123@abs"
+// }
+export const login = async (email, password) => {
+  try {
+    const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNIN;
+    const response = await apiClient.post(endpoint, { email, password });
+
+    if (response.status == 200) {
+      const token = response.data.authorization;
+
+      if (token) {
+        await storeTokenSecurely(token);
+        console.log("Token stored successfully");
+      } else {
+        console.error("Token not received");
+      }
+    }
+    return response;
+  } catch (error) {
+    console.error(
+      "Error while login : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
+};
+
+export const signup = async (
+  email,
+  password,
+  givenName,
+  familyName,
+  userName
+) => {
+  const signupData = {
+    email,
+    password,
+    givenName,
+    familyName,
+    userName,
+  };
+
+  try {
+    const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNUP;
+    const response = await apiClient.get(endpoint, signupData);
+
+    if (response.status == 201) {
+      const token = response.data.authorization;
+
+      if (token) {
+        await storeTokenSecurely(token);
+        console.log("Token stored successfully");
+      } else {
+        console.error("Token not received");
+      }
+    }
+
+    return response;
+
+  } catch (error) {
+    console.error(
+      "Error during signup:",
+      error.response ? error.response.data : error.message
+    );
+  }
+};
+
+export const verifyEmail = async (email) => {
+  try {
+    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_OTP;
+    const response = await apiClient.get(endpoint, { email });
+
+    // look for code 200
+    return response;
+
+  } catch (error) {
+    console.error(
+      "Error while verifyEmail : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
+}
+
+export const verifyOTP = async (email, otp) => {
+  try {
+    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_OTP;
+    const response = await apiClient.post(endpoint, { email, otp });
+
+    // look for code 200
+    return response;
+
+  } catch (error) {
+    console.error(
+      "Error while verifyOTP : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
+}
+
+export const resetPassword = async (email, password) => {
+  try {
+    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_RESET;
+    const response = await apiClient.post(endpoint, { email, password });
+
+    // look for code 200
+    return response;
+
+  } catch (error) {
+    console.error(
+      "Error while resetPassword : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
+}
+
+export const createPassword = async (password) => {
+
+  try {
+    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_RESET;
+    const response = await apiClient.post(endpoint, { email, password });
+  
+    if(response.status == 200){
+      return true;
+    }
+  } catch (error) {
+
+    console.error(
+      "Error while createPassword : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return false;
+    
+  }
+
+}
