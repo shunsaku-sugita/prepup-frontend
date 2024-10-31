@@ -21,15 +21,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
+    alignItems: 'center',
     justifyContent: "flex-start",
     marginLeft: 10,
+    columnGap: 6,
   },
   image: {
-    width: 24,
-    height: 24,
+    width: 22,
+    height: 22,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 18,
     color: "white",
   },
   userNameText: {

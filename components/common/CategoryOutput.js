@@ -1,13 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Greeting from "./Greeting";
-import CategoryCard from "./CategoryCard";
+import CategoryCardCustom from "./CategoryCardCustom";
+import CategoryCardDefault from "./CategoryCardDefault";
 import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 import { getInterviewCategory, getProfile } from "../services/api";
 import { AppContext } from "@/store/app-context";
+import Svg, { Defs, Rect, LinearGradient, Stop } from 'react-native-svg';
 
 // Custom Bottom Tabs Component
 const CustomBottomTabs = () => {
@@ -66,53 +68,172 @@ const CategoryOutput = () => {
     loadCategories();
   }, []);
 
+  // default category card
+  const renderDefaultCategoryCard = ({ item, index }) => (
+    <View style={styles.defaultCardContainer}>
+      <CategoryCardDefault
+        index={index}
+        categoryName={item.categoryName}
+        categories={categories}
+        setCategories={setCategories}
+      />
+    </View>
+  );
+
+  // custom category card
+  const renderCustomCategoryCard = ({ item, index }) => (
+    <View style={styles.customCardContainer}>
+      <CategoryCardCustom
+        index={index}
+        categoryName={item.categoryName}
+        categories={categories}
+        setCategories={setCategories}
+      />
+    </View>
+  );
+
   return (
-    <>
+    <View style={styles.rootContainer}>
+      {/* header bar */}
       <View style={styles.headerContainer}>
-        <Greeting userName={userName} />
-        <HeaderRightIcons color="black" />
+        <Svg height="100%" width="100%">
+          <Defs>
+            <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
+              <Stop offset="0" stopColor="#1E22ED" />
+              <Stop offset="1" stopColor="#C5D2FF" />
+            </LinearGradient>
+          </Defs>
+          <Rect width="100%" height="100%" fill="url(#grad)" rx="16" ry="16" />
+          <View style={styles.headerInnerContainer}>
+            <Greeting userName={userName} />
+            <HeaderRightIcons color="black" />
+          </View>
+        </Svg>
       </View>
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <TitleText text="Choose Category:" />
-        </View>
-        <FlatList
-          data={categories}
-          keyExtractor={(item) => item.categoryName}
-          numColumns={2}
-          renderItem={({ item, index }) => (
-            <View style={styles.cardContainer}>
-              <CategoryCard
-                index={index}
-                categoryName={item.categoryName}
-                categories={categories}
-                setCategories={setCategories}
-              />
+
+      {/* default category cards (wide) */}
+      <FlatList
+        data={categories}
+        keyExtractor={(item) => item.categoryName}
+        ListHeaderComponent={
+          <View style={styles.upperTextContainer}>
+            <View style={styles.title}>
+              <TitleText text="Choose a category to practice:" />
             </View>
-          )}
-        />
-      </View>
+          </View>
+        }
+        renderItem={renderDefaultCategoryCard}
+        // custom category cards (swipable)
+        ListFooterComponent={
+          <View style={styles.bottomCardContainer}>
+            <View style={styles.title}>
+              <TitleText text="Custom categories:" />
+            </View>
+            <FlatList
+              data={categories}
+              keyExtractor={(item) => item.categoryName}
+              renderItem={renderCustomCategoryCard}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+        }
+      />
       <CustomBottomTabs />
-    </>
+    </View>
+
+        /* <View style={styles.headerContainer}>
+          <Svg height="100%" width="100%">
+            <Defs>
+              <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
+                <Stop offset="0" stopColor="#1E22ED" />
+                <Stop offset="1" stopColor="#C5D2FF" />
+              </LinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill="url(#grad)" rx="16" ry="16" />
+            <View style={styles.headerInnerContainer}>
+              <Greeting userName={userName} />
+              <HeaderRightIcons color="black" />
+            </View>
+          </Svg>
+        </View>
+
+        <ScrollView>
+          {/* default category cards (wide) */
+          /* <View style={styles.upperTextContainer}>
+            <View style={styles.title}>
+              <TitleText text="Choose a category to practice:" />
+            </View>
+            <FlatList
+              data={categories}
+              keyExtractor={(item) => item.categoryName}
+              renderItem={({ item, index }) => (
+                <View style={styles.defaultCardContainer}>
+                  <CategoryCardDefault
+                    index={index}
+                    categoryName={item.categoryName}
+                    categories={categories}
+                    setCategories={setCategories}
+                  />
+                </View>
+              )}
+            />
+          </View> */
+          /* custom category cards (swipable) */
+          /* <View style={styles.bottomContainer}>
+            <View style={styles.title}>
+              <TitleText text="Custom categories:" />
+            </View>
+            <FlatList
+              data={categories}
+              keyExtractor={(item) => item.categoryName}
+              renderItem={({ item, index }) => (
+                <View style={styles.customCardContainer}>
+                  <CategoryCardCustom
+                    index={index}
+                    categoryName={item.categoryName}
+                    categories={categories}
+                    setCategories={setCategories}
+                  />
+                </View>
+              )}
+              horizontal={true}
+            />
+          </View>
+        </ScrollView>
+        <CustomBottomTabs />
+      </View> */
   );
 };
 
 export default CategoryOutput;
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    width: "100%",
+    justifyContent: 'center',
+  },
   headerContainer: {
-    marginTop: 56,
-    marginHorizontal: 20,
+    flex: .75,
+    marginTop: 58,
+    marginHorizontal: 18,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 6,
-    paddingVertical: 4,
-    backgroundColor: "blue",
-    borderRadius: 16,
   },
-  container: {
-    flex: 1,
+  headerInnerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  upperTextContainer: {
+    flex: 6,
+    justifyContent: 'center',
+    paddingHorizontal: 18,
+    marginTop: 6,
+  },
+  bottomCardContainer: {
+    flex: 5,
     paddingHorizontal: 18,
   },
   title: {
@@ -126,9 +247,9 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
+    paddingHorizontal: 4,
     paddingVertical: 12,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   iconContainer: {
     borderWidth: 2,
@@ -144,10 +265,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.4,
   },
-  cardContainer: {
+  defaultCardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 2,
-    marginBottom: 8,
+    marginHorizontal: 18,
+  },
+  customCardContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
