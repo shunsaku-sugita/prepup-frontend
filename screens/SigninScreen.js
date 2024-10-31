@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { login } from "@/components/services/api";
 // import {
 //   GoogleSignin,
 //   GoogleSigninButton,
@@ -41,7 +42,7 @@ const SigninScreen = () => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
-  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
+  const [emailError, setEmailError] = useState("Incorrect email.");
 
   // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
@@ -66,12 +67,19 @@ const SigninScreen = () => {
     setPasswordIsValid(isPasswordValid);
   }, [enteredPassword]);
 
-  const signInHandler = () => {
+  const signInHandler = async () => {
     setIsSubmitted(true);
 
     if (emailIsValid && passwordIsValid) {
-      // use sign-in API later
-      navigation.navigate("Category");
+      // use log-in API
+
+      const response = await login(enteredEmail, enteredPassword);
+      console.log("Response: " + response);
+      if (response?.status == 200) {
+        navigation.navigate("Category");
+      } else {
+        console.log("error");
+      }
     }
   };
 
@@ -111,7 +119,7 @@ const SigninScreen = () => {
         {!emailIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
             <Ionicons name="alert-circle-outline" color="red" size={20} />
-            <Text style={styles.alertText}>Incorrect email.</Text>
+            <Text style={styles.alertText}>{emailError}</Text>
           </View>
         )}
       </View>
@@ -120,25 +128,7 @@ const SigninScreen = () => {
       <View style={styles.formContainer}>
         <View style={styles.titleQuestionContainer}>
           <Text style={styles.fieldLabel}>Password *</Text>
-          <TouchableOpacity
-            style={styles.questionIcon}
-            onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
-          >
-            <Image source={require("../assets/images/question-icon.png")} />
-          </TouchableOpacity>
         </View>
-        {/* Tooltip */}
-        {showPasswordTooltip && (
-          <View style={styles.tooltipWrapper}>
-            <View style={styles.triangle} />
-            <View style={styles.tooltipContainer}>
-              <Text style={styles.tooltipText}>
-                Minimum of 8 characters with a mix of letters, numbers, and
-                symbols.
-              </Text>
-            </View>
-          </View>
-        )}
         <View
           style={[
             !passwordIsValid && isSubmitted
