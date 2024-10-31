@@ -13,6 +13,9 @@ import {
   const EditProfileScreen = () => {
     const navigation = useNavigation(); // Get the navigation object
   
+    // Mock list of existing usernames (this should be replaced with a backend API call)
+    const existingUsernames = ["juangarcia", "admin", "testuser"];
+  
     const [firstName, setFirstName] = useState("Juan");
     const [lastName, setLastName] = useState("Garcia");
     const [username, setUsername] = useState("juangarcia");
@@ -22,6 +25,7 @@ import {
     const [firstNameIsValid, setFirstNameIsValid] = useState(true);
     const [usernameIsValid, setUsernameIsValid] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isUsernameUnique, setIsUsernameUnique] = useState(true); // New state to track uniqueness
   
     // Validation functions
     const validateFirstName = (name) => /^[a-zA-Z]+$/.test(name.trim());
@@ -34,13 +38,14 @@ import {
   
     useEffect(() => {
       setUsernameIsValid(validateUsername(username));
+      setIsUsernameUnique(!existingUsernames.includes(username)); // Check if username exists
     }, [username]);
   
     const handleSave = () => {
       setIsSubmitted(true);
   
       // Check all validations
-      if (!firstNameIsValid || !usernameIsValid) {
+      if (!firstNameIsValid || !usernameIsValid || !isUsernameUnique) {
         Alert.alert("Invalid inputs", "Please fix the highlighted fields.");
         return;
       }
@@ -54,7 +59,6 @@ import {
   
     return (
       <View style={styles.container}>
-  
         <View style={styles.mainContents}>
           {/* First and Last Name */}
           <View style={styles.nameHorizontalContainer}>
@@ -79,7 +83,7 @@ import {
               {!firstNameIsValid && isSubmitted && (
                 <View style={styles.alertContainer}>
                   <Ionicons name="alert-circle-outline" color="red" size={20} />
-                  <Text style={styles.alertText}>Please type one word with letters.</Text>
+                  <Text style={styles.alertText}>First name is required</Text>
                 </View>
               )}
             </View>
@@ -103,7 +107,7 @@ import {
             </Text>
             <View
               style={
-                !usernameIsValid && isSubmitted
+                (!usernameIsValid || !isUsernameUnique) && isSubmitted
                   ? styles.fieldAlert
                   : styles.emailField
               }
@@ -118,7 +122,13 @@ import {
             {!usernameIsValid && isSubmitted && (
               <View style={styles.alertContainer}>
                 <Ionicons name="alert-circle-outline" color="red" size={20} />
-                <Text style={styles.alertText}>This field cannot be left blank.</Text>
+                <Text style={styles.alertText}>Username is required</Text>
+              </View>
+            )}
+            {!isUsernameUnique && isSubmitted && (
+              <View style={styles.alertContainer}>
+                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Text style={styles.alertText}>Username already exists. Please choose another one.</Text>
               </View>
             )}
           </View>
