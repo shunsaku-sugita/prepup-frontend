@@ -85,7 +85,7 @@ export default function App() {
                 ),
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="Flashcard"
               component={QuizStarterScreen}
               options={{
@@ -101,7 +101,7 @@ export default function App() {
                   />
                 ),
               }}
-            />
+            /> */}
             <Stack.Screen
               name="InterviewSimulator"
               component={InterviewSimulatorScreen}

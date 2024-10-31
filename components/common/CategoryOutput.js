@@ -101,13 +101,15 @@ export default CategoryOutput;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    marginTop: 50,
+    marginTop: 56,
+    marginHorizontal: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: "#ccc",
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    backgroundColor: "blue",
+    borderRadius: 16,
   },
   container: {
     flex: 1,
