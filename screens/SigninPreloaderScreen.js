@@ -19,27 +19,11 @@ const SigninPreloaderScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require("../assets/images/img.png")} />
-        <TitleText text="SignIn Preloader" />
+        <Image
+          source={require("../assets/images/logo-color.png")}
+          style={styles.image}
+        />
       </View>
-
-      {/* <WideButton
-        title="Sign In"
-        color="white"
-        onPress={() => navigation.navigate("SignIn-second")}
-      />
-      <TouchableOpacity
-        style={styles.googleButton}
-        // onPress={}
-      >
-        <Text style={styles.googleButtonText}>Continue with Google</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.createAccountButton}
-        onPress={() => navigation.navigate("Registration")}
-      >
-        <Text style={styles.createButtonText}>Create an Account</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -56,25 +40,10 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   imageContainer: {
-    marginBottom: 50,
+    // marginBottom: 50,
   },
-  // googleButton: {
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   backgroundColor: "#ddd",
-  //   borderRadius: 6,
-  //   padding: 10,
-  //   width: 340,
-  // },
-  // googleButtonText: {
-  //   fontSize: 16,
-  //   fontWeight: "bold",
-  // },
-  // createAccountButton: {
-  //   marginTop: 10,
-  // },
-  // createButtonText: {
-  //   fontSize: 16,
-  //   color: "blue",
-  // },
+  image: {
+    width: 130,
+    height: 130,
+  },
 });
