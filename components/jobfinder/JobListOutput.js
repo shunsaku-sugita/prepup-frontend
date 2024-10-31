@@ -13,8 +13,6 @@ import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";
 import JobFilterLocationItem from "./JobFilterLocationItem";
 import JobSearchBar from "./JobSearchBar";
-import Toast from 'react-native-toast-message';
-import {toastConfig} from './ToastComponent'
 import JobFilterTags from './JobFilterTags';
 import JobDetailsModal from "./JobDetailsModal";
 import {
@@ -25,6 +23,8 @@ import {
   fetchJobsByKeyword,
 } from '../services/api';
 import JobCard from "./JobCard";
+import Toast from 'react-native-toast-message';
+import { toastConfig } from './ToastComponent';
 
 const jobListOutput = () => {
   const [filterType, setFilterType] = useState(1);
@@ -149,6 +149,7 @@ const jobListOutput = () => {
           text1: 'Job removed from saved jobs',
           text2: '',
           position: 'top',
+          autoHide: true,
           visibilityTime: 3000,
         });
       } else {
@@ -166,6 +167,7 @@ const jobListOutput = () => {
           text1: 'Job added to saved jobs',
           text2: '',
           position: 'top',
+          autoHide: true,
           visibilityTime: 3000,
         });
       }
@@ -191,9 +193,6 @@ const jobListOutput = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Add the Toast configuration */}
-      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
-
       {/* JobSearchBar */}
       <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {/* JobFilterBar */}
@@ -239,6 +238,9 @@ const jobListOutput = () => {
           </View>
         </View>
       </Modal>
+
+      {/* Move Toast to the bottom of the component tree */}
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };
