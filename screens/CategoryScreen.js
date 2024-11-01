@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import CategoryOutput from "../components/common/CategoryOutput";
+import { Colors } from "@/constants/Colors";
 
 const CategoryScreen = () => {
   return (
@@ -15,7 +16,7 @@ export default CategoryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
   },
   text: {
     fontSize: 24,

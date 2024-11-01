@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Accordion } from "@/components/ui/accordion";
 import StarQuizFeedbackCard from "./StarQuizFeedbackCard";
+import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
   const [situationFeedbackComment, setSituationFeedbackComment] = useState("");
@@ -25,21 +26,25 @@ const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
             value="a"
             titleText="Situation"
             contentText={situationFeedbackComment}
+            backgroundColorStyle={Colors.defaultYellow}
           />
           <StarQuizFeedbackCard
             value="b"
             titleText="Task"
             contentText={taskFeedbackComment}
+            backgroundColorStyle={Colors.defaultRed}
           />
           <StarQuizFeedbackCard
             value="c"
             titleText="Action"
             contentText={actionFeedbackComment}
+            backgroundColorStyle={Colors.defaultBlue}
           />
           <StarQuizFeedbackCard
             value="d"
             titleText="Result"
             contentText={resultFeedbackComment}
+            backgroundColorStyle={Colors.onPressBeige}
           />
         </Accordion>
       </ScrollView>
@@ -52,15 +57,12 @@ export default StarQuizFeedbackAccordions;
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 60,
   },
   accordionContainer: {
     width: 340,
-    marginTop: 20,
+    // marginTop: 20,
     marginHorizontal: 10,
-    rowGap: 15,
+    rowGap: 12,
   },
 });

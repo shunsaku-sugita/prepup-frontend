@@ -11,6 +11,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { login } from "@/components/services/api";
+import { Colors } from "@/constants/Colors";
 // import {
 //   GoogleSignin,
 //   GoogleSigninButton,
@@ -86,13 +87,14 @@ const SigninScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require("../assets/images/img.png")} />
+        <Image source={require("../assets/images/signin-background.png")} style={styles.backgroundImage} />
+        <Image source={require("../assets/images/logo-color.png")} style={styles.logoImage} />
       </View>
 
       {/* email field */}
       <View style={styles.formContainer}>
-        <View style={styles.titleQuestionContainer}>
-          <Text style={styles.fieldLabel}>Email *</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.fieldLabel}>Email{" "}<Text style={styles.astarisk}>*</Text></Text>
         </View>
         <View
           style={[
@@ -101,13 +103,13 @@ const SigninScreen = () => {
               : styles.emailField,
             isEmailFocused && {
               borderWidth: 2,
-              borderColor: "blue",
+              borderColor: Colors.defaultBlue,
             },
           ]}
         >
           <TextInput
             placeholder="Enter your email adddress"
-            placeholderTextColor={"#6f6f6f"}
+            placeholderTextColor={Colors.placeHolderTextGray}
             keyboardType="email-address"
             autoCapitalize="none"
             value={enteredEmail}
@@ -118,7 +120,7 @@ const SigninScreen = () => {
         </View>
         {!emailIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
-            <Ionicons name="alert-circle-outline" color="red" size={20} />
+            <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
             <Text style={styles.alertText}>{emailError}</Text>
           </View>
         )}
@@ -126,8 +128,8 @@ const SigninScreen = () => {
 
       {/* password field */}
       <View style={styles.formContainer}>
-        <View style={styles.titleQuestionContainer}>
-          <Text style={styles.fieldLabel}>Password *</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
         </View>
         <View
           style={[
@@ -136,13 +138,13 @@ const SigninScreen = () => {
               : styles.passwordField,
             isPasswordFocused && {
               borderWidth: 2,
-              borderColor: "blue",
+              borderColor: Colors.defaultBlue,
             },
           ]}
         >
           <TextInput
             placeholder="Enter a password"
-            placeholderTextColor={"#6f6f6f"}
+            placeholderTextColor={Colors.placeHolderTextGray}
             keyboardType="default"
             autoCapitalize="none"
             secureTextEntry={passwordIsSecure}
@@ -164,7 +166,7 @@ const SigninScreen = () => {
         </View>
         {!passwordIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
-            <Ionicons name="alert-circle-outline" color="red" size={20} />
+            <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
             <Text style={styles.alertText}>Incorrect password.</Text>
           </View>
         )}
@@ -186,10 +188,10 @@ const SigninScreen = () => {
           <Text style={styles.googleButtonText}>Continue with Google</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.simpleButton}
+          style={styles.forgetPasswordButton}
           onPress={() => navigation.navigate("ResetPW_request")}
         >
-          <Text style={styles.simpleButtonText}>Forget Password</Text>
+          <Text style={styles.forgetPasswordButtonText}>Forget Password</Text>
         </TouchableOpacity>
         <View style={styles.signupTextContainer}>
           <Text style={styles.signupText}>Don't have an account?</Text>
@@ -199,7 +201,7 @@ const SigninScreen = () => {
           >
             <Text style={styles.signupLinkText}>Sign up</Text>
           </TouchableOpacity>
-          <Text>here</Text>
+          <Text style={styles.signupText}>here</Text>
         </View>
       </View>
 
@@ -227,70 +229,53 @@ export default SigninScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
     // paddingBottom: 10,
   },
   imageContainer: {
-    marginBottom: 40,
+    marginTop: 70,
+    marginBottom: 10,
+    width: 140,
+    height: 140,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  backgroundImage: {
+    position: "absolute",
+  },
+  logoImage: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+    marginBottom: 120,
   },
   formContainer: {
     width: 340,
     rowGap: 4,
   },
-  titleQuestionContainer: {
+  titleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  questionIcon: {
-    marginBottom: 2,
+  fieldLabel: {
+    fontWeight: 'bold',
   },
-  tooltipWrapper: {
-    position: "absolute",
-    top: 25,
-    right: 5,
-    alignItems: "center",
-    zIndex: 10,
-  },
-  triangle: {
-    width: 0,
-    height: 0,
-    left: 90,
-    borderLeftWidth: 15,
-    borderRightWidth: 5,
-    borderBottomWidth: 12,
-    borderStyle: "solid",
-    backgroundColor: "transparent",
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#333",
-  },
-  tooltipContainer: {
-    backgroundColor: "#333",
-    padding: 8,
-    borderRadius: 5,
-    maxWidth: 220,
-    marginTop: -5, // slight overlap to connect the triangle with the tooltip box
-  },
-  tooltipText: { color: "#fff", fontSize: 14 },
-  passwordField: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
+  astarisk: {
+    color: Colors.defaultRed,
   },
   emailField: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -300,8 +285,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: Colors.errorRed,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -310,9 +296,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -324,7 +311,7 @@ const styles = StyleSheet.create({
     columnGap: 2,
   },
   alertText: {
-    color: "red",
+    color: Colors.errorRed,
     fontWeight: 500,
   },
   buttonsContainer: {
@@ -336,8 +323,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    columnGap: 8,
-    backgroundColor: "#ddd",
+    columnGap: 10,
+    backgroundColor: "#F2F2F3",
+    borderWidth: 2,
+    borderColor: "#F2F2F3",
     borderRadius: 6,
     padding: 10,
     width: 340,
@@ -346,12 +335,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  simpleButton: {
+  forgetPasswordButton: {
     marginVertical: 15,
   },
-  simpleButtonText: {
+  forgetPasswordButtonText: {
     fontSize: 16,
-    color: "blue",
+    fontWeight: 'bold',
+    color: Colors.defaultBlue,
   },
   signupTextContainer: {
     flexDirection: "row",
@@ -360,13 +350,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signupText: {
-    color: "#454545",
+    color: Colors.placeHolderTextGray,
   },
   signupLinkButton: {
     // backgroundColor: "#ddd",
   },
   signupLinkText: {
-    color: "black",
+    color: Colors.lightBlack,
     fontWeight: "600",
   },
   devButtonsContainer: {

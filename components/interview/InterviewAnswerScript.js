@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { Colors } from "@/constants/Colors";
 
 const InterviewAnswerScript = ({ transcription }) => {
   return (
@@ -21,8 +22,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 12,
-    borderColor: "#eee",
-    backgroundColor: "#eee",
+    borderColor: Colors.defaultBeige,
     marginBottom: 25,
   },
   textContainer: {

@@ -2,6 +2,7 @@ import { StyleSheet, View, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "expo-router";
 import TitleText from "@/components/common/TitleText";
+import { Colors } from "@/constants/Colors";
 
 const SplashScreen = () => {
   const [showFirstLogo, setShowFirstLogo] = useState(true);
@@ -13,7 +14,7 @@ const SplashScreen = () => {
     }, 2000);
 
     const secondLogoTimer = setTimeout(() => {
-      navigataion.navigate("SignIn-preloader");
+      navigataion.navigate("Preloader");
     }, 4000);
 
     return () => {
@@ -46,7 +47,7 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
   },

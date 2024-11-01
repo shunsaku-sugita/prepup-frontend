@@ -12,6 +12,7 @@ import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/toast/ToastComponent";
 import { getProfile } from "@/components/services/api"; // Ensure this path is correct
@@ -130,7 +131,7 @@ const ProfileScreen = () => {
           </View>
           <TouchableOpacity 
             style={styles.editButton}
-            onPress={() => navigation.navigate("CreateNewPW")}>
+            onPress={() => navigation.navigate("EditPW_ChangePW")}>
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
           </TouchableOpacity>
@@ -232,7 +233,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: Colors.defaultBeige,
   },
   sectionContainer: {
     borderRadius: 8,

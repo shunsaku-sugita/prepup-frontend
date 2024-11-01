@@ -4,6 +4,7 @@ import HearableQuestions from "../common/HearableQuestions";
 import ProgressBar from "../common/ProgressBar";
 import { AppContext } from "@/store/app-context";
 import { useContext } from "react";
+import { Colors } from "@/constants/Colors";
 
 const InterviewContentsOutput = () => {
   const {
@@ -48,7 +49,7 @@ export default InterviewContentsOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,

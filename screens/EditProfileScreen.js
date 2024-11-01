@@ -9,6 +9,7 @@ import {
   import WideButton from "@/components/common/WideButton";
   import { Ionicons } from "@expo/vector-icons";
   import { useNavigation } from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
   import Toast from 'react-native-toast-message';
   import { toastConfig } from "@/components/toast/ToastComponent";
   import { updateProfile, getProfile } from "@/components/services/api";
@@ -207,7 +208,7 @@ import {
     container: {
       flex: 1,
       paddingTop: 16,
-      backgroundColor: "#fff",
+      backgroundColor: Colors.defaultBeige,
     },
     title: {
       fontSize: 20,

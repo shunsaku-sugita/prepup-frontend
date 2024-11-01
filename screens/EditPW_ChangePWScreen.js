@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
 
-const ResetPW_CreatePWScreen = () => {
+const EditPW_ChangePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
   const [passwordIsValid, setPasswordIsValid] = useState(false);
 
@@ -201,39 +201,16 @@ const ResetPW_CreatePWScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Confirm"
+          title="Save"
           color="white"
-          // need to check if user's info matches to our database
-          onPress={ConfirmHandler}
+          // onPress={} to save
         />
-        <TouchableOpacity
-          style={styles.simpleButton}
-          onPress={() => {
-            Alert.alert(
-              "Discard password changes?",
-              "Your current password will not be changed.",
-              [
-                {
-                  text: "Cancel",
-                },
-                {
-                  text: "Continue",
-                  onPress: () => {
-                    navigation.navigate("ResetPW_request");
-                  },
-                },
-              ]
-            );
-          }}
-        >
-          <Text style={styles.simpleButtonText}>Cancel</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default ResetPW_CreatePWScreen;
+export default EditPW_ChangePWScreen;
 
 const styles = StyleSheet.create({
   container: {
