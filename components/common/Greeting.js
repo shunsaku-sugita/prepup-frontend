@@ -1,9 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 
 const Greeting = ({ userName }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Hello {userName ? userName : "User"}</Text>
+      <Image
+        style={styles.image}
+        source={require("../../assets/images/logo-color.png")}
+      />
+      <Text style={styles.titleText}>
+        Hello,{" "}
+        <Text style={styles.userNameText}>{userName ? userName : "User"}!</Text>
+      </Text>
     </View>
   );
 };
@@ -13,10 +20,21 @@ export default Greeting;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    marginLeft: 18,
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: "flex-start",
+    marginLeft: 10,
+    columnGap: 6,
+  },
+  image: {
+    width: 22,
+    height: 22,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 18,
+    color: "white",
+  },
+  userNameText: {
+    fontWeight: "600",
   },
 });

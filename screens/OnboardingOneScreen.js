@@ -3,6 +3,7 @@ import React from "react";
 import WideButton from "@/components/common/WideButton";
 import TitleText from "@/components/common/TitleText";
 import { useNavigation } from "expo-router";
+import { Colors } from "@/constants/Colors";
 
 const OnboardingOne = () => {
   const navigation = useNavigation();
@@ -10,7 +11,7 @@ const OnboardingOne = () => {
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
-          <Image source={require("../assets/images/img.png")} />
+          <Image source={require("../assets/images/onboarding-one.png")} />
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Interview Simulator" />
@@ -46,7 +47,7 @@ export default OnboardingOne;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   imageContainer: {
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 80,
   },
   carouselCircles: {
@@ -70,13 +71,13 @@ const styles = StyleSheet.create({
   circleActive: {
     width: 16,
     height: 16,
-    backgroundColor: "#aaa",
+    backgroundColor: Colors.onPressBlue,
     borderRadius: 50,
   },
   circle: {
     width: 16,
     height: 16,
-    backgroundColor: "#ddd",
+    backgroundColor: Colors.disabledBlue,
     borderRadius: 50,
   },
   titleAndTextContainer: {
@@ -99,6 +100,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    color: "blue",
+    fontWeight: 'bold',
+    color: Colors.defaultBlue,
   },
 });

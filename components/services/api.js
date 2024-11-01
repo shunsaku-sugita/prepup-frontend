@@ -254,21 +254,45 @@ export const getInterviewCategory = async () => {
 // }
 // all fields are not required
 // and if you update occupation the interview question related to occupation will be updated
+
+// export const updateProfile = async (data) => {
+//   try {
+//     const endpoint = "/" + PATH_PROFILE + "/";
+//     const response = await apiClient.put(endpoint);
+
+//     return response;
+//   } catch (error) {
+//     console.error(
+//       "Error updating user profile : ",
+//       error.response ? error.response.data : error.message
+//     );
+//     return error.response || { data: { message: error.message } };
+//   }
+// };
+
 export const updateProfile = async (data) => {
   try {
     const endpoint = "/" + PATH_PROFILE + "/";
-    const response = await apiClient.put(endpoint);
+    console.log("Updating profile with data:", data); // Debugging line to confirm data structure
 
-    return response;
+    const response = await apiClient.put(endpoint, data);
 
+    if (response.status === 200) {
+      console.log("Profile updated successfully:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to update profile");
+    }
   } catch (error) {
     console.error(
       "Error updating user profile : ",
       error.response ? error.response.data : error.message
     );
-    return response;
+    return error.response ? error.response.data : { error: error.message };
   }
 };
+
+
 
 export const analyzeAnswer = async (answers) => {
   try {
@@ -317,7 +341,6 @@ export const deleteInterviewCategory = async (categoryId) => {
     if (response.status == 200) {
       return true;
     }
-
   } catch (error) {
     console.error(
       "Error while deleting Interview Category: ",
@@ -326,7 +349,7 @@ export const deleteInterviewCategory = async (categoryId) => {
 
     return false;
   }
-}
+};
 
 // STAR Master APIs
 export const getStarMasterQuestion = async () => {
@@ -447,7 +470,6 @@ export const signup = async (
     }
 
     return response;
-
   } catch (error) {
     console.error(
       "Error during signup:",
@@ -458,12 +480,12 @@ export const signup = async (
 
 export const verifyEmail = async (email) => {
   try {
-    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
+    const endpoint =
+      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
     const response = await apiClient.get(endpoint, { email });
 
     // look for code 200
     return response;
-
   } catch (error) {
     console.error(
       "Error while verifyEmail : ",
@@ -472,16 +494,16 @@ export const verifyEmail = async (email) => {
 
     return error;
   }
-}
+};
 
 export const verifyOTP = async (email, otp) => {
   try {
-    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
+    const endpoint =
+      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
     const response = await apiClient.post(endpoint, { email, otp });
 
     // look for code 200
     return response;
-
   } catch (error) {
     console.error(
       "Error while verifyOTP : ",
@@ -490,16 +512,16 @@ export const verifyOTP = async (email, otp) => {
 
     return error;
   }
-}
+};
 
 export const resetPassword = async (email, password) => {
   try {
-    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
+    const endpoint =
+      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
     const response = await apiClient.post(endpoint, { email, password });
 
     // look for code 200
     return response;
-
   } catch (error) {
     console.error(
       "Error while resetPassword : ",
@@ -508,26 +530,24 @@ export const resetPassword = async (email, password) => {
 
     return error;
   }
-}
+};
 
 export const createPassword = async (password) => {
-
   try {
-    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
+    const endpoint =
+      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
     const response = await apiClient.post(endpoint, { email, password });
 
     if (response.status == 200) {
       return true;
     }
   } catch (error) {
-
     console.error(
       "Error while createPassword : ",
       error.response ? error.response.data : error.message
     );
 
     return false;
-
   }
 
 }

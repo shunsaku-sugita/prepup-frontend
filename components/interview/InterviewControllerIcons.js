@@ -13,6 +13,7 @@ import VoiceRecordButton from "../interview/VoiceRecordButton";
 import InterviewAnswerScript from "./InterviewAnswerScript";
 import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
 import { analyzeAnswer } from "../services/api";
+import { Colors } from "@/constants/Colors";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -65,7 +66,7 @@ const InterviewControllerIcons = ({
 
       console.log("Starting recording...");
       const { recording } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
 
       // start countdown immediately
@@ -199,8 +200,8 @@ const InterviewControllerIcons = ({
       <View style={isRecording ? styles.micStopContainer : styles.micContainer}>
         <IconButton
           icon={isRecording ? "stop-sharp" : "mic"}
-          color="black"
-          size={isRecording ? 30 : 50}
+          color={isRecording ? Colors.errorRed : Colors.backgroundDarkGray}
+          size={isRecording ? 35 : 50}
           onPress={isRecording ? stopRecording : startRecording}
         />
       </View>
@@ -284,22 +285,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: Colors.disabledBlue,
     borderRadius: 50,
-    backgroundColor: "#ccc",
+    backgroundColor: Colors.disabledBlue,
     padding: 15,
   },
   micContainer: {
-    borderWidth: 12,
-    borderColor: "black",
-    borderRadius: 100,
-    padding: 30,
-  },
-  micStopContainer: {
-    borderWidth: 10,
-    borderColor: "black",
+    borderWidth: 15,
+    borderColor: Colors.successGreen,
     borderRadius: 100,
     padding: 35,
+  },
+  micStopContainer: {
+    borderWidth: 15,
+    borderColor: Colors.errorRed,
+    borderRadius: 100,
+    padding: 42,
   },
   buttonsContainer: {
     flex: 1,
@@ -315,7 +316,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: Colors.defaultBlue,
     borderRadius: 6,
     padding: 10,
     width: "65%",
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: Colors.defaultBlue,
     borderRadius: 6,
     padding: 10,
     width: "65%",
@@ -334,13 +335,14 @@ const styles = StyleSheet.create({
   listenText: {
     fontSize: 16,
     fontWeight: "bold",
+    color: Colors.defaultBlue,
   },
   nextButton: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: Colors.defaultBlue,
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: Colors.defaultBlue,
     borderRadius: 6,
     padding: 10,
     width: "65%",
@@ -348,9 +350,9 @@ const styles = StyleSheet.create({
   nextButtonDisabled: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: Colors.defaultBlue,
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: Colors.defaultBlue,
     borderRadius: 6,
     padding: 10,
     width: "65%",

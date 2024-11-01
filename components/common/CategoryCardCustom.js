@@ -1,11 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
 import { AppContext } from "../../store/app-context";
 import SmallButton from "./SmallButton";
 
-const CategoryCard = ({ index, categoryName, categories, setCategories }) => {
+const CategoryCardCustom = ({ index, categoryName, categories, setCategories }) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
@@ -58,58 +58,59 @@ const CategoryCard = ({ index, categoryName, categories, setCategories }) => {
 
   return (
     <View style={styles.cardContainer}>
-      <View>
-        <View style={styles.imageContainer}>
-          <Image source={require("../../assets/images/img.png")} />
-          {index >= 3 && (
-            <View style={styles.trashIconContainer}>
-              <Ionicons
-                name="trash"
-                color="white"
-                size={20}
-                style={styles.trashIcon}
-                onPress={() => deleteAlertHandler(index)}
-              />
-            </View>
-          )}
-        </View>
-        <View style={styles.cardBottom}>
-          <Text style={styles.categoryText}>
-            {categoryName ? categoryName : "My Occupation"}
-          </Text>
-          <SmallButton
-            title={categoryName ? "Start" : "Add"}
+      <View style={styles.imageContainer}>
+        <Image source={require("../../assets/images/img.png")} style={styles.image} />
+        <View style={styles.trashIconContainer}>
+          <Feather
+            name="trash"
             color="white"
-            onPress={() => startInterviewHandler(index)}
+            size={20}
+            style={styles.trashIcon}
+            onPress={() => deleteAlertHandler(index)}
           />
         </View>
+      </View>
+      <View style={styles.cardBottom}>
+        <View style={styles.textContainer}>
+          <Text style={styles.categoryText}>
+            {categoryName}
+          </Text>
+        </View>
+
+        <SmallButton
+          title="Start"
+          color="white"
+          onPress={() => startInterviewHandler(index)}
+        />
       </View>
     </View>
   );
 };
 
-export default CategoryCard;
+export default CategoryCardCustom;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    justifyContent: "center",
+    flex: 1,
+    // justifyContent: "center",
     alignItems: "center",
-    borderWidth: 2,
     borderRadius: 8,
-    margin: 8,
+    marginLeft: 4,
+    rowGap: 4,
+    // marginBottom: 14,
     minWidth: Platform.OS === "ios" ? 150 : 165,
-    backgroundColor: "white", // Ensure a background color is set
+    height: 230,
+    backgroundColor: "white",
     // shadow for android
-    elevation: 8,
+    elevation: 4,
     // shadow for iOS
     shadowColor: "black",
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 4,
-    shadowOpacity: 0.4,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
   },
   imageContainer: {
-    padding: 0,
-    minWidth: 150,
+    flex: 4,
   },
   trashIconContainer: {
     position: "absolute",
@@ -117,19 +118,27 @@ const styles = StyleSheet.create({
     padding: 17,
     borderWidth: 0.5,
     borderRadius: 50,
-    right: 8,
-    top: 6,
+    right: 10,
+    top: 8,
   },
   trashIcon: {
     position: "absolute",
-    right: 6.5,
-    top: 6.5,
+    right: 7,
+    top: 7,
   },
   cardBottom: {
-    padding: 5,
+    flex: 3.2,
+    padding: 6,
     paddingHorizontal: 0,
     justifyContent: "center",
-    minWidth: 150,
+    width: 150,
+  },
+  textContainer: {
+    paddingVertical: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 35,
+    marginTop:20,
   },
   categoryText: {
     fontSize: 16,

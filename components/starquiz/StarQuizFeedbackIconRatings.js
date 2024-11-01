@@ -1,7 +1,9 @@
 import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import TitleText from "../common/TitleText";
-import StarRating from "react-native-star-rating-widget";
+// import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
+import StarRatingDisplay from "./StarRatingDisplay";
+import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
   const [ratingStarNumber, setRatingStarNumber] = useState(0);
@@ -14,56 +16,39 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
 
   useEffect(() => {
     calcStarRating();
-    selectPrase();
-  }, []);
+  }, [averageScore]);
 
   const calcStarRating = () => {
-    if (averageScore < 10) {
-      setRatingStarNumber(0.5);
-    } else if (averageScore >= 10 && averageScore < 20) {
-      setRatingStarNumber(1);
-    } else if (averageScore >= 20 && averageScore < 30) {
-      setRatingStarNumber(1.5);
-    } else if (averageScore >= 30 && averageScore < 40) {
-      setRatingStarNumber(2);
-    } else if (averageScore >= 40 && averageScore < 50) {
-      setRatingStarNumber(2.5);
-    } else if (averageScore >= 50 && averageScore < 60) {
-      setRatingStarNumber(3);
-    } else if (averageScore >= 60 && averageScore < 70) {
-      setRatingStarNumber(3.5);
-    } else if (averageScore >= 70 && averageScore < 80) {
-      setRatingStarNumber(4);
-    } else if (averageScore >= 80 && averageScore < 90) {
-      setRatingStarNumber(4.5);
-    } else if (averageScore >= 90 && averageScore <= 100) {
-      setRatingStarNumber(5);
-    }
-    return;
+    let stars = 0;
+    if (averageScore < 10) stars = 0.5;
+    else if (averageScore >= 10 && averageScore < 20) stars = 1;
+    else if (averageScore >= 20 && averageScore < 30) stars = 1.5;
+    else if (averageScore >= 30 && averageScore < 40) stars = 2;
+    else if (averageScore >= 40 && averageScore < 50) stars = 2.5;
+    else if (averageScore >= 50 && averageScore < 60) stars = 3;
+    else if (averageScore >= 60 && averageScore < 70) stars = 3.5;
+    else if (averageScore >= 70 && averageScore < 80) stars = 4;
+    else if (averageScore >= 80 && averageScore < 90) stars = 4.5;
+    else if (averageScore >= 90 && averageScore <= 100) stars = 5;
+
+    setRatingStarNumber(stars);
+    selectPhrase(stars);
   };
 
   // 0-59%: Keep Trying / 60-89%: Well done / 90-100%: Impressive work
-  const selectPrase = () => {
-    if (ratingStarNumber <= 3) {
-      setRatingPhrase(ratingPhrases[0]);
-    } else if (ratingStarNumber >= 3.5 && ratingStarNumber <= 4.5) {
-      setRatingPhrase(ratingPhrases[1]);
-    } else if (ratingStarNumber === 5) {
-      setRatingPhrase(ratingPhrases[2]);
-    }
-    return;
+  const selectPhrase = (stars) => {
+    if (stars < 3.5) setRatingPhrase(ratingPhrases[0]);
+    else if (stars >= 3.5 && stars < 5) setRatingPhrase(ratingPhrases[1]);
+    else if (stars === 5) setRatingPhrase(ratingPhrases[2]);
   };
 
   return (
     <View style={styles.container}>
-      <TitleText text={ratingPhrase} />
+      <View style={styles.phraseContainer}>
+        <TitleText text={ratingPhrase} />
+      </View>
       <View>
-        <StarRating
-          // required props: rating and onChange
-          rating={ratingStarNumber}
-          onChange={() => setRatingStarNumber(ratingStarNumber)}
-          color="black"
-        />
+        <StarRatingDisplay rating={ratingStarNumber} />
       </View>
     </View>
   );
@@ -73,9 +58,13 @@ export default StarQuizFeedbackIconRatings;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
+    flex: 3,
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
-    justifyContent: "center",
+    rowGap: 30,
+    marginTop: 20,
   },
+  phraseContainer: {
+    // marginTop: 30,
+  }
 });

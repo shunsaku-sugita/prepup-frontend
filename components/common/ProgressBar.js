@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import * as Progress from "react-native-progress";
+import { Colors } from "@/constants/Colors";
 
 const ProgressBar = ({ currentIndexNum, totalNum }) => {
   const currentIndex = Number(currentIndexNum + 1);
@@ -12,9 +13,9 @@ const ProgressBar = ({ currentIndexNum, totalNum }) => {
       <Progress.Bar
         progress={currentIndex / totalNumber} // sets the progress by %
         width={300}
-        height={16}
-        color="black"
-        unfilledColor="#eee"
+        height={12}
+        color={Colors.onPressBlue}
+        unfilledColor={Colors.disabledBlue}
         borderWidth={0}
         borderRadius={40}
       />

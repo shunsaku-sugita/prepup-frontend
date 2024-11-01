@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 // import { saveInterviewQuestions } from "../services/api";
 
 const CreateCategoryModal = ({
@@ -66,7 +67,7 @@ const CreateCategoryModal = ({
         <View style={styles.closeIcon}>
           <Ionicons
             name="close"
-            color="black"
+            color={Colors.textLightDarkGray}
             size={28}
             onPress={() => setModalVisible(false)}
           />
@@ -80,7 +81,7 @@ const CreateCategoryModal = ({
           onChangeText={textInputHandler}
           value={typedText}
           placeholder="Enter a category title."
-          placeholderTextColor="gray"
+          placeholderTextColor={Colors.placeHolderTextGray}
           keyboardType="default"
         />
         {/* validation (in progress) */}
@@ -140,11 +141,11 @@ const styles = StyleSheet.create({
   upperText: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 6,
   },
   textInput: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 6,
+    borderColor: Colors.textLightDarkGray,
     width: 340,
     height: 50,
     marginTop: 6,

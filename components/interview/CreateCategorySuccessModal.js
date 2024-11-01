@@ -4,6 +4,7 @@ import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 
 const CreateCategorySuccessModal = ({
   categories,
@@ -27,7 +28,7 @@ const CreateCategorySuccessModal = ({
           />
         </View>
         <View style={styles.iconWrapper}>
-          <Ionicons name="checkmark-circle" color="gray" size={50} />
+          <Ionicons name="checkmark-circle" color={Colors.successGreen} size={50} />
         </View>
         <View style={styles.textWrapper}>
           <TitleText text="Category board has been successfully added!" />

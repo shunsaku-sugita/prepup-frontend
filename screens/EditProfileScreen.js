@@ -9,25 +9,44 @@ import {
   import WideButton from "@/components/common/WideButton";
   import { Ionicons } from "@expo/vector-icons";
   import { useNavigation } from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
+  import Toast from 'react-native-toast-message';
+  import { toastConfig } from "@/components/toast/ToastComponent";
+  import { updateProfile, getProfile } from "@/components/services/api";
   
   const EditProfileScreen = () => {
-    const navigation = useNavigation(); // Get the navigation object
+    const navigation = useNavigation();
   
-    const [firstName, setFirstName] = useState("Juan");
-    const [lastName, setLastName] = useState("Garcia");
-    const [username, setUsername] = useState("juangarcia");
-    const [email, setEmail] = useState("juangarc@gmail.com");
-    const [occupation, setOccupation] = useState("Software Developer");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [occupation, setOccupation] = useState("");
   
     const [firstNameIsValid, setFirstNameIsValid] = useState(true);
     const [usernameIsValid, setUsernameIsValid] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
   
+    // Load initial profile data
+    useEffect(() => {
+      const loadUserProfile = async () => {
+        const profileData = await getProfile();
+        console.log("Fetched profile data:", profileData); // Debugging line to verify data from getProfile
+        if (profileData) {
+          setFirstName(profileData.givenName || "");
+          setLastName(profileData.familyName || "");
+          setUsername(profileData.userName || "");
+          setEmail(profileData.email || "");
+          setOccupation(profileData.occupation || "");
+        }
+      };
+      loadUserProfile();
+    }, []);
+  
     // Validation functions
     const validateFirstName = (name) => /^[a-zA-Z]+$/.test(name.trim());
     const validateUsername = (username) => /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(username.trim());
   
-    // Real-time validation
     useEffect(() => {
       setFirstNameIsValid(validateFirstName(firstName));
     }, [firstName]);
@@ -36,25 +55,52 @@ import {
       setUsernameIsValid(validateUsername(username));
     }, [username]);
   
-    const handleSave = () => {
+    const handleSave = async () => {
       setIsSubmitted(true);
   
-      // Check all validations
       if (!firstNameIsValid || !usernameIsValid) {
         Alert.alert("Invalid inputs", "Please fix the highlighted fields.");
         return;
       }
   
-      // Logic to save changes (use API call if needed)
-      console.log("Saved successfully!");
+      const profileDataToUpdate = {
+        givenName: firstName,
+        familyName: lastName,
+        userName: username,
+        occupation,
+      };
   
-      // Navigate back to Profile screen
-      navigation.goBack(); // This will return to the previous screen
+      try {
+        console.log("Profile data to be updated:", profileDataToUpdate); // Debugging line to confirm payload before API call
+  
+        const response = await updateProfile(profileDataToUpdate);
+        if (response?.message === "Profile updated successfully") {
+          Toast.show({
+            type: "success",
+            text1: "Profile updated successfully",
+            position: "top",
+            autoHide: true,
+            visibilityTime: 3000,
+          });
+          navigation.navigate("Profile", { saveSuccess: true });
+        } else {
+          throw new Error("Failed to update profile");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        Toast.show({
+          type: "error",
+          text1: "Failed to update profile",
+          text2: error.message,
+          position: "top",
+          autoHide: true,
+          visibilityTime: 3000,
+        });
+      }
     };
   
     return (
       <View style={styles.container}>
-  
         <View style={styles.mainContents}>
           {/* First and Last Name */}
           <View style={styles.nameHorizontalContainer}>
@@ -79,7 +125,7 @@ import {
               {!firstNameIsValid && isSubmitted && (
                 <View style={styles.alertContainer}>
                   <Ionicons name="alert-circle-outline" color="red" size={20} />
-                  <Text style={styles.alertText}>Please type one word with letters.</Text>
+                  <Text style={styles.alertText}>First name is required</Text>
                 </View>
               )}
             </View>
@@ -87,7 +133,7 @@ import {
               <Text style={styles.fieldLabel}>Last Name</Text>
               <View style={styles.nameField}>
                 <TextInput
-                  placeholder="Last Name "
+                  placeholder="Last Name"
                   placeholderTextColor="#aaa"
                   value={lastName}
                   onChangeText={setLastName}
@@ -103,7 +149,7 @@ import {
             </Text>
             <View
               style={
-                !usernameIsValid && isSubmitted
+                (!usernameIsValid) && isSubmitted
                   ? styles.fieldAlert
                   : styles.emailField
               }
@@ -118,7 +164,7 @@ import {
             {!usernameIsValid && isSubmitted && (
               <View style={styles.alertContainer}>
                 <Ionicons name="alert-circle-outline" color="red" size={20} />
-                <Text style={styles.alertText}>This field cannot be left blank.</Text>
+                <Text style={styles.alertText}>Username is required</Text>
               </View>
             )}
           </View>
@@ -162,7 +208,7 @@ import {
     container: {
       flex: 1,
       paddingTop: 16,
-      backgroundColor: "#fff",
+      backgroundColor: Colors.defaultBeige,
     },
     title: {
       fontSize: 20,

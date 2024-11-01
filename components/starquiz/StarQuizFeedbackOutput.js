@@ -5,6 +5,7 @@ import StarQuizFeedbackAccordions from "./StarQuizFeedbackAccordions";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import { AppContext } from "@/store/app-context";
+import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
   const { setAnswers } = useContext(AppContext);
@@ -16,7 +17,7 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
       <StarQuizFeedbackAccordions starMasterFeedback={starMasterFeedback} />
       <View style={styles.retryButton}>
         <WideButton
-          title="Try again"
+          title="Practice Again"
           color="white"
           onPress={() => {
             setAnswers((prevAnswers) => ({
@@ -39,9 +40,8 @@ export default StarQuizFeedbackOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
-    justifyContent: "center",
     marginTop: 10,
     marginBottom: 40,
     width: "100%",

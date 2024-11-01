@@ -10,6 +10,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
+import { Colors } from "@/constants/Colors";
 
 const ResetPW_VerifycodeScreen = () => {
   const [enteredCode, setEnteredCode] = useState("");
@@ -56,7 +57,7 @@ const ResetPW_VerifycodeScreen = () => {
         </View>
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Enter the code *</Text>
+            <Text style={styles.fieldLabel}>Enter the code{" "}<Text style={styles.astarisk}>*</Text></Text>
           </View>
           <View
             style={
@@ -67,7 +68,7 @@ const ResetPW_VerifycodeScreen = () => {
           >
             <TextInput
               placeholder="_ _ _ _ _ _"
-              placeholderTextColor={"#aaa"}
+              placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="number-pad"
               maxLength={6}
               value={enteredCode}
@@ -76,7 +77,7 @@ const ResetPW_VerifycodeScreen = () => {
           </View>
           {!codeIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
+              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
               <Text style={styles.alertText}>Code does not match.</Text>
             </View>
           )}
@@ -109,7 +110,7 @@ export default ResetPW_VerifycodeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -129,15 +130,19 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
+  },
+  astarisk: {
+    color: Colors.defaultRed,
   },
   codeField: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: Colors.errorRed,
     borderRadius: 4,
     width: "100%",
     padding: 8,
@@ -159,7 +164,7 @@ const styles = StyleSheet.create({
     columnGap: 2,
   },
   alertText: {
-    color: "red",
+    color: Colors.errorRed,
     fontWeight: 500,
   },
   buttonContainer: {
@@ -178,11 +183,11 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    fontWeight: "500",
-    color: "blue",
+    color: Colors.defaultBlue,
   },
   resendCodeText: {
-    color: "blue",
+    color: Colors.defaultBlue,
+    fontWeight: "bold",
     textDecorationLine: "underline",
     marginBottom: 10,
   },

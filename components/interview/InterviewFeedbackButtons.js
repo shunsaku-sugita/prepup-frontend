@@ -6,6 +6,7 @@ import { AppContext } from "../../store/app-context";
 import CreateCategoryModal from "./CreateCategoryModal";
 import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
 import { saveInterviewQuestions } from "../services/api";
+import { Colors } from "@/constants/Colors";
 
 const InterviewFeedbackButtons = ({
   setCurrentQuestionIndex,
@@ -98,9 +99,8 @@ const styles = StyleSheet.create({
   saveButton: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: Colors.defaultBlue,
     borderRadius: 6,
     padding: 10,
     width: "48%",
@@ -108,13 +108,14 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 16,
     fontWeight: "bold",
+    color: Colors.defaultBlue,
   },
   tryAgainButton: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: Colors.defaultBlue,
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: Colors.defaultBlue,
     borderRadius: 6,
     padding: 10,
     width: "48%",
@@ -130,11 +131,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparent background
   },
   modalContent: {
-    height: "45%", // Half-screen height for the modal
+    height: "40%", // Half-screen height for the modal
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
+    padding: 15,
     alignItems: "center",
     justifyContent: "center",
   },

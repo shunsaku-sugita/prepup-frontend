@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../../config/apiConfig";
+import * as SecureStore from "expo-secure-store";
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -12,7 +13,6 @@ const getTokenSecurely = async () => {
     console.error("Error getting token securely:", error.message);
   }
 };
-
 
 // Request interceptor to add JWT token to headers
 apiClient.interceptors.request.use(

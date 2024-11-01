@@ -8,15 +8,17 @@ import {
   AccordionContentText,
 } from "@/components/ui/accordion";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 
 const InterviewFeedbackCard = ({
   value,
   titleText,
   percentage,
   contentText,
+  backgroundColorStyle
 }) => {
   return (
-    <AccordionItem value={value} style={styles.accordionItem}>
+    <AccordionItem value={value} style={[styles.accordionItem, {backgroundColor: backgroundColorStyle}]}>
       <AccordionHeader>
         <AccordionTrigger style={styles.accordionTrigger}>
           {({ isExpanded }) => {
@@ -58,11 +60,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   accordionItem: {
-    borderColor: "black",
-    borderWidth: 2,
-    borderRadius: 8,
+    borderRadius: 4,
     padding: 16,
-    backgroundColor: "#eee",
   },
   accordionTrigger: {
     flexDirection: "row",

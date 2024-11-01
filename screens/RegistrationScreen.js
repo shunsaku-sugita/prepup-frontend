@@ -11,6 +11,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { signup } from "@/components/services/api";
+import { Colors } from "@/constants/Colors";
 
 const RegistrationScreen = () => {
   const [enteredFirstname, setEnteredFirstname] = useState("");
@@ -109,7 +110,7 @@ const RegistrationScreen = () => {
           {/* firstname field */}
           <View style={styles.nameFormContainer}>
             <View>
-              <Text style={styles.fieldLabel}>First Name *</Text>
+              <Text style={styles.fieldLabel}>First Name{" "}<Text style={styles.astarisk}>*</Text></Text>
             </View>
             <View
               style={[
@@ -118,13 +119,13 @@ const RegistrationScreen = () => {
                   : styles.nameField,
                 isFirstnameFocused && {
                   borderWidth: 2,
-                  borderColor: "blue",
+                  borderColor: Colors.defaultBlue,
                 },
               ]}
             >
               <TextInput
                 placeholder="First Name"
-                placeholderTextColor={"#aaa"}
+                placeholderTextColor={Colors.placeHolderTextGray}
                 keyboardType="default"
                 value={enteredFirstname}
                 onChangeText={(text) => setEnteredFirstname(text)}
@@ -134,7 +135,7 @@ const RegistrationScreen = () => {
             </View>
             {!firstnameIsValid && isSubmitted && (
               <View style={styles.firstnameAlertContainer}>
-                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
                 <Text style={styles.alertText}>Invalid firstname.</Text>
               </View>
             )}
@@ -150,13 +151,13 @@ const RegistrationScreen = () => {
                 styles.nameField,
                 isLastnameFocused && {
                   borderWidth: 2,
-                  borderColor: "blue",
+                  borderColor: Colors.defaultBlue,
                 },
               ]}
             >
               <TextInput
                 placeholder="Last Name (Optional)"
-                placeholderTextColor={"#aaa"}
+                placeholderTextColor={Colors.placeHolderTextGray}
                 keyboardType="default"
                 value={enteredLastname}
                 onChangeText={(text) => setEnteredLastname(text)}
@@ -170,7 +171,7 @@ const RegistrationScreen = () => {
         {/* email field */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Email *</Text>
+            <Text style={styles.fieldLabel}>Email{" "}<Text style={styles.astarisk}>*</Text></Text>
           </View>
           <View
             style={[
@@ -179,13 +180,13 @@ const RegistrationScreen = () => {
                 : styles.emailField,
               isEmailFocused && {
                 borderWidth: 2,
-                borderColor: "blue",
+                borderColor: Colors.defaultBlue,
               },
             ]}
           >
             <TextInput
               placeholder="Enter your email address"
-              placeholderTextColor={"#aaa"}
+              placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="email-address"
               autoCapitalize="none"
               value={enteredEmail}
@@ -196,7 +197,7 @@ const RegistrationScreen = () => {
           </View>
           {!emailIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
+              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
               <Text style={styles.alertText}>Invalid email.</Text>
             </View>
           )}
@@ -205,7 +206,7 @@ const RegistrationScreen = () => {
         {/* username field */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Username *</Text>
+            <Text style={styles.fieldLabel}>Username{" "}<Text style={styles.astarisk}>*</Text></Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowUsernameTooltip(!showUsernameTooltip)}
@@ -232,13 +233,13 @@ const RegistrationScreen = () => {
                 : styles.emailField,
               isUsernameFocused && {
                 borderWidth: 2,
-                borderColor: "blue",
+                borderColor: Colors.defaultBlue,
               },
             ]}
           >
             <TextInput
               placeholder="Enter a username"
-              placeholderTextColor={"#aaa"}
+              placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="default"
               autoCapitalize="none"
               value={enteredUsername}
@@ -249,7 +250,7 @@ const RegistrationScreen = () => {
           </View>
           {!usernameIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
+              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
               <Text style={styles.alertText}>Invalid username.</Text>
             </View>
           )}
@@ -258,7 +259,7 @@ const RegistrationScreen = () => {
         {/* password field */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Password *</Text>
+            <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -285,13 +286,13 @@ const RegistrationScreen = () => {
                 : styles.passwordField,
               isPasswordFocused && {
                 borderWidth: 2,
-                borderColor: "blue",
+                borderColor: Colors.defaultBlue,
               },
             ]}
           >
             <TextInput
               placeholder="Enter a password"
-              placeholderTextColor={"#aaa"}
+              placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="default"
               autoCapitalize="none"
               secureTextEntry={passwordIsSecure}
@@ -311,7 +312,7 @@ const RegistrationScreen = () => {
           </View>
           {!passwordIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
+              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
               <Text style={styles.alertText}>Invalid password.</Text>
             </View>
           )}
@@ -335,7 +336,7 @@ export default RegistrationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -357,6 +358,12 @@ const styles = StyleSheet.create({
   formContainer: {
     width: 340,
     rowGap: 4,
+  },
+  fieldLabel: {
+    fontWeight: 'bold',
+  },
+  astarisk: {
+    color: Colors.defaultRed,
   },
   titleQuestionContainer: {
     flexDirection: "row",
@@ -384,10 +391,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
-    borderBottomColor: "#333",
+    borderBottomColor: Colors.textLightDarkGray,
   },
   tooltipContainer: {
-    backgroundColor: "#333",
+    backgroundColor: Colors.textLightDarkGray,
     padding: 8,
     borderRadius: 5,
     maxWidth: 220,
@@ -401,9 +408,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -412,9 +420,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -424,8 +433,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: Colors.errorRed,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -434,9 +444,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -455,7 +466,7 @@ const styles = StyleSheet.create({
     columnGap: 2,
   },
   alertText: {
-    color: "red",
+    color: Colors.errorRed,
     fontWeight: 500,
   },
   bottomButton: {

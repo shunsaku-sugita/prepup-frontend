@@ -8,29 +8,52 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import WideButton from "@/components/common/WideButton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "@/components/toast/ToastComponent";
+import { getProfile } from "@/components/services/api"; // Ensure this path is correct
 
 const ProfileScreen = () => {
-  // State variables for editable fields and toggles
-  const [name, setName] = useState("Juan Garcia");
-  const [username, setUsername] = useState("juangarcia");
-  const [email, setEmail] = useState("jg@gmail.com");
-  const [occupation, setOccupation] = useState("Software Developer");
-  const [password, setPassword] = useState("**********");
-  const [passwordIsSecure, setPasswordIsSecure] = useState(true); // Toggle password visibility
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [occupation, setOccupation] = useState("");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [termsAccepted, setTermsAccepted] = useState(true);
   const [privacyAccepted, setPrivacyAccepted] = useState(true);
-  const navigation = useNavigation(); 
+
+  // Fetch user profile data when the screen mounts
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const profileData = await getProfile();
+        if (profileData) {
+          setName(`${profileData.givenName} ${profileData.familyName}`);
+          setUsername(profileData.userName);
+          setEmail(profileData.email);
+          setOccupation(profileData.occupation || ""); // Optional, based on available data
+        } else {
+          console.error("Failed to load user profile data");
+        }
+      } catch (error) {
+        console.error("Error loading profile data:", error);
+      }
+    };
+
+    loadUserProfile();
+  }, []);
 
   const handleEditPress = () => {
-    navigation.navigate("EditProfile"); // Navigate to the EditProfileScreen
+    navigation.navigate("EditProfile");
   };
 
-  // Toggle functions
   const toggleNotifications = () =>
     setNotificationsEnabled((previousState) => !previousState);
   const toggleTerms = () => setTermsAccepted((previousState) => !previousState);
@@ -47,7 +70,6 @@ const ProfileScreen = () => {
           text: "Delete",
           style: "destructive",
           onPress: () => {
-            // Logic to delete the account
             console.log("Account deleted");
           },
         },
@@ -55,7 +77,22 @@ const ProfileScreen = () => {
     );
   };
 
-  // Data array for FlatList
+  // Show toast if saveSuccess is true
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.saveSuccess) {
+        Toast.show({
+          type: "success",
+          text1: "Successfully changed personal information",
+          position: "top",
+          autoHide: true,
+          visibilityTime: 3000,
+        });
+        navigation.setParams({ saveSuccess: false });
+      }
+    }, [route.params?.saveSuccess])
+  );
+
   const profileSections = [
     {
       key: "personalInfo",
@@ -72,7 +109,7 @@ const ProfileScreen = () => {
           <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       ),
     },
@@ -87,26 +124,14 @@ const ProfileScreen = () => {
               <View style={styles.fieldRow}>
                 <Text style={styles.fieldLabel}>Change Password</Text>
                 <View style={styles.passwordContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={password}
-                    secureTextEntry={passwordIsSecure}
-                    editable={false}
-                  />
-                  <TouchableOpacity onPress={() => setPasswordIsSecure(!passwordIsSecure)}>
-                    <Ionicons
-                      name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
-                      size={20}
-                      color="black"
-                    />
-                  </TouchableOpacity>
+                  <Text style={styles.passwordText}>**********</Text>
                 </View>
               </View>
             </View>
           </View>
           <TouchableOpacity 
             style={styles.editButton}
-            onPress={() => navigation.navigate("ResetPW_CreatePW")}>
+            onPress={() => navigation.navigate("EditPW_ChangePW")}>
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
           </TouchableOpacity>
@@ -161,7 +186,7 @@ const ProfileScreen = () => {
           </View>
         </View>
       ),
-  },
+    },
     {
       key: "logout",
       renderItem: () => (
@@ -173,12 +198,15 @@ const ProfileScreen = () => {
   ];
 
   return (
-    <FlatList
-      data={profileSections}
-      renderItem={({ item }) => item.renderItem()}
-      keyExtractor={(item) => item.key}
-      contentContainerStyle={styles.listContainer}
-    />
+    <>
+      <FlatList
+        data={profileSections}
+        renderItem={({ item }) => item.renderItem()}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={styles.listContainer}
+      />
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
+    </>
   );
 };
 
@@ -193,7 +221,6 @@ const ProfileField = ({ label, value, noSeparator }) => (
   </View>
 );
 
-// Reusable Toggle Row Component
 const ToggleRow = ({ label, value, onValueChange }) => (
   <View style={[styles.toggleRow, styles.toggleRowSmaller]}>
     <Text>{label}</Text>
@@ -206,7 +233,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: Colors.defaultBeige,
   },
   sectionContainer: {
     borderRadius: 8,
@@ -214,7 +241,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     borderWidth:1,
     borderColor:"#E0E0E0"
-   
   },
   whiteBackground: {
     backgroundColor: "#fff",
@@ -312,7 +338,6 @@ const styles = StyleSheet.create({
   passwordInput: {
     fontSize: 14,
     color: "#333",
-    marginRight: 8,
   },
   logoutContainer: {
     flex: 1,

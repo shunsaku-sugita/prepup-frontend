@@ -12,6 +12,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
+import { Colors } from "@/constants/Colors";
 
 const ResetPW_CreatePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -87,7 +88,7 @@ const ResetPW_CreatePWScreen = () => {
         {/* password form */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Password *</Text>
+            <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -114,13 +115,13 @@ const ResetPW_CreatePWScreen = () => {
                 : styles.passwordField,
               isPasswordFocused && {
                 borderWidth: 2,
-                borderColor: "blue",
+                borderColor: Colors.defaultBlue,
               },
             ]}
           >
             <TextInput
               placeholder="Enter a password"
-              placeholderTextColor={"#aaa"}
+              placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="default"
               autoCapitalize="none"
               secureTextEntry={passwordIsSecure}
@@ -141,7 +142,7 @@ const ResetPW_CreatePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -150,7 +151,7 @@ const ResetPW_CreatePWScreen = () => {
         {/* confirm password form */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Confirm Password *</Text>
+            <Text style={styles.fieldLabel}>Confirm Password{" "}<Text style={styles.astarisk}>*</Text></Text>
           </View>
           <View
             style={[
@@ -159,13 +160,13 @@ const ResetPW_CreatePWScreen = () => {
                 : styles.passwordField,
               isConfirmPasswordFocused && {
                 borderWidth: 2,
-                borderColor: "blue",
+                borderColor: Colors.defaultBlue,
               },
             ]}
           >
             <TextInput
               placeholder="Enter a password"
-              placeholderTextColor={"#aaa"}
+              placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="default"
               autoCapitalize="none"
               secureTextEntry={confirmPasswordIsSecure}
@@ -191,7 +192,7 @@ const ResetPW_CreatePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color="red" size={20} />
+                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -237,7 +238,7 @@ export default ResetPW_CreatePWScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 100,
@@ -255,6 +256,12 @@ const styles = StyleSheet.create({
   formContainer: {
     width: 340,
     rowGap: 4,
+  },
+  fieldLabel: {
+    fontWeight: 'bold',
+  },
+  astarisk: {
+    color: Colors.defaultRed,
   },
   titleQuestionContainer: {
     flexDirection: "row",
@@ -282,10 +289,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
-    borderBottomColor: "#333",
+    borderBottomColor: Colors.textLightDarkGray,
   },
   tooltipContainer: {
-    backgroundColor: "#333",
+    backgroundColor: Colors.textLightDarkGray,
     padding: 8,
     borderRadius: 5,
     maxWidth: 220,
@@ -299,9 +306,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#bbb",
+    borderWidth: 2,
+    borderColor: Colors.defaultBeige,
     borderRadius: 4,
+    backgroundColor: 'white',
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -311,7 +319,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: Colors.errorRed,
     borderRadius: 4,
     width: "100%",
     paddingHorizontal: 8,
@@ -324,7 +332,7 @@ const styles = StyleSheet.create({
     columnGap: 2,
   },
   alertText: {
-    color: "red",
+    color: Colors.errorRed,
     fontWeight: 500,
   },
   buttonContainer: {
@@ -338,6 +346,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    color: "blue",
+    fontWeight: 'bold',
+    color: Colors.defaultBlue,
   },
 });
