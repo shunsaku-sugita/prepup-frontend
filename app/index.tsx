@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
@@ -16,7 +16,7 @@ import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
 import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
 import QuizScreen from "../screens/QuizScreen";
-import SigninPreloaderScreen from "../screens/SigninPreloaderScreen";
+import PreloaderScreen from "../screens/PreloaderScreen";
 import SigninScreen from "../screens/SigninScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import RegistrationSuccessScreen from "../screens/RegistrationSuccessScreen";
@@ -34,6 +34,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Toast from "react-native-toast-message";
+import { Colors } from "@/constants/Colors";
 
 const Stack = createNativeStackNavigator();
 
@@ -76,7 +77,15 @@ export default function App() {
               component={JobSearchScreen}
               options={{
                 headerShown: true,
-                title: "Job Finder",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Job Finder</Text>
+                  </View>
+                ),
                 headerLeft: () => (
                   <IconButton
                     icon="arrow-back"
@@ -110,7 +119,15 @@ export default function App() {
               component={InterviewSimulatorScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Simulator",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Simulator</Text>
+                  </View>
+                ),
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -146,7 +163,15 @@ export default function App() {
               component={InterviewFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Simulator Feedback",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Feedback</Text>
+                  </View>
+                ),
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -166,7 +191,15 @@ export default function App() {
               component={StarQuizScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "STAR Master",
+                title: "S.T.A.R Master",
+                headerStyle: {backgroundColor: Colors.defaultBeige},
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>S.T.A.R Master</Text>
+                  </View>
+                ),
                 headerRight: null,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
@@ -202,11 +235,17 @@ export default function App() {
               component={StarQuizFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Star Master Feedback",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>S.T.A.R Master</Text>
+                  </View>
+                ),
                 headerRight: null,
                 headerLeft: () => (
-                  // Check if the user can go back before showing the back button
-                  // navigation.canGoBack() ? (
                   <IconButton
                     icon="arrow-back"
                     color="black"
@@ -253,8 +292,8 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="SignIn-preloader"
-              component={SigninPreloaderScreen}
+              name="Preloader"
+              component={PreloaderScreen}
               options={{
                 headerShown: false,
               }}
@@ -264,7 +303,15 @@ export default function App() {
               component={SigninScreen}
               options={{
                 headerShown: true,
-                title: "Sign In",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign In</Text>
+                  </View>
+                ),
                 headerBackVisible: false,
               }}
             />
@@ -273,7 +320,15 @@ export default function App() {
               component={RegistrationScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Registration",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
+                  </View>
+                ),
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
@@ -332,7 +387,15 @@ export default function App() {
               component={ResetPW_RequestScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Reset Password Request",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Reset Password Request</Text>
+                  </View>
+                ),
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
@@ -351,7 +414,15 @@ export default function App() {
               component={ResetPW_VerifycodeScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Verify Code",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Verify Code</Text>
+                  </View>
+                ),
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
@@ -370,7 +441,15 @@ export default function App() {
               component={ResetPW_CreatePWScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Create New Password",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Create New Password</Text>
+                  </View>
+                ),
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
@@ -405,7 +484,15 @@ export default function App() {
               component={ResetPW_SuccessScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "Create New Password",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Create New Password</Text>
+                  </View>
+                ),
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (

@@ -2,6 +2,7 @@ import { Image, StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import { useNavigation } from "expo-router";
 import TitleText from "@/components/common/TitleText";
+import { Colors } from "@/constants/Colors";
 
 const SigninPreloaderScreen = () => {
   const navigation = useNavigation();
@@ -33,7 +34,7 @@ export default SigninPreloaderScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,

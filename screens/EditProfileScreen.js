@@ -9,6 +9,7 @@ import {
   import WideButton from "@/components/common/WideButton";
   import { Ionicons } from "@expo/vector-icons";
   import { useNavigation } from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
   
   const EditProfileScreen = () => {
     const navigation = useNavigation(); // Get the navigation object
@@ -162,7 +163,7 @@ import {
     container: {
       flex: 1,
       paddingTop: 16,
-      backgroundColor: "#fff",
+      backgroundColor: Colors.defaultBeige,
     },
     title: {
       fontSize: 20,

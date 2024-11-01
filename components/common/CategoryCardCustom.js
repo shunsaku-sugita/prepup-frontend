@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
@@ -61,7 +61,7 @@ const CategoryCardCustom = ({ index, categoryName, categories, setCategories }) 
       <View style={styles.imageContainer}>
         <Image source={require("../../assets/images/img.png")} style={styles.image} />
         <View style={styles.trashIconContainer}>
-          <Ionicons
+          <Feather
             name="trash"
             color="white"
             size={20}
@@ -76,6 +76,7 @@ const CategoryCardCustom = ({ index, categoryName, categories, setCategories }) 
             {categoryName}
           </Text>
         </View>
+
         <SmallButton
           title="Start"
           color="white"
@@ -91,17 +92,16 @@ export default CategoryCardCustom;
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
-    // marginLeft: 4,
-    // marginRight: 8,
-    marginBottom: 14,
+    rowGap: 4,
+    // marginBottom: 14,
     minWidth: Platform.OS === "ios" ? 150 : 165,
     height: 230,
     backgroundColor: "white",
     // shadow for android
-    elevation: 8,
+    elevation: 4,
     // shadow for iOS
     shadowColor: "black",
     shadowOffset: { width: 0, height: 3 },
@@ -117,20 +117,20 @@ const styles = StyleSheet.create({
     padding: 17,
     borderWidth: 0.5,
     borderRadius: 50,
-    right: 8,
-    top: 6,
+    right: 10,
+    top: 8,
   },
   trashIcon: {
     position: "absolute",
-    right: 6.5,
-    top: 6.5,
+    right: 7,
+    top: 7,
   },
   cardBottom: {
     flex: 3.2,
     padding: 6,
     paddingHorizontal: 0,
     justifyContent: "center",
-    minWidth: 150,
+    width: 150,
   },
   textContainer: {
     paddingVertical: 2,

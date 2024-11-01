@@ -98,15 +98,13 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: 350,
-    height: 105,
+    height: 110,
+    borderRadius: 8,
+    overflow: 'hidden',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 4,
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
   },
   textAndButtonArea: {
     padding: 5,
@@ -119,7 +117,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 45,
+    height: 47,
   },
   categoryText: {
     fontSize: 16,

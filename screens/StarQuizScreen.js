@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import StarQuizOutput from "../components/starquiz/StarQuizOutput";
+import { Colors } from "@/constants/Colors";
 
 const StarMasterScreen = () => {
   return (
@@ -15,7 +16,7 @@ export default StarMasterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
   },

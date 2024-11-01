@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 import LoadingOverlay from "./LoadingOverlay";
+import { Colors } from "@/constants/Colors";
 
 const HearableQuestions = ({ questionText }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,7 +31,7 @@ const HearableQuestions = ({ questionText }) => {
           <View style={styles.questionIconContainer}>
             <IconButton
               icon={isPlaying ? "stop-circle-outline" : "play-circle"}
-              color="black"
+              color={Colors.backgroundDarkGray}
               size={45}
               onPress={speakHandler}
             />
@@ -77,5 +78,6 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 20,
     fontWeight: "bold",
+    color: Colors.lightBlack,
   },
 });

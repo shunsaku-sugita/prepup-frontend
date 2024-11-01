@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { View, StyleSheet } from "react-native";
 import InterviewContentsOutput from "../components/interview/InterviewContentsOutput";
 
@@ -14,7 +15,7 @@ export default InterviewSimulatorScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
   },

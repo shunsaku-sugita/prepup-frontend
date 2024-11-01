@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { View, StyleSheet } from "react-native";
 import InterviewFeedbackOutput from "../components/interview/InterviewFeedbackOutput";
 
@@ -14,7 +15,7 @@ export default InterviewFeedbackScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
   },

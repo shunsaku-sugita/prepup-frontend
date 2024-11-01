@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import InterviewFeedbackAccordions from "./InterviewFeedbackAccordions";
 import { AppContext } from "@/store/app-context";
 import { useContext } from "react";
+import { Colors } from "@/constants/Colors";
 
 const InterviewFeedbackOutput = () => {
   const {
@@ -40,6 +41,7 @@ export default InterviewFeedbackOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 10,

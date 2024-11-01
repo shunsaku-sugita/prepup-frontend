@@ -3,6 +3,7 @@ import React from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import TitleText from "@/components/common/TitleText";
+import { Colors } from "@/constants/Colors";
 
 const RegistrationSuccessScreen = () => {
   const navigation = useNavigation();
@@ -35,7 +36,7 @@ export default RegistrationSuccessScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.defaultBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
