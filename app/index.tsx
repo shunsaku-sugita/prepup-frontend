@@ -35,6 +35,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Toast from "react-native-toast-message";
+import { toastConfig } from "../components/toast/ToastComponent";
 
 
 const Stack = createNativeStackNavigator();
@@ -534,7 +535,7 @@ export default function App() {
             /> */}
           </Stack.Navigator>
         </AppContextProvider>
-        <Toast />
+        <Toast config={toastConfig} />
       </GestureHandlerRootView>
     </>
   );
