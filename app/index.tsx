@@ -70,11 +70,11 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="EditProfile"
               component={EditProfileScreen}
               options={{ title: "Edit Profile", headerShown: true }}
-            />
+            /> */}
             <Stack.Screen
               name="JobSearch"
               component={JobSearchScreen}
