@@ -24,7 +24,7 @@ import {
 } from '../services/api';
 import JobCard from "./JobCard";
 import Toast from 'react-native-toast-message';
-import {toastConfig} from '../toast/ToastComponent'
+
 
 const jobListOutput = () => {
   const [filterType, setFilterType] = useState(1);
@@ -151,6 +151,7 @@ const jobListOutput = () => {
           position: 'top',
           autoHide: true,
           visibilityTime: 3000,
+          
         });
       } else {
         await bookmarkJob(jobDetails);
@@ -169,6 +170,7 @@ const jobListOutput = () => {
           position: 'top',
           autoHide: true,
           visibilityTime: 3000,
+         
         });
       }
     } catch (error) {
@@ -240,7 +242,6 @@ const jobListOutput = () => {
       </Modal>
 
       {/* Move Toast to the bottom of the component tree */}
-      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };

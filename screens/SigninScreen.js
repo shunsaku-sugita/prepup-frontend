@@ -86,28 +86,28 @@ const SigninScreen = () => {
   };
 
   // Google Sign-in
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: IOS_CLIENT_ID,
-    androidClientId: ANDROID_CLIENT_ID,
-  });
+  // const [request, response, promptAsync] = Google.useAuthRequest({
+  //   iosClientId: IOS_CLIENT_ID,
+  //   androidClientId: ANDROID_CLIENT_ID,
+  // });
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === "success") {
+  //     const { id_token } = response.params;
+  //     const credential = GoogleAuthProvider.credential(id_token);
+  //     signInWithCredential(auth, credential);
+  //   }
+  // }, [response]);
 
   // Check if a local user exists on button press
-  const handleGoogleSignIn = () => {
-    checkLocalUser(promptAsync, formatGoogleAccountData);
-  };
+  // const handleGoogleSignIn = () => {
+  //   checkLocalUser(promptAsync, formatGoogleAccountData);
+  // };
 
-  // Logout function
-  const handleLogout = () => {
-    logoutHandler(navigation);
-  };
+  // // Logout function
+  // const handleLogout = () => {
+  //   logoutHandler(navigation);
+  // };
 
   return (
     <View style={styles.container}>
@@ -205,13 +205,13 @@ const SigninScreen = () => {
           // need to check if user's info matches to our database
           onPress={signInHandler}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.googleButton}
           onPress={() => handleGoogleSignIn()}
         >
           <Image source={require("../assets/images/google-signin-icon.png")} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.forgetPasswordButton}
           onPress={() => navigation.navigate("ResetPW_request")}
