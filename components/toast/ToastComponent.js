@@ -49,7 +49,7 @@ const styles = {
   toastContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
+    padding: 26,
     borderRadius: 8,
     marginTop:-50,
     backgroundColor: '#4CAF50', 

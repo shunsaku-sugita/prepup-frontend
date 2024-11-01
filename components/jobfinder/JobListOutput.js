@@ -24,7 +24,7 @@ import {
 } from '../services/api';
 import JobCard from "./JobCard";
 import Toast from 'react-native-toast-message';
-import { toastConfig } from './ToastComponent';
+import {toastConfig} from '../toast/ToastComponent'
 
 const jobListOutput = () => {
   const [filterType, setFilterType] = useState(1);

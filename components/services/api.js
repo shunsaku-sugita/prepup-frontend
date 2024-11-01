@@ -253,20 +253,45 @@ export const getInterviewCategory = async () => {
 // }
 // all fields are not required
 // and if you update occupation the interview question related to occupation will be updated
+
+// export const updateProfile = async (data) => {
+//   try {
+//     const endpoint = "/" + PATH_PROFILE + "/";
+//     const response = await apiClient.put(endpoint);
+
+//     return response;
+//   } catch (error) {
+//     console.error(
+//       "Error updating user profile : ",
+//       error.response ? error.response.data : error.message
+//     );
+//     return error.response || { data: { message: error.message } };
+//   }
+// };
+
 export const updateProfile = async (data) => {
   try {
     const endpoint = "/" + PATH_PROFILE + "/";
-    const response = await apiClient.put(endpoint);
+    console.log("Updating profile with data:", data); // Debugging line to confirm data structure
 
-    return response;
+    const response = await apiClient.put(endpoint, data);
+
+    if (response.status === 200) {
+      console.log("Profile updated successfully:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to update profile");
+    }
   } catch (error) {
     console.error(
       "Error updating user profile : ",
       error.response ? error.response.data : error.message
     );
-    return response;
+    return error.response ? error.response.data : { error: error.message };
   }
 };
+
+
 
 export const analyzeAnswer = async (answers) => {
   try {

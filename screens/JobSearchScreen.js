@@ -6,7 +6,6 @@ const JobSearchScreen = () => {
   return (
     <View style={styles.container}>
      <JobListOutput/>
-     <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };
