@@ -11,7 +11,7 @@ const OnboardingOne = () => {
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
-          <Image source={require("../assets/images/img.png")} />
+          <Image source={require("../assets/images/onboarding-one.png")} />
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Interview Simulator" />
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   imageContainer: {
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 80,
   },
   carouselCircles: {
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    color: "blue",
+    fontWeight: 'bold',
+    color: Colors.defaultBlue,
   },
 });

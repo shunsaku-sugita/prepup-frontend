@@ -11,7 +11,7 @@ const OnboardingThree = () => {
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
-          <Image source={require("../assets/images/img.png")} />
+          <Image source={require("../assets/images/onboarding-three.png")} />
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="S.T.A.R Master" />
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   imageContainer: {
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 80,
   },
   carouselCircles: {

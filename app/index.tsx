@@ -11,6 +11,8 @@ import SplashScreen from "../screens/SplashScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from"../screens/EditProfileScreen"
+import EditPW_ChangePWScreen from "../screens/EditPW_ChangePWScreen";
+
 import AppContextProvider, { AppContext } from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
 import QuizStarterScreen from "../screens/QuizStarterScreen";
@@ -66,11 +68,6 @@ export default function App() {
               options={{
                 headerShown: false,
               }}
-            />
-            <Stack.Screen
-              name="EditProfile"
-              component={EditProfileScreen}
-              options={{ title: "Edit Profile", headerShown: true }}
             />
             <Stack.Screen
               name="JobSearch"
@@ -277,7 +274,15 @@ export default function App() {
               component={ProfileScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                title: "",
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Account</Text>
+                  </View>
+                ),
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
@@ -290,6 +295,56 @@ export default function App() {
                     />
                   ) : null,
               })}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfileScreen}
+              options={{
+                headerShown: true,
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Edit Information</Text>
+                  </View>
+                ),
+                headerLeft: () => (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    display={false}
+                    onPress={() => navigation.goBack()}
+                  />
+                ),
+               }}
+            />
+            <Stack.Screen
+              name="EditPW_ChangePW"
+              component={EditPW_ChangePWScreen}
+              options={{
+                headerShown: true,
+                headerStyle: {backgroundColor: Colors.defaultBeige
+                },
+                headerShadowVisible: false,
+                headerTitle: () => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Change Password</Text>
+                  </View>
+                ),
+                headerLeft: () => (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    display={false}
+                    onPress={() => navigation.goBack()}
+                  />
+                ),
+               }}
             />
             <Stack.Screen
               name="Preloader"
@@ -346,8 +401,7 @@ export default function App() {
               name="RegistrationSuccess"
               component={RegistrationSuccessScreen}
               options={({ navigation }) => ({
-                headerShown: true,
-                title: "Registration",
+                headerShown: false,
                 headerLeft: () =>
                   // Check if the user can go back before showing the back button
                   navigation.canGoBack() ? (
@@ -404,7 +458,7 @@ export default function App() {
                       color="black"
                       size={28}
                       display={false}
-                      onPress={() => navigation.goBack()}
+                      onPress={() => navigation.navigate("SignIn")}
                     />
                   ) : null,
               })}

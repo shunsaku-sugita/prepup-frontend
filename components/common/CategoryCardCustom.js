@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
+    marginLeft: 4,
     rowGap: 4,
     // marginBottom: 14,
     minWidth: Platform.OS === "ios" ? 150 : 165,

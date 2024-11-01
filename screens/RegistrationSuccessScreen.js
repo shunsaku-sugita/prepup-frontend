@@ -12,7 +12,7 @@ const RegistrationSuccessScreen = () => {
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
-          <Image source={require("../assets/images/img.png")} />
+          <Image source={require("../assets/images/registration-success.png")} />
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Registration Successful!" />
@@ -21,10 +21,10 @@ const RegistrationSuccessScreen = () => {
       </View>
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Continue"
+          title="Proceed"
           color="white"
           // need to check if user's info matches to our database
-          onPress={() => navigation.navigate("Onboarding")}
+          onPress={() => navigation.navigate("OnboardingOne")}
         />
       </View>
     </View>
@@ -47,18 +47,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  imageContainer: {
+    marginTop: 80,
+    marginBottom: 60,
+  },
   titleAndTextContainer: {
-    marginBottom: 50,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 20,
     width: 340,
-  },
-  imageContainer: {
-    marginBottom: 40,
+    marginBottom: 80,
   },
   buttonContainer: {
-    flex: 1,
-    marginBottom: 50,
+    flex: .8,
+    marginTop: 50,
   },
 });

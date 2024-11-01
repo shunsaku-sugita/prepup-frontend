@@ -81,7 +81,7 @@ const ResetPW_RequestScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Verify"
+          title="Send Link"
           color="white"
           // need to check if user's info matches to our database
           onPress={VerifyHandler}

@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
 
 const ProfileScreen = () => {
   // State variables for editable fields and toggles
@@ -106,7 +107,7 @@ const ProfileScreen = () => {
           </View>
           <TouchableOpacity 
             style={styles.editButton}
-            onPress={() => navigation.navigate("ResetPW_CreatePW")}>
+            onPress={() => navigation.navigate("EditPW_ChangePW")}>
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
           </TouchableOpacity>
@@ -206,7 +207,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: Colors.defaultBeige,
   },
   sectionContainer: {
     borderRadius: 8,
