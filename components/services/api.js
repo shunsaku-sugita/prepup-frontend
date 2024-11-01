@@ -16,6 +16,7 @@ import {
   TYPE_OTP,
   SUB_PATH_FORGOT_PASSWORD,
   TYPE_RESET,
+  TYPE_SIGNIN_WITH_GOOGLE,
 } from "../../config/apiConfig";
 import { socket } from "./socket";
 
@@ -311,7 +312,7 @@ export const saveInterviewQuestions = async (categoryName, questions) => {
 export const deleteInterviewCategory = async (categoryId) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
-    const response = await apiClient.delete(endpoint, {categoryId});
+    const response = await apiClient.delete(endpoint, { categoryId });
 
     if (response.status == 200) {
       return true;
@@ -396,7 +397,7 @@ export const login = async (email, password) => {
 
     if (response.status == 200) {
       const token = response.data.authorization;
-
+      console.log(token);
       if (token) {
         await storeTokenSecurely(token);
         console.log("Token stored successfully");
@@ -457,7 +458,7 @@ export const signup = async (
 
 export const verifyEmail = async (email) => {
   try {
-    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_OTP;
+    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
     const response = await apiClient.get(endpoint, { email });
 
     // look for code 200
@@ -475,7 +476,7 @@ export const verifyEmail = async (email) => {
 
 export const verifyOTP = async (email, otp) => {
   try {
-    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_OTP;
+    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
     const response = await apiClient.post(endpoint, { email, otp });
 
     // look for code 200
@@ -493,7 +494,7 @@ export const verifyOTP = async (email, otp) => {
 
 export const resetPassword = async (email, password) => {
   try {
-    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_RESET;
+    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
     const response = await apiClient.post(endpoint, { email, password });
 
     // look for code 200
@@ -512,10 +513,10 @@ export const resetPassword = async (email, password) => {
 export const createPassword = async (password) => {
 
   try {
-    const endpoint = "/" + PATH_AUTH + "/"+ SUB_PATH_FORGOT_PASSWORD +"/" + TYPE_RESET;
+    const endpoint = "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
     const response = await apiClient.post(endpoint, { email, password });
-  
-    if(response.status == 200){
+
+    if (response.status == 200) {
       return true;
     }
   } catch (error) {
@@ -526,7 +527,35 @@ export const createPassword = async (password) => {
     );
 
     return false;
-    
+
   }
 
+}
+
+export const signinWithGoogle = async (email, firstName, lastName) => {
+  try {
+    const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNIN_WITH_GOOGLE;
+    const response = await apiClient.post(endpoint, { email, firstName, lastName });
+
+    if (response.status == 200 || response.status == 201) {
+      const token = response.data.authorization;
+
+      if (token) {
+        await storeTokenSecurely(token);
+        console.log("Token stored successfully");
+      } else {
+        console.error("Token not received");
+      }
+    }
+
+    return response;
+
+  } catch (error) {
+    console.error(
+      "Error while signinWithGoogle : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
 }

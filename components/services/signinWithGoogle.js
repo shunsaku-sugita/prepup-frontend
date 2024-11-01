@@ -1,48 +1,40 @@
-import {
-  GoogleSignin,
-  isErrorWithCode,
-  statusCodes,
-  isSuccessResponse
-} from '@react-native-google-signin/google-signin';
+// googleAuthUtils.js
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+import { signinWithGoogle } from "./api";
 
-export const signinWithGoogle = async () => {
+export const checkLocalUser = async (promptAsync, formatGoogleAccountData) => {
   try {
-    await GoogleSignin.hasPlayServices();
+    const userJSON = await AsyncStorage.getItem("userInfo");
+    const userData = userJSON ? JSON.parse(userJSON) : null;
+    if (userData) {
+      const { email, firstName, lastName } = formatGoogleAccountData(userData);
+      signinWithGoogle(email, firstName, lastName);
+    } else {
+      const { email, firstName, lastName } = await promptAsync();
 
-    const hasPreviousSignIn = await GoogleSignin.hasPreviousSignIn();
-    const response = hasPreviousSignIn
-      ? await GoogleSignin.signInSilently()
-      : await GoogleSignin.signIn();
-
-    handleSignInResponse(response);
-  } catch (error) {
-    handleSignInError(error);
-  }
-};
-
-const handleSignInResponse = (response) => {
-  if (isSuccessResponse(response)) {
-    console.log(response.data);
-  } else {
-    console.log("Sign-in cancelled by user");
-  }
-};
-
-const handleSignInError = (error) => {
-  console.error("Error during Google sign-in:", error);
-
-  if (isErrorWithCode(error)) {
-    switch (error.code) {
-      case statusCodes.IN_PROGRESS:
-        console.log("Sign-in already in progress.");
-        break;
-      case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-        console.log("Google Play Services not available or outdated.");
-        break;
-      default:
-        console.log("An unknown error occurred.");
     }
-  } else {
-    console.log("An unexpected error occurred.");
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+export const formatGoogleAccountData = (userData) => {
+  const { email, displayName } = userData;
+  const firstName = displayName.split(" ").length > 1 ? displayName.split(" ")[0] : displayName;
+  const lastName = displayName.split(" ").length > 1 ? displayName.split(" ")[1] : "";
+  return { email, firstName, lastName };
+};
+
+export const logoutHandler = async (navigation) => {
+  try {
+    await signOut(auth);
+    await AsyncStorage.removeItem("userInfo");
+    navigation.navigate("SigninScreen");
+    console.log("User successfully logged out");
+  } catch (error) {
+    console.error("Error logging out: ", error.message);
+    alert("Failed to log out. Please try again.");
   }
 };

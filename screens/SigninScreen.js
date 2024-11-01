@@ -10,21 +10,24 @@ import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { signinWithGoogle } from '../components/services/signinWithGoogle';
-import { WEB_CLIENT_ID, IOS_CLIENT_ID, } from "../config/googleConfig";
+import { IOS_CLIENT_ID, ANDROID_CLIENT_ID } from "../config/googleConfig";
+import { login } from "@/components/services/api";
 
-GoogleSignin.configure({
-  webClientId: WEB_CLIENT_ID,
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-  offlineAccess: true,
-  forceCodeForRefreshToken: true,
-  iosClientId: IOS_CLIENT_ID
-});
+// Firebase Authentication
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+  signOut
+} from "firebase/auth";
+import { auth } from "../config/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { checkLocalUser, formatGoogleAccountData, logoutHandler } from "@/components/services/signinWithGoogle";
+
+WebBrowser.maybeCompleteAuthSession();
+
 
 const SigninScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -73,6 +76,30 @@ const SigninScreen = () => {
       // use sign-in API later
       navigation.navigate("Category");
     }
+  };
+
+  // Google Sign-in
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: IOS_CLIENT_ID,
+    androidClientId: ANDROID_CLIENT_ID,
+  });
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
+    }
+  }, [response]);
+
+  // Check if a local user exists on button press
+  const handleGoogleSignIn = () => {
+    checkLocalUser(promptAsync, formatGoogleAccountData);
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    logoutHandler(navigation);
   };
 
   return (
@@ -190,7 +217,7 @@ const SigninScreen = () => {
         />
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={signinWithGoogle}
+          onPress={() => handleGoogleSignIn()}
         >
           <Image source={require("../assets/images/google-signin-icon.png")} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
