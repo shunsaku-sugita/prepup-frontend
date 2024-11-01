@@ -28,8 +28,8 @@ import { login } from "@/components/services/api";
 // });
 
 const SigninScreen = () => {
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("test107@gmail.com");
+  const [enteredPassword, setEnteredPassword] = useState("12345@abcde");
 
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
