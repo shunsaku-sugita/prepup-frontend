@@ -90,7 +90,7 @@ const SigninScreen = () => {
     androidClientId: ANDROID_CLIENT_ID,
   });
 
-  const handleSignIn = async () => {
+  const GoogleSigninHandler = async () => {
     try {
       const userJSON = await AsyncStorage.getItem("userInfo");
       if (userJSON) {
@@ -259,8 +259,7 @@ const SigninScreen = () => {
         />
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={handleSignIn}
-
+          onPress={GoogleSigninHandler}
         >
           <Image source={require("../assets/images/google-signin-icon.png")} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
