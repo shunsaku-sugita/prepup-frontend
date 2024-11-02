@@ -48,7 +48,7 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
         <TitleText text={ratingPhrase} />
       </View>
       <View>
-        <StarRatingDisplay rating={ratingStarNumber} />
+        <StarQuizFeedbackRatingDisplay rating={ratingStarNumber} />
       </View>
     </View>
   );
