@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import TitleText from "../common/TitleText";
 // import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
-import StarRatingDisplay from "./StarRatingDisplay";
+import StarQuizFeedbackRatingDisplay from "./StarQuizFeedbackRatingDisplay";
 import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {

@@ -4,7 +4,7 @@ import Octicons from '@expo/vector-icons/Octicons'; // full star
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5'; // half 
 import { Colors } from '@/constants/Colors';
 
-const StarRatingDisplay = ({ rating }) => {
+const StarQuizFeedbackRatingDisplay = ({ rating }) => {
   const maxStars = 5;
   const stars = [];
 
@@ -26,7 +26,7 @@ const StarRatingDisplay = ({ rating }) => {
   return <View style={styles.container}>{stars}</View>;
 };
 
-export default StarRatingDisplay;
+export default StarQuizFeedbackRatingDisplay;
 
 const styles = StyleSheet.create({
   container: {

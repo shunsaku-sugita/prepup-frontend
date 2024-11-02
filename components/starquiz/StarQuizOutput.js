@@ -2,7 +2,6 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import HearableQuestions from "../common/HearableQuestions";
-import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import {
   anayzeStarMasterAnsewers,
@@ -18,7 +17,7 @@ const StarQuizOutput = () => {
 
   // track if the screen is in focus
   const isFocused = useIsFocused();
-  // create a ref for the ScrollView (to always come back to/start from the leftmost screen)
+  // create a ref for the ScrollView (to move to a specific position of the screen 
   const scrollViewRef = useRef(null);
 
   // Separate states for four input fields, and combined answers state
@@ -111,7 +110,6 @@ const StarQuizOutput = () => {
         structuredData.answers
       );
       if (starMasterFeedback) {
-        // console.log("Received Feedback: ", starMasterFeedback);
         // navigate to the feedback screen, passing the feedback as a parameter
         navigation.navigate("StarQuizFeedback", { starMasterFeedback });
       }
@@ -163,40 +161,6 @@ const StarQuizOutput = () => {
         handleBlur={handleBlur}
         scrollViewRef={scrollViewRef}
       />
-      {/* <View style={styles.buttons}>
-        <WideButton
-          title={
-            situationAnswer || taskAnswer || actionAnswer || resultAnswer
-              ? "Done"
-              : "Skip"
-          }
-          color="white"
-          size={24}
-          onPress={skipOrDoneButtonHandler}
-        />
-        <TouchableOpacity
-          style={styles.textButton}
-          onPress={() => {
-            Alert.alert(
-              "Cancel the STAR Master?",
-              "The process is unsaved, you will lose it.",
-              [
-                {
-                  text: "Cancel",
-                },
-                {
-                  text: "Confirm",
-                  onPress: () => {
-                    navigation.navigate("Category");
-                  },
-                },
-              ]
-            );
-          }}
-        >
-          <Text style={styles.text}>Cancel</Text>
-        </TouchableOpacity>
-      </View> */}
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
