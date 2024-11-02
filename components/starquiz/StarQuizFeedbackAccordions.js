@@ -20,7 +20,7 @@ const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={true}>
         <Accordion style={styles.accordionContainer} type="multiple">
           <StarQuizFeedbackCard
             value="a"

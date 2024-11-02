@@ -11,14 +11,14 @@ const StarRatingDisplay = ({ rating }) => {
   for (let i = 1; i <= maxStars; i++) {
     if (rating >= i) {
       // Full star
-      stars.push(<View style={styles.fullStarContainer}><Octicons key={i} name="star-fill" size={50} color={Colors.defaultYellow} /></View>);
+      stars.push(<View style={styles.fullStarContainer}><Octicons key={`full-${i}`} name="star-fill" size={50} color={Colors.defaultYellow} /></View>);
     } else if (rating >= i - 0.5) {
       // Half star
-      stars.push(<FontAwesome5 key={i} name="star-half-alt" size={46} color={Colors.defaultYellow} />);
+      stars.push(<FontAwesome5 key={`half-${i}`} name="star-half-alt" size={46} color={Colors.defaultYellow} />);
     } else {
       // Empty star
       stars.push(
-        <FontAwesome5 key={i} name="star" size={46} color={Colors.defaultYellow} />
+        <FontAwesome5 key={`empty-${i}`} name="star" size={46} color={Colors.defaultYellow} />
       );
     }
   }

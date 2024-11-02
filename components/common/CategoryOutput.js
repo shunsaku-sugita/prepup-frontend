@@ -56,17 +56,58 @@ const CustomBottomTabs = () => {
 
 const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
+  const [isOccupation, setIsOccupation] = useState(false);
   const [userName, setUserName] = useState("");
+
+  // fixed colors for default cards (limits 3)
+  const defaultBackgroundColors = [Colors.disabledBlue, Colors.defaultRed, Colors.defaultYellow]; 
+  // cycling colors for custom cards (3 colors for 5 cards)
+  const customBackgroundColors = [Colors.disabledYellow, Colors.disabledRed, Colors.disabledBlue];   
+
+  // fixed images for default cards (limits 3)
+  const defaultImages = [
+    require("../../assets/images/onboarding-two.png"),
+    require("../../assets/images/onboarding-three.png"),
+    require("../../assets/images/registration-success.png")
+  ];  
+  // fixed images for custom cards (limits 5)
+  const customImages = [
+    require("../../assets/images/CustomCategory-Image1.png"),
+    require("../../assets/images/CustomCategory-Image2.png"),
+    require("../../assets/images/CustomCategory-Image3.png"),
+    require("../../assets/images/CustomCategory-Image4.png"),
+    require("../../assets/images/CustomCategory-Image5.png")
+  ];  
 
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
+      // console.log(data);
       const categoriesData = data.category;
+      const occupationFlag = data.occupation;  // true or false
+      if (occupationFlag) {
+        setIsOccupation(true);
+      }
+
+      // ensure there are always 3 items
+      let updatedCategories = [...categoriesData];
+
+      console.log("Raw data: " + updatedCategories);
+
+      if (updatedCategories.length < 3) {
+        if (!occupationFlag) {
+          // insert "My Occupation" as the first item if occupation is false
+          updatedCategories.unshift({ categoryName: "My Occupation", questions: [] });
+        }
+      }
+
+      console.log("Updated Categories:", updatedCategories); // Debugging: check updated categories
+
       setCategories(categoriesData);
 
+      // load user data
       const userData = await getProfile();
       setUserName(userData.givenName);
-      // console.log(categories);
     };
     loadCategories();
   }, []);
@@ -79,18 +120,24 @@ const CategoryOutput = () => {
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
+        isOccupation={isOccupation}
+        image={defaultImages[index]}
+        backgroundColor={defaultBackgroundColors[index]}
       />
     </View>
   );
 
   // custom category card
   const renderCustomCategoryCard = ({ item, index }) => (
-    <View style={styles.customCardContainer}>
+    // cycling colors by using %(Modulo operation)
+    <View style={styles.customCardContainer}> 
       <CategoryCardCustom
         index={index}
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
+        image={customImages[index]}
+        backgroundColor={customBackgroundColors[index % customBackgroundColors.length]}
       />
     </View>
   );
@@ -102,7 +149,7 @@ const CategoryOutput = () => {
         <Svg height="100%" width="100%">
           <Defs>
             <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
-              <Stop offset="0" stopColor={Colors.onPressBlue} />
+              <Stop offset="0" stopColor={Colors.headerBlue} />
               <Stop offset="1" stopColor={Colors.disabledBlue} />
             </LinearGradient>
           </Defs>
@@ -110,11 +157,45 @@ const CategoryOutput = () => {
         </Svg>
         <View style={styles.headerInnerContainer}>
           <Greeting userName={userName} />
-          <HeaderRightIcons color="black" />
+          <HeaderRightIcons color={Colors.backgroundDarkGray} />
         </View>
       </View>
 
-      {/* default category cards (wide) */}
+      {/* Default category cards (scrollable with fixed height) */}
+      <View style={styles.defaultCategoryContainer}>
+        <FlatList
+          data={categories.slice(0, 3)}
+          keyExtractor={(item, index) => item.categoryName + index}
+          ListHeaderComponent={
+            <View style={styles.upperTextContainer}>
+              <View style={styles.title}>
+                <TitleText text="Choose a category to practice:" />
+              </View>
+            </View>
+          }
+          renderItem={renderDefaultCategoryCard}
+          scrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+
+      {/* Custom category cards (only if there are more than 3 categories) */}
+      {categories.length > 3 && (
+      <View style={styles.bottomCardContainer}>
+        <View style={styles.title}>
+          <TitleText text="Custom categories:" />
+        </View>
+        <FlatList
+          data={categories.slice(3)} // display items from the 4th onward
+          keyExtractor={(item, index) => item.categoryName + index + 3}
+          renderItem={renderCustomCategoryCard}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      )}
+      
+      {/* default category cards (wide)
       <FlatList
         data={categories}
         keyExtractor={(item) => item.categoryName}
@@ -141,7 +222,7 @@ const CategoryOutput = () => {
             />
           </View>
         }
-      />
+      /> */}
       <CustomBottomTabs />
     </View>
 
@@ -217,9 +298,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerContainer: {
-    marginTop: 58,
+    marginTop: 60,
     marginHorizontal: 18,
-    // justifyContent: "space-between",
     height: 50,
   },
   headerInnerContainer: {
@@ -267,15 +347,19 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.4,
   },
+  defaultCategoryContainer: {
+    // height: 410,
+    // marginBottom: 4,
+  },
   defaultCardContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    // flexDirection: "row",
+    // justifyContent: "space-between",
     marginHorizontal: 18,
   },
   customCardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginRight: 16,
+    marginRight: 12,
     paddingBottom: 4,
   },
 });

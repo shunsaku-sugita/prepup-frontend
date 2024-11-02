@@ -1,11 +1,13 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useContext } from "react";
+import { useContext} from "react";
 import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
+import { Colors } from "@/constants/Colors";
 import { AppContext } from "../../store/app-context";
+import { deleteInterviewCategory } from "../services/api";
 import SmallButton from "./SmallButton";
 
-const CategoryCardCustom = ({ index, categoryName, categories, setCategories }) => {
+const CategoryCardCustom = ({ index, categoryName, categories, setCategories, image, backgroundColor }) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
@@ -30,11 +32,25 @@ const CategoryCardCustom = ({ index, categoryName, categories, setCategories }) 
     setSelectedCategoryQuestions(selectedQuestionTexts);
   };
 
-  const deleteHandler = (index) => {
-    // Create a new array excluding the item at the given index
-    const updatedCategories = categories.filter((_, idx) => idx !== index);
-    // Update the state with the new array
-    setCategories(updatedCategories);
+  const deleteHandler = async (index) => {
+    const deleteCategoryId = categories[index]._id;
+    // try to delete category from database (using API)
+    const deleteSuccess = await deleteInterviewCategory(deleteCategoryId);
+    console.log("Selected Category ID: " + deleteCategoryId);
+
+    // if successful, update the categories state excluding the selected category at the given index
+    if (deleteSuccess) {
+      const updatedCategories = categories.filter((_, idx) => idx !== index);
+      setCategories(updatedCategories);
+    } else {
+      Alert.alert("Error", "Failed to delete the category. Please try again.");
+    }
+
+    // // Create a new array excluding the item at the given index
+    // const updatedCategories = categories.filter((_, idx) => idx !== index);
+    // // Update the state with the new array
+    // setCategories(updatedCategories);
+
   };
 
   const deleteAlertHandler = (index) => {
@@ -57,9 +73,9 @@ const CategoryCardCustom = ({ index, categoryName, categories, setCategories }) 
   };
 
   return (
-    <View style={styles.cardContainer}>
+    <View style={[styles.cardContainer, {backgroundColor}]}>
       <View style={styles.imageContainer}>
-        <Image source={require("../../assets/images/img.png")} style={styles.image} />
+        <Image source={image} style={styles.image} />
         <View style={styles.trashIconContainer}>
           <Feather
             name="trash"
@@ -99,8 +115,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
     // marginBottom: 14,
     minWidth: Platform.OS === "ios" ? 150 : 165,
-    height: 230,
-    backgroundColor: "white",
+    height: 220,
     // shadow for android
     elevation: 4,
     // shadow for iOS
@@ -110,7 +125,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
   },
   imageContainer: {
-    flex: 4,
+    flex: 4.5,
+    // overflow: 'hidden',
+  },
+  image: {
+    width: 150,
+    height: 140,
+    // borderRadius: 8,
+    borderTopLeftRadius: 60,
+    borderTopRightRadius: 8,
   },
   trashIconContainer: {
     position: "absolute",
@@ -127,16 +150,20 @@ const styles = StyleSheet.create({
     top: 7,
   },
   cardBottom: {
-    flex: 3.2,
-    padding: 6,
-    paddingHorizontal: 0,
+    flex: 2,
+    padding: 8,
+    paddingHorizontal: 1,
+    paddingVertical: 10,
     justifyContent: "center",
+    backgroundColor: 'white',
     width: 150,
+    paddingBottom: 26,
+    borderBottomRightRadius: 24,
   },
   textContainer: {
     paddingVertical: 2,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     height: 35,
     marginTop:20,
   },

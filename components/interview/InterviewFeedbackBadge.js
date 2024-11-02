@@ -1,14 +1,34 @@
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "../common/TitleText";
+import { useEffect, useState } from "react";
+import { Colors } from "@/constants/Colors";
 
 const InterviewFeedbackBadge = ({ analyzedAnswer }) => {
-  const badgeText = analyzedAnswer.badge;
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [badgeImage, setBadgeImage] = useState(null);
 
+  useEffect(() => {
+    const badgeText = analyzedAnswer.badge;
+
+    if (badgeText === "Bronze") {
+      setBackgroundImage(<Image source={require("../../assets/images/bronze-background.png")} style={styles.badgeBackgroundImage} />);
+      setBadgeImage(<Image source={require("../../assets/images/bronze-badge.png")} style={styles.badgeImage} />);
+    } else if (badgeText === "Silver") {
+      setBackgroundImage(<Image source={require("../../assets/images/silver-background.png")} style={styles.badgeBackgroundImage} />);
+      setBadgeImage(<Image source={require("../../assets/images/silver-badge.png")} style={styles.badgeImage} />);
+    } else if (badgeText === "Gold") {
+      setBackgroundImage(<Image source={require("../../assets/images/gold-background.png")} style={styles.badgeBackgroundImage} />);
+      setBadgeImage(<Image source={require("../../assets/images/gold-badge.png")} style={styles.badgeImage} />);
+    }
+  }, [])
+  
   return (
     <View style={styles.container}>
-      <TitleText text={badgeText} />
-      <Ionicons name="trophy-outline" color="black" size={140} />
+      <View style={styles.badgeArea}>
+        {backgroundImage}
+        {badgeImage}
+      </View>
     </View>
   );
 };
@@ -17,9 +37,25 @@ export default InterviewFeedbackBadge;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1.5,
+    flex: 2.5,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 16,
+  },
+  badgeArea: {
+    width: 400,
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 95,
+  },
+  badgeBackgroundImage: {
+    position: 'absolute',
+    width: 400,
+    height: 300,
+  },
+  badgeImage: {
+    marginTop: 140,
+    width: 190,
+    height: 220,
   },
 });

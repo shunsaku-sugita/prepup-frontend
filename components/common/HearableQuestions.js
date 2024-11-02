@@ -37,7 +37,7 @@ const HearableQuestions = ({ questionText }) => {
             />
           </View>
           <View style={styles.questionTextContainer}>
-            <ScrollView contentContainerStyle={styles.scrollView}>
+            <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false} >
               <Text style={styles.questionText}>{questionText}</Text>
             </ScrollView>
           </View>

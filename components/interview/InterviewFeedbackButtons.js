@@ -85,7 +85,7 @@ export default InterviewFeedbackButtons;
 
 const styles = StyleSheet.create({
   container: {
-    flex: Platform.OS === "ios" ? 1.6 : 1.4,
+    flex: Platform.OS === "ios" ? 1.2 : 1.0,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 15,
