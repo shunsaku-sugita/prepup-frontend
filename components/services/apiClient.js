@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
   async (config) => {
     // TODO : write token retrieval logic here - Khushal @ 18th Oct
 
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzE3MDEwZTllMmU5YWRlNWNiZmFjZWMiLCJpYXQiOjE3Mjg2Nzk5NjUsImV4cCI6MTgyODkzOTE2NX0.pmEoiBwmajEV7TWo3IkjpHrAp-hyPcYicXWJNQLWzt0";
+    let token = await getTokenSecurely();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
