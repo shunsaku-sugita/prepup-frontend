@@ -93,9 +93,18 @@ const EditProfileScreen = () => {
               autoHide: true,
               visibilityTime: 3000,
           });
-          navigation.navigate("Profile", { saveSuccess: true });
+          navigation.navigate("Profile", {
+            updatedProfile: {
+              givenName: firstName,
+              familyName: lastName,
+              userName: username,
+              occupation,
+            },
+          });
+      
           return;
-      }
+        }
+      
 
       try {
           console.log("Profile data to be updated:", profileDataToUpdate);
@@ -104,12 +113,19 @@ const EditProfileScreen = () => {
           if (response?.message === "Profile updated successfully") {
               Toast.show({
                   type: "success",
-                  text1: "Profile updated successfully",
+                  text1: "Sucessfully change personal information",
                   position: "top",
                   autoHide: true,
                   visibilityTime: 3000,
               });
-              navigation.navigate("Profile", { saveSuccess: true });
+              navigation.navigate("Profile", {
+                updatedProfile: {
+                  givenName: firstName,
+                  familyName: lastName,
+                  userName: username,
+                  occupation,
+                },
+              });
           } else {
               // Show a single error toast when the update fails
               Toast.show({

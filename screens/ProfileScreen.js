@@ -31,25 +31,37 @@ const ProfileScreen = () => {
   const [privacyAccepted, setPrivacyAccepted] = useState(true);
 
   // Fetch user profile data when the screen mounts
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const profileData = await getProfile();
-        if (profileData) {
-          setName(`${profileData.givenName} ${profileData.familyName}`);
-          setUsername(profileData.userName);
-          setEmail(profileData.email);
-          setOccupation(profileData.occupation || ""); // Optional, based on available data
-        } else {
-          console.error("Failed to load user profile data");
-        }
-      } catch (error) {
-        console.error("Error loading profile data:", error);
+  const loadUserProfile = async () => {
+    try {
+      const profileData = await getProfile();
+      if (profileData) {
+        setName(`${profileData.givenName} ${profileData.familyName}`);
+        setUsername(profileData.userName);
+        setEmail(profileData.email);
+        setOccupation(profileData.occupation || ""); // Optional, based on available data
+      } else {
+        console.error("Failed to load user profile data");
       }
-    };
+    } catch (error) {
+      console.error("Error loading profile data:", error);
+    }
+  };
 
+  useEffect(() => {
     loadUserProfile();
   }, []);
+
+  // Update profile information when navigating back from EditProfileScreen
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.updatedProfile) {
+        const updatedProfile = route.params.updatedProfile;
+        setName(`${updatedProfile.givenName} ${updatedProfile.familyName}`);
+        setUsername(updatedProfile.userName);
+        setOccupation(updatedProfile.occupation || "");
+      }
+    }, [route.params?.updatedProfile])
+  );
 
   const handleEditPress = () => {
     navigation.navigate("EditProfile");

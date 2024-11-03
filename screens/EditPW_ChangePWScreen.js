@@ -13,7 +13,7 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
-// import * as SecureStore from 'expo-secure-store'; // Assuming you're using SecureStore to store email
+import * as SecureStore from 'expo-secure-store'; // Assuming you're using SecureStore to store email
 import { createPassword } from "@/components/services/api";  // Import the createPassword API
 
 const EditPW_ChangePWScreen = () => {
