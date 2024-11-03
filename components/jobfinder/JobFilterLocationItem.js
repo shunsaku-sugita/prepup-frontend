@@ -10,7 +10,6 @@ const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
         keyExtractor={(item) => item.jobId}
         renderItem={({ item }) => (
           <JobCard
-            key={item.jobId}
             job={item}
             toggleBookmark={toggleBookmark}
             onPress={() => handleJobPress(item)}
