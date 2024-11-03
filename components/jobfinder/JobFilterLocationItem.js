@@ -28,10 +28,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 16,
   },
-  jobList:{
-    flex: 1, 
-   
-    
-
+  jobList: {
+    flex: 1,
   },
 });

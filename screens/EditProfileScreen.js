@@ -45,7 +45,8 @@ import { Colors } from "@/constants/Colors";
   
     // Validation functions
     const validateFirstName = (name) => /^[a-zA-Z]+$/.test(name.trim());
-    const validateUsername = (username) => /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(username.trim());
+    const validateUsername = (username) =>
+      /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(username.trim());
   
     useEffect(() => {
       setFirstNameIsValid(validateFirstName(firstName));
@@ -71,7 +72,7 @@ import { Colors } from "@/constants/Colors";
       };
   
       try {
-        console.log("Profile data to be updated:", profileDataToUpdate); // Debugging line to confirm payload before API call
+        console.log("Profile data to be updated:", profileDataToUpdate);
   
         const response = await updateProfile(profileDataToUpdate);
         if (response?.message === "Profile updated successfully") {
@@ -84,14 +85,20 @@ import { Colors } from "@/constants/Colors";
           });
           navigation.navigate("Profile", { saveSuccess: true });
         } else {
-          throw new Error("Failed to update profile");
+          // Show a single error toast when the update fails
+          Toast.show({
+            type: "error",
+            text1: "Failed to update profile",
+            position: "top",
+            autoHide: true,
+            visibilityTime: 3000,
+          });
         }
       } catch (error) {
-        console.error("Error updating profile:", error);
+        // Show a single error toast in case of a catch error
         Toast.show({
           type: "error",
           text1: "Failed to update profile",
-          text2: error.message,
           position: "top",
           autoHide: true,
           visibilityTime: 3000,
@@ -149,7 +156,7 @@ import { Colors } from "@/constants/Colors";
             </Text>
             <View
               style={
-                (!usernameIsValid) && isSubmitted
+                !usernameIsValid && isSubmitted
                   ? styles.fieldAlert
                   : styles.emailField
               }
@@ -175,10 +182,7 @@ import { Colors } from "@/constants/Colors";
               Email <Text style={styles.asterisk}>*</Text>
             </Text>
             <View style={[styles.emailField, { backgroundColor: "#eee" }]}>
-              <TextInput
-                value={email}
-                editable={false}
-              />
+              <TextInput value={email} editable={false} />
             </View>
           </View>
   

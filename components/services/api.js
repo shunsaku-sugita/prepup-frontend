@@ -16,6 +16,7 @@ import {
   TYPE_OTP,
   SUB_PATH_FORGOT_PASSWORD,
   TYPE_RESET,
+  TYPE_SIGNIN_WITH_GOOGLE,
 } from "../../config/apiConfig";
 import { socket } from "./socket";
 
@@ -420,7 +421,7 @@ export const login = async (email, password) => {
 
     if (response.status == 200) {
       const token = response.data.authorization;
-
+      console.log(token);
       if (token) {
         await storeTokenSecurely(token);
         console.log("Token stored successfully");
@@ -551,4 +552,33 @@ export const createPassword = async (password) => {
 
     return false;
   }
-};
+
+}
+
+export const signinWithGoogle = async (email, firstName, lastName) => {
+  try {
+    const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNIN_WITH_GOOGLE;
+    const response = await apiClient.post(endpoint, { email, firstName, lastName });
+
+    if (response.status == 200 || response.status == 201) {
+      const token = response.data.authorization;
+
+      if (token) {
+        await storeTokenSecurely(token);
+        console.log("Token stored successfully");
+      } else {
+        console.error("Token not received");
+      }
+    }
+
+    return response;
+
+  } catch (error) {
+    console.error(
+      "Error while signinWithGoogle : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
+}

@@ -49,9 +49,10 @@ const styles = {
   toastContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 26,
+    padding: 20,
     borderRadius: 8,
-    marginTop:-50,
+    marginTop:10,
+    margin:20,
     backgroundColor: '#4CAF50', 
     shadowColor: 'black', 
     shadowOffset: { width: 0, height: 0 },

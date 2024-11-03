@@ -10,23 +10,22 @@ import React, { useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { login } from "@/components/services/api";
+import { IOS_CLIENT_ID, ANDROID_CLIENT_ID } from "../config/googleConfig";
+import { login, signinWithGoogle } from "@/components/services/api";
 import { Colors } from "@/constants/Colors";
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from "@react-native-google-signin/google-signin";
-// import { signinWithGoogle } from "../components/services/signinWithGoogle";
-// import { WEB_CLIENT_ID, IOS_CLIENT_ID } from "../config/googleConfig";
+// Firebase Authentication
+import * as Google from "expo-auth-session/providers/google";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as WebBrowser from "expo-web-browser";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+  signOut
+} from "firebase/auth";
+import { auth } from "../config/firebaseConfig";
 
-// GoogleSignin.configure({
-//   webClientId: WEB_CLIENT_ID,
-//   scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-//   offlineAccess: true,
-//   forceCodeForRefreshToken: true,
-//   iosClientId: IOS_CLIENT_ID,
-// });
+WebBrowser.maybeCompleteAuthSession();
 
 const SigninScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("test107@gmail.com");
@@ -83,6 +82,84 @@ const SigninScreen = () => {
         console.log("error");
       }
     }
+  };
+
+  // Google Sign-in
+  const [userInfo, setUserInfo] = useState(null);
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: IOS_CLIENT_ID,
+    androidClientId: ANDROID_CLIENT_ID,
+  });
+
+  const GoogleSigninHandler = async () => {
+    try {
+      const userJSON = await AsyncStorage.getItem("userInfo");
+      if (userJSON) {
+        const localUser = JSON.parse(userJSON);
+        setUserInfo(localUser);
+        const { email, firstName, lastName } = formatGoogleAccountData(localUser);
+        await signinWithGoogle(email, firstName, lastName);
+        navigation.navigate("Category");
+      } else {
+        await promptAsync();
+      }
+    } catch (error) {
+      console.error("Error initiating Google Sign-In: ", error.message);
+    }
+  };
+
+  useEffect(() => {
+    const handleFirebaseSignIn = async (idToken) => {
+      const credential = GoogleAuthProvider.credential(idToken);
+      try {
+        const userCredential = await signInWithCredential(auth, credential);
+        const user = userCredential.user;
+        const { email, firstName, lastName } = formatGoogleAccountData(user);
+        const resSigninWithGoogle = await signinWithGoogle(email, firstName, lastName);
+        setUserInfo(user);
+        if (resSigninWithGoogle?.status === 200 || resSigninWithGoogle?.status === 201) {
+          await AsyncStorage.setItem("userInfo", JSON.stringify(user));
+          navigation.navigate("Category");
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.error("Error with Firebase sign-in: ", error.message);
+      }
+    };
+
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      handleFirebaseSignIn(id_token);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    const checkLocalUser = async () => {
+      const userJSON = await AsyncStorage.getItem("userInfo");
+      if (userJSON) {
+        setUserInfo(JSON.parse(userJSON));
+      }
+    };
+
+    checkLocalUser();
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserInfo(user);
+      } else {
+        setUserInfo(null);
+        AsyncStorage.removeItem("userInfo");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const formatGoogleAccountData = (userData) => {
+    const { email, displayName } = userData;
+    const firstName = displayName.split(" ").length > 1 ? displayName.split(" ")[0] : displayName;
+    const lastName = displayName.split(" ").length > 1 ? displayName.split(" ")[1] : "";
+    return { email, firstName, lastName };
   };
 
   return (
@@ -183,7 +260,7 @@ const SigninScreen = () => {
         />
         <TouchableOpacity
           style={styles.googleButton}
-          // onPress={signinWithGoogle}
+          onPress={GoogleSigninHandler}
         >
           <Image source={require("../assets/images/google-signin-icon.png")} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
