@@ -17,6 +17,8 @@ import {
   SUB_PATH_FORGOT_PASSWORD,
   TYPE_RESET,
   TYPE_SIGNIN_WITH_GOOGLE,
+  TYPE_VERIFY_OTP,
+  TYPE_CREATE_PASSWORD,
 } from "../../config/apiConfig";
 import { socket } from "./socket";
 
@@ -292,8 +294,6 @@ export const updateProfile = async (data) => {
   }
 };
 
-
-
 export const analyzeAnswer = async (answers) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_ANALYZE_ANSWERS;
@@ -482,7 +482,7 @@ export const verifyEmail = async (email) => {
   try {
     const endpoint =
       "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
-    const response = await apiClient.get(endpoint, { email });
+    const response = await apiClient.post(endpoint, { email });
 
     // look for code 200
     return response;
@@ -499,7 +499,7 @@ export const verifyEmail = async (email) => {
 export const verifyOTP = async (email, otp) => {
   try {
     const endpoint =
-      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
+      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_VERIFY_OTP;
     const response = await apiClient.post(endpoint, { email, otp });
 
     // look for code 200
@@ -534,8 +534,7 @@ export const resetPassword = async (email, password) => {
 
 export const createPassword = async (password) => {
   try {
-    const endpoint =
-      "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_RESET;
+    const endpoint = "/" + PATH_PROFILE + "/" + TYPE_CREATE_PASSWORD;
     const response = await apiClient.post(endpoint, { email, password });
 
     if (response.status == 200) {
@@ -549,13 +548,16 @@ export const createPassword = async (password) => {
 
     return false;
   }
-
-}
+};
 
 export const signinWithGoogle = async (email, firstName, lastName) => {
   try {
     const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNIN_WITH_GOOGLE;
-    const response = await apiClient.post(endpoint, { email, firstName, lastName });
+    const response = await apiClient.post(endpoint, {
+      email,
+      firstName,
+      lastName,
+    });
 
     if (response.status == 200 || response.status == 201) {
       const token = response.data.authorization;
@@ -569,7 +571,6 @@ export const signinWithGoogle = async (email, firstName, lastName) => {
     }
 
     return response;
-
   } catch (error) {
     console.error(
       "Error while signinWithGoogle : ",
@@ -578,4 +579,4 @@ export const signinWithGoogle = async (email, firstName, lastName) => {
 
     return error;
   }
-}
+};
