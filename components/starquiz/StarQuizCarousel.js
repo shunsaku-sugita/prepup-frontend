@@ -82,6 +82,13 @@ const StarQuizCarousel = ({
     }));
   };
 
+  // function to handle card press and scroll to a specific position
+  const scrollToCard = (xPosition) => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x: xPosition, animated: true });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -91,298 +98,303 @@ const StarQuizCarousel = ({
         showsHorizontalScrollIndicator={false}
       >
         {/* Situation card */}
-        <View style={[styles.cardContainer, {backgroundColor: Colors.defaultYellow}]}>
-          <View style={styles.cardHeaderContainer}>
-            <Text style={styles.title}>Situation:</Text>
-            <View>
-              <IconButton
-                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={situationAnswerRef.current ? "black" : Colors.placeHolderTextGray}
-                size={20}
-                display={!situationAnswerRef.current && true}
-                onPress={() => speakHandler(situationAnswerRef.current)}
+        <TouchableOpacity onPress={() => scrollToCard(0)} style={styles.touchableOpacityWrapper}>
+          <View style={[styles.cardContainer, {backgroundColor: Colors.defaultYellow}]}>
+            <View style={styles.cardHeaderContainer}>
+              <Text style={styles.title}>Situation:</Text>
+              <View>
+                <IconButton
+                  icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                  color={situationAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                  size={20}
+                  display={!situationAnswerRef.current && true}
+                  onPress={() => speakHandler(situationAnswerRef.current)}
+                />
+              </View>
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                multiline={true}
+                placeholder="Write your answer here."
+                placeholderTextColor={Colors.placeHolderTextGray}
+                keyboardType="default"
+                value={answers.situation}
+                maxLength={500}
+                onChangeText={(text) => {
+                  textChangeHandler(
+                    text,
+                    setSituationAnswer,
+                    situationAnswerRef,
+                    setSituationCountNumber,
+                    "situation"
+                  );
+                }}
+                onBlur={() => handleBlur("situation")}
               />
             </View>
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              multiline={true}
-              placeholder="Write your answer here."
-              placeholderTextColor={Colors.placeHolderTextGray}
-              keyboardType="default"
-              value={answers.situation}
-              maxLength={500}
-              onChangeText={(text) => {
-                textChangeHandler(
-                  text,
-                  setSituationAnswer,
-                  situationAnswerRef,
-                  setSituationCountNumber,
-                  "situation"
-                );
-              }}
-              onBlur={() => handleBlur("situation")}
-            />
-          </View>
-          <View style={styles.resetCountNumberContainer}>
-            <TouchableOpacity
-              style={
-                situationAnswerRef.current
-                  ? styles.resetIconContainer
-                  : styles.resetIconContainerDiabled
-              }
-              disabled={!situationAnswerRef.current && true}
-              onPress={() => {
-                Alert.alert(
-                  "Reset the Situation text field?",
-                  "The process is unsaved, you will lose it.",
-                  [
-                    {
-                      text: "Cancel",
-                    },
-                    {
-                      text: "Confirm",
-                      onPress: () => {
-                        // clear the answer both in state and the ref
-                        setSituationAnswer("");
-                        situationAnswerRef.current = "";
-
-                        // update the answers object
-                        setAnswers((prevAnswers) => ({
-                          ...prevAnswers,
-                          situation: "", // Reset the specific field
-                        }));
+            <View style={styles.resetCountNumberContainer}>
+              <TouchableOpacity
+                style={
+                  situationAnswerRef.current
+                    ? styles.resetIconContainer
+                    : styles.resetIconContainerDiabled
+                }
+                disabled={!situationAnswerRef.current && true}
+                onPress={() => {
+                  Alert.alert(
+                    "Reset the Situation text field?",
+                    "The process is unsaved, you will lose it.",
+                    [
+                      {
+                        text: "Cancel",
                       },
-                    },
-                  ]
-                );
-              }}>
-              <Ionicons name="backspace-outline" color="white" size={24} />
-            </TouchableOpacity>
-            <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
-              {situationCountNumber}/500 Characters
-            </Text>
+                      {
+                        text: "Confirm",
+                        onPress: () => {
+                          // clear the answer both in state and the ref
+                          setSituationAnswer("");
+                          situationAnswerRef.current = "";
+                          // update the answers object
+                          setAnswers((prevAnswers) => ({
+                            ...prevAnswers,
+                            situation: "", // Reset the specific field
+                          }));
+                        },
+                      },
+                    ]
+                  );
+                }}>
+                <Ionicons name="backspace-outline" color="white" size={24} />
+              </TouchableOpacity>
+              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+                {situationCountNumber}/500 Characters
+              </Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Task card */}
-        <View style={[styles.cardContainer, {backgroundColor: Colors.defaultRed}]}>
-          <View style={styles.cardHeaderContainer}>
-            <Text style={styles.title}>Task:</Text>
-            <IconButton
-              icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-              color={taskAnswerRef.current ? "black" : Colors.placeHolderTextGray}
-              size={20}
-              display={!taskAnswerRef.current && true}
-              onPress={() => speakHandler(taskAnswerRef.current)}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              multiline={true}
-              placeholder="Write your answer here."
-              placeholderTextColor={Colors.placeHolderTextGray}
-              keyboardType="default"
-              value={answers.task}
-              maxLength={500}
-              onChangeText={(text) =>
-                textChangeHandler(
-                  text,
-                  setTaskAnswer,
-                  taskAnswerRef,
-                  setTaskCountNumber,
-                  "task"
-                )
-              }
-              onBlur={() => handleBlur("task")}
-            />
-          </View>
-          <View style={styles.resetCountNumberContainer}>
-            <TouchableOpacity
-              style={
-                taskAnswerRef.current
-                  ? styles.resetIconContainer
-                  : styles.resetIconContainerDiabled
-              }
-              disabled={!taskAnswerRef.current && true}
-              onPress={() => {
-                Alert.alert(
-                  "Reset the Task text field?",
-                  "The process is unsaved, you will lose it.",
-                  [
-                    {
-                      text: "Cancel",
-                    },
-                    {
-                      text: "Confirm",
-                      onPress: () => {
-                        // clear the answer both in state and the ref
-                        setTaskAnswer("");
-                        taskAnswerRef.current = "";
-
-                        // update the answers object
-                        setAnswers((prevAnswers) => ({
-                          ...prevAnswers,
-                          task: "", // Reset the specific field
-                        }));
+        <TouchableOpacity onPress={() => scrollToCard(322)} style={styles.touchableOpacityWrapper}>
+          <View style={[styles.cardContainer, {backgroundColor: Colors.defaultRed}]} onPress={() => scrollViewRef.current && scrollViewRef.current.scrollTo({ x: 200, animated: true })
+          }>
+            <View style={styles.cardHeaderContainer}>
+              <Text style={styles.title}>Task:</Text>
+              <IconButton
+                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                color={taskAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                size={20}
+                display={!taskAnswerRef.current && true}
+                onPress={() => speakHandler(taskAnswerRef.current)}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                multiline={true}
+                placeholder="Write your answer here."
+                placeholderTextColor={Colors.placeHolderTextGray}
+                keyboardType="default"
+                value={answers.task}
+                maxLength={500}
+                onChangeText={(text) =>
+                  textChangeHandler(
+                    text,
+                    setTaskAnswer,
+                    taskAnswerRef,
+                    setTaskCountNumber,
+                    "task"
+                  )
+                }
+                onBlur={() => handleBlur("task")}
+              />
+            </View>
+            <View style={styles.resetCountNumberContainer}>
+              <TouchableOpacity
+                style={
+                  taskAnswerRef.current
+                    ? styles.resetIconContainer
+                    : styles.resetIconContainerDiabled
+                }
+                disabled={!taskAnswerRef.current && true}
+                onPress={() => {
+                  Alert.alert(
+                    "Reset the Task text field?",
+                    "The process is unsaved, you will lose it.",
+                    [
+                      {
+                        text: "Cancel",
                       },
-                    },
-                  ]
-                );
-              }}>
-              <Ionicons name="backspace-outline" color="white" size={24} />
-            </TouchableOpacity>
-            <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
-              {taskCountNumber}/500 Characters
-            </Text>
+                      {
+                        text: "Confirm",
+                        onPress: () => {
+                          // clear the answer both in state and the ref
+                          setTaskAnswer("");
+                          taskAnswerRef.current = "";
+                          // update the answers object
+                          setAnswers((prevAnswers) => ({
+                            ...prevAnswers,
+                            task: "", // Reset the specific field
+                          }));
+                        },
+                      },
+                    ]
+                  );
+                }}>
+                <Ionicons name="backspace-outline" color="white" size={24} />
+              </TouchableOpacity>
+              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+                {taskCountNumber}/500 Characters
+              </Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Action card */}
-        <View style={[styles.cardContainer, {backgroundColor: Colors.defaultBlue}]}>
-          <View style={styles.cardHeaderContainer}>
-            <Text style={styles.title}>Action:</Text>
-            <IconButton
-              icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-              color={actionAnswerRef.current ? "black" : Colors.placeHolderTextGray}
-              size={20}
-              display={!actionAnswerRef.current && true}
-              onPress={() => speakHandler(actionAnswerRef.current)}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              multiline={true}
-              placeholder="Write your answer here."
-              placeholderTextColor={Colors.placeHolderTextGray}
-              keyboardType="default"
-              value={answers.action}
-              maxLength={500}
-              onChangeText={(text) =>
-                textChangeHandler(
-                  text,
-                  setActionAnswer,
-                  actionAnswerRef,
-                  setActionCountNumber,
-                  "action"
-                )
-              }
-              onBlur={() => handleBlur("action")}
-            />
-          </View>
-          <View style={styles.resetCountNumberContainer}>
-            <TouchableOpacity
-              style={
-                actionAnswerRef.current
-                  ? styles.resetIconContainer
-                  : styles.resetIconContainerDiabled
-              }
-              disabled={!actionAnswerRef.current && true}
-              onPress={() => {
-                Alert.alert(
-                  "Reset the Action text field?",
-                  "The process is unsaved, you will lose it.",
-                  [
-                    {
-                      text: "Cancel",
-                    },
-                    {
-                      text: "Confirm",
-                      onPress: () => {
-                        // clear the answer both in state and the ref
-                        setActionAnswer("");
-                        actionAnswerRef.current = "";
-
-                        // update the answers object
-                        setAnswers((prevAnswers) => ({
-                          ...prevAnswers,
-                          action: "", // Reset the specific field
-                        }));
+        <TouchableOpacity onPress={() => scrollToCard(645)} style={styles.touchableOpacityWrapper}>
+          <View style={[styles.cardContainer, {backgroundColor: Colors.defaultBlue}]}>
+            <View style={styles.cardHeaderContainer}>
+              <Text style={styles.title}>Action:</Text>
+              <IconButton
+                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                color={actionAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                size={20}
+                display={!actionAnswerRef.current && true}
+                onPress={() => speakHandler(actionAnswerRef.current)}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                multiline={true}
+                placeholder="Write your answer here."
+                placeholderTextColor={Colors.placeHolderTextGray}
+                keyboardType="default"
+                value={answers.action}
+                maxLength={500}
+                onChangeText={(text) =>
+                  textChangeHandler(
+                    text,
+                    setActionAnswer,
+                    actionAnswerRef,
+                    setActionCountNumber,
+                    "action"
+                  )
+                }
+                onBlur={() => handleBlur("action")}
+              />
+            </View>
+            <View style={styles.resetCountNumberContainer}>
+              <TouchableOpacity
+                style={
+                  actionAnswerRef.current
+                    ? styles.resetIconContainer
+                    : styles.resetIconContainerDiabled
+                }
+                disabled={!actionAnswerRef.current && true}
+                onPress={() => {
+                  Alert.alert(
+                    "Reset the Action text field?",
+                    "The process is unsaved, you will lose it.",
+                    [
+                      {
+                        text: "Cancel",
                       },
-                    },
-                  ]
-                );
-              }}>
-              <Ionicons name="backspace-outline" color="white" size={24} />
-            </TouchableOpacity>
-            <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
-              {actionCountNumber}/500 Characters
-            </Text>
+                      {
+                        text: "Confirm",
+                        onPress: () => {
+                          // clear the answer both in state and the ref
+                          setActionAnswer("");
+                          actionAnswerRef.current = "";
+                          // update the answers object
+                          setAnswers((prevAnswers) => ({
+                            ...prevAnswers,
+                            action: "", // Reset the specific field
+                          }));
+                        },
+                      },
+                    ]
+                  );
+                }}>
+                <Ionicons name="backspace-outline" color="white" size={24} />
+              </TouchableOpacity>
+              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+                {actionCountNumber}/500 Characters
+              </Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Result card */}
-        <View style={[styles.cardContainer, {backgroundColor: Colors.onPressBeige}]}>
-          <View style={styles.cardHeaderContainer}>
-            <Text style={styles.title}>Result:</Text>
-            <IconButton
-              icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-              color={resultAnswerRef.current ? "black" : Colors.placeHolderTextGray}
-              size={20}
-              display={!resultAnswerRef.current && true}
-              onPress={() => speakHandler(resultAnswerRef.current)}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              multiline={true}
-              placeholder="Write your answer here."
-              placeholderTextColor={Colors.placeHolderTextGray}
-              keyboardType="default"
-              value={answers.result}
-              maxLength={500}
-              onChangeText={(text) =>
-                textChangeHandler(
-                  text,
-                  setResultAnswer,
-                  resultAnswerRef,
-                  setResultCountNumber,
-                  "result"
-                )
-              }
-              onBlur={() => handleBlur("result")}
-            />
-          </View>
-          <View style={styles.resetCountNumberContainer}>
-            <TouchableOpacity
-              style={
-                resultAnswerRef.current
-                  ? styles.resetIconContainer
-                  : styles.resetIconContainerDiabled
-              }
-              disabled={!resultAnswerRef.current && true}
-              onPress={() => {
-                Alert.alert(
-                  "Reset the Result text field?",
-                  "The process is unsaved, you will lose it.",
-                  [
-                    {
-                      text: "Cancel",
-                    },
-                    {
-                      text: "Confirm",
-                      onPress: () => {
-                        // clear the answer both in state and the ref
-                        setResultAnswer("");
-                        resultAnswerRef.current = "";
-
-                        // update the answers object
-                        setAnswers((prevAnswers) => ({
-                          ...prevAnswers,
-                          result: "", // Reset the specific field
-                        }));
+        <TouchableOpacity onPress={() => scrollToCard(970)} style={styles.touchableOpacityWrapper}>
+          <View style={[styles.cardContainer, {backgroundColor: Colors.onPressBeige}]}>
+            <View style={styles.cardHeaderContainer}>
+              <Text style={styles.title}>Result:</Text>
+              <IconButton
+                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                color={resultAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                size={20}
+                display={!resultAnswerRef.current && true}
+                onPress={() => speakHandler(resultAnswerRef.current)}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                multiline={true}
+                placeholder="Write your answer here."
+                placeholderTextColor={Colors.placeHolderTextGray}
+                keyboardType="default"
+                value={answers.result}
+                maxLength={500}
+                onChangeText={(text) =>
+                  textChangeHandler(
+                    text,
+                    setResultAnswer,
+                    resultAnswerRef,
+                    setResultCountNumber,
+                    "result"
+                  )
+                }
+                onBlur={() => handleBlur("result")}
+              />
+            </View>
+            <View style={styles.resetCountNumberContainer}>
+              <TouchableOpacity
+                style={
+                  resultAnswerRef.current
+                    ? styles.resetIconContainer
+                    : styles.resetIconContainerDiabled
+                }
+                disabled={!resultAnswerRef.current && true}
+                onPress={() => {
+                  Alert.alert(
+                    "Reset the Result text field?",
+                    "The process is unsaved, you will lose it.",
+                    [
+                      {
+                        text: "Cancel",
                       },
-                    },
-                  ]
-                );
-              }}>
-              <Ionicons name="backspace-outline" color="white" size={24} />
-            </TouchableOpacity>
-            <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
-              {resultCountNumber}/500 Characters
-            </Text>
+                      {
+                        text: "Confirm",
+                        onPress: () => {
+                          // clear the answer both in state and the ref
+                          setResultAnswer("");
+                          resultAnswerRef.current = "";
+                          // update the answers object
+                          setAnswers((prevAnswers) => ({
+                            ...prevAnswers,
+                            result: "", // Reset the specific field
+                          }));
+                        },
+                      },
+                    ]
+                  );
+                }}>
+                <Ionicons name="backspace-outline" color="white" size={24} />
+              </TouchableOpacity>
+              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+                {resultCountNumber}/500 Characters
+              </Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -403,6 +415,9 @@ const styles = StyleSheet.create({
   carouselContainer: {
     // flex: 1,
     // height: 500,
+  },
+  touchableOpacityWrapper: {
+    flex: 1,
   },
   cardContainer: {
     flex: 1,

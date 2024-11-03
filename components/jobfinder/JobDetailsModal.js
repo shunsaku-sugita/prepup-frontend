@@ -94,7 +94,9 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         setProgressUpdate(data);
 
         // Once the job status is completed, navigate to the InterviewSimulator screen
+
         if (data.status === "Job processing complete!" && data.data) {
+        // if (data.status === "Job processing complete!") {
           setLoading(false);
           setSelectedCategoryQuestions(data.data);
 
@@ -102,6 +104,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           navigation.navigate("InterviewSimulator", {
             questions: data.data, // Pass the questions received from the server
           });
+          // navigation.navigate("InterviewSimulator");
         }
       });
     }

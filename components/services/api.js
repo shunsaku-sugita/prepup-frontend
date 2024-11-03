@@ -336,8 +336,9 @@ export const saveInterviewQuestions = async (categoryName, questions) => {
 export const deleteInterviewCategory = async (categoryId) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
-    const response = await apiClient.delete(endpoint, { categoryId });
-
+    // const response = await apiClient.delete(endpoint, { categoryId });
+    const response = await apiClient.delete(endpoint, {data: { categoryId } });
+    
     if (response.status == 200) {
       return true;
     }
@@ -456,7 +457,7 @@ export const signup = async (
 
   try {
     const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNUP;
-    const response = await apiClient.get(endpoint, signupData);
+    const response = await apiClient.post(endpoint, signupData);
 
     if (response.status == 201) {
       const token = response.data.authorization;
@@ -479,10 +480,12 @@ export const signup = async (
 };
 
 export const verifyEmail = async (email) => {
+  console.log(email);
   try {
     const endpoint =
       "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;
-    const response = await apiClient.get(endpoint, { email });
+      console.log(endpoint);
+    const response = await apiClient.get(endpoint, email);
 
     // look for code 200
     return response;

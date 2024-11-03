@@ -17,7 +17,7 @@ const InterviewFeedbackAccordions = ({ analyzedAnswer }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={true}>
         <Accordion style={styles.accordionContainer} type="multiple">
           <InterviewFeedbackCard
             value="a"
@@ -57,7 +57,7 @@ export default InterviewFeedbackAccordions;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 4,
+    flex: 3,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,

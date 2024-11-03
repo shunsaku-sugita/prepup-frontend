@@ -5,7 +5,7 @@ const Greeting = ({ userName }) => {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={require("../../assets/images/logo-color.png")}
+        source={require("../../assets/images/PrepUp-Logo-COLORED.png")}
       />
       <Text style={styles.titleText}>
         Hello,{" "}

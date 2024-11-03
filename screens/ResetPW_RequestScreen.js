@@ -11,6 +11,8 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
+import { verifyEmail } from "@/components/services/api";
+
 
 const ResetPW_RequestScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -31,11 +33,16 @@ const ResetPW_RequestScreen = () => {
     setEmailIsValid(isEmailValid);
   }, [enteredEmail]);
 
-  const VerifyHandler = () => {
+  const VerifyHandler = async () => {
     setIsSubmitted(true);
 
     if (emailIsValid) {
       // use verify API later
+      console.log("enteredEmail: " + enteredEmail);
+
+      const response = await verifyEmail(enteredEmail);
+      console.log(response);
+
       navigation.navigate("ResetPW_Verifycode");
     }
   };

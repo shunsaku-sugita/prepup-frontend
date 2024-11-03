@@ -1,12 +1,44 @@
-import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ScrollView, StyleSheet, Text, View, Animated } from "react-native";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 import LoadingOverlay from "./LoadingOverlay";
 import { Colors } from "@/constants/Colors";
 
 const HearableQuestions = ({ questionText }) => {
+  const scrollAnim = useRef(new Animated.Value(0)).current;
+  const [shouldScroll, setShouldScroll] = useState(false);
+  const [textHeight, setTextHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
+
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (textHeight > containerHeight) {
+      // console.log("containerHeight: " + containerHeight);
+      // console.log("textHeight: " + textHeight);
+
+      setShouldScroll(true);
+      startScrolling();
+    } else {
+      setShouldScroll(false);
+      scrollAnim.stopAnimation();
+      scrollAnim.setValue(0); // reset position if no scroll is needed
+    }
+  }, [textHeight, containerHeight]);
+
+  const startScrolling = () => {
+    scrollAnim.setValue(0); // reset position before starting
+
+    Animated.loop(
+      Animated.timing(scrollAnim, {
+        toValue: -(textHeight - containerHeight), // scroll to the top end
+        duration: 7000,
+        useNativeDriver: true,
+      })
+    ).start();
+  };
+
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
 
@@ -36,9 +68,25 @@ const HearableQuestions = ({ questionText }) => {
               onPress={speakHandler}
             />
           </View>
-          <View style={styles.questionTextContainer}>
-            <ScrollView contentContainerStyle={styles.scrollView}>
-              <Text style={styles.questionText}>{questionText}</Text>
+          <View
+            style={styles.questionTextContainer}
+            onLayout={(event) => {
+              const { height } = event.nativeEvent.layout;
+              setContainerHeight(height); // measure container height
+            }}>
+            <ScrollView contentContainerStyle={styles.scrollView} scrollEnabled={false} >
+              <Animated.View
+                style={{
+                  transform: [{ translateY: shouldScroll ? scrollAnim : 0 }],
+                }}
+              >
+                <Text
+                  style={styles.questionText}
+                  onLayout={(event) => {
+                    const { height } = event.nativeEvent.layout;
+                    setTextHeight(height); // measure text height
+                  }}>{questionText}</Text>
+              </Animated.View>
             </ScrollView>
           </View>
         </View>
@@ -70,9 +118,11 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "flex-start",
+    height: 95,
+    overflow: 'hidden',
   },
   scrollView: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
   },
   questionText: {

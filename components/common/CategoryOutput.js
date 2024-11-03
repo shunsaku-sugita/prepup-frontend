@@ -24,8 +24,8 @@ const CustomBottomTabs = () => {
         style={styles.tabButton}
         onPress={() => navigation.navigate("JobSearch")}
       >
-        <View style={styles.iconContainer}>
-          <Ionicons name="briefcase" size={25} color="white" />
+        <View style={styles.jobFinderIconContainer}>
+          <Ionicons name="briefcase" size={23} color="white" />
         </View>
       </TouchableOpacity>
 
@@ -45,9 +45,8 @@ const CustomBottomTabs = () => {
           navigation.navigate("StarQuiz");
         }}
       >
-        <View style={styles.iconContainer}>
-          <Octicons name="star-fill" size={25} color="white" />
-          {/* <Ionicons name="star" size={30} color="white" /> */}
+        <View style={styles.starMasterIconContainer}>
+          <Octicons name="star-fill" size={24} color="white" />
         </View>
       </TouchableOpacity>
     </View>
@@ -58,15 +57,48 @@ const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
   const [userName, setUserName] = useState("");
 
+  // fixed colors for default cards (limits 3)
+  const defaultBackgroundColors = [Colors.disabledBlue, Colors.defaultRed, Colors.defaultYellow]; 
+  // cycling colors for custom cards (3 colors for 5 cards)
+  const customBackgroundColors = [Colors.disabledYellow, Colors.disabledRed, Colors.disabledBlue];   
+
+  // fixed images for default cards (limits 3)
+  const defaultImages = [
+    require("../../assets/images/onboarding-two.png"),
+    require("../../assets/images/onboarding-three.png"),
+    require("../../assets/images/registration-success.png")
+  ];  
+  // fixed images for custom cards (limits 5)
+  const customImages = [
+    require("../../assets/images/CustomCategory-Image1.png"),
+    require("../../assets/images/CustomCategory-Image2.png"),
+    require("../../assets/images/CustomCategory-Image3.png"),
+    require("../../assets/images/CustomCategory-Image4.png"),
+    require("../../assets/images/CustomCategory-Image5.png")
+  ];  
+
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
-      const categoriesData = data.category;
-      setCategories(categoriesData);
+      console.log(data);
 
+      const categoriesData = data.category;
+      const occupationFlag = data.occupation;
+
+      // create copy of categoriesData(array of objects)
+      let updatedCategories = [...categoriesData];
+
+      if (!occupationFlag) {
+        // insert "My Occupation" as the first item if occupation is false
+        updatedCategories.unshift({ categoryName: "My Occupation", questions: [], score: [], _id: "", badge: "", });
+      }
+      setCategories(updatedCategories);  
+
+      console.log("Updated Categories:", categories); // Debugging: check updated categories
+
+      // load user data
       const userData = await getProfile();
       setUserName(userData.givenName);
-      // console.log(categories);
     };
     loadCategories();
   }, []);
@@ -79,18 +111,23 @@ const CategoryOutput = () => {
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
+        image={defaultImages[index]}
+        backgroundColor={defaultBackgroundColors[index]}
       />
     </View>
   );
 
   // custom category card
   const renderCustomCategoryCard = ({ item, index }) => (
-    <View style={styles.customCardContainer}>
+    // cycling colors by using %(Modulo operation)
+    <View style={styles.customCardContainer}> 
       <CategoryCardCustom
         index={index}
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
+        image={customImages[index]}
+        backgroundColor={customBackgroundColors[index % customBackgroundColors.length]}
       />
     </View>
   );
@@ -102,7 +139,7 @@ const CategoryOutput = () => {
         <Svg height="100%" width="100%">
           <Defs>
             <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
-              <Stop offset="0" stopColor={Colors.onPressBlue} />
+              <Stop offset="0" stopColor={Colors.headerBlue} />
               <Stop offset="1" stopColor={Colors.disabledBlue} />
             </LinearGradient>
           </Defs>
@@ -110,102 +147,45 @@ const CategoryOutput = () => {
         </Svg>
         <View style={styles.headerInnerContainer}>
           <Greeting userName={userName} />
-          <HeaderRightIcons color="black" />
+          <HeaderRightIcons color={Colors.backgroundDarkGray} />
         </View>
       </View>
 
-      {/* default category cards (wide) */}
-      <FlatList
-        data={categories}
-        keyExtractor={(item) => item.categoryName}
-        ListHeaderComponent={
-          <View style={styles.upperTextContainer}>
-            <View style={styles.title}>
-              <TitleText text="Choose a category to practice:" />
+      {/* Default category cards (scrollable with fixed height) */}
+      <View style={styles.defaultCategoryContainer}>
+        <FlatList
+          data={categories.slice(0, 3)}
+          keyExtractor={(item, index) => item.categoryName + index}
+          ListHeaderComponent={
+            <View style={styles.upperTextContainer}>
+              <View style={styles.title}>
+                <TitleText text="Choose a category to practice:" />
+              </View>
             </View>
-          </View>
-        }
-        renderItem={renderDefaultCategoryCard}
-        // custom category cards (swipable)
-        ListFooterComponent={
-          <View style={styles.bottomCardContainer}>
-            <View style={styles.title}>
-              <TitleText text="Custom categories:" />
-            </View>
-            <FlatList
-              data={categories.slice(0, 5)} // display only the first 5 items
-              keyExtractor={(item) => item.categoryName}
-              renderItem={renderCustomCategoryCard}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
-          </View>
-        }
-      />
+          }
+          renderItem={renderDefaultCategoryCard}
+          scrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+
+      {/* Custom category cards (only if there are more than 3 categories) */}
+      {categories.length > 3 && (
+      <View style={styles.bottomCardContainer}>
+        <View style={styles.title}>
+          <TitleText text="Custom categories:" />
+        </View>
+        <FlatList
+          data={categories.slice(3)} // display items from the 4th onward
+          keyExtractor={(item, index) => item.categoryName + index + 3}
+          renderItem={renderCustomCategoryCard}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      )}
       <CustomBottomTabs />
     </View>
-
-        /* <View style={styles.headerContainer}>
-          <Svg height="100%" width="100%">
-            <Defs>
-              <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
-                <Stop offset="0" stopColor="#1E22ED" />
-                <Stop offset="1" stopColor="#C5D2FF" />
-              </LinearGradient>
-            </Defs>
-            <Rect width="100%" height="100%" fill="url(#grad)" rx="16" ry="16" />
-            <View style={styles.headerInnerContainer}>
-              <Greeting userName={userName} />
-              <HeaderRightIcons color="black" />
-            </View>
-          </Svg>
-        </View>
-
-        <ScrollView>
-          {/* default category cards (wide) */
-          /* <View style={styles.upperTextContainer}>
-            <View style={styles.title}>
-              <TitleText text="Choose a category to practice:" />
-            </View>
-            <FlatList
-              data={categories}
-              keyExtractor={(item) => item.categoryName}
-              renderItem={({ item, index }) => (
-                <View style={styles.defaultCardContainer}>
-                  <CategoryCardDefault
-                    index={index}
-                    categoryName={item.categoryName}
-                    categories={categories}
-                    setCategories={setCategories}
-                  />
-                </View>
-              )}
-            />
-          </View> */
-          /* custom category cards (swipable) */
-          /* <View style={styles.bottomContainer}>
-            <View style={styles.title}>
-              <TitleText text="Custom categories:" />
-            </View>
-            <FlatList
-              data={categories}
-              keyExtractor={(item) => item.categoryName}
-              renderItem={({ item, index }) => (
-                <View style={styles.customCardContainer}>
-                  <CategoryCardCustom
-                    index={index}
-                    categoryName={item.categoryName}
-                    categories={categories}
-                    setCategories={setCategories}
-                  />
-                </View>
-              )}
-              horizontal={true}
-            />
-          </View>
-        </ScrollView>
-        <CustomBottomTabs />
-      </View> */
   );
 };
 
@@ -217,9 +197,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerContainer: {
-    marginTop: 58,
+    marginTop: 60,
     marginHorizontal: 18,
-    // justifyContent: "space-between",
     height: 50,
   },
   headerInnerContainer: {
@@ -252,13 +231,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 12,
     marginBottom: 16,
+    pointerEvents: "box-none",
   },
-  iconContainer: {
-    borderWidth: 2,
+  jobFinderIconContainer: {
     borderRadius: 50,
-    padding: 12,
+    padding: 16,
     marginHorizontal: 18,
-    backgroundColor: "black",
+    backgroundColor: Colors.lightBlack,
     // shadow for android
     elevation: 4,
     // shadow for iOS
@@ -267,15 +246,32 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.4,
   },
+  starMasterIconContainer: {
+    borderRadius: 50,
+    padding: 15,
+    marginHorizontal: 18,
+    backgroundColor: Colors.lightBlack,
+    // shadow for android
+    elevation: 4,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.4,
+  },
+  defaultCategoryContainer: {
+    // height: 410,
+    // marginBottom: 4,
+  },
   defaultCardContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    // flexDirection: "row",
+    // justifyContent: "space-between",
     marginHorizontal: 18,
   },
   customCardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginRight: 16,
+    marginRight: 12,
     paddingBottom: 4,
   },
 });

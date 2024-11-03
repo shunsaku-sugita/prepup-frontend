@@ -67,6 +67,7 @@ const SigninScreen = () => {
     setPasswordIsValid(isPasswordValid);
   }, [enteredPassword]);
 
+  // sign-in handler function
   const signInHandler = async () => {
     setIsSubmitted(true);
 
@@ -165,7 +166,7 @@ const SigninScreen = () => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={require("../assets/images/signin-background.png")} style={styles.backgroundImage} />
-        <Image source={require("../assets/images/logo-color.png")} style={styles.logoImage} />
+        <Image source={require("../assets/images/PrepUp-Logo-COLORED.png")} style={styles.logoImage} />
       </View>
 
       {/* email field */}

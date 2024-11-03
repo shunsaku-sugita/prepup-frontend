@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const SmallButton = ({ title, color, onPress }) => {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#7592F8",
+    backgroundColor: Colors.defaultBlue,
     borderRadius: 6,
     paddingVertical: 8,
     paddingHorizontal: 20,
