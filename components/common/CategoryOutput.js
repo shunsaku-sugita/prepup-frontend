@@ -24,8 +24,8 @@ const CustomBottomTabs = () => {
         style={styles.tabButton}
         onPress={() => navigation.navigate("JobSearch")}
       >
-        <View style={styles.iconContainer}>
-          <Ionicons name="briefcase" size={25} color="white" />
+        <View style={styles.jobFinderIconContainer}>
+          <Ionicons name="briefcase" size={23} color="white" />
         </View>
       </TouchableOpacity>
 
@@ -45,9 +45,8 @@ const CustomBottomTabs = () => {
           navigation.navigate("StarQuiz");
         }}
       >
-        <View style={styles.iconContainer}>
-          <Octicons name="star-fill" size={25} color="white" />
-          {/* <Ionicons name="star" size={30} color="white" /> */}
+        <View style={styles.starMasterIconContainer}>
+          <Octicons name="star-fill" size={24} color="white" />
         </View>
       </TouchableOpacity>
     </View>
@@ -56,7 +55,6 @@ const CustomBottomTabs = () => {
 
 const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
-  const [isOccupation, setIsOccupation] = useState(false);
   const [userName, setUserName] = useState("");
 
   // fixed colors for default cards (limits 3)
@@ -82,28 +80,21 @@ const CategoryOutput = () => {
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
-      // console.log(data);
-      const categoriesData = data.category;
-      const occupationFlag = data.occupation;  // true or false
-      if (occupationFlag) {
-        setIsOccupation(true);
-      }
+      console.log(data);
 
-      // ensure there are always 3 items
+      const categoriesData = data.category;
+      const occupationFlag = data.occupation;
+
+      // create copy of categoriesData(array of objects)
       let updatedCategories = [...categoriesData];
 
-      console.log("Raw data: " + updatedCategories);
-
-      if (updatedCategories.length < 3) {
-        if (!occupationFlag) {
-          // insert "My Occupation" as the first item if occupation is false
-          updatedCategories.unshift({ categoryName: "My Occupation", questions: [] });
-        }
+      if (!occupationFlag) {
+        // insert "My Occupation" as the first item if occupation is false
+        updatedCategories.unshift({ categoryName: "My Occupation", questions: [], score: [], _id: "", badge: "", });
       }
+      setCategories(updatedCategories);  
 
-      console.log("Updated Categories:", updatedCategories); // Debugging: check updated categories
-
-      setCategories(categoriesData);
+      console.log("Updated Categories:", categories); // Debugging: check updated categories
 
       // load user data
       const userData = await getProfile();
@@ -120,7 +111,6 @@ const CategoryOutput = () => {
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
-        isOccupation={isOccupation}
         image={defaultImages[index]}
         backgroundColor={defaultBackgroundColors[index]}
       />
@@ -194,99 +184,8 @@ const CategoryOutput = () => {
         />
       </View>
       )}
-      
-      {/* default category cards (wide)
-      <FlatList
-        data={categories}
-        keyExtractor={(item) => item.categoryName}
-        ListHeaderComponent={
-          <View style={styles.upperTextContainer}>
-            <View style={styles.title}>
-              <TitleText text="Choose a category to practice:" />
-            </View>
-          </View>
-        }
-        renderItem={renderDefaultCategoryCard}
-        // custom category cards (swipable)
-        ListFooterComponent={
-          <View style={styles.bottomCardContainer}>
-            <View style={styles.title}>
-              <TitleText text="Custom categories:" />
-            </View>
-            <FlatList
-              data={categories.slice(0, 5)} // display only the first 5 items
-              keyExtractor={(item) => item.categoryName}
-              renderItem={renderCustomCategoryCard}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
-          </View>
-        }
-      /> */}
       <CustomBottomTabs />
     </View>
-
-        /* <View style={styles.headerContainer}>
-          <Svg height="100%" width="100%">
-            <Defs>
-              <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
-                <Stop offset="0" stopColor="#1E22ED" />
-                <Stop offset="1" stopColor="#C5D2FF" />
-              </LinearGradient>
-            </Defs>
-            <Rect width="100%" height="100%" fill="url(#grad)" rx="16" ry="16" />
-            <View style={styles.headerInnerContainer}>
-              <Greeting userName={userName} />
-              <HeaderRightIcons color="black" />
-            </View>
-          </Svg>
-        </View>
-
-        <ScrollView>
-          {/* default category cards (wide) */
-          /* <View style={styles.upperTextContainer}>
-            <View style={styles.title}>
-              <TitleText text="Choose a category to practice:" />
-            </View>
-            <FlatList
-              data={categories}
-              keyExtractor={(item) => item.categoryName}
-              renderItem={({ item, index }) => (
-                <View style={styles.defaultCardContainer}>
-                  <CategoryCardDefault
-                    index={index}
-                    categoryName={item.categoryName}
-                    categories={categories}
-                    setCategories={setCategories}
-                  />
-                </View>
-              )}
-            />
-          </View> */
-          /* custom category cards (swipable) */
-          /* <View style={styles.bottomContainer}>
-            <View style={styles.title}>
-              <TitleText text="Custom categories:" />
-            </View>
-            <FlatList
-              data={categories}
-              keyExtractor={(item) => item.categoryName}
-              renderItem={({ item, index }) => (
-                <View style={styles.customCardContainer}>
-                  <CategoryCardCustom
-                    index={index}
-                    categoryName={item.categoryName}
-                    categories={categories}
-                    setCategories={setCategories}
-                  />
-                </View>
-              )}
-              horizontal={true}
-            />
-          </View>
-        </ScrollView>
-        <CustomBottomTabs />
-      </View> */
   );
 };
 
@@ -332,13 +231,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 12,
     marginBottom: 16,
+    pointerEvents: "box-none",
   },
-  iconContainer: {
-    borderWidth: 2,
+  jobFinderIconContainer: {
     borderRadius: 50,
-    padding: 12,
+    padding: 16,
     marginHorizontal: 18,
-    backgroundColor: "black",
+    backgroundColor: Colors.lightBlack,
+    // shadow for android
+    elevation: 4,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.4,
+  },
+  starMasterIconContainer: {
+    borderRadius: 50,
+    padding: 15,
+    marginHorizontal: 18,
+    backgroundColor: Colors.lightBlack,
     // shadow for android
     elevation: 4,
     // shadow for iOS

@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     columnGap: 8,
-    backgroundColor: "#7592F8",
+    backgroundColor: Colors.defaultBlue,
     borderRadius: 6,
     paddingVertical: 12,
     paddingHorizontal: 16,

@@ -2,7 +2,6 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import HearableQuestions from "../common/HearableQuestions";
-import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import {
   anayzeStarMasterAnsewers,
@@ -11,6 +10,7 @@ import {
 import { AppContext } from "@/store/app-context";
 import { useIsFocused } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
+import LoadingOverlay from "../common/LoadingOverlay";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
@@ -18,7 +18,7 @@ const StarQuizOutput = () => {
 
   // track if the screen is in focus
   const isFocused = useIsFocused();
-  // create a ref for the ScrollView (to always come back to/start from the leftmost screen)
+  // create a ref for the ScrollView (to move to a specific position of the screen 
   const scrollViewRef = useRef(null);
 
   // Separate states for four input fields, and combined answers state
@@ -37,6 +37,8 @@ const StarQuizOutput = () => {
     taskAnswerRef,
     actionAnswerRef,
     resultAnswerRef,
+    loading,
+    setLoading,
   } = useContext(AppContext);
 
   // fetch a random question when the page is mounted
@@ -105,13 +107,17 @@ const StarQuizOutput = () => {
           result: resultAnswerRef.current,
         },
       };
+
+      setLoading(true);
       // call the method and pass the structured data
       const starMasterFeedback = await anayzeStarMasterAnsewers(
         structuredData.question,
         structuredData.answers
       );
+      // set loading state to false once feedback is ready
+      setLoading(false);
+
       if (starMasterFeedback) {
-        // console.log("Received Feedback: ", starMasterFeedback);
         // navigate to the feedback screen, passing the feedback as a parameter
         navigation.navigate("StarQuizFeedback", { starMasterFeedback });
       }
@@ -135,6 +141,8 @@ const StarQuizOutput = () => {
           {
             text: "Confirm",
             onPress: async () => {
+              // navigate to the feedback screen immediately
+              navigation.navigate("StarQuizFeedback", {loading: true})
               // call the fetch method and navigate to the next screen, passing the feedback as a parameter
               await fetchStarMasterFeedback();
             },
@@ -146,92 +154,64 @@ const StarQuizOutput = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.questionContainer}>
-        <HearableQuestions questionText={starQuestionText} />
-      </View>
-      <StarQuizCarousel
-        situationAnswerRef={situationAnswerRef}
-        setSituationAnswer={setSituationAnswer}
-        taskAnswerRef={taskAnswerRef}
-        setTaskAnswer={setTaskAnswer}
-        actionAnswerRef={actionAnswerRef}
-        setActionAnswer={setActionAnswer}
-        resultAnswerRef={resultAnswerRef}
-        setResultAnswer={setResultAnswer}
-        answers={answers}
-        setAnswers={setAnswers}
-        handleBlur={handleBlur}
-        scrollViewRef={scrollViewRef}
-      />
-      {/* <View style={styles.buttons}>
-        <WideButton
-          title={
-            situationAnswer || taskAnswer || actionAnswer || resultAnswer
-              ? "Done"
-              : "Skip"
-          }
-          color="white"
-          size={24}
-          onPress={skipOrDoneButtonHandler}
-        />
-        <TouchableOpacity
-          style={styles.textButton}
-          onPress={() => {
-            Alert.alert(
-              "Cancel the STAR Master?",
-              "The process is unsaved, you will lose it.",
-              [
-                {
-                  text: "Cancel",
-                },
-                {
-                  text: "Confirm",
-                  onPress: () => {
-                    navigation.navigate("Category");
-                  },
-                },
-              ]
-            );
-          }}
-        >
-          <Text style={styles.text}>Cancel</Text>
-        </TouchableOpacity>
-      </View> */}
+      {loading ? (
+        <LoadingOverlay />
+      ) : (
+        <>
+          <View style={styles.questionContainer}>
+            <HearableQuestions questionText={starQuestionText} />
+          </View>
+          <StarQuizCarousel
+            situationAnswerRef={situationAnswerRef}
+            setSituationAnswer={setSituationAnswer}
+            taskAnswerRef={taskAnswerRef}
+            setTaskAnswer={setTaskAnswer}
+            actionAnswerRef={actionAnswerRef}
+            setActionAnswer={setActionAnswer}
+            resultAnswerRef={resultAnswerRef}
+            setResultAnswer={setResultAnswer}
+            answers={answers}
+            setAnswers={setAnswers}
+            handleBlur={handleBlur}
+            scrollViewRef={scrollViewRef}
+          />
 
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => {
-            Alert.alert(
-              "Cancel the STAR Master?",
-              "The process is unsaved, you will lose it.",
-              [
-                {
-                  text: "Cancel",
-                },
-                {
-                  text: "Confirm",
-                  onPress: () => {
-                    navigation.navigate("Category");
-                  },
-                },
-              ]
-            );
-          }}
-        >
-          <Text style={styles.cancelText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.skipOrNextButton}
-          onPress={skipOrDoneButtonHandler}
-        >
-          <Text style={styles.skipOrNextText}>{
-            situationAnswer || taskAnswer || actionAnswer || resultAnswer
-              ? "Done"
-              : "Skip"
-          }</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => {
+                Alert.alert(
+                  "Cancel the STAR Master?",
+                  "The process is unsaved, you will lose it.",
+                  [
+                    {
+                      text: "Cancel",
+                    },
+                    {
+                      text: "Confirm",
+                      onPress: () => {
+                        navigation.navigate("Category");
+                      },
+                    },
+                  ]
+                );
+              }}
+            >
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.skipOrNextButton}
+              onPress={skipOrDoneButtonHandler}
+            >
+              <Text style={styles.skipOrNextText}>{
+                situationAnswer || taskAnswer || actionAnswer || resultAnswer
+                  ? "Done"
+                  : "Skip"
+              }</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 };

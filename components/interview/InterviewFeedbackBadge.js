@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     height: 300,
   },
   badgeImage: {
-    marginTop: 140,
-    width: 190,
-    height: 220,
+    marginTop: 130,
+    width: 200,
+    height: 230,
   },
 });
