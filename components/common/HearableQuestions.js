@@ -15,8 +15,8 @@ const HearableQuestions = ({ questionText }) => {
 
   useEffect(() => {
     if (textHeight > containerHeight) {
-      console.log("containerHeight: " + containerHeight);
-      console.log("textHeight: " + textHeight);
+      // console.log("containerHeight: " + containerHeight);
+      // console.log("textHeight: " + textHeight);
 
       setShouldScroll(true);
       startScrolling();

@@ -8,7 +8,7 @@ import JobSearchScreen from "../screens/JobSearchScreen";
 import IconButton from "../components/common/IconButton";
 
 import SplashScreen from "../screens/SplashScreen";
-import NotificationsScreen from "../screens/NotificationsScreen";
+// import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from"../screens/EditProfileScreen"
 import EditPW_ChangePWScreen from "../screens/EditPW_ChangePWScreen";

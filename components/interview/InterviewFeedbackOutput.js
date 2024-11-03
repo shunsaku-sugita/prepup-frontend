@@ -4,8 +4,9 @@ import InterviewFeedbackButtons from "./InterviewFeedbackButtons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import InterviewFeedbackAccordions from "./InterviewFeedbackAccordions";
 import { AppContext } from "@/store/app-context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Colors } from "@/constants/Colors";
+import LoadingOverlay from "../common/LoadingOverlay";
 
 const InterviewFeedbackOutput = () => {
   const {
@@ -14,24 +15,40 @@ const InterviewFeedbackOutput = () => {
     selectedCategoryQuestions,
     setSelectedCategoryQuestions,
     setQuestionAnswerArray,
+    progressUpdate,
     categories,
     setCategories,
     analyzedAnswer,
+    loading
   } = useContext(AppContext);
+
+  // useEffect(() => {
+  //   console.log("=== progressUpdate ===");
+  //   console.log(progressUpdate.status);
+  // }, [])
+  
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <InterviewFeedbackBadge analyzedAnswer={analyzedAnswer} />
-      <InterviewFeedbackAccordions analyzedAnswer={analyzedAnswer} />
-      <InterviewFeedbackButtons
-        currentQuestionIndex={currentQuestionIndex}
-        setCurrentQuestionIndex={setCurrentQuestionIndex}
-        selectedCategoryQuestions={selectedCategoryQuestions}
-        setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-        setQuestionAnswerArray={setQuestionAnswerArray}
-        categories={categories}
-        setCategories={setCategories}
-      />
+      { loading ? (
+        <LoadingOverlay />
+      ) : (
+        <>
+          <InterviewFeedbackBadge analyzedAnswer={analyzedAnswer} />
+          <InterviewFeedbackAccordions analyzedAnswer={analyzedAnswer} />
+          <InterviewFeedbackButtons
+            currentQuestionIndex={currentQuestionIndex}
+            setCurrentQuestionIndex={setCurrentQuestionIndex}
+            selectedCategoryQuestions={selectedCategoryQuestions}
+            setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+            setQuestionAnswerArray={setQuestionAnswerArray}
+            categories={categories}
+            setCategories={setCategories}
+            progressUpdate={progressUpdate}
+          />
+        </>
+      )
+    }
     </GestureHandlerRootView>
   );
 };

@@ -1,17 +1,17 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
-import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "../../store/app-context";
-import SmallButton from "./SmallButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CategoryCardDefault = ({ index, categoryName, categories, isOccupation, image, backgroundColor }) => {
+const CategoryCardDefault = ({ index, categoryName, categories, image, backgroundColor }) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
     setSelectedCategoryQuestions,
     setQuestionAnswerArray,
+    setProgressUpdate,
   } = useContext(AppContext);
 
   const startInterviewHandler = (index) => {
@@ -29,50 +29,27 @@ const CategoryCardDefault = ({ index, categoryName, categories, isOccupation, im
       (item) => item.question
     );
     setSelectedCategoryQuestions(selectedQuestionTexts);
+    // reset the setProgressUpdate to delete previous job questions data (to avoid showing "save" button on feedback)
+    // setProgressUpdate(null);
   };
-
-  // const deleteHandler = (index) => {
-  //   // Create a new array excluding the item at the given index
-  //   const updatedCategories = categories.filter((_, idx) => idx !== index);
-  //   // Update the state with the new array
-  //   setCategories(updatedCategories);
-  // };
-
-  // const deleteAlertHandler = (index) => {
-  //   Alert.alert(
-  //     "Are you sure you want to delete the category?",
-  //     "Deleting the category will remove it permanently and cannot be undone. Please confirm if you want to proceed.",
-  //     [
-  //       {
-  //         text: "Cancel",
-  //       },
-  //       {
-  //         text: "Delete",
-  //         style: "destructive",
-  //         onPress: () => {
-  //           deleteHandler(index);
-  //         },
-  //       },
-  //     ]
-  //   );
-  // };
 
   return (
     <View style={[styles.cardContainer, {backgroundColor}]}>
       <View style={styles.imageContainer}>
-        <Image source={image} style={styles.image} />
+        <View style={styles.imageInnerContainer}>
+          <Image source={image} style={index === 0 || index === 2 ? styles.image : styles.image1} />
+        </View>
       </View>
       <View style={styles.textAndButtonArea}>
         <View style={styles.textContainer}>
           <Text style={styles.categoryText}>
-            {categoryName ? categoryName : "My Occupation"}
+            {/* {categoryName ? categoryName : "My Occupation"} */}
+            {categoryName}
           </Text>
         </View>
-        <SmallButton
-          title={categoryName ? "Start" : "Add"}
-          color="white"
-          onPress={() => startInterviewHandler(index)}
-        />
+        <TouchableOpacity style={categoryName !== "My Occupation" ? styles.buttonContainer : styles.addButtonContainer} onPress={categoryName !== "My Occupation" ? () => startInterviewHandler(index) : () => navigation.navigate("Profile")}>
+          <Text style={styles.buttonText}>{categoryName !== "My Occupation" ? "Start" : "Add"}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -92,11 +69,11 @@ const styles = StyleSheet.create({
     minWidth: Platform.OS === "ios" ? 150 : 165,
     height: 112,
     // shadow for android
-    elevation: 4,
+    elevation: 3,
     // shadow for iOS
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
+    shadowColor: Colors.textLightDarkGray,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
     shadowOpacity: 0.3,
   },
   imageContainer:  {
@@ -104,13 +81,27 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 50,
     borderBottomLeftRadius: 8,
+    width: '100%',
+    height: '100%',
     overflow: 'hidden',
+  },
+  imageInnerContainer: {
+    justifyContent: "center",
+    marginTop: 30,
   },
   image: {
     width: '100%',
+    height: '160%',
+    resizeMode: "contain",
+    marginTop: 10,
+    marginBottom: 20,
+    marginLeft: 10,
+  },
+  image1: {
+    width: '110%',
     height: '100%',
-    borderTopLeftRadius: 50,
-    overflow: 'hidden',
+    resizeMode: "contain",
+    marginBottom: 40,
   },
   textAndButtonArea: {
     flex: 4.5,
@@ -132,5 +123,32 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.defaultBlue,
+    borderRadius: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    marginTop: 4,
+    marginBottom: 4,
+    marginHorizontal: 8,
+  },
+  addButtonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.backgroundDarkGray,
+    borderRadius: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    marginTop: 4,
+    marginBottom: 4,
+    marginHorizontal: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: 'white',
   },
 });

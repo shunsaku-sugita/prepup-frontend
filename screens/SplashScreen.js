@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    width: 220,
-    height: 220,
+    width: 200,
+    height: 200,
   },
   logoWord: {
-    width: 360,
+    width: 350,
     height: 100,
   }
 });

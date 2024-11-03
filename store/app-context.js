@@ -1,8 +1,10 @@
+import { useRoute } from "@react-navigation/native";
 import { createContext, useRef, useState } from "react";
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedCategoryQuestions, setSelectedCategoryQuestions] = useState(
     []
@@ -59,6 +61,8 @@ const AppContextProvider = ({ children }) => {
         resultAnswerRef,
         progressUpdate,
         setProgressUpdate,
+        loading,
+        setLoading,
       }}
     >
       {children}

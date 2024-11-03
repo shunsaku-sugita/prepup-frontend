@@ -46,7 +46,7 @@ const CustomBottomTabs = () => {
         }}
       >
         <View style={styles.starMasterIconContainer}>
-          <Octicons name="star-fill" size={25} color="white" />
+          <Octicons name="star-fill" size={24} color="white" />
         </View>
       </TouchableOpacity>
     </View>
@@ -55,7 +55,6 @@ const CustomBottomTabs = () => {
 
 const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
-  const [isOccupation, setIsOccupation] = useState(false);
   const [userName, setUserName] = useState("");
 
   // fixed colors for default cards (limits 3)
@@ -81,28 +80,22 @@ const CategoryOutput = () => {
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
-      // console.log(data);
+
       const categoriesData = data.category;
-      const occupationFlag = data.occupation;  // true or false
-      if (occupationFlag) {
-        setIsOccupation(true);
-      }
+      const occupationFlag = data.occupation;
 
-      // ensure there are always 3 items
+      // create copy of categoriesData(array of objects)
       let updatedCategories = [...categoriesData];
-
-      console.log("Raw data: " + updatedCategories);
 
       if (updatedCategories.length < 3) {
         if (!occupationFlag) {
           // insert "My Occupation" as the first item if occupation is false
-          updatedCategories.unshift({ categoryName: "My Occupation", questions: [] });
+          updatedCategories.unshift({ categoryName: "My Occupation", questions: [], score: [], _id: "", badge: "", });
         }
       }
+      setCategories(updatedCategories);  
 
-      console.log("Updated Categories:", updatedCategories); // Debugging: check updated categories
-
-      setCategories(categoriesData);
+      console.log("Updated Categories:", categories); // Debugging: check updated categories
 
       // load user data
       const userData = await getProfile();
@@ -119,7 +112,6 @@ const CategoryOutput = () => {
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
-        isOccupation={isOccupation}
         image={defaultImages[index]}
         backgroundColor={defaultBackgroundColors[index]}
       />
@@ -240,6 +232,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 12,
     marginBottom: 16,
+    pointerEvents: "box-none",
   },
   jobFinderIconContainer: {
     borderRadius: 50,
@@ -256,7 +249,7 @@ const styles = StyleSheet.create({
   },
   starMasterIconContainer: {
     borderRadius: 50,
-    padding: 14.5,
+    padding: 15,
     marginHorizontal: 18,
     backgroundColor: Colors.lightBlack,
     // shadow for android
