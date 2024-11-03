@@ -10,6 +10,7 @@ const JobFilterLocationItem = ({ data, toggleBookmark, handleJobPress }) => {
         keyExtractor={(item) => item.jobId}
         renderItem={({ item }) => (
           <JobCard
+            key={item.jobId}
             job={item}
             toggleBookmark={toggleBookmark}
             onPress={() => handleJobPress(item)}
@@ -28,10 +29,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 16,
   },
-  jobList:{
-    flex: 1, 
-   
-    
-
+  jobList: {
+    flex: 1,
   },
 });
