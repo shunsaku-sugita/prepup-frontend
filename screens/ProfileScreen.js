@@ -1,10 +1,10 @@
 import {
+  Alert,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   Switch,
-  Alert,
   StyleSheet,
   FlatList,
 } from "react-native";
@@ -14,6 +14,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
+import * as SecureStore from "expo-secure-store";
 import { toastConfig } from "@/components/toast/ToastComponent";
 import { getProfile } from "@/components/services/api"; // Ensure this path is correct
 
@@ -92,6 +93,49 @@ const ProfileScreen = () => {
       }
     }, [route.params?.saveSuccess])
   );
+
+  // Logout confirmation dialog
+  const handleLogout = async () => {
+    Alert.alert(
+      "Are you sure you want to logout?",
+      "Your session will be ended.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Continue",
+          style: "destructive", // or "default"
+          onPress: async () => {
+            try {
+              // Clear user data from SecureStore
+              await SecureStore.deleteItemAsync("authToken");
+              await SecureStore.deleteItemAsync("userEmail");
+
+              // Show a success message or Toast
+              Toast.show({
+                type: "success",
+                text1: "Logged out successfully",
+                position: "top",
+                autoHide: true,
+                visibilityTime: 3000,
+              });
+
+              // Navigate to the sign-in screen
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "SignIn" }], // Replace "SignIn" with the actual name of your sign-in route
+              });
+            } catch (error) {
+              console.error("Error during logout:", error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   const profileSections = [
     {
@@ -191,7 +235,7 @@ const ProfileScreen = () => {
       key: "logout",
       renderItem: () => (
         <View style={styles.logoutContainer}>
-          <WideButton title="Logout" color="white" onPress={() => console.log("Logged out")} />
+          <WideButton title="Logout" color="white" onPress={handleLogout} />
         </View>
       ),
     },
@@ -239,8 +283,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
     shadowRadius: 4,
-    borderWidth:1,
-    borderColor:"#E0E0E0"
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
   },
   whiteBackground: {
     backgroundColor: "#fff",

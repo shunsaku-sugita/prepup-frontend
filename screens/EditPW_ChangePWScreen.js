@@ -13,6 +13,8 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
+// import * as SecureStore from 'expo-secure-store'; // Assuming you're using SecureStore to store email
+import { createPassword } from "@/components/services/api";  // Import the createPassword API
 
 const EditPW_ChangePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -36,25 +38,26 @@ const EditPW_ChangePWScreen = () => {
 
   const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
 
-  // password validation function for 8+ characters, letters, numbers, and symbols
+  // Password validation function for 8+ characters, letters, numbers, and symbols
   const passwordValidation = (password) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,}$/;
     return passwordRegex.test(password);
   };
 
-  // real-time validation for password
+  // Real-time validation for password
   useEffect(() => {
     const isPasswordValid = passwordValidation(enteredPassword);
     setPasswordIsValid(isPasswordValid);
   }, [enteredPassword]);
 
-  // real-time validation for confirm password
+  // Real-time validation for confirm password
   useEffect(() => {
     const isConfirmPasswordValid = passwordValidation(confirmPassword);
     setConfirmPasswordIsValid(isConfirmPasswordValid);
   }, [confirmPassword]);
 
-  const ConfirmHandler = () => {
+  // Handler to confirm password change
+  const ConfirmHandler = async () => {
     const doPasswordsMatch = enteredPassword === confirmPassword;
     setPasswordsMatch(doPasswordsMatch);
     setIsSubmitted(true);
@@ -63,15 +66,31 @@ const EditPW_ChangePWScreen = () => {
     setErrorMessage("");
 
     if (!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) {
-      setErrorMessage("Invalid password or password don't match.");
+      setErrorMessage("Invalid password or passwords don't match.");
       return;
     }
 
     if (passwordIsValid && confirmPasswordIsValid && passwordsMatch) {
-      // ==>> need to use update password API?
+      try {
+        // Fetch the email from SecureStore (or any other method you're using to store it)
+        const email = await SecureStore.getItemAsync("userEmail");  // Adjust the key to match your app's implementation
 
-      // Proceed if both passwords are valid and match
-      navigation.navigate("ResetPW_Success");
+        if (!email) {
+          throw new Error("Email not found. Please login again.");
+        }
+
+        // Call the createPassword API with both email and password
+        const success = await createPassword({ email, password: enteredPassword });
+        if (success) {
+          Alert.alert("Success", "Your password has been updated!");
+          navigation.navigate("ResetPW_Success");
+        } else {
+          Alert.alert("Error", "Failed to update password.");
+        }
+      } catch (error) {
+        console.error("Error updating password:", error.message);
+        Alert.alert("Error", "An error occurred while updating the password.");
+      }
     }
   };
 
@@ -80,15 +99,15 @@ const EditPW_ChangePWScreen = () => {
       <View style={styles.mainContents}>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Create New Password" />
-          <Text>
-            Your new password must be different from previous used passwords.
-          </Text>
+          <Text>Your new password must be different from previously used passwords.</Text>
         </View>
 
-        {/* password form */}
+        {/* Password form */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Password <Text style={styles.astarisk}>*</Text>
+            </Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -102,8 +121,7 @@ const EditPW_ChangePWScreen = () => {
               <View style={styles.triangle} />
               <View style={styles.tooltipContainer}>
                 <Text style={styles.tooltipText}>
-                  Minimum of 8 characters with a mix of letters, numbers, and
-                  symbols.
+                  Minimum of 8 characters with a mix of letters, numbers, and symbols.
                 </Text>
               </View>
             </View>
@@ -148,10 +166,12 @@ const EditPW_ChangePWScreen = () => {
             )}
         </View>
 
-        {/* confirm password form */}
+        {/* Confirm password form */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Confirm Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Confirm Password <Text style={styles.astarisk}>*</Text>
+            </Text>
           </View>
           <View
             style={[
@@ -186,9 +206,6 @@ const EditPW_ChangePWScreen = () => {
               }
             />
           </View>
-          {/* <View>
-            <Text>Both passwords must match.</Text>
-          </View> */}
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
@@ -203,7 +220,7 @@ const EditPW_ChangePWScreen = () => {
         <WideButton
           title="Save"
           color="white"
-          // onPress={} to save
+          onPress={ConfirmHandler}  // Call ConfirmHandler on button press
         />
       </View>
     </View>
@@ -276,9 +293,6 @@ const styles = StyleSheet.create({
     marginTop: -5, // slight overlap to connect the triangle with the tooltip box
   },
   tooltipText: { color: "#fff", fontSize: 14 },
-  fieldLabel: {
-    fontWeight: "bold",
-  },
   passwordField: {
     flexDirection: "row",
     justifyContent: "space-between",
