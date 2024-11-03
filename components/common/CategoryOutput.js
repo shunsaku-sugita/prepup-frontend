@@ -80,6 +80,7 @@ const CategoryOutput = () => {
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
+      console.log(data);
 
       const categoriesData = data.category;
       const occupationFlag = data.occupation;
@@ -87,11 +88,9 @@ const CategoryOutput = () => {
       // create copy of categoriesData(array of objects)
       let updatedCategories = [...categoriesData];
 
-      if (updatedCategories.length < 3) {
-        if (!occupationFlag) {
-          // insert "My Occupation" as the first item if occupation is false
-          updatedCategories.unshift({ categoryName: "My Occupation", questions: [], score: [], _id: "", badge: "", });
-        }
+      if (!occupationFlag) {
+        // insert "My Occupation" as the first item if occupation is false
+        updatedCategories.unshift({ categoryName: "My Occupation", questions: [], score: [], _id: "", badge: "", });
       }
       setCategories(updatedCategories);  
 
