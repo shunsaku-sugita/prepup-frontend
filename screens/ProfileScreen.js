@@ -252,7 +252,12 @@ const ProfileScreen = () => {
       key: "logout",
       renderItem: () => (
         <View style={styles.logoutContainer}>
-          <WideButton title="Logout" color="white" onPress={handleLogout} />
+          <TouchableOpacity
+            style={styles.logoutButton}  
+            onPress={handleLogout}
+          >
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
         </View>
       ),
     },
@@ -374,7 +379,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 20,
   },
   deleteTitle: {
     fontSize: 16,
@@ -383,9 +388,10 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: "red",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 13,
+    paddingHorizontal: 17.5,
     borderRadius: 4,
+   
   },
   deleteButtonText: {
     color: "white",
@@ -404,6 +410,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginBottom: 50,
+  },
+  logoutButton: {
+    backgroundColor: Colors.defaultBlue, 
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 397, 
+    height: 48,
+  },
+  logoutButtonText: {
+    color: "#FEFEFF",
+    fontSize: 16,
+    fontWeight: "800", 
   },
   occupationWarning: {
     fontWeight: "bold",
