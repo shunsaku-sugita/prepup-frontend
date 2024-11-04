@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Modal,
   ActivityIndicator,
+  SafeAreaView
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import TitleText from "../common/TitleText";
@@ -93,7 +94,9 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         setProgressUpdate(data);
 
         // Once the job status is completed, navigate to the InterviewSimulator screen
+
         if (data.status === "Job processing complete!" && data.data) {
+        // if (data.status === "Job processing complete!") {
           setLoading(false);
           setSelectedCategoryQuestions(data.data);
 
@@ -101,6 +104,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           navigation.navigate("InterviewSimulator", {
             questions: data.data, // Pass the questions received from the server
           });
+          // navigation.navigate("InterviewSimulator");
         }
       });
     }
@@ -158,7 +162,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           onRequestClose={() => setWebViewVisible(false)}
           transparent={false}
         >
-          <View style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1 }}>
             <WebView source={{ uri: job.url }} style={{ flex: 1 }} />
             <TouchableOpacity
               onPress={() => setWebViewVisible(false)}
@@ -166,7 +170,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
             >
               <Text style={styles.closeWebViewText}>Close</Text>
             </TouchableOpacity>
-          </View>
+          </SafeAreaView>
         </Modal>
       </View>
     </View>

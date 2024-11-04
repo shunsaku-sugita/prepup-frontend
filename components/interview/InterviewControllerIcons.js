@@ -27,6 +27,7 @@ const InterviewControllerIcons = ({
   progressUpdate,
   setProgressUpdate,
   setSelectedCategoryQuestions,
+  setLoading,
 }) => {
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
@@ -39,9 +40,6 @@ const InterviewControllerIcons = ({
   const [intervalId, setIntervalId] = useState(0);
 
   const [transcription, setTranscription] = useState("Transcribing...");
-  // console.log(
-  //   "===  === Interview Questions ===  ===  ===>> " + interviewQuestions
-  // );
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
@@ -154,17 +152,20 @@ const InterviewControllerIcons = ({
 
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
-      // use analyzeAnswer endpoint to pass questionAnswerArray
+
+      // if it's the last question, navigate to the feedback screen
+      navigation.navigate("InterviewFeedback");
+
+      setLoading(true);
+      // use analyzeAnswer endpoint to pass questionAnswerArray and get feedback
       const analyzedFeedback = await analyzeAnswer([
         ...questionAnswerArray,
         { question: questionText, answer: transcription },
       ]);
-
       // if it's the last question, pass sets of questions/answers and get feedback
       setAnalyzedAnswer(analyzedFeedback);
+      setLoading(false);
 
-      // If it's the last question, navigate to the feedback screen
-      navigation.navigate("InterviewFeedback");
     } else {
       if (currentQuestionIndex < interviewQuestions.length - 1) {
         // Increment the current question index

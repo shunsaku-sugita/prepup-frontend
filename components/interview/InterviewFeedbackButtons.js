@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Platform, Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 import { AppContext } from "../../store/app-context";
@@ -7,6 +7,7 @@ import CreateCategoryModal from "./CreateCategoryModal";
 import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
 import { saveInterviewQuestions } from "../services/api";
 import { Colors } from "@/constants/Colors";
+import WideButton from "../common/WideButton";
 
 const InterviewFeedbackButtons = ({
   setCurrentQuestionIndex,
@@ -15,14 +16,16 @@ const InterviewFeedbackButtons = ({
   setQuestionAnswerArray,
   categories,
   setCategories,
+  progressUpdate,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
 
-  // console.log(
-  //   "selectedCategoryQuestions(Feedback page) ===> " + selectedCategoryQuestions
-  // );
+  useEffect(() => {
+    console.log("=== progressUpdate ===");
+    console.log(progressUpdate);
+  }, [])
 
   let categoryOutputModal = (
     <CreateCategoryModal
@@ -49,22 +52,32 @@ const InterviewFeedbackButtons = ({
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.saveText}>Save Practice</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.tryAgainButton}
-          onPress={() => {
+        {progressUpdate === null ? (
+          <WideButton title="Try Again" color="white" onPress={() => {
             setCurrentQuestionIndex(0);
             setQuestionAnswerArray([]);
             navigation.navigate("InterviewSimulator");
-          }}
-        >
-          <Text style={styles.tryAgainText}>Try Again</Text>
-        </TouchableOpacity>
+          }} />
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.saveText}>Save Practice</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.tryAgainButton}
+              onPress={() => {
+                setCurrentQuestionIndex(0);
+                setQuestionAnswerArray([]);
+                navigation.navigate("InterviewSimulator");
+              }}
+            >
+              <Text style={styles.tryAgainText}>Try Again</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <Modal
@@ -85,7 +98,7 @@ export default InterviewFeedbackButtons;
 
 const styles = StyleSheet.create({
   container: {
-    flex: Platform.OS === "ios" ? 1.6 : 1.4,
+    flex: Platform.OS === "ios" ? 1.2 : 1.0,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 15,

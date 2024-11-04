@@ -9,7 +9,7 @@ const SigninPreloaderScreen = () => {
 
   useEffect(() => {
     const preloaderTimer = setTimeout(() => {
-      navigation.navigate("SignIn");
+      // navigation.navigate("SignIn");
     }, 2000);
 
     return () => {
@@ -21,7 +21,7 @@ const SigninPreloaderScreen = () => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/images/logo-color.png")}
+          source={require("../assets/images/PrepUp-Logo-COLORED.png")}
           style={styles.image}
         />
       </View>

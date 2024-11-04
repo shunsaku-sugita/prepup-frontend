@@ -8,7 +8,7 @@ import JobSearchScreen from "../screens/JobSearchScreen";
 import IconButton from "../components/common/IconButton";
 
 import SplashScreen from "../screens/SplashScreen";
-import NotificationsScreen from "../screens/NotificationsScreen";
+// import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from"../screens/EditProfileScreen"
 import EditPW_ChangePWScreen from "../screens/EditPW_ChangePWScreen";
@@ -87,7 +87,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Job Finder</Text>
                   </View>
                 ),
@@ -129,7 +129,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Simulator</Text>
                   </View>
                 ),
@@ -173,7 +173,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Feedback</Text>
                   </View>
                 ),
@@ -201,7 +201,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>S.T.A.R Master</Text>
                   </View>
                 ),
@@ -245,7 +245,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>S.T.A.R Master</Text>
                   </View>
                 ),
@@ -287,7 +287,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Account</Text>
                   </View>
                 ),
@@ -314,7 +314,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Edit Information</Text>
                   </View>
                 ),
@@ -339,7 +339,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Change Password</Text>
                   </View>
                 ),
@@ -371,7 +371,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign In</Text>
                   </View>
                 ),
@@ -388,7 +388,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
                   </View>
                 ),
@@ -454,7 +454,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Reset Password Request</Text>
                   </View>
                 ),
@@ -481,7 +481,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Verify Code</Text>
                   </View>
                 ),
@@ -508,7 +508,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Create New Password</Text>
                   </View>
                 ),
@@ -551,7 +551,7 @@ export default function App() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/logo-small-black.png")} style={{width: 34, height: 34}} />
+                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Create New Password</Text>
                   </View>
                 ),

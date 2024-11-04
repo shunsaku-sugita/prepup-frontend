@@ -3,50 +3,50 @@ import React from "react";
 import Toast from "react-native-toast-message";
 import JobCard from "./JobCard";
 import JobDetailsModal from "./JobDetailsModal";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
+const SavedJobCard = ({ data, toggleBookmark }) => {
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [selectedJob, setSelectedJob] = React.useState(null);
 
-const SavedJobCard = ({data,toggleBookmark}) => {
-const [modalVisible, setModalVisible] = React.useState(false);
-const [selectedJob, setSelectedJob] = React.useState(null);
-
- // Use navigation hook
- const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const handleBookmarkToggle = (job) => {
     toggleBookmark(job);
 
     if (job.isSaved) {
       Toast.show({
-        type: 'info',
-        text1: 'Removed from Saved Jobs',
+        type: "info",
+        text1: "Removed from Saved Jobs",
         text2: `${job.title} has been removed from your saved jobs.`,
-        position: 'top',
+        position: "top",
         visibilityTime: 1500,
       });
     }
   };
 
   const handleJobPress = (job) => {
-    setSelectedJob(job); // Set the selected job
-    setModalVisible(true); // Show the modal
+    setSelectedJob(job);
+    setModalVisible(true);
   };
 
   return (
     <View style={styles.jobListSaved}>
-    <FlatList
+      <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => 
-        <JobCard
-          job={{ ...item, isSaved: true }} 
-          toggleBookmark={toggleBookmark} 
-          onPress={() => handleJobPress(item)} 
-          />}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <JobCard
+            key={item.id}
+            job={{ ...item, isSaved: true }}
+            toggleBookmark={toggleBookmark}
+            onPress={() => handleJobPress(item)}
+          />
+        )}
         numColumns={1}
-        contentContainerStyle={styles.listContent} // Padding around the list
+        contentContainerStyle={styles.listContent}
       />
-     <Modal
+      <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   jobListSaved: {
-    flex:1
+    flex: 1,
   },
   modalOverlay: {
     flex: 1,
@@ -92,4 +92,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

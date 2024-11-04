@@ -456,7 +456,7 @@ export const signup = async (
 
   try {
     const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNUP;
-    const response = await apiClient.get(endpoint, signupData);
+    const response = await apiClient.post(endpoint, signupData);
 
     if (response.status == 201) {
       const token = response.data.authorization;
@@ -479,6 +479,7 @@ export const signup = async (
 };
 
 export const verifyEmail = async (email) => {
+  console.log(email);
   try {
     const endpoint =
       "/" + PATH_AUTH + "/" + SUB_PATH_FORGOT_PASSWORD + "/" + TYPE_OTP;

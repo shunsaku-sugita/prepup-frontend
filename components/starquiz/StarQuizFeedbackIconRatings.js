@@ -1,8 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import TitleText from "../common/TitleText";
 // import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
-import StarRatingDisplay from "./StarRatingDisplay";
+import StarQuizFeedbackRatingDisplay from "./StarQuizFeedbackRatingDisplay";
 import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
@@ -45,10 +45,10 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
   return (
     <View style={styles.container}>
       <View style={styles.phraseContainer}>
-        <TitleText text={ratingPhrase} />
+        <Text style={styles.phrase}>{ratingPhrase}</Text>
       </View>
       <View>
-        <StarRatingDisplay rating={ratingStarNumber} />
+        <StarQuizFeedbackRatingDisplay rating={ratingStarNumber} />
       </View>
     </View>
   );
@@ -66,5 +66,11 @@ const styles = StyleSheet.create({
   },
   phraseContainer: {
     // marginTop: 30,
-  }
+  },
+  phrase: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: Colors.backgroundDarkGray,
+    marginVertical: 10,
+  },
 });

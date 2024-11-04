@@ -95,9 +95,15 @@ const RegistrationScreen = () => {
         enteredEmail,
         enteredPassword,
         enteredFirstname,
-        enteredLastname
+        enteredLastname,
+        enteredUsername
       );
-      console.log(testSignupResult);
+      console.log("TEST => " + enteredEmail,
+      enteredPassword,
+      enteredFirstname,
+      enteredLastname,
+      enteredUsername);
+      console.log(testSignupResult.data);
 
       navigation.navigate("RegistrationSuccess");
     }
