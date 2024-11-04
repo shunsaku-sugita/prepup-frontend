@@ -24,7 +24,7 @@ const ResetPW_SuccessScreen = () => {
           title="Sign In"
           color="white"
           // need to check if user's info matches to our database
-          onPress={() => navigation.navigate("Category")}
+          onPress={() => navigation.navigate("SignIn")}
         />
       </View>
     </View>
