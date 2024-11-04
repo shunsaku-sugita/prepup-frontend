@@ -94,7 +94,9 @@ const CategoryOutput = () => {
       }
       setCategories(updatedCategories);  
 
-      console.log("Updated Categories:", categories); // Debugging: check updated categories
+      // Debugging: check updated categories
+      console.log("Updated Categories: ==> ");
+      console.log(categories); 
 
       // load user data
       const userData = await getProfile();
