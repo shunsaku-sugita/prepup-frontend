@@ -11,8 +11,8 @@ const CreateCategoryModal = ({
   setIsSaved,
   selectedCategoryQuestions,
   setSelectedCategoryQuestions,
-  categories,
-  setCategories,
+  customCategories,
+  setCustomCategories,
   saveInterviewQuestions,
 }) => {
   const [typedText, setTypedText] = useState("");
@@ -32,30 +32,36 @@ const CreateCategoryModal = ({
     setIsSaved(true);
 
     // Check if selectedCategoryQuestions is an array
-    const questionsArray = Array.isArray(selectedCategoryQuestions)
-      ? selectedCategoryQuestions.map((question) => question.trim())
-      : []; // default to an empty array if it's not an array
+    // const questionsArray = Array.isArray(selectedCategoryQuestions)
+    //   ? selectedCategoryQuestions.map((question) => question.trim())
+    //   : []; // default to an empty array if it's not an array
+    console.log("selectedCategoryQuestions:");
+    console.log(selectedCategoryQuestions);
+
+    const questionsArray = selectedCategoryQuestions.map((question) => question.trim());
+    console.log("questionsArray:");
+    console.log(questionsArray);
 
     // // Attempt to save the new category with API
     const success = await saveInterviewQuestions(typedText, questionsArray);
 
-    console.log("TEST SUCCESS LOG 1 ==> " + success);
+    console.log("Result of saveInterviewQuestions ==> ");
+    console.log(success);
 
-    console.log("TEST SUCCESS LOG 2 ==> ", {
-      categoryName: typedText,
-      questions: questionsArray,
-    });
 
     if (success) {
-      // If successful, update local categories state
-      setCategories((prevCategories) => [
+      // If successful, update local customCategories state
+      setCustomCategories((prevCategories) => [
         ...prevCategories,
         {
           categoryName: typedText,
           questions: questionsArray,
+          _id: "",
+          badge: "",
+          score: [],
         },
       ]);
-      console.log("Category saved successfully! ===> " + categories);
+      console.log("Category saved successfully! ===> " + customCategories);
     } else {
       console.error("Failed to save category.");
     }
@@ -110,7 +116,7 @@ const CreateCategoryModal = ({
             //   },
             // ]);
             //   }
-            //   console.log("Current all categories ==> " + categories);
+            //   console.log("Current all customCategories ==> " + customCategories);
             // }}
           />
         </View>

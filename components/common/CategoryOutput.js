@@ -54,7 +54,7 @@ const CustomBottomTabs = () => {
 };
 
 const CategoryOutput = () => {
-  const { categories, setCategories } = useContext(AppContext);
+  const { categories, setCategories, customCategories, setCustomCategories } = useContext(AppContext);
   const [userName, setUserName] = useState("");
 
   // fixed colors for default cards (limits 3)
@@ -124,8 +124,10 @@ const CategoryOutput = () => {
       <CategoryCardCustom
         index={index}
         categoryName={item.categoryName}
-        categories={categories}
-        setCategories={setCategories}
+        customCategories={customCategories}
+        setCustomCategories={setCustomCategories}
+        // categories={categories}
+        // setCategories={setCategories}
         image={customImages[index]}
         backgroundColor={customBackgroundColors[index % customBackgroundColors.length]}
       />
@@ -170,13 +172,13 @@ const CategoryOutput = () => {
       </View>
 
       {/* Custom category cards (only if there are more than 3 categories) */}
-      {categories.length > 3 && (
+      {customCategories.length > 0 && (
       <View style={styles.bottomCardContainer}>
         <View style={styles.title}>
           <TitleText text="Custom categories:" />
         </View>
         <FlatList
-          data={categories.slice(3)} // display items from the 4th onward
+          data={customCategories} // display items from the 4th onward
           keyExtractor={(item, index) => item.categoryName + index + 3}
           renderItem={renderCustomCategoryCard}
           horizontal={true}
