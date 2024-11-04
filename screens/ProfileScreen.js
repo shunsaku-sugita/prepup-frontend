@@ -160,7 +160,12 @@ const ProfileScreen = () => {
             <ProfileField label="Name" value={name} />
             <ProfileField label="Username" value={username} />
             <ProfileField label="Email" value={email} />
-            <ProfileField label="Occupation" value={occupation} noSeparator />
+            <ProfileField 
+              label="Occupation" 
+              value={occupation} 
+              noSeparator
+              isWarning={occupation === ""} // Show warning if occupation is empty
+            />
           </View>
           <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
             <Text style={styles.editButtonText}>Edit</Text>
@@ -267,10 +272,10 @@ const ProfileScreen = () => {
 };
 
 // Reusable Profile Field Component
-const ProfileField = ({ label, value, noSeparator }) => (
+const ProfileField = ({ label, value, noSeparator, isWarning }) => (
   <View style={styles.fieldContainer}>
     <View style={styles.fieldRow}>
-      <Text style={styles.fieldLabel}>{label}</Text>
+      <Text style={[styles.fieldLabel, isWarning && styles.occupationWarning]}>{label}</Text>
       <Text style={styles.fieldValue}>{value}</Text>
     </View>
     {!noSeparator && <View style={styles.fieldSeparator} />}
@@ -399,5 +404,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginBottom: 50,
+  },
+  occupationWarning: {
+    fontWeight: "bold",
+    color: "red",
   },
 });

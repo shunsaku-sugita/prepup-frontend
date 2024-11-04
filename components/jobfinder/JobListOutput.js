@@ -24,6 +24,7 @@ import {
 } from '../services/api';
 import JobCard from "./JobCard";
 import Toast from 'react-native-toast-message';
+import { Colors } from "@/constants/Colors";
 
 
 const jobListOutput = () => {
@@ -101,6 +102,8 @@ const jobListOutput = () => {
         const uniqueNewJobs = newJobs.filter(
           (newJob) => !jobs.some((job) => job.jobId === newJob.jobId)
         );
+
+      if (uniqueNewJobs.length > 0) {
         const updatedNewJobs = uniqueNewJobs.map((job) => {
           const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
           return { ...job, isSaved };
@@ -108,6 +111,10 @@ const jobListOutput = () => {
         setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
         setPage(nextPage);
       }
+      if (uniqueNewJobs.length < 10) {
+        console.warn(`Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`);
+      }
+    }
     } catch (error) {
       console.error("Error loading more jobs:", error);
     } finally {
@@ -198,7 +205,8 @@ const jobListOutput = () => {
       {/* JobSearchBar */}
       <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {/* JobFilterBar */}
-      <JobFilterBar changeFilter={(type) => setFilterType(type)} />
+      <JobFilterBar filterType={filterType} changeFilter={(type) => setFilterType(type)} />
+
 
       {filterType === 0 ? (
         <SavedJobCard data={savedJobs.filter((job) =>
@@ -216,11 +224,17 @@ const jobListOutput = () => {
               setModalVisible(true);
             }}
           />
-          <Button
-            title={isLoading ? "Loading..." : "Load More"}
+          <TouchableOpacity
+            style={styles.loadMoreButton}
             onPress={loadMoreJobs}
             disabled={isLoading}
-          />
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.loadMoreButtonText}>Load More</Text>
+            )}
+          </TouchableOpacity>
         </View>
       )}
 
@@ -265,5 +279,21 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  loadMoreButton: {
+    backgroundColor: Colors.defaultBlue, 
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    alignSelf: "center",
+    width: "100%", 
+  },
+  loadMoreButtonText: {
+    color: "#FEFEFF",
+    fontSize: 16,
+    fontWeight: "800", 
   },
 });

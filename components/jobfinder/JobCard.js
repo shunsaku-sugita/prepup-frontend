@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 
 const JobCard = ({ job, toggleBookmark, onPress }) => {
   return (
@@ -23,8 +24,8 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
       <TouchableOpacity onPress={() => toggleBookmark(job)}>
         <Ionicons
           name={job.isSaved ? "bookmark" : "bookmark-outline"}
-          size={24}
-          color={job.isSaved ? "black" : "black"}
+          size={26}
+          color={job.isSaved ? "#F7C42B" : "#black"}
         />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -39,8 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 16,
     padding: 10,
-    borderBottomWidth: 2,
-    borderColor: 'black',
+    borderBottomWidth: 1,
+    borderColor: Colors.onPressYellow,
     alignContent: "center",
     alignItems: "center",
     margin: 0,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 64,
     height: 64,
-    backgroundColor: "#ccc",
+    backgroundColor: Colors.defaultBlue,
     justifyContent: "center",
     alignItems: "center",
   },
