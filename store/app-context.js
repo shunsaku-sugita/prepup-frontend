@@ -11,7 +11,6 @@ const AppContextProvider = ({ children }) => {
   );
   const [progressUpdate, setProgressUpdate] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [customCategories, setCustomCategories] = useState([]);
   const [questionAnswerArray, setQuestionAnswerArray] = useState([]);
   const [analyzedAnswer, setAnalyzedAnswer] = useState([]);
 
@@ -64,8 +63,6 @@ const AppContextProvider = ({ children }) => {
         setProgressUpdate,
         loading,
         setLoading,
-        customCategories,
-        setCustomCategories,
       }}
     >
       {children}
