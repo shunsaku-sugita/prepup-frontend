@@ -43,7 +43,6 @@ const CategoryCardDefault = ({ index, categoryName, categories, image, backgroun
       <View style={styles.textAndButtonArea}>
         <View style={styles.textContainer}>
           <Text style={styles.categoryText}>
-            {/* {categoryName ? categoryName : "My Occupation"} */}
             {categoryName}
           </Text>
         </View>

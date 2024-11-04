@@ -7,7 +7,7 @@ import { AppContext } from "../../store/app-context";
 import { deleteInterviewCategory } from "../services/api";
 import SmallButton from "./SmallButton";
 
-const CategoryCardCustom = ({ index, categoryName, categories, setCategories, image, backgroundColor }) => {
+const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCategories, image, backgroundColor }) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
@@ -55,24 +55,30 @@ const CategoryCardCustom = ({ index, categoryName, categories, setCategories, im
     setQuestionAnswerArray([]);
 
     // Directly access the selected category using the index
-    const selectedCategoryObj = categories[index];
+    const selectedCategoryObj = customCategories[index];
     // Extract the array of question texts
+    console.log("selectedCategoryObj: ");
+    console.log(selectedCategoryObj);
+
     const selectedQuestionTexts = selectedCategoryObj.questions.map(
       (item) => item.question
     );
+    console.log("selectedQuestionTexts: ");
+    console.log(selectedQuestionTexts);
+    
     setSelectedCategoryQuestions(selectedQuestionTexts);
   };
 
   const deleteHandler = async (index) => {
-    const deleteCategoryId = categories[index]._id;
+    const deleteCategoryId = customCategories[index]._id;
     // try to delete category from database (using API)
     const deleteSuccess = await deleteInterviewCategory(deleteCategoryId);
     console.log("Selected Category ID: " + deleteCategoryId);
 
     // if successful, update the categories state excluding the selected category at the given index
     if (deleteSuccess) {
-      const updatedCategories = categories.filter((_, idx) => idx !== index);
-      setCategories(updatedCategories);
+      const updatedCategories = customCategories.filter((_, idx) => idx !== index);
+      setCustomCategories(updatedCategories);
     } else {
       Alert.alert("Error", "Failed to delete the category. Please try again.");
     }
