@@ -4,10 +4,11 @@ import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
-// import { saveInterviewQuestions } from "../services/api";
+import Toast from "react-native-toast-message";
 
 const CreateCategoryModal = ({
   setModalVisible,
+  isSaved,
   setIsSaved,
   selectedCategoryQuestions,
   setSelectedCategoryQuestions,
@@ -39,26 +40,32 @@ const CreateCategoryModal = ({
     // // Attempt to save the new category with API
     const success = await saveInterviewQuestions(typedText, questionsArray);
 
-    console.log("TEST SUCCESS LOG 1 ==> " + success);
+    console.log("Success ===> ");
+    console.log(success);
 
-    console.log("TEST SUCCESS LOG 2 ==> ", {
-      categoryName: typedText,
-      questions: questionsArray,
-    });
+    setModalVisible(false);
 
-    if (success) {
-      // If successful, update local categories state
-      setCategories((prevCategories) => [
-        ...prevCategories,
-        {
-          categoryName: typedText,
-          questions: questionsArray,
-        },
-      ]);
-      console.log("Category saved successfully! ===> " + categories);
+    if (isSaved && success) {
+      Toast.show({
+        type: "success",
+        text1: "A new category has saved",
+        text2: "",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 3000,
+      });
     } else {
-      console.error("Failed to save category.");
+      Toast.show({
+        type: "info",
+        text1: "Failed to save a new category",
+        text2: "",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 3000,
+      });
     }
+
+    setIsSaved(false);
   };
 
   return (
@@ -84,10 +91,6 @@ const CreateCategoryModal = ({
           placeholderTextColor={Colors.placeHolderTextGray}
           keyboardType="default"
         />
-        {/* validation (in progress) */}
-        {/* {(!typedText.trim()) && (
-          <Text style={styles.lowerText}>* Input a category title.</Text>
-        )} */}
         <View style={styles.buttonContainer}>
           <WideButton
             title="Save"
@@ -95,23 +98,6 @@ const CreateCategoryModal = ({
             size={24}
             display={!isValidInput()} // Disable if input is invalid
             onPress={saveCategoryQuestionsHandler}
-            // onPress={() => {
-            //   if (typedText.trim()) {
-            //     setIsSaved(true);
-            // setCategories((prevCategories) => [
-            //   ...prevCategories,
-            //   {
-            //     categoryName: typedText,
-            //     // replace with the real data
-            //     questions: [
-            //       // { question: "I'm a Test Question. Does it bother you?" },
-            //       selectedCategoryQuestions,
-            //     ],
-            //   },
-            // ]);
-            //   }
-            //   console.log("Current all categories ==> " + categories);
-            // }}
           />
         </View>
       </View>

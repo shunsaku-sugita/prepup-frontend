@@ -19,18 +19,17 @@ const InterviewFeedbackOutput = () => {
     categories,
     setCategories,
     analyzedAnswer,
-    loading
+    loading,
   } = useContext(AppContext);
 
   // useEffect(() => {
   //   console.log("=== progressUpdate ===");
   //   console.log(progressUpdate.status);
   // }, [])
-  
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      { loading ? (
+      {loading ? (
         <LoadingOverlay />
       ) : (
         <>
@@ -47,8 +46,7 @@ const InterviewFeedbackOutput = () => {
             progressUpdate={progressUpdate}
           />
         </>
-      )
-    }
+      )}
     </GestureHandlerRootView>
   );
 };
