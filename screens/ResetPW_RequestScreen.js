@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,37 +13,39 @@ import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
 import { verifyEmail } from "@/components/services/api";
 
-
 const ResetPW_RequestScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
-  const [emailIsValid, setEmailIsValid] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigation = useNavigation();
 
-  // general email validation function(requires **@**.** format)
-  const emailValidation = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email.trim());
-  };
-
-  // real-time validation for email
-  useEffect(() => {
-    const isEmailValid = emailValidation(enteredEmail);
-    setEmailIsValid(isEmailValid);
-  }, [enteredEmail]);
-
+  // Single function to handle validation and API call
   const VerifyHandler = async () => {
-    setIsSubmitted(true);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (emailIsValid) {
-      // use verify API later
-      console.log("enteredEmail: " + enteredEmail);
+    if (!emailRegex.test(enteredEmail.trim())) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
 
+    setIsProcessing(true); // Start processing
+
+    try {
       const response = await verifyEmail(enteredEmail);
-      console.log(response);
-
-      navigation.navigate("ResetPW_Verifycode");
+      if (response.status === 200) {
+        navigation.navigate("ResetPW_Verifycode", {
+          email: enteredEmail,
+        });
+      } else {
+        setErrorMessage(
+          response.response ? response.response.data.message : response.message
+        );
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false); // Stop processing after API call
     }
   };
 
@@ -59,14 +61,12 @@ const ResetPW_RequestScreen = () => {
         </View>
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Email{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Email <Text style={styles.astarisk}>*</Text>
+            </Text>
           </View>
           <View
-            style={
-              !emailIsValid && isSubmitted
-                ? styles.emailFieldAlert
-                : styles.emailField
-            }
+            style={errorMessage ? styles.emailFieldAlert : styles.emailField}
           >
             <TextInput
               placeholder="Enter your email address"
@@ -77,10 +77,15 @@ const ResetPW_RequestScreen = () => {
               onChangeText={(text) => setEnteredEmail(text)}
             />
           </View>
-          {!emailIsValid && isSubmitted && (
+          {/* Inline error message */}
+          {errorMessage && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
-              <Text style={styles.alertText}>Invalid email.</Text>
+              <Ionicons
+                name="alert-circle-outline"
+                color={Colors.errorRed}
+                size={20}
+              />
+              <Text style={styles.alertText}>{errorMessage}</Text>
             </View>
           )}
         </View>
@@ -88,10 +93,10 @@ const ResetPW_RequestScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Send Link"
+          title={isProcessing ? "Sending..." : "Send Link"}
           color="white"
-          // need to check if user's info matches to our database
           onPress={VerifyHandler}
+          display={isProcessing}
         />
       </View>
     </View>
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,

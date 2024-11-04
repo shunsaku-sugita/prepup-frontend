@@ -13,6 +13,8 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
+import { resetPassword } from "@/components/services/api";
+import { useRoute } from "@react-navigation/native";
 
 const ResetPW_CreatePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -27,8 +29,11 @@ const ResetPW_CreatePWScreen = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigation = useNavigation();
+  const route = useRoute();
+  const { email } = route.params;
 
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
@@ -54,7 +59,7 @@ const ResetPW_CreatePWScreen = () => {
     setConfirmPasswordIsValid(isConfirmPasswordValid);
   }, [confirmPassword]);
 
-  const ConfirmHandler = () => {
+  const ConfirmHandler = async () => {
     const doPasswordsMatch = enteredPassword === confirmPassword;
     setPasswordsMatch(doPasswordsMatch);
     setIsSubmitted(true);
@@ -68,10 +73,26 @@ const ResetPW_CreatePWScreen = () => {
     }
 
     if (passwordIsValid && confirmPasswordIsValid && passwordsMatch) {
-      // ==>> need to use update password API?
+      setIsProcessing(true);
 
+      try {
+        const response = await resetPassword(email, enteredPassword);
+
+        if (response.status == 200) {
+          navigation.navigate("ResetPW_Success");
+        } else {
+          setErrorMessage(
+            response.response
+              ? response.response.data.message
+              : response.message
+          );
+        }
+      } catch (error) {
+        setErrorMessage("An error occurred. Please try again.");
+      } finally {
+        setIsProcessing(false); // Stop processing after API call
+      }
       // Proceed if both passwords are valid and match
-      navigation.navigate("ResetPW_Success");
     }
   };
 
@@ -88,7 +109,9 @@ const ResetPW_CreatePWScreen = () => {
         {/* password form */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Password <Text style={styles.astarisk}>*</Text>
+            </Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -142,7 +165,11 @@ const ResetPW_CreatePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -151,7 +178,9 @@ const ResetPW_CreatePWScreen = () => {
         {/* confirm password form */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Confirm Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Confirm Password <Text style={styles.astarisk}>*</Text>
+            </Text>
           </View>
           <View
             style={[
@@ -192,7 +221,11 @@ const ResetPW_CreatePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -201,10 +234,11 @@ const ResetPW_CreatePWScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Confirm"
+          title={isProcessing ? "Confirming..." : "Confirm"}
           color="white"
           // need to check if user's info matches to our database
           onPress={ConfirmHandler}
+          display={isProcessing}
         />
         <TouchableOpacity
           style={styles.simpleButton}
@@ -258,7 +292,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -309,7 +343,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -346,7 +380,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.defaultBlue,
   },
 });

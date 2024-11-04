@@ -17,8 +17,6 @@ const getTokenSecurely = async () => {
 // Request interceptor to add JWT token to headers
 apiClient.interceptors.request.use(
   async (config) => {
-    // TODO : write token retrieval logic here - Khushal @ 18th Oct
-
     let token = await getTokenSecurely();
 
     if (token) {

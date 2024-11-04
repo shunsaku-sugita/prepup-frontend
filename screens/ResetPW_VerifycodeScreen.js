@@ -11,38 +11,55 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
+import { useRoute } from "@react-navigation/native";
+import { verifyOTP } from "@/components/services/api";
+import Toast from "react-native-toast-message";
 
 const ResetPW_VerifycodeScreen = () => {
   const [enteredCode, setEnteredCode] = useState("");
-  const [codeIsValid, setCodeIsValid] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigation = useNavigation();
 
-  // code validation function for a 6-digit numbers(0-9)
-  // ==>> need to check if the code matches to our sent code with API!!
-  const codeValidation = (code) => {
+  const route = useRoute();
+  const { email } = route.params;
+
+  const VerifyHandler = async () => {
     const codeRegex = /^\d{6}$/;
-    return codeRegex.test(code.trim());
-  };
+    if (!codeRegex.test(enteredCode.trim())) {
+      setErrorMessage("length of the otp must be 6 characters");
+      return;
+    }
 
-  // real-time validation for 6 digits code
-  useEffect(() => {
-    const isCodeValid = codeValidation(enteredCode);
-    setCodeIsValid(isCodeValid);
-  }, [enteredCode]);
+    setIsProcessing(true);
+    try {
+      const response = await verifyOTP(email, enteredCode);
 
-  const VerifyHandler = () => {
-    setIsSubmitted(true);
-
-    if (codeIsValid) {
-      // use verify API later
-      navigation.navigate("ResetPW_CreatePW");
+      if (response.status == 200) {
+        navigation.navigate("ResetPW_CreatePW", {
+          email: email,
+        });
+      } else {
+        setErrorMessage(
+          response.response ? response.response.data.message : response.message
+        );
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false); // Stop processing after API call
     }
   };
 
   const resendCodeHandler = () => {
-    // use API to resend a code
+    Toast.show({
+      type: "error",
+      text1: "Working on it !!!!",
+      position: "top",
+      autoHide: true,
+      visibilityTime: 3000,
+    });
   };
 
   return (
@@ -57,15 +74,11 @@ const ResetPW_VerifycodeScreen = () => {
         </View>
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Enter the code{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Enter the code <Text style={styles.astarisk}>*</Text>
+            </Text>
           </View>
-          <View
-            style={
-              !codeIsValid && isSubmitted
-                ? styles.codeFieldAlert
-                : styles.codeField
-            }
-          >
+          <View style={errorMessage ? styles.codeFieldAlert : styles.codeField}>
             <TextInput
               placeholder="_ _ _ _ _ _"
               placeholderTextColor={Colors.placeHolderTextGray}
@@ -75,10 +88,14 @@ const ResetPW_VerifycodeScreen = () => {
               onChangeText={(text) => setEnteredCode(text)}
             />
           </View>
-          {!codeIsValid && isSubmitted && (
+          {errorMessage && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
-              <Text style={styles.alertText}>Code does not match.</Text>
+              <Ionicons
+                name="alert-circle-outline"
+                color={Colors.errorRed}
+                size={20}
+              />
+              <Text style={styles.alertText}>{errorMessage}</Text>
             </View>
           )}
         </View>
@@ -86,10 +103,11 @@ const ResetPW_VerifycodeScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Verify"
+          title={isProcessing ? "Verifying..." : "Verify"}
           color="white"
           // need to check if user's info matches to our database
           onPress={VerifyHandler}
+          display={isProcessing}
         />
         <View style={styles.codeTextContainer}>
           <Text style={styles.simpleButtonText}>Didn't receive code? </Text>
@@ -130,7 +148,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -142,7 +160,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
