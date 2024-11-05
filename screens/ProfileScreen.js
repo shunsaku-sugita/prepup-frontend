@@ -32,6 +32,7 @@ const ProfileScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [termsAccepted, setTermsAccepted] = useState(true);
   const [privacyAccepted, setPrivacyAccepted] = useState(true);
+  const [isGmailLogin, setIsGmailLogin] = useState(false);
 
   // Fetch user profile data when the screen mounts
   useEffect(() => {
@@ -42,7 +43,8 @@ const ProfileScreen = () => {
           setName(`${profileData.givenName} ${profileData.familyName}`);
           setUsername(profileData.userName);
           setEmail(profileData.email);
-          setOccupation(profileData.occupation || ""); // Optional, based on available data
+          setOccupation(profileData.occupation || "");
+          setIsGmailLogin(profileData?.isGmailLogin);
         } else {
           console.error("Failed to load user profile data");
         }
@@ -129,25 +131,70 @@ const ProfileScreen = () => {
     {
       key: "password",
       renderItem: () => (
-        <View style={[styles.sectionContainer, styles.whiteBackground]}>
-          <Text style={styles.sectionTitle}>Password</Text>
+        <View
+          style={[
+            styles.sectionContainer,
+            styles.whiteBackground,
+            isGmailLogin && styles.disabledSection, // Apply disabled styling if Gmail login
+          ]}
+          pointerEvents={isGmailLogin ? "none" : "auto"} // Disable interactions if Gmail login
+        >
+          <Text
+            style={[
+              styles.sectionTitle,
+              isGmailLogin && { color: "#B0B0B0" }, // Adjust text color if disabled
+            ]}
+          >
+            Password
+          </Text>
           <View style={styles.sectionSeparator} />
           <View style={styles.infoContainer}>
             <View style={styles.fieldContainer}>
               <View style={styles.fieldRow}>
-                <Text style={styles.fieldLabel}>Change Password</Text>
+                <Text
+                  style={[
+                    styles.fieldLabel,
+                    isGmailLogin && { color: "#B0B0B0" },
+                  ]}
+                >
+                  Change Password
+                </Text>
                 <View style={styles.passwordContainer}>
-                  <Text style={styles.passwordText}>**********</Text>
+                  <Text
+                    style={[
+                      styles.passwordText,
+                      isGmailLogin && { color: "#B0B0B0" },
+                    ]}
+                  >
+                    **********
+                  </Text>
                 </View>
               </View>
             </View>
           </View>
           <TouchableOpacity
-            style={styles.editButton}
-            onPress={() => navigation.navigate("EditPW_ChangePW")}
+            style={[
+              styles.editButton,
+              isGmailLogin && styles.disabledButton, // Apply additional styles if disabled
+            ]}
+            onPress={() =>
+              !isGmailLogin && navigation.navigate("EditPW_ChangePW")
+            }
+            disabled={isGmailLogin} // Disables the touch interaction
           >
-            <Text style={styles.editButtonText}>Edit</Text>
-            <Ionicons name="pencil" size={16} color="black" />
+            <Text
+              style={[
+                styles.editButtonText,
+                isGmailLogin && { color: "#B0B0B0" },
+              ]}
+            >
+              Edit
+            </Text>
+            <Ionicons
+              name="pencil"
+              size={16}
+              color={isGmailLogin ? "#B0B0B0" : "black"}
+            />
           </TouchableOpacity>
         </View>
       ),
@@ -306,6 +353,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#E7EFFF",
     paddingVertical: 16,
     paddingHorizontal: 16,
+  },
+  editButtonDisable: {
+    backgroundColor: "#D3D3D3",
+  },
+  disabledSection: {
+    backgroundColor: "#F5F5F5", // Lighter background color
+  },
+  disabledButton: {
+    backgroundColor: "#D3D3D3", // Disabled button color
   },
   editButtonText: {
     fontSize: 16,
