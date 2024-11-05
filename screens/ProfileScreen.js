@@ -11,11 +11,15 @@ import {
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import WideButton from "@/components/common/WideButton";
-import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/toast/ToastComponent";
-import { getProfile } from "@/components/services/api"; // Ensure this path is correct
+import { emptyToken, getProfile } from "@/components/services/api"; // Ensure this path is correct
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -77,6 +81,15 @@ const ProfileScreen = () => {
     );
   };
 
+  const onLogoutBtnClick = async () => {
+    try {
+      await emptyToken();
+      navigation.navigate("SignIn");
+    } catch (error) {
+      console.log("Error while logging out");
+    }
+  };
+
   // Show toast if saveSuccess is true
   useFocusEffect(
     React.useCallback(() => {
@@ -129,9 +142,10 @@ const ProfileScreen = () => {
               </View>
             </View>
           </View>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.editButton}
-            onPress={() => navigation.navigate("EditPW_ChangePW")}>
+            onPress={() => navigation.navigate("EditPW_ChangePW")}
+          >
             <Text style={styles.editButtonText}>Edit</Text>
             <Ionicons name="pencil" size={16} color="black" />
           </TouchableOpacity>
@@ -180,7 +194,10 @@ const ProfileScreen = () => {
         <View style={[styles.sectionContainer, styles.whiteBackground]}>
           <View style={styles.deleteRow}>
             <Text style={styles.deleteTitle}>Delete your account</Text>
-            <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={handleDeleteAccount}
+            >
               <Text style={styles.deleteButtonText}>Delete</Text>
             </TouchableOpacity>
           </View>
@@ -191,7 +208,7 @@ const ProfileScreen = () => {
       key: "logout",
       renderItem: () => (
         <View style={styles.logoutContainer}>
-          <WideButton title="Logout" color="white" onPress={() => console.log("Logged out")} />
+          <WideButton title="Logout" color="white" onPress={onLogoutBtnClick} />
         </View>
       ),
     },
@@ -239,8 +256,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
     shadowRadius: 4,
-    borderWidth:1,
-    borderColor:"#E0E0E0"
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
   },
   whiteBackground: {
     backgroundColor: "#fff",
