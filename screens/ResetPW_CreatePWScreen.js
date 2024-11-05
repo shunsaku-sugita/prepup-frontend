@@ -59,9 +59,11 @@ const ResetPW_CreatePWScreen = () => {
     setConfirmPasswordIsValid(isConfirmPasswordValid);
   }, [confirmPassword]);
 
+  useEffect(() => {
+    setPasswordsMatch(enteredPassword === confirmPassword);
+  }, [enteredPassword, confirmPassword]);
+
   const ConfirmHandler = async () => {
-    const doPasswordsMatch = enteredPassword === confirmPassword;
-    setPasswordsMatch(doPasswordsMatch);
     setIsSubmitted(true);
 
     // Reset the error message initially

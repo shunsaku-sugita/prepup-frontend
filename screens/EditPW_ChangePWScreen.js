@@ -13,6 +13,7 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
+import { createPassword, emptyToken } from "@/components/services/api";
 
 const EditPW_ChangePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -27,6 +28,7 @@ const EditPW_ChangePWScreen = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigation = useNavigation();
 
@@ -54,7 +56,7 @@ const EditPW_ChangePWScreen = () => {
     setConfirmPasswordIsValid(isConfirmPasswordValid);
   }, [confirmPassword]);
 
-  const ConfirmHandler = () => {
+  const ConfirmHandler = async () => {
     const doPasswordsMatch = enteredPassword === confirmPassword;
     setPasswordsMatch(doPasswordsMatch);
     setIsSubmitted(true);
@@ -68,10 +70,26 @@ const EditPW_ChangePWScreen = () => {
     }
 
     if (passwordIsValid && confirmPasswordIsValid && passwordsMatch) {
-      // ==>> need to use update password API?
+      setIsProcessing(true);
 
-      // Proceed if both passwords are valid and match
-      navigation.navigate("ResetPW_Success");
+      try {
+        const response = await createPassword(enteredPassword);
+
+        if (response.status == 200) {
+          await emptyToken();
+          navigation.navigate("ResetPW_Success");
+        } else {
+          setErrorMessage(
+            response.response
+              ? response.response.data.message
+              : response.message
+          );
+        }
+      } catch (error) {
+        setErrorMessage("An error occurred. Please try again.");
+      } finally {
+        setIsProcessing(false); // Stop processing after API call
+      }
     }
   };
 
@@ -88,7 +106,9 @@ const EditPW_ChangePWScreen = () => {
         {/* password form */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Password <Text style={styles.astarisk}>*</Text>
+            </Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -142,7 +162,11 @@ const EditPW_ChangePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -151,7 +175,9 @@ const EditPW_ChangePWScreen = () => {
         {/* confirm password form */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Confirm Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Confirm Password <Text style={styles.astarisk}>*</Text>
+            </Text>
           </View>
           <View
             style={[
@@ -192,7 +218,11 @@ const EditPW_ChangePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -201,9 +231,10 @@ const EditPW_ChangePWScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Save"
+          title={isProcessing ? "Saveing..." : "Save"}
           color="white"
-          // onPress={} to save
+          onPress={ConfirmHandler}
+          display={isProcessing}
         />
       </View>
     </View>
@@ -235,7 +266,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -286,7 +317,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -323,7 +354,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.defaultBlue,
   },
 });
