@@ -19,28 +19,24 @@ import { AppContext } from "@/store/app-context";
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [webViewVisible, setWebViewVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [progressUpdate, setProgressUpdate] = useState(null);
-  const [trackingId, setTrackingId] = useState(null); // NEW state for tracking ID
+  const [trackingId, setTrackingId] = useState(null);
   const {
     progressUpdate,
     setProgressUpdate,
     setSelectedCategoryQuestions,
     setCurrentQuestionIndex,
   } = useContext(AppContext);
-  console.log("Job object received:", job);
-
+  
   if (!job) {
     return null;
   }
 
-  // Function to handle opening the job application page
   const handleApplyPress = () => {
-    setWebViewVisible(true); // Open the WebView when Apply is pressed
+    setWebViewVisible(true);
   };
 
-  // Handle the "Practice Interview" button press
   const handlePracticeInterview = async () => {
-    setLoading(true); // Show loading indicator
+    setLoading(true);
     try {
       const adzunaJobId = job.jobId;
       if (!adzunaJobId) {
@@ -51,12 +47,8 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         setProgressUpdate
       );
 
-      // reset the questions index to zero
       setCurrentQuestionIndex(0);
 
-      console.log("API Response in handlePracticeInterview:", response);
-
-      // Store the received tracking ID in state
       if (response && response.trackingId) {
         setTrackingId(response.trackingId);
       } else {
@@ -64,7 +56,6 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
       }
     } catch (error) {
       console.error("Error generating interview questions:", error);
-      // Optionally show a toast or alert to the user
       Toast.show({
         type: "error",
         text1: "Error",
@@ -72,44 +63,31 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         position: "top",
         visibilityTime: 2000,
       });
-      setLoading(false); // Hide loading indicator after the request
+      setLoading(false);
     }
   };
 
-  // Setup socket connection and listen for updates
   useEffect(() => {
-    // Connect to the socket if not connected
     if (!socket.connected) {
       socket.connect();
     }
 
-    // Check if there is an active tracking ID and set up listeners
     if (trackingId && job) {
       const currentJobId = job.jobId;
-      // Set up a socket listener for the progress update
       socket.on(trackingId, (data) => {
-        console.log(`Job Status Update for ${currentJobId}:`, data);
-
-        // Update the progress state with the latest data
         setProgressUpdate(data);
 
-        // Once the job status is completed, navigate to the InterviewSimulator screen
-
         if (data.status === "Job processing complete!" && data.data) {
-        // if (data.status === "Job processing complete!") {
           setLoading(false);
           setSelectedCategoryQuestions(data.data);
-
-          setModalVisible(false); // Close the modal
+          setModalVisible(false);
           navigation.navigate("InterviewSimulator", {
-            questions: data.data, // Pass the questions received from the server
+            questions: data.data,
           });
-          // navigation.navigate("InterviewSimulator");
         }
       });
     }
 
-    // Cleanup function to remove socket listeners when the component unmounts
     return () => {
       if (trackingId) {
         socket.off(trackingId);
@@ -131,11 +109,11 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         <View style={styles.titleWrapper}>
           <TitleText text={job.title} />
         </View>
-        <Text style={styles.companyDescriptionText}>
-          Company: {job.company}
+        <Text style={styles.companyLabel}>
+          Company: <Text style={styles.companyValue}>{job.company}</Text>
         </Text>
-        <Text style={styles.descriptionText}>Description:</Text>
-        <Text style={styles.descriptionText}>{job.description}</Text>
+        <Text style={styles.descriptionLabel}>Description</Text>
+        <Text style={styles.descriptionValue}>{job.description}</Text>
         <View style={styles.buttonContainer}>
           {loading ? (
             <ActivityIndicator size="large" color="#4D63B5" />
@@ -144,7 +122,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
               title="Practice Interview"
               color="white"
               size={24}
-              onPress={handlePracticeInterview} // Start generating questions
+              onPress={handlePracticeInterview}
             />
           )}
           <TouchableOpacity
@@ -155,7 +133,6 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Modal for WebView */}
         <Modal
           visible={webViewVisible}
           animationType="slide"
@@ -202,12 +179,23 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignItems: "left",
   },
-  companyDescriptionText: {
+  companyLabel: {
     fontSize: 16,
-    marginBottom: 8,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
-  descriptionText: {
+  companyValue: {
     fontSize: 16,
+    fontWeight: "normal", // Regular weight for the company value
+  },
+  descriptionLabel: {
+    fontSize: 16,
+    fontWeight: "bold", // Bold for "Description"
+   
+  },
+  descriptionValue: {
+    fontSize: 16,
+    fontWeight: "normal", // Regular weight for the description value
   },
   buttonContainer: {
     flexDirection: "column",

@@ -4,7 +4,6 @@ import {
   View,
   Modal,
   TouchableOpacity,
-  Button,
   ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
@@ -13,7 +12,6 @@ import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";
 import JobFilterLocationItem from "./JobFilterLocationItem";
 import JobSearchBar from "./JobSearchBar";
-import JobFilterTags from './JobFilterTags';
 import JobDetailsModal from "./JobDetailsModal";
 import {
   bookmarkJob,
@@ -22,16 +20,16 @@ import {
   fetchJobs,
   fetchJobsByKeyword,
 } from '../services/api';
-import JobCard from "./JobCard";
 import Toast from 'react-native-toast-message';
-
+import { Colors } from "@/constants/Colors";
+import LoadingOverlay from "../common/LoadingOverlay";
 
 const jobListOutput = () => {
   const [filterType, setFilterType] = useState(1);
   const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Set initial loading to true
   const [isBookmarking, setIsBookmarking] = useState(false);
   const [page, setPage] = useState(1);
   const [savedJobs, setSavedJobs] = useState([]);
@@ -55,7 +53,7 @@ const jobListOutput = () => {
   };
 
   const fetchJobsByKeywordEffect = async (page = 1) => {
-    setIsLoading(true);
+    setIsLoading(true);  // Keep loading state true until jobs are fetched
     setError("");
 
     try {
@@ -75,7 +73,7 @@ const jobListOutput = () => {
     } catch (err) {
       console.error("Error fetching jobs:", err);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false);  // Set loading to false once jobs are fetched
     }
   };
 
@@ -86,6 +84,7 @@ const jobListOutput = () => {
 
   useFocusEffect(
     React.useCallback(() => {
+      setIsLoading(true); // Set loading to true when the screen is focused
       loadJobsAndSavedJobs();
     }, [searchQuery, filterType])
   );
@@ -101,6 +100,8 @@ const jobListOutput = () => {
         const uniqueNewJobs = newJobs.filter(
           (newJob) => !jobs.some((job) => job.jobId === newJob.jobId)
         );
+
+      if (uniqueNewJobs.length > 0) {
         const updatedNewJobs = uniqueNewJobs.map((job) => {
           const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
           return { ...job, isSaved };
@@ -108,6 +109,10 @@ const jobListOutput = () => {
         setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
         setPage(nextPage);
       }
+      if (uniqueNewJobs.length < 10) {
+        console.warn(`Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`);
+      }
+    }
     } catch (error) {
       console.error("Error loading more jobs:", error);
     } finally {
@@ -151,7 +156,6 @@ const jobListOutput = () => {
           position: 'top',
           autoHide: true,
           visibilityTime: 3000,
-          
         });
       } else {
         await bookmarkJob(jobDetails);
@@ -170,7 +174,6 @@ const jobListOutput = () => {
           position: 'top',
           autoHide: true,
           visibilityTime: 3000,
-         
         });
       }
     } catch (error) {
@@ -195,33 +198,48 @@ const jobListOutput = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* JobSearchBar */}
-      <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      {/* JobFilterBar */}
-      <JobFilterBar changeFilter={(type) => setFilterType(type)} />
+      {/* Show LoadingOverlay until jobs are fetched */}
+      {isLoading && <LoadingOverlay />}
 
-      {filterType === 0 ? (
-        <SavedJobCard data={savedJobs.filter((job) =>
-          job.title.toLowerCase().includes(searchQuery.toLowerCase())
-        )} toggleBookmark={toggleBookmark} />
-      ) : (
-        <View style={styles.container}>
-          <JobFilterLocationItem
-            data={jobs.filter((job) =>
-              job.title.toLowerCase().includes(searchQuery.toLowerCase())
-            )}
-            toggleBookmark={toggleBookmark}
-            handleJobPress={(job) => {
-              setSelectedJob(job);
-              setModalVisible(true);
-            }}
-          />
-          <Button
-            title={isLoading ? "Loading..." : "Load More"}
-            onPress={loadMoreJobs}
-            disabled={isLoading}
-          />
-        </View>
+      {/* Only show the content once the jobs are loaded */}
+      {!isLoading && (
+        <>
+          <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <JobFilterBar filterType={filterType} changeFilter={(type) => setFilterType(type)} />
+
+          {filterType === 0 ? (
+            <SavedJobCard 
+              data={savedJobs.filter((job) =>
+                job.title.toLowerCase().includes(searchQuery.toLowerCase())
+              )} 
+              toggleBookmark={toggleBookmark} 
+            />
+          ) : (
+            <View style={styles.container}>
+              <JobFilterLocationItem
+                data={jobs.filter((job) =>
+                  job.title.toLowerCase().includes(searchQuery.toLowerCase())
+                )}
+                toggleBookmark={toggleBookmark}
+                handleJobPress={(job) => {
+                  setSelectedJob(job);
+                  setModalVisible(true);
+                }}
+              />
+              <TouchableOpacity
+                style={styles.loadMoreButton}
+                onPress={loadMoreJobs}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.loadMoreButtonText}>Load More</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
+        </>
       )}
 
       <Modal
@@ -265,5 +283,21 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  loadMoreButton: {
+    backgroundColor: Colors.defaultBlue, 
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+    alignSelf: "center",
+    width: "100%", 
+  },
+  loadMoreButtonText: {
+    color: "#FEFEFF",
+    fontSize: 16,
+    fontWeight: "800", 
   },
 });
