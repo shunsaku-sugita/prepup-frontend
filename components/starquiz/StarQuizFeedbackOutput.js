@@ -8,7 +8,7 @@ import { AppContext } from "@/store/app-context";
 import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
-  const { setAnswers } = useContext(AppContext);
+  const { setAnswers, loading } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (

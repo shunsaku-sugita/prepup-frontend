@@ -1,42 +1,47 @@
 import { StyleSheet, View, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "expo-router";
+import { Video } from "expo-av";
 import { Colors } from "@/constants/Colors";
 
 const SplashScreen = () => {
-  const [showFirstLogo, setShowFirstLogo] = useState(true);
   const navigataion = useNavigation();
+  // const [showFirstLogo, setShowFirstLogo] = useState(true);
 
-  useEffect(() => {
-    const firstLogoTimer = setTimeout(() => {
-      setShowFirstLogo(false);
-    }, 2000);
+  // useEffect(() => {
+  //   const firstLogoTimer = setTimeout(() => {
+  //     setShowFirstLogo(false);
+  //   }, 2000);
 
-    const secondLogoTimer = setTimeout(() => {
-      navigataion.navigate("SignIn");
-    }, 4000);
+  //   const secondLogoTimer = setTimeout(() => {
+  //     navigataion.navigate("SignIn");
+  //   }, 4000);
 
-    return () => {
-      clearTimeout(firstLogoTimer);
-      clearTimeout(secondLogoTimer);
-    };
-  }, [navigataion]);
+  //   return () => {
+  //     clearTimeout(firstLogoTimer);
+  //     clearTimeout(secondLogoTimer);
+  //   };
+  // }, [navigataion]);
+
+  const videoEndHandler = () => {
+    navigataion.navigate("SignIn");
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        {showFirstLogo ? (
-          <>
-            <Image source={require("../assets/images/PrepUp-Logo-COLORED.png")} style={styles.logo} />
-          </>
-        ) : (
-          <>
-            <Image
-              source={require("../assets/images/PrepUp-Logo+Wordmark-COLORED.png")} style={styles.logoWord}
-            />
-          </>
-        )}
-      </View>
+      <Video
+        source={require("../assets/videos/PrepUp-SplashScreen.mp4")}
+        style={styles.video}
+        resizeMode={"cover"}
+        shouldPlay
+        isLooping={false}
+        onPlaybackStatusUpdate={(status) => {
+          if (status.didJustFinish) {
+            videoEndHandler();
+          }
+        }}
+        isMuted
+      />
     </View>
   );
 };
@@ -50,17 +55,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  imageContainer: {
+  video: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
-  logo: {
-    width: 200,
-    height: 200,
-  },
-  logoWord: {
-    width: 350,
-    height: 100,
-  }
+  // imageContainer: {
+  //   flex: 1,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   backgroundColor: Colors.defaultBeige,
+  // },
+  // logo: {
+  //   width: 200,
+  //   height: 200,
+  // },
+  // logoWord: {
+  //   width: 350,
+  //   height: 100,
+  // },
 });

@@ -27,28 +27,6 @@ const InterviewFeedbackButtons = ({
     console.log(progressUpdate);
   }, []);
 
-  let categoryOutputModal = (
-    <CreateCategoryModal
-      setModalVisible={setModalVisible}
-      isSaved={isSaved}
-      setIsSaved={setIsSaved}
-      categories={categories}
-      setCategories={setCategories}
-      selectedCategoryQuestions={selectedCategoryQuestions}
-      setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-      saveInterviewQuestions={saveInterviewQuestions}
-    />
-  );
-  // if (isSaved) {
-  //   categoryOutputModal = (
-  //     <CreateCategorySuccessModal
-  //       categories={categories}
-  //       modalVisible={modalVisible}
-  //       setModalVisible={setModalVisible}
-  //       selectedCategoryQuestions={selectedCategoryQuestions}
-  //     />
-  //   );
-
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
@@ -91,7 +69,18 @@ const InterviewFeedbackButtons = ({
         onRequestClose={() => setModalVisible(false)} // Close modal when back button is pressed
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>{categoryOutputModal}</View>
+          <View style={styles.modalContent}>
+            <CreateCategoryModal
+              setModalVisible={setModalVisible}
+              isSaved={isSaved}
+              setIsSaved={setIsSaved}
+              categories={categories}
+              setCategories={setCategories}
+              selectedCategoryQuestions={selectedCategoryQuestions}
+              setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+              saveInterviewQuestions={saveInterviewQuestions}
+            />
+          </View>
         </View>
       </Modal>
     </View>
