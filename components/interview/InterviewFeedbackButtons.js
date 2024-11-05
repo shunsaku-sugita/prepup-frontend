@@ -2,9 +2,9 @@ import { useNavigation } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { Platform, Text, TouchableOpacity } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
-import { AppContext } from "../../store/app-context";
+// import { AppContext } from "../../store/app-context";
 import CreateCategoryModal from "./CreateCategoryModal";
-import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
+// import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
 import { saveInterviewQuestions } from "../services/api";
 import { Colors } from "@/constants/Colors";
 import WideButton from "../common/WideButton";
@@ -25,39 +25,21 @@ const InterviewFeedbackButtons = ({
   useEffect(() => {
     console.log("=== progressUpdate ===");
     console.log(progressUpdate);
-  }, [])
-
-  let categoryOutputModal = (
-    <CreateCategoryModal
-      setModalVisible={setModalVisible}
-      setIsSaved={setIsSaved}
-      categories={categories}
-      setCategories={setCategories}
-      selectedCategoryQuestions={selectedCategoryQuestions}
-      setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-      saveInterviewQuestions={saveInterviewQuestions}
-    />
-  );
-  if (isSaved) {
-    categoryOutputModal = (
-      <CreateCategorySuccessModal
-        categories={categories}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        selectedCategoryQuestions={selectedCategoryQuestions}
-      />
-    );
-  }
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
         {progressUpdate === null ? (
-          <WideButton title="Try Again" color="white" onPress={() => {
-            setCurrentQuestionIndex(0);
-            setQuestionAnswerArray([]);
-            navigation.navigate("InterviewSimulator");
-          }} />
+          <WideButton
+            title="Try Again"
+            color="white"
+            onPress={() => {
+              setCurrentQuestionIndex(0);
+              setQuestionAnswerArray([]);
+              navigation.navigate("InterviewSimulator");
+            }}
+          />
         ) : (
           <>
             <TouchableOpacity
@@ -87,7 +69,18 @@ const InterviewFeedbackButtons = ({
         onRequestClose={() => setModalVisible(false)} // Close modal when back button is pressed
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>{categoryOutputModal}</View>
+          <View style={styles.modalContent}>
+            <CreateCategoryModal
+              setModalVisible={setModalVisible}
+              isSaved={isSaved}
+              setIsSaved={setIsSaved}
+              categories={categories}
+              setCategories={setCategories}
+              selectedCategoryQuestions={selectedCategoryQuestions}
+              setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+              saveInterviewQuestions={saveInterviewQuestions}
+            />
+          </View>
         </View>
       </Modal>
     </View>

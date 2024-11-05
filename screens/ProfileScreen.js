@@ -1,10 +1,10 @@
 import {
+  Alert,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   Switch,
-  Alert,
   StyleSheet,
   FlatList,
 } from "react-native";
@@ -18,6 +18,7 @@ import {
 } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
+import * as SecureStore from "expo-secure-store";
 import { toastConfig } from "@/components/toast/ToastComponent";
 import { emptyToken, getProfile } from "@/components/services/api"; // Ensure this path is correct
 
@@ -52,9 +53,23 @@ const ProfileScreen = () => {
         console.error("Error loading profile data:", error);
       }
     };
+  });
 
+  useEffect(() => {
     loadUserProfile();
   }, []);
+
+  // Update profile information when navigating back from EditProfileScreen
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.updatedProfile) {
+        const updatedProfile = route.params.updatedProfile;
+        setName(`${updatedProfile.givenName} ${updatedProfile.familyName}`);
+        setUsername(updatedProfile.userName);
+        setOccupation(updatedProfile.occupation || "");
+      }
+    }, [route.params?.updatedProfile])
+  );
 
   const handleEditPress = () => {
     navigation.navigate("EditProfile");
@@ -83,15 +98,6 @@ const ProfileScreen = () => {
     );
   };
 
-  const onLogoutBtnClick = async () => {
-    try {
-      await emptyToken();
-      navigation.navigate("SignIn");
-    } catch (error) {
-      console.log("Error while logging out");
-    }
-  };
-
   // Show toast if saveSuccess is true
   useFocusEffect(
     React.useCallback(() => {
@@ -108,6 +114,49 @@ const ProfileScreen = () => {
     }, [route.params?.saveSuccess])
   );
 
+  // Logout confirmation dialog
+  const handleLogout = async () => {
+    Alert.alert(
+      "Are you sure you want to logout?",
+      "Your session will be ended.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Continue",
+          style: "destructive", // or "default"
+          onPress: async () => {
+            try {
+              // Clear user data from SecureStore
+              await SecureStore.deleteItemAsync("authToken");
+              await SecureStore.deleteItemAsync("userEmail");
+
+              // Show a success message or Toast
+              Toast.show({
+                type: "success",
+                text1: "Logged out successfully",
+                position: "top",
+                autoHide: true,
+                visibilityTime: 3000,
+              });
+
+              // Navigate to the sign-in screen
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "SignIn" }], // Replace "SignIn" with the actual name of your sign-in route
+              });
+            } catch (error) {
+              console.error("Error during logout:", error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   const profileSections = [
     {
       key: "personalInfo",
@@ -119,7 +168,12 @@ const ProfileScreen = () => {
             <ProfileField label="Name" value={name} />
             <ProfileField label="Username" value={username} />
             <ProfileField label="Email" value={email} />
-            <ProfileField label="Occupation" value={occupation} noSeparator />
+            <ProfileField
+              label="Occupation"
+              value={occupation}
+              noSeparator
+              isWarning={occupation === ""} // Show warning if occupation is empty
+            />
           </View>
           <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
             <Text style={styles.editButtonText}>Edit</Text>
@@ -255,7 +309,9 @@ const ProfileScreen = () => {
       key: "logout",
       renderItem: () => (
         <View style={styles.logoutContainer}>
-          <WideButton title="Logout" color="white" onPress={onLogoutBtnClick} />
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
         </View>
       ),
     },
@@ -275,10 +331,12 @@ const ProfileScreen = () => {
 };
 
 // Reusable Profile Field Component
-const ProfileField = ({ label, value, noSeparator }) => (
+const ProfileField = ({ label, value, noSeparator, isWarning }) => (
   <View style={styles.fieldContainer}>
     <View style={styles.fieldRow}>
-      <Text style={styles.fieldLabel}>{label}</Text>
+      <Text style={[styles.fieldLabel, isWarning && styles.occupationWarning]}>
+        {label}
+      </Text>
       <Text style={styles.fieldValue}>{value}</Text>
     </View>
     {!noSeparator && <View style={styles.fieldSeparator} />}
@@ -386,7 +444,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 20,
   },
   deleteTitle: {
     fontSize: 16,
@@ -395,8 +453,8 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: "red",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 13,
+    paddingHorizontal: 17.5,
     borderRadius: 4,
   },
   deleteButtonText: {
@@ -416,5 +474,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginBottom: 50,
+  },
+  logoutButton: {
+    backgroundColor: Colors.defaultBlue,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 397,
+    height: 48,
+  },
+  logoutButtonText: {
+    color: "#FEFEFF",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  occupationWarning: {
+    fontWeight: "bold",
+    color: "red",
   },
 });

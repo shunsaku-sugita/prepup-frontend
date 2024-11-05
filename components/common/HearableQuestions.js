@@ -13,31 +13,45 @@ const HearableQuestions = ({ questionText }) => {
 
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    if (textHeight > containerHeight) {
-      // console.log("containerHeight: " + containerHeight);
-      // console.log("textHeight: " + textHeight);
+// To manage initial delay and interval for the scrolling behavior
+const initialDelay = 7000; // 7 seconds initial delay
+const scrollInterval = 7000; // 7 seconds interval between scroll cycles
+const scrollDuration = 10000; // 10 seconds scroll duration
 
-      setShouldScroll(true);
-      startScrolling();
-    } else {
-      setShouldScroll(false);
-      scrollAnim.stopAnimation();
-      scrollAnim.setValue(0); // reset position if no scroll is needed
-    }
-  }, [textHeight, containerHeight]);
+useEffect(() => {
+  let delayTimeout, intervalId;
 
-  const startScrolling = () => {
-    scrollAnim.setValue(0); // reset position before starting
+  const startScrollAnimation = () => {
+    scrollAnim.setValue(0); // Reset scroll position
 
-    Animated.loop(
-      Animated.timing(scrollAnim, {
-        toValue: -(textHeight - containerHeight), // scroll to the top end
-        duration: 7000,
-        useNativeDriver: true,
-      })
-    ).start();
+    Animated.timing(scrollAnim, {
+      toValue: -(textHeight - containerHeight), // Scroll distance
+      duration: scrollDuration,
+      useNativeDriver: true,
+    }).start(() => {
+      scrollAnim.setValue(0); // Reset to starting position
+    });
   };
+
+  if (textHeight > containerHeight) {
+    setShouldScroll(true);
+    // Start with the initial delay, then proceed with interval-based scrolls
+    delayTimeout = setTimeout(() => {
+      startScrollAnimation();
+      intervalId = setInterval(startScrollAnimation, scrollDuration + scrollInterval);
+    }, initialDelay);
+  } else {
+    setShouldScroll(false);
+    scrollAnim.setValue(0);
+  }
+  // Cleanup on questionText change or component unmount
+  return () => {
+    clearTimeout(delayTimeout);
+    clearInterval(intervalId);
+    scrollAnim.stopAnimation();
+  };
+}, [textHeight, containerHeight, questionText]);
+
 
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
@@ -57,43 +71,37 @@ const HearableQuestions = ({ questionText }) => {
   };
 
   return (
-    <>
-      {questionText ? (
-        <View style={styles.container}>
-          <View style={styles.questionIconContainer}>
-            <IconButton
-              icon={isPlaying ? "stop-circle-outline" : "play-circle"}
-              color={Colors.backgroundDarkGray}
-              size={45}
-              onPress={speakHandler}
-            />
-          </View>
-          <View
-            style={styles.questionTextContainer}
-            onLayout={(event) => {
-              const { height } = event.nativeEvent.layout;
-              setContainerHeight(height); // measure container height
-            }}>
-            <ScrollView contentContainerStyle={styles.scrollView} scrollEnabled={false} >
-              <Animated.View
-                style={{
-                  transform: [{ translateY: shouldScroll ? scrollAnim : 0 }],
-                }}
-              >
-                <Text
-                  style={styles.questionText}
-                  onLayout={(event) => {
-                    const { height } = event.nativeEvent.layout;
-                    setTextHeight(height); // measure text height
-                  }}>{questionText}</Text>
-              </Animated.View>
-            </ScrollView>
-          </View>
-        </View>
-      ) : (
-        <LoadingOverlay />
-      )}
-    </>
+    <View style={styles.container}>
+      <View style={styles.questionIconContainer}>
+        <IconButton
+          icon={isPlaying ? "stop-circle-outline" : "play-circle"}
+          color={Colors.backgroundDarkGray}
+          size={45}
+          onPress={speakHandler}
+        />
+      </View>
+      <View
+        style={styles.questionTextContainer}
+        onLayout={(event) => {
+          const { height } = event.nativeEvent.layout;
+          setContainerHeight(height); // measure container height
+        }}>
+        <ScrollView contentContainerStyle={styles.scrollView} scrollEnabled={false} >
+          <Animated.View
+            style={{
+              transform: [{ translateY: shouldScroll ? scrollAnim : 0 }],
+            }}
+          >
+            <Text
+              style={styles.questionText}
+              onLayout={(event) => {
+                const { height } = event.nativeEvent.layout;
+                setTextHeight(height); // measure text height
+              }}>{questionText}</Text>
+          </Animated.View>
+        </ScrollView>
+      </View>
+    </View>
   );
 };
 
@@ -118,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 7,
     justifyContent: "center",
     alignItems: "flex-start",
-    height: 95,
+    height: 120,
     overflow: 'hidden',
   },
   scrollView: {

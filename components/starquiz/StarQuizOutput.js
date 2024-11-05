@@ -1,6 +1,14 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
+import StarQuizCardModal from "./StarQuizCardModal";
 import HearableQuestions from "../common/HearableQuestions";
 import { useNavigation } from "expo-router";
 import {
@@ -15,10 +23,24 @@ import LoadingOverlay from "../common/LoadingOverlay";
 const StarQuizOutput = () => {
   const navigation = useNavigation();
   const [starQuestionText, setStarQuestionText] = useState("");
+  const [modalVisible, setModalVisible] = useState({
+    situation: false,
+    task: false,
+    action: false,
+    result: false,
+  });
+  const [isCharacterLimit, setIsCharacterLimit] = useState(false);
+
+  const [situationCountNumber, setSituationCountNumber] = useState(0);
+  const [taskCountNumber, setTaskCountNumber] = useState(0);
+  const [actionCountNumber, setActionCountNumber] = useState(0);
+  const [resultCountNumber, setResultCountNumber] = useState(0);
+
+  const [backgroundColor, setBackgroundColor] = useState("white");
 
   // track if the screen is in focus
   const isFocused = useIsFocused();
-  // create a ref for the ScrollView (to move to a specific position of the screen 
+  // create a ref for the ScrollView (to move to a specific position of the screen
   const scrollViewRef = useRef(null);
 
   // Separate states for four input fields, and combined answers state
@@ -93,6 +115,33 @@ const StarQuizOutput = () => {
     }
   };
 
+  const handleFocus = (field) => {
+    console.log(`Field ${field} focused`);
+    setModalVisible((prev) => ({ ...prev, [field]: true }));
+
+    switch (field) {
+      case "situation":
+        setBackgroundColor(Colors.disabledYellow);
+        break;
+      case "task":
+        setBackgroundColor(Colors.disabledRed);
+        break;
+      case "action":
+        setBackgroundColor(Colors.disabledBlue);
+        break;
+      case "result":
+        setBackgroundColor(Colors.defaultBeige);
+        break;
+      default:
+        setBackgroundColor("white");
+        break;
+    }
+  };
+
+  const handleModalClose = (field) => {
+    setModalVisible((prev) => ({ ...prev, [field]: false }));
+  };
+
   // submit typed answers and get feedback text and average score
   const fetchStarMasterFeedback = async () => {
     try {
@@ -142,7 +191,7 @@ const StarQuizOutput = () => {
             text: "Confirm",
             onPress: async () => {
               // navigate to the feedback screen immediately
-              navigation.navigate("StarQuizFeedback", {loading: true})
+              navigation.navigate("StarQuizFeedback", { loading: true });
               // call the fetch method and navigate to the next screen, passing the feedback as a parameter
               await fetchStarMasterFeedback();
             },
@@ -154,64 +203,99 @@ const StarQuizOutput = () => {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <LoadingOverlay />
-      ) : (
-        <>
-          <View style={styles.questionContainer}>
-            <HearableQuestions questionText={starQuestionText} />
-          </View>
-          <StarQuizCarousel
-            situationAnswerRef={situationAnswerRef}
-            setSituationAnswer={setSituationAnswer}
-            taskAnswerRef={taskAnswerRef}
-            setTaskAnswer={setTaskAnswer}
-            actionAnswerRef={actionAnswerRef}
-            setActionAnswer={setActionAnswer}
-            resultAnswerRef={resultAnswerRef}
-            setResultAnswer={setResultAnswer}
-            answers={answers}
-            setAnswers={setAnswers}
-            handleBlur={handleBlur}
-            scrollViewRef={scrollViewRef}
-          />
+      <View style={styles.questionContainer}>
+        <HearableQuestions questionText={starQuestionText} />
+      </View>
+      <StarQuizCarousel
+        situationAnswerRef={situationAnswerRef}
+        setSituationAnswer={setSituationAnswer}
+        taskAnswerRef={taskAnswerRef}
+        setTaskAnswer={setTaskAnswer}
+        actionAnswerRef={actionAnswerRef}
+        setActionAnswer={setActionAnswer}
+        resultAnswerRef={resultAnswerRef}
+        setResultAnswer={setResultAnswer}
+        answers={answers}
+        setAnswers={setAnswers}
+        handleBlur={handleBlur}
+        handleFocus={handleFocus}
+        scrollViewRef={scrollViewRef}
+        isCharacterLimit={isCharacterLimit}
+        setIsCharacterLimit={setIsCharacterLimit}
+        situationCountNumber={situationCountNumber}
+        setSituationCountNumber={setSituationCountNumber}
+        taskCountNumber={taskCountNumber}
+        setTaskCountNumber={setTaskCountNumber}
+        actionCountNumber={actionCountNumber}
+        setActionCountNumber={setActionCountNumber}
+        resultCountNumber={resultCountNumber}
+        setResultCountNumber={setResultCountNumber}
+      />
 
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => {
-                Alert.alert(
-                  "Cancel the STAR Master?",
-                  "The process is unsaved, you will lose it.",
-                  [
-                    {
-                      text: "Cancel",
-                    },
-                    {
-                      text: "Confirm",
-                      onPress: () => {
-                        navigation.navigate("Category");
-                      },
-                    },
-                  ]
-                );
-              }}
-            >
-              <Text style={styles.cancelText}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.skipOrNextButton}
-              onPress={skipOrDoneButtonHandler}
-            >
-              <Text style={styles.skipOrNextText}>{
-                situationAnswer || taskAnswer || actionAnswer || resultAnswer
-                  ? "Done"
-                  : "Skip"
-              }</Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => {
+            Alert.alert(
+              "Cancel the STAR Master?",
+              "The process is unsaved, you will lose it.",
+              [
+                {
+                  text: "Cancel",
+                },
+                {
+                  text: "Confirm",
+                  onPress: () => {
+                    navigation.navigate("Category");
+                  },
+                },
+              ]
+            );
+          }}
+        >
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.skipOrNextButton}
+          onPress={skipOrDoneButtonHandler}
+        >
+          <Text style={styles.skipOrNextText}>
+            {situationAnswer || taskAnswer || actionAnswer || resultAnswer
+              ? "Done"
+              : "Skip"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* <StarQuizCardModal
+        situationAnswerRef={situationAnswerRef}
+        setSituationAnswer={setSituationAnswer}
+        taskAnswerRef={taskAnswerRef}
+        setTaskAnswer={setTaskAnswer}
+        actionAnswerRef={actionAnswerRef}
+        setActionAnswer={setActionAnswer}
+        resultAnswerRef={resultAnswerRef}
+        setResultAnswer={setResultAnswer}
+        handleBlur={handleBlur}
+        scrollViewRef={scrollViewRef}
+        answers={answers}
+        setAnswers={setAnswers}
+        handleFocus={handleFocus}
+        isCharacterLimit={isCharacterLimit}
+        setIsCharacterLimit={setIsCharacterLimit}
+        situationCountNumber={situationCountNumber}
+        setSituationCountNumber={setSituationCountNumber}
+        taskCountNumber={taskCountNumber}
+        setTaskCountNumber={setTaskCountNumber}
+        actionCountNumber={actionCountNumber}
+        setActionCountNumber={setActionCountNumber}
+        resultCountNumber={resultCountNumber}
+        setResultCountNumber={setResultCountNumber}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        handleModalClose={handleModalClose}
+        backgroundColor={backgroundColor}
+      /> */}
     </View>
   );
 };
@@ -270,6 +354,21 @@ const styles = StyleSheet.create({
   skipOrNextText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: 'white',
-  }
+    color: "white",
+  },
+  // modalContainer: {
+  //   flex: 1,
+  //   justifyContent: "flex-end", // Align the modal to the bottom of the screen
+  //   backgroundColor: "rgba(0, 0, 0, 0.2)", // Transparent background
+  //   width: "100%",
+  // },
+  // modalContent: {
+  //   height: "73%",
+  //   borderTopLeftRadius: 20,
+  //   borderTopRightRadius: 20,
+  //   paddingHorizontal: 15,
+  //   paddingVertical: 8,
+  //   alignItems: "center",
+  //   justifyContent: "flex-start",
+  // },
 });

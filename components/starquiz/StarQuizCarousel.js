@@ -25,15 +25,19 @@ const StarQuizCarousel = ({
   answers,
   setAnswers,
   handleBlur,
+  handleFocus,
   scrollViewRef,
+  isCharacterLimit,
+  setIsCharacterLimit,
+  situationCountNumber,
+  setSituationCountNumber,
+  taskCountNumber,
+  setTaskCountNumber,
+  actionCountNumber,
+  setActionCountNumber,
+  resultCountNumber,
+  setResultCountNumber,
 }) => {
-  const [situationCountNumber, setSituationCountNumber] = useState(0);
-  const [taskCountNumber, setTaskCountNumber] = useState(0);
-  const [actionCountNumber, setActionCountNumber] = useState(0);
-  const [resultCountNumber, setResultCountNumber] = useState(0);
-
-  const [isCharacterLimit, setIsCharacterLimit] = useState(false);
-
   const [isPlaying, setIsPlaying] = useState(false);
 
   const speakHandler = async (textToSpeak) => {
@@ -98,14 +102,26 @@ const StarQuizCarousel = ({
         showsHorizontalScrollIndicator={false}
       >
         {/* Situation card */}
-        <TouchableOpacity onPress={() => scrollToCard(0)} style={styles.touchableOpacityWrapper}>
-          <View style={[styles.cardContainer, {backgroundColor: Colors.defaultYellow}]}>
+        <TouchableOpacity
+          onPress={() => scrollToCard(0)}
+          style={styles.touchableOpacityWrapper}
+        >
+          <View
+            style={[
+              styles.cardContainer,
+              { backgroundColor: Colors.defaultYellow },
+            ]}
+          >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Situation:</Text>
               <View>
                 <IconButton
                   icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                  color={situationAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                  color={
+                    situationAnswerRef.current
+                      ? "black"
+                      : Colors.placeHolderTextGray
+                  }
                   size={20}
                   display={!situationAnswerRef.current && true}
                   onPress={() => speakHandler(situationAnswerRef.current)}
@@ -130,10 +146,11 @@ const StarQuizCarousel = ({
                   );
                 }}
                 onBlur={() => handleBlur("situation")}
+                onFocus={() => handleFocus("situation")}
               />
             </View>
-            <View style={styles.resetCountNumberContainer}>
-              <TouchableOpacity
+            <View style={styles.countNumberContainer}>
+              {/* <TouchableOpacity
                 style={
                   situationAnswerRef.current
                     ? styles.resetIconContainer
@@ -163,10 +180,16 @@ const StarQuizCarousel = ({
                       },
                     ]
                   );
-                }}>
+                }}
+              >
                 <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity>
-              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+              </TouchableOpacity> */}
+              <Text
+                style={[
+                  styles.wordCountText,
+                  isCharacterLimit && styles.situationWordCountLimit,
+                ]}
+              >
                 {situationCountNumber}/500 Characters
               </Text>
             </View>
@@ -174,14 +197,27 @@ const StarQuizCarousel = ({
         </TouchableOpacity>
 
         {/* Task card */}
-        <TouchableOpacity onPress={() => scrollToCard(322)} style={styles.touchableOpacityWrapper}>
-          <View style={[styles.cardContainer, {backgroundColor: Colors.defaultRed}]} onPress={() => scrollViewRef.current && scrollViewRef.current.scrollTo({ x: 200, animated: true })
-          }>
+        <TouchableOpacity
+          onPress={() => scrollToCard(322)}
+          style={styles.touchableOpacityWrapper}
+        >
+          <View
+            style={[
+              styles.cardContainer,
+              { backgroundColor: Colors.defaultRed },
+            ]}
+            onPress={() =>
+              scrollViewRef.current &&
+              scrollViewRef.current.scrollTo({ x: 200, animated: true })
+            }
+          >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Task:</Text>
               <IconButton
                 icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={taskAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                color={
+                  taskAnswerRef.current ? "black" : Colors.placeHolderTextGray
+                }
                 size={20}
                 display={!taskAnswerRef.current && true}
                 onPress={() => speakHandler(taskAnswerRef.current)}
@@ -205,10 +241,11 @@ const StarQuizCarousel = ({
                   )
                 }
                 onBlur={() => handleBlur("task")}
+                onFocus={() => handleFocus("task")}
               />
             </View>
-            <View style={styles.resetCountNumberContainer}>
-              <TouchableOpacity
+            <View style={styles.countNumberContainer}>
+              {/* <TouchableOpacity
                 style={
                   taskAnswerRef.current
                     ? styles.resetIconContainer
@@ -238,10 +275,16 @@ const StarQuizCarousel = ({
                       },
                     ]
                   );
-                }}>
+                }}
+              >
                 <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity>
-              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+              </TouchableOpacity> */}
+              <Text
+                style={[
+                  styles.wordCountText,
+                  isCharacterLimit && styles.taskWordCountLimit,
+                ]}
+              >
                 {taskCountNumber}/500 Characters
               </Text>
             </View>
@@ -249,13 +292,23 @@ const StarQuizCarousel = ({
         </TouchableOpacity>
 
         {/* Action card */}
-        <TouchableOpacity onPress={() => scrollToCard(645)} style={styles.touchableOpacityWrapper}>
-          <View style={[styles.cardContainer, {backgroundColor: Colors.defaultBlue}]}>
+        <TouchableOpacity
+          onPress={() => scrollToCard(645)}
+          style={styles.touchableOpacityWrapper}
+        >
+          <View
+            style={[
+              styles.cardContainer,
+              { backgroundColor: Colors.defaultBlue },
+            ]}
+          >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Action:</Text>
               <IconButton
                 icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={actionAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                color={
+                  actionAnswerRef.current ? "black" : Colors.placeHolderTextGray
+                }
                 size={20}
                 display={!actionAnswerRef.current && true}
                 onPress={() => speakHandler(actionAnswerRef.current)}
@@ -279,10 +332,11 @@ const StarQuizCarousel = ({
                   )
                 }
                 onBlur={() => handleBlur("action")}
+                onFocus={() => handleFocus("action")}
               />
             </View>
-            <View style={styles.resetCountNumberContainer}>
-              <TouchableOpacity
+            <View style={styles.countNumberContainer}>
+              {/* <TouchableOpacity
                 style={
                   actionAnswerRef.current
                     ? styles.resetIconContainer
@@ -312,10 +366,16 @@ const StarQuizCarousel = ({
                       },
                     ]
                   );
-                }}>
+                }}
+              >
                 <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity>
-              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+              </TouchableOpacity> */}
+              <Text
+                style={[
+                  styles.wordCountText,
+                  isCharacterLimit && styles.actionWordCountLimit,
+                ]}
+              >
                 {actionCountNumber}/500 Characters
               </Text>
             </View>
@@ -323,13 +383,23 @@ const StarQuizCarousel = ({
         </TouchableOpacity>
 
         {/* Result card */}
-        <TouchableOpacity onPress={() => scrollToCard(970)} style={styles.touchableOpacityWrapper}>
-          <View style={[styles.cardContainer, {backgroundColor: Colors.onPressBeige}]}>
+        <TouchableOpacity
+          onPress={() => scrollToCard(970)}
+          style={styles.touchableOpacityWrapper}
+        >
+          <View
+            style={[
+              styles.cardContainer,
+              { backgroundColor: Colors.onPressBeige },
+            ]}
+          >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Result:</Text>
               <IconButton
                 icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={resultAnswerRef.current ? "black" : Colors.placeHolderTextGray}
+                color={
+                  resultAnswerRef.current ? "black" : Colors.placeHolderTextGray
+                }
                 size={20}
                 display={!resultAnswerRef.current && true}
                 onPress={() => speakHandler(resultAnswerRef.current)}
@@ -353,10 +423,11 @@ const StarQuizCarousel = ({
                   )
                 }
                 onBlur={() => handleBlur("result")}
+                onFocus={() => handleFocus("result")}
               />
             </View>
-            <View style={styles.resetCountNumberContainer}>
-              <TouchableOpacity
+            <View style={styles.countNumberContainer}>
+              {/* <TouchableOpacity
                 style={
                   resultAnswerRef.current
                     ? styles.resetIconContainer
@@ -386,10 +457,16 @@ const StarQuizCarousel = ({
                       },
                     ]
                   );
-                }}>
+                }}
+              >
                 <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity>
-              <Text style={[styles.wordCountText , isCharacterLimit && styles.wordCountLimit]}>
+              </TouchableOpacity> */}
+              <Text
+                style={[
+                  styles.wordCountText,
+                  isCharacterLimit && styles.resultWordCountLimit,
+                ]}
+              >
                 {resultCountNumber}/500 Characters
               </Text>
             </View>
@@ -412,10 +489,7 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     width: "90%",
   },
-  carouselContainer: {
-    // flex: 1,
-    // height: 500,
-  },
+  carouselContainer: {},
   touchableOpacityWrapper: {
     flex: 1,
   },
@@ -423,7 +497,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 7, // horizontal gap between cards
     width: 310,
-    paddingVertical: 18,
+    paddingTop: 16,
     paddingHorizontal: 20,
     borderRadius: 6,
   },
@@ -447,31 +521,43 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textInputContainer: {
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: "white",
     borderRadius: 6,
     padding: 10,
     height: "75%",
   },
-  resetCountNumberContainer: {
+  countNumberContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 12,
   },
-  resetIconContainer: {
-    backgroundColor: Colors.backgroundDarkGray,
-    borderRadius: 6,
-    padding: 6,
-  },
-  resetIconContainerDiabled: {
-    backgroundColor: Colors.placeHolderTextGray,
-    borderRadius: 6,
-    padding: 6,
-  },
+  // resetIconContainer: {
+  //   backgroundColor: Colors.backgroundDarkGray,
+  //   borderRadius: 6,
+  //   padding: 6,
+  // },
+  // resetIconContainerDiabled: {
+  //   backgroundColor: Colors.placeHolderTextGray,
+  //   borderRadius: 6,
+  //   padding: 6,
+  // },
   wordCountText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-  wordCountLimit: {
+  situationWordCountLimit: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  taskWordCountLimit: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  actionWordCountLimit: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  resultWordCountLimit: {
     color: "red",
     fontWeight: "bold",
   },

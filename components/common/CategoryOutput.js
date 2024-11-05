@@ -1,8 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
-import Octicons from '@expo/vector-icons/Octicons'; 
+import Octicons from "@expo/vector-icons/Octicons";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Greeting from "./Greeting";
 import CategoryCardCustom from "./CategoryCardCustom";
 import CategoryCardDefault from "./CategoryCardDefault";
@@ -10,7 +17,7 @@ import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 import { getInterviewCategory, getProfile } from "../services/api";
 import { AppContext } from "@/store/app-context";
-import Svg, { Defs, Rect, LinearGradient, Stop } from 'react-native-svg';
+import Svg, { Defs, Rect, LinearGradient, Stop } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
 
 // Custom Bottom Tabs Component
@@ -58,24 +65,32 @@ const CategoryOutput = () => {
   const [userName, setUserName] = useState("");
 
   // fixed colors for default cards (limits 3)
-  const defaultBackgroundColors = [Colors.disabledBlue, Colors.defaultRed, Colors.defaultYellow]; 
+  const defaultBackgroundColors = [
+    Colors.disabledBlue,
+    Colors.defaultRed,
+    Colors.defaultYellow,
+  ];
   // cycling colors for custom cards (3 colors for 5 cards)
-  const customBackgroundColors = [Colors.disabledYellow, Colors.disabledRed, Colors.disabledBlue];   
+  const customBackgroundColors = [
+    Colors.disabledYellow,
+    Colors.disabledRed,
+    Colors.disabledBlue,
+  ];
 
   // fixed images for default cards (limits 3)
   const defaultImages = [
     require("../../assets/images/onboarding-two.png"),
     require("../../assets/images/onboarding-three.png"),
-    require("../../assets/images/registration-success.png")
-  ];  
+    require("../../assets/images/registration-success.png"),
+  ];
   // fixed images for custom cards (limits 5)
   const customImages = [
     require("../../assets/images/CustomCategory-Image1.png"),
     require("../../assets/images/CustomCategory-Image2.png"),
     require("../../assets/images/CustomCategory-Image3.png"),
     require("../../assets/images/CustomCategory-Image4.png"),
-    require("../../assets/images/CustomCategory-Image5.png")
-  ];  
+    require("../../assets/images/CustomCategory-Image5.png"),
+  ];
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -90,11 +105,19 @@ const CategoryOutput = () => {
 
       if (!occupationFlag) {
         // insert "My Occupation" as the first item if occupation is false
-        updatedCategories.unshift({ categoryName: "My Occupation", questions: [], score: [], _id: "", badge: "", });
+        updatedCategories.unshift({
+          categoryName: "My Occupation",
+          questions: [],
+          score: [],
+          _id: "",
+          badge: "",
+        });
       }
-      setCategories(updatedCategories);  
+      setCategories(updatedCategories);
 
-      console.log("Updated Categories:", categories); // Debugging: check updated categories
+      // Debugging: check updated categories
+      console.log("Updated Categories: ==> ");
+      console.log(categories);
 
       // load user data
       const userData = await getProfile();
@@ -120,14 +143,16 @@ const CategoryOutput = () => {
   // custom category card
   const renderCustomCategoryCard = ({ item, index }) => (
     // cycling colors by using %(Modulo operation)
-    <View style={styles.customCardContainer}> 
+    <View style={styles.customCardContainer}>
       <CategoryCardCustom
         index={index}
         categoryName={item.categoryName}
         categories={categories}
         setCategories={setCategories}
         image={customImages[index]}
-        backgroundColor={customBackgroundColors[index % customBackgroundColors.length]}
+        backgroundColor={
+          customBackgroundColors[index % customBackgroundColors.length]
+        }
       />
     </View>
   );
@@ -171,18 +196,18 @@ const CategoryOutput = () => {
 
       {/* Custom category cards (only if there are more than 3 categories) */}
       {categories.length > 3 && (
-      <View style={styles.bottomCardContainer}>
-        <View style={styles.title}>
-          <TitleText text="Custom categories:" />
+        <View style={styles.bottomCardContainer}>
+          <View style={styles.title}>
+            <TitleText text="Custom categories:" />
+          </View>
+          <FlatList
+            data={categories.slice(3)} // display items from the 4th onward
+            keyExtractor={(item, index) => item.categoryName + index + 3}
+            renderItem={renderCustomCategoryCard}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
-        <FlatList
-          data={categories.slice(3)} // display items from the 4th onward
-          keyExtractor={(item, index) => item.categoryName + index + 3}
-          renderItem={renderCustomCategoryCard}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
       )}
       <CustomBottomTabs />
     </View>
@@ -205,11 +230,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
     marginLeft: 3,
-    position: 'absolute',
+    position: "absolute",
   },
   upperTextContainer: {
     flex: 6,
-    justifyContent: 'center',
+    justifyContent: "center",
     alignItems: "flex-start",
     paddingHorizontal: 18,
     marginTop: 6,
