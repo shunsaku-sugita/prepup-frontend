@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Colors";
 const JobSearchScreen = () => {
   return (
     <View style={styles.container}>
-     <JobListOutput/>
+      <JobListOutput />
     </View>
   );
 };
@@ -16,8 +16,8 @@ export default JobSearchScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
-    padding:18,
+    backgroundColor: Colors.disabledBeige,
+    padding: 18,
     // alignItems: "center",
     // justifyContent: "center",
   },

@@ -28,7 +28,11 @@ const CreateCategorySuccessModal = ({
           />
         </View>
         <View style={styles.iconWrapper}>
-          <Ionicons name="checkmark-circle" color={Colors.successGreen} size={50} />
+          <Ionicons
+            name="checkmark-circle"
+            color={Colors.successGreen}
+            size={50}
+          />
         </View>
         <View style={styles.textWrapper}>
           <TitleText text="Category board has been successfully added!" />
@@ -51,7 +55,7 @@ export default CreateCategorySuccessModal;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 20,

@@ -7,10 +7,10 @@ const LoadingOverlay = () => {
   const videoRef = useRef(null);
   return (
     <View style={styles.container}>
-      {/* <Video
+      <Video
         source={require("../../assets/videos/PrepUp-Preloader-V1.mp4")}
         style={styles.video}
-        resizeMode={"cover"}
+        resizeMode="contain"
         shouldPlay
         isLooping
         isMuted
@@ -21,12 +21,7 @@ const LoadingOverlay = () => {
         onError={(error) => {
           console.error("Video loading error:", error);
         }}
-      /> */}
-      <Image
-        source={require("../../assets/images/PrepUp-Logo-COLORED.png")}
-        style={styles.image}
       />
-      <ActivityIndicator size="large" color={Colors.defaultBlue} />
     </View>
   );
 };
@@ -36,17 +31,15 @@ export default LoadingOverlay;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.disabledBeige,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 100,
+    width: "100%",
   },
   video: {
-    flex: 1,
+    backgroundColor: Colors.disabledBeige,
     width: "100%",
     height: "100%",
-  },
-  image: {
-    width: 130,
-    height: 130,
   },
 });

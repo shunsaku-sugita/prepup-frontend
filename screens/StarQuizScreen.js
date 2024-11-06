@@ -16,7 +16,7 @@ export default StarMasterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -15,10 +15,13 @@ const InterviewFeedbackCard = ({
   titleText,
   percentage,
   contentText,
-  backgroundColorStyle
+  backgroundColorStyle,
 }) => {
   return (
-    <AccordionItem value={value} style={[styles.accordionItem, {backgroundColor: backgroundColorStyle}]}>
+    <AccordionItem
+      value={value}
+      style={[styles.accordionItem, { backgroundColor: backgroundColorStyle }]}
+    >
       <AccordionHeader>
         <AccordionTrigger style={styles.accordionTrigger}>
           {({ isExpanded }) => {
@@ -80,8 +83,6 @@ const styles = StyleSheet.create({
   accordionContent: {
     marginTop: 10,
     paddingTop: 3,
-    // borderTopWidth: 1,
-    // borderTopColor: "#bbb",
   },
   accordionContentText: {
     fontSize: 15,

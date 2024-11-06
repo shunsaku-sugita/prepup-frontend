@@ -80,7 +80,7 @@ export default function App() {
               component={JobSearchScreen}
               options={{
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -126,7 +126,7 @@ export default function App() {
               component={InterviewSimulatorScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -174,7 +174,7 @@ export default function App() {
               component={InterviewFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -207,7 +207,7 @@ export default function App() {
               options={({ navigation }) => ({
                 headerShown: true,
                 title: "S.T.A.R Master",
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -255,7 +255,7 @@ export default function App() {
               component={StarQuizFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -301,7 +301,7 @@ export default function App() {
               component={ProfileScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -332,7 +332,7 @@ export default function App() {
               component={EditProfileScreen}
               options={{
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -361,7 +361,7 @@ export default function App() {
               component={EditPW_ChangePWScreen}
               options={{
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -397,7 +397,7 @@ export default function App() {
               component={SigninScreen}
               options={{
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -418,7 +418,7 @@ export default function App() {
               component={RegistrationScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -488,7 +488,7 @@ export default function App() {
               component={ResetPW_RequestScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -519,7 +519,7 @@ export default function App() {
               component={ResetPW_VerifycodeScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -550,7 +550,7 @@ export default function App() {
               component={ResetPW_CreatePWScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -597,7 +597,7 @@ export default function App() {
               component={ResetPW_SuccessScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: { backgroundColor: Colors.defaultBeige },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>

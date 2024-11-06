@@ -11,6 +11,7 @@ import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
+import { Colors } from "@/constants/Colors";
 
 const ResetPW_CreatePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -222,7 +223,7 @@ export default ResetPW_CreatePWScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 100,
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#bbb",
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
     width: "100%",
     paddingHorizontal: 8,

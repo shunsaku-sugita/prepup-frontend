@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparent background
   },
   modalContent: {
-    height: "40%", // Half-screen height for the modal
+    height: "40%",
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

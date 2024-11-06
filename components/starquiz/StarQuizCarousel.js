@@ -403,10 +403,10 @@ export default StarQuizCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 25,
     marginBottom: 100,
     width: "90%",
   },
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    marginTop: 12,
+    marginTop: 14,
   },
   // resetIconContainer: {
   //   backgroundColor: Colors.backgroundDarkGray,

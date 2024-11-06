@@ -53,11 +53,12 @@ const ProfileScreen = () => {
         console.error("Error loading profile data:", error);
       }
     };
-  });
-
-  useEffect(() => {
     loadUserProfile();
   }, []);
+
+  // useEffect(() => {
+  //   loadUserProfile();
+  // }, []);
 
   // Update profile information when navigating back from EditProfileScreen
   useFocusEffect(
@@ -355,7 +356,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
   },
   sectionContainer: {
     borderRadius: 8,

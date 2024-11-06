@@ -346,7 +346,7 @@ export default SigninScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
     backgroundColor: "white",
     width: "100%",
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
     backgroundColor: "white",
     width: "100%",

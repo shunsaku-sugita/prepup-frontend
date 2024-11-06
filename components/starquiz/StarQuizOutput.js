@@ -337,7 +337,7 @@ export default StarQuizOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   cancelButton: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     borderWidth: 2,
     borderColor: Colors.defaultBlue,
     borderRadius: 6,
@@ -388,19 +388,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  // modalContainer: {
-  //   flex: 1,
-  //   justifyContent: "flex-end", // Align the modal to the bottom of the screen
-  //   backgroundColor: "rgba(0, 0, 0, 0.2)", // Transparent background
-  //   width: "100%",
-  // },
-  // modalContent: {
-  //   height: "73%",
-  //   borderTopLeftRadius: 20,
-  //   borderTopRightRadius: 20,
-  //   paddingHorizontal: 15,
-  //   paddingVertical: 8,
-  //   alignItems: "center",
-  //   justifyContent: "flex-start",
-  // },
 });

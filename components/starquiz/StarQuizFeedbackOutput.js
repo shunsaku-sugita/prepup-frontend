@@ -51,7 +51,7 @@ export default StarQuizFeedbackOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     marginTop: 10,
     marginBottom: 40,

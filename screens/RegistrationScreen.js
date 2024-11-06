@@ -98,11 +98,13 @@ const RegistrationScreen = () => {
         enteredLastname,
         enteredUsername
       );
-      console.log("TEST => " + enteredEmail,
-      enteredPassword,
-      enteredFirstname,
-      enteredLastname,
-      enteredUsername);
+      console.log(
+        "TEST => " + enteredEmail,
+        enteredPassword,
+        enteredFirstname,
+        enteredLastname,
+        enteredUsername
+      );
       console.log(testSignupResult.data);
 
       navigation.navigate("RegistrationSuccess");
@@ -116,7 +118,9 @@ const RegistrationScreen = () => {
           {/* firstname field */}
           <View style={styles.nameFormContainer}>
             <View>
-              <Text style={styles.fieldLabel}>First Name{" "}<Text style={styles.astarisk}>*</Text></Text>
+              <Text style={styles.fieldLabel}>
+                First Name <Text style={styles.astarisk}>*</Text>
+              </Text>
             </View>
             <View
               style={[
@@ -141,7 +145,11 @@ const RegistrationScreen = () => {
             </View>
             {!firstnameIsValid && isSubmitted && (
               <View style={styles.firstnameAlertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>Invalid firstname.</Text>
               </View>
             )}
@@ -177,7 +185,9 @@ const RegistrationScreen = () => {
         {/* email field */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>Email{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Email <Text style={styles.astarisk}>*</Text>
+            </Text>
           </View>
           <View
             style={[
@@ -203,7 +213,11 @@ const RegistrationScreen = () => {
           </View>
           {!emailIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+              <Ionicons
+                name="alert-circle-outline"
+                color={Colors.errorRed}
+                size={20}
+              />
               <Text style={styles.alertText}>Invalid email.</Text>
             </View>
           )}
@@ -212,7 +226,9 @@ const RegistrationScreen = () => {
         {/* username field */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Username{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Username <Text style={styles.astarisk}>*</Text>
+            </Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowUsernameTooltip(!showUsernameTooltip)}
@@ -256,7 +272,11 @@ const RegistrationScreen = () => {
           </View>
           {!usernameIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+              <Ionicons
+                name="alert-circle-outline"
+                color={Colors.errorRed}
+                size={20}
+              />
               <Text style={styles.alertText}>Invalid username.</Text>
             </View>
           )}
@@ -265,7 +285,9 @@ const RegistrationScreen = () => {
         {/* password field */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+            <Text style={styles.fieldLabel}>
+              Password <Text style={styles.astarisk}>*</Text>
+            </Text>
             <TouchableOpacity
               style={styles.questionIcon}
               onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -318,7 +340,11 @@ const RegistrationScreen = () => {
           </View>
           {!passwordIsValid && isSubmitted && (
             <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+              <Ionicons
+                name="alert-circle-outline"
+                color={Colors.errorRed}
+                size={20}
+              />
               <Text style={styles.alertText}>Invalid password.</Text>
             </View>
           )}
@@ -342,7 +368,7 @@ export default RegistrationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -366,7 +392,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -415,9 +441,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -427,9 +453,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -441,7 +467,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.errorRed,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -451,9 +477,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,

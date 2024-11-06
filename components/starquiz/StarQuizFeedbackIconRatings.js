@@ -59,7 +59,7 @@ export default StarQuizFeedbackIconRatings;
 const styles = StyleSheet.create({
   container: {
     flex: 3,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     rowGap: 30,
     marginTop: 20,

@@ -77,10 +77,14 @@ const StarQuizCardModal = ({
     handleModalClose();
   };
 
-  const handleSwipeClose = () => {
-    Keyboard.dismiss(); // Ensure TextInput loses focus
-    handleModalClose();
-  };
+  // const handleSwipeClose = () => {
+  //   setModalVisible((prev) => ({ ...prev, situation: false }));
+  // };
+
+  // const handleSwipeStart = () => {
+  //   // Dismiss keyboard when a swipe gesture begins to prevent multiple swipes
+  //   Keyboard.dismiss();
+  // };
 
   const textChangeHandler = (
     text,
@@ -125,11 +129,10 @@ const StarQuizCardModal = ({
       {/* Situation modal */}
       <Modal
         isVisible={modalVisible.situation}
-        // onSwipeComplete={handleSwipeClose}
+        onSwipeComplete={onModalWillClose}
         swipeDirection="down"
-        // onBackdropPress={handleSwipeClose}
+        onBackdropPress={onModalWillClose}
         backdropOpacity={0}
-        onModalWillHide={handleSwipeClose}
         style={styles.modal}
       >
         <View style={styles.modalContainer}>
@@ -177,9 +180,9 @@ const StarQuizCardModal = ({
       {/* Task modal */}
       <Modal
         isVisible={modalVisible.task}
-        onSwipeComplete={handleSwipeClose}
+        onSwipeComplete={onModalWillClose}
         swipeDirection="down"
-        onBackdropPress={handleSwipeClose}
+        onBackdropPress={onModalWillClose}
         backdropOpacity={0}
         style={styles.modal}
       >
@@ -228,9 +231,9 @@ const StarQuizCardModal = ({
       {/* Action modal */}
       <Modal
         isVisible={modalVisible.action}
-        onSwipeComplete={handleSwipeClose}
+        onSwipeComplete={onModalWillClose}
         swipeDirection="down"
-        onBackdropPress={handleSwipeClose}
+        onBackdropPress={onModalWillClose}
         backdropOpacity={0}
         style={styles.modal}
       >
@@ -279,9 +282,9 @@ const StarQuizCardModal = ({
       {/* Result modal */}
       <Modal
         isVisible={modalVisible.result}
-        onSwipeComplete={handleSwipeClose}
+        onSwipeComplete={onModalWillClose}
         swipeDirection="down"
-        onBackdropPress={handleSwipeClose}
+        onBackdropPress={onModalWillClose}
         backdropOpacity={0}
         style={styles.modal}
       >

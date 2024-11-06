@@ -12,7 +12,9 @@ const RegistrationSuccessScreen = () => {
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
-          <Image source={require("../assets/images/registration-success.png")} />
+          <Image
+            source={require("../assets/images/registration-success.png")}
+          />
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Registration Successful!" />
@@ -36,7 +38,7 @@ export default RegistrationSuccessScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     marginBottom: 80,
   },
   buttonContainer: {
-    flex: .8,
+    flex: 0.8,
     marginTop: 50,
   },
 });

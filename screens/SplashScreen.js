@@ -32,7 +32,7 @@ const SplashScreen = () => {
       <Video
         source={require("../assets/videos/PrepUp-SplashScreen.mp4")}
         style={styles.video}
-        resizeMode={"cover"}
+        resizeMode="contain"
         shouldPlay
         isLooping={false}
         onPlaybackStatusUpdate={(status) => {
@@ -51,27 +51,15 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
+    padding: 0,
+    margin: 0,
+    width: "100%",
   },
   video: {
-    flex: 1,
     width: "100%",
     height: "100%",
   },
-  // imageContainer: {
-  //   flex: 1,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   backgroundColor: Colors.defaultBeige,
-  // },
-  // logo: {
-  //   width: 200,
-  //   height: 200,
-  // },
-  // logoWord: {
-  //   width: 350,
-  //   height: 100,
-  // },
 });

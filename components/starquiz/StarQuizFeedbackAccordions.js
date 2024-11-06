@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   },
   accordionContainer: {
     width: 340,
-    // marginTop: 20,
     marginHorizontal: 10,
     rowGap: 12,
   },
