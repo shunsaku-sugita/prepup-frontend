@@ -31,6 +31,11 @@ const AppContextProvider = ({ children }) => {
   const actionAnswerRef = useRef("");
   const resultAnswerRef = useRef("");
 
+  const situationInputRef = useRef(null);
+  const taskInputRef = useRef(null);
+  const actionInputRef = useRef(null);
+  const resultInputRef = useRef(null);
+
   return (
     <AppContext.Provider
       // can provide states and functions grobally
@@ -59,6 +64,10 @@ const AppContextProvider = ({ children }) => {
         taskAnswerRef,
         actionAnswerRef,
         resultAnswerRef,
+        situationInputRef,
+        taskInputRef,
+        actionInputRef,
+        resultInputRef,
         progressUpdate,
         setProgressUpdate,
         loading,
