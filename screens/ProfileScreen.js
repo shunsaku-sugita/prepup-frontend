@@ -53,9 +53,7 @@ const ProfileScreen = () => {
         console.error("Error loading profile data:", error);
       }
     };
-  });
 
-  useEffect(() => {
     loadUserProfile();
   }, []);
 
@@ -480,8 +478,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
-    width: 397,
     height: 48,
+    width: "100%",
   },
   logoutButtonText: {
     color: "#FEFEFF",
