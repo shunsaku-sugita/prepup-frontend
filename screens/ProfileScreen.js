@@ -21,6 +21,7 @@ import Toast from "react-native-toast-message";
 import * as SecureStore from "expo-secure-store";
 import { toastConfig } from "@/components/toast/ToastComponent";
 import { emptyToken, getProfile } from "@/components/services/api"; // Ensure this path is correct
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -53,9 +54,6 @@ const ProfileScreen = () => {
         console.error("Error loading profile data:", error);
       }
     };
-  });
-
-  useEffect(() => {
     loadUserProfile();
   }, []);
 
@@ -142,6 +140,8 @@ const ProfileScreen = () => {
                 visibilityTime: 3000,
               });
 
+              // Clear user data from AsyncStorage
+              await AsyncStorage.removeItem("userInfo");
               // Navigate to the sign-in screen
               navigation.reset({
                 index: 0,
