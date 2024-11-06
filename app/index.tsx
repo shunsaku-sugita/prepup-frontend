@@ -10,7 +10,7 @@ import IconButton from "../components/common/IconButton";
 import SplashScreen from "../screens/SplashScreen";
 // import NotificationsScreen from "../screens/NotificationsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import EditProfileScreen from"../screens/EditProfileScreen"
+import EditProfileScreen from "../screens/EditProfileScreen";
 import EditPW_ChangePWScreen from "../screens/EditPW_ChangePWScreen";
 
 import AppContextProvider, { AppContext } from "../store/app-context";
@@ -39,9 +39,7 @@ import Toast from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
 import { toastConfig } from "../components/toast/ToastComponent";
 
-
 const Stack = createNativeStackNavigator();
-
 
 export default function App() {
   const navigation = useNavigation();
@@ -54,8 +52,8 @@ export default function App() {
             screenOptions={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: '#FFEAD9',
-              }
+                backgroundColor: "#FFEAD9",
+              },
             }}
           >
             <Stack.Screen
@@ -82,13 +80,17 @@ export default function App() {
               component={JobSearchScreen}
               options={{
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Job Finder</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Job Finder
+                    </Text>
                   </View>
                 ),
                 headerLeft: () => (
@@ -124,13 +126,17 @@ export default function App() {
               component={InterviewSimulatorScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Simulator</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Simulator
+                    </Text>
                   </View>
                 ),
                 headerRight: null,
@@ -168,13 +174,17 @@ export default function App() {
               component={InterviewFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Feedback</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Feedback
+                    </Text>
                   </View>
                 ),
                 headerRight: null,
@@ -197,12 +207,17 @@ export default function App() {
               options={({ navigation }) => ({
                 headerShown: true,
                 title: "S.T.A.R Master",
-                headerStyle: {backgroundColor: Colors.defaultBeige},
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>S.T.A.R Master</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      S.T.A.R Master
+                    </Text>
                   </View>
                 ),
                 headerRight: null,
@@ -225,7 +240,7 @@ export default function App() {
                             {
                               text: "Confirm",
                               onPress: () => {
-                                navigation.goBack();
+                                navigation.navigate("Category");
                               },
                             },
                           ]
@@ -240,13 +255,17 @@ export default function App() {
               component={StarQuizFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>S.T.A.R Master</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      S.T.A.R Master
+                    </Text>
                   </View>
                 ),
                 headerRight: null,
@@ -282,13 +301,17 @@ export default function App() {
               component={ProfileScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Account</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Account
+                    </Text>
                   </View>
                 ),
                 headerLeft: () =>
@@ -309,13 +332,17 @@ export default function App() {
               component={EditProfileScreen}
               options={{
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Edit Information</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Edit Information
+                    </Text>
                   </View>
                 ),
                 headerLeft: () => (
@@ -327,20 +354,24 @@ export default function App() {
                     onPress={() => navigation.goBack()}
                   />
                 ),
-               }}
+              }}
             />
             <Stack.Screen
               name="EditPW_ChangePW"
               component={EditPW_ChangePWScreen}
               options={{
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Change Password</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Change Password
+                    </Text>
                   </View>
                 ),
                 headerLeft: () => (
@@ -352,7 +383,7 @@ export default function App() {
                     onPress={() => navigation.goBack()}
                   />
                 ),
-               }}
+              }}
             />
             <Stack.Screen
               name="Preloader"
@@ -366,13 +397,17 @@ export default function App() {
               component={SigninScreen}
               options={{
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign In</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Sign In
+                    </Text>
                   </View>
                 ),
                 headerBackVisible: false,
@@ -383,13 +418,17 @@ export default function App() {
               component={RegistrationScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Sign Up
+                    </Text>
                   </View>
                 ),
                 headerLeft: () =>
@@ -449,13 +488,17 @@ export default function App() {
               component={ResetPW_RequestScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Reset Password Request</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Reset Password Request
+                    </Text>
                   </View>
                 ),
                 headerLeft: () =>
@@ -476,13 +519,17 @@ export default function App() {
               component={ResetPW_VerifycodeScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Verify Code</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Verify Code
+                    </Text>
                   </View>
                 ),
                 headerLeft: () =>
@@ -503,13 +550,17 @@ export default function App() {
               component={ResetPW_CreatePWScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Create New Password</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Create New Password
+                    </Text>
                   </View>
                 ),
                 headerLeft: () =>
@@ -546,13 +597,17 @@ export default function App() {
               component={ResetPW_SuccessScreen}
               options={({ navigation }) => ({
                 headerShown: true,
-                headerStyle: {backgroundColor: Colors.defaultBeige
-                },
+                headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require("../assets/images/PrepUp-Black-Small.png")} style={{width: 34, height: 34}} />
-                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Create New Password</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Create New Password
+                    </Text>
                   </View>
                 ),
                 headerLeft: () =>

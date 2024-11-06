@@ -110,7 +110,7 @@ export default CreateCategoryModal;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 20,

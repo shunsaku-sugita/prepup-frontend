@@ -93,24 +93,38 @@ const SigninScreen = () => {
     }
   };
 
-  // Google Sign-in
+  // Google Sign-in setup
   const [userInfo, setUserInfo] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: IOS_CLIENT_ID,
     androidClientId: ANDROID_CLIENT_ID,
   });
 
-  const GoogleSigninHandler = async () => {
+  // Check for existing user info in local storage on page load
+  useEffect(() => {
+    loadUserFromStorage();
+  }, []);
+
+  // Load user data from local storage if available
+  const loadUserFromStorage = async () => {
     try {
       const userJSON = await AsyncStorage.getItem("userInfo");
       if (userJSON) {
-        const localUser = JSON.parse(userJSON);
-        setUserInfo(localUser);
-        const { email, firstName, lastName } =
-          formatGoogleAccountData(localUser);
-        await signinWithGoogle(email, firstName, lastName);
-        navigation.navigate("Category");
+        setUserInfo(JSON.parse(userJSON));
+      }
+    } catch (error) {
+      console.error("Error loading user info from storage: ", error.message);
+    }
+  };
+
+  // Initiates Google Sign-In flow when the button is clicked
+  const GoogleSigninHandler = async () => {
+    try {
+      if (userInfo) {
+        // User info exists, skip sign-in and proceed with Google sign-in process
+        await handleSigninWithGoogle(userInfo);
       } else {
+        // No user info, initiate Google sign-in flow
         await promptAsync();
       }
     } catch (error) {
@@ -118,70 +132,52 @@ const SigninScreen = () => {
     }
   };
 
+  // Handles Firebase sign-in using Google ID token
   useEffect(() => {
-    const handleFirebaseSignIn = async (idToken) => {
-      const credential = GoogleAuthProvider.credential(idToken);
-      try {
-        const userCredential = await signInWithCredential(auth, credential);
-        const user = userCredential.user;
-        const { email, firstName, lastName } = formatGoogleAccountData(user);
-        const resSigninWithGoogle = await signinWithGoogle(
-          email,
-          firstName,
-          lastName
-        );
-        setUserInfo(user);
-        if (
-          resSigninWithGoogle?.status === 200 ||
-          resSigninWithGoogle?.status === 201
-        ) {
-          await AsyncStorage.setItem("userInfo", JSON.stringify(user));
-          navigation.navigate("Category");
-        } else {
-          console.log("error");
-        }
-      } catch (error) {
-        console.error("Error with Firebase sign-in: ", error.message);
-      }
-    };
-
     if (response?.type === "success") {
       const { id_token } = response.params;
       handleFirebaseSignIn(id_token);
     }
   }, [response]);
 
-  useEffect(() => {
-    const checkLocalUser = async () => {
-      const userJSON = await AsyncStorage.getItem("userInfo");
-      if (userJSON) {
-        setUserInfo(JSON.parse(userJSON));
-      }
-    };
+  // Signs in with Firebase and saves user data locally
+  const handleFirebaseSignIn = async (idToken) => {
+    try {
+      const credential = GoogleAuthProvider.credential(idToken);
+      const userCredential = await signInWithCredential(auth, credential);
+      const user = userCredential.user;
 
-    checkLocalUser();
+      await handleSigninWithGoogle(user);
+      await AsyncStorage.setItem("userInfo", JSON.stringify(user));
+      setUserInfo(user);
+    } catch (error) {
+      console.error("Error with Firebase sign-in: ", error.message);
+    }
+  };
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserInfo(user);
-      } else {
-        setUserInfo(null);
-        AsyncStorage.removeItem("userInfo");
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+  // Executes signinWithGoogle and navigates based on response
+  const handleSigninWithGoogle = async (user) => {
+    const { email, firstName, lastName } = formatGoogleAccountData(user);
+    const responseGoogle = await signinWithGoogle(email, firstName, lastName);
 
+    if (responseGoogle?.status === 200) {
+      navigation.navigate("Category");
+    } else if (responseGoogle?.status === 201) {
+      navigation.navigate("OnboardingOne");
+    } else {
+      console.error("Error during Google sign-in");
+    }
+  };
+
+  // Formats Google user data for use in the app
   const formatGoogleAccountData = (userData) => {
     const { email, displayName } = userData;
-    const firstName =
-      displayName.split(" ").length > 1
-        ? displayName.split(" ")[0]
-        : displayName;
-    const lastName =
-      displayName.split(" ").length > 1 ? displayName.split(" ")[1] : "";
+    const firstName = displayName.split(" ")[0];
+    const lastName = displayName.split(" ")[1] || "";
     return { email, firstName, lastName };
   };
+
+
 
   return (
     <View style={styles.container}>
@@ -346,7 +342,7 @@ export default SigninScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
@@ -390,7 +386,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
     backgroundColor: "white",
     width: "100%",
@@ -414,7 +410,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
     backgroundColor: "white",
     width: "100%",

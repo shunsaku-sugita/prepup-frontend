@@ -53,7 +53,7 @@ const jobListOutput = () => {
   };
 
   const fetchJobsByKeywordEffect = async (page = 1) => {
-    setIsLoading(true);  // Keep loading state true until jobs are fetched
+    setIsLoading(true);
     setError("");
 
     try {
@@ -68,7 +68,7 @@ const jobListOutput = () => {
         const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
         return { ...job, isSaved };
       });
-
+      console.log(updatedFetchedJobs)
       setJobs(updatedFetchedJobs);
     } catch (err) {
       console.error("Error fetching jobs:", err);
@@ -101,18 +101,18 @@ const jobListOutput = () => {
           (newJob) => !jobs.some((job) => job.jobId === newJob.jobId)
         );
 
-      if (uniqueNewJobs.length > 0) {
-        const updatedNewJobs = uniqueNewJobs.map((job) => {
-          const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
-          return { ...job, isSaved };
-        });
-        setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
-        setPage(nextPage);
+        if (uniqueNewJobs.length > 0) {
+          const updatedNewJobs = uniqueNewJobs.map((job) => {
+            const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
+            return { ...job, isSaved };
+          });
+          setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
+          setPage(nextPage);
+        }
+        if (uniqueNewJobs.length < 10) {
+          console.warn(`Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`);
+        }
       }
-      if (uniqueNewJobs.length < 10) {
-        console.warn(`Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`);
-      }
-    }
     } catch (error) {
       console.error("Error loading more jobs:", error);
     } finally {
@@ -208,17 +208,17 @@ const jobListOutput = () => {
           <JobFilterBar filterType={filterType} changeFilter={(type) => setFilterType(type)} />
 
           {filterType === 0 ? (
-            <SavedJobCard 
+            <SavedJobCard
               data={savedJobs.filter((job) =>
                 job.title.toLowerCase().includes(searchQuery.toLowerCase())
-              )} 
-              toggleBookmark={toggleBookmark} 
+              )}
+              toggleBookmark={toggleBookmark}
             />
           ) : (
             <View style={styles.container}>
               <JobFilterLocationItem
                 data={jobs.filter((job) =>
-                  job.title.toLowerCase().includes(searchQuery.toLowerCase())
+                  job.title.toLowerCase()
                 )}
                 toggleBookmark={toggleBookmark}
                 handleJobPress={(job) => {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   loadMoreButton: {
-    backgroundColor: Colors.defaultBlue, 
+    backgroundColor: Colors.defaultBlue,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -293,11 +293,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 20,
     alignSelf: "center",
-    width: "100%", 
+    width: "100%",
   },
   loadMoreButtonText: {
     color: "#FEFEFF",
     fontSize: 16,
-    fontWeight: "800", 
+    fontWeight: "800",
   },
 });

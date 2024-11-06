@@ -22,13 +22,23 @@ const StarQuizCarousel = ({
   setActionAnswer,
   resultAnswerRef,
   setResultAnswer,
+  situationInputRef,
+  taskInputRef,
+  actionInputRef,
+  resultInputRef,
   answers,
   setAnswers,
   handleBlur,
   handleFocus,
   scrollViewRef,
-  isCharacterLimit,
-  setIsCharacterLimit,
+  situationIsCharacterLimit,
+  setSituationIsCharacterLimit,
+  taskIsCharacterLimit,
+  setTaskIsCharacterLimit,
+  actionIsCharacterLimit,
+  setActionIsCharacterLimit,
+  resultIsCharacterLimit,
+  setResultIsCharacterLimit,
   situationCountNumber,
   setSituationCountNumber,
   taskCountNumber,
@@ -77,7 +87,16 @@ const StarQuizCarousel = ({
     // update the character count, TextInput field and limit count numbers
     setCountNumber(text.length);
     setAnswer(text);
-    setIsCharacterLimit(text.length === 500);
+
+    if (answerKey === "situation") {
+      setSituationIsCharacterLimit(text.length === 500);
+    } else if (answerKey === "task") {
+      setTaskIsCharacterLimit(text.length === 500);
+    } else if (answerKey === "action") {
+      setActionIsCharacterLimit(text.length === 500);
+    } else if (answerKey === "result") {
+      setResultIsCharacterLimit(text.length === 500);
+    }
 
     // update the answers in the state
     setAnswers((prevAnswers) => ({
@@ -130,6 +149,7 @@ const StarQuizCarousel = ({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={situationInputRef}
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
@@ -145,49 +165,15 @@ const StarQuizCarousel = ({
                     "situation"
                   );
                 }}
-                onBlur={() => handleBlur("situation")}
                 onFocus={() => handleFocus("situation")}
+                onBlur={() => handleBlur("situation")}
               />
             </View>
             <View style={styles.countNumberContainer}>
-              {/* <TouchableOpacity
-                style={
-                  situationAnswerRef.current
-                    ? styles.resetIconContainer
-                    : styles.resetIconContainerDiabled
-                }
-                disabled={!situationAnswerRef.current && true}
-                onPress={() => {
-                  Alert.alert(
-                    "Reset the Situation text field?",
-                    "The process is unsaved, you will lose it.",
-                    [
-                      {
-                        text: "Cancel",
-                      },
-                      {
-                        text: "Confirm",
-                        onPress: () => {
-                          // clear the answer both in state and the ref
-                          setSituationAnswer("");
-                          situationAnswerRef.current = "";
-                          // update the answers object
-                          setAnswers((prevAnswers) => ({
-                            ...prevAnswers,
-                            situation: "", // Reset the specific field
-                          }));
-                        },
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity> */}
               <Text
                 style={[
                   styles.wordCountText,
-                  isCharacterLimit && styles.situationWordCountLimit,
+                  situationIsCharacterLimit && styles.situationWordCountLimit,
                 ]}
               >
                 {situationCountNumber}/500 Characters
@@ -225,6 +211,7 @@ const StarQuizCarousel = ({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={taskInputRef}
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
@@ -240,49 +227,15 @@ const StarQuizCarousel = ({
                     "task"
                   )
                 }
-                onBlur={() => handleBlur("task")}
                 onFocus={() => handleFocus("task")}
+                onBlur={() => handleBlur("task")}
               />
             </View>
             <View style={styles.countNumberContainer}>
-              {/* <TouchableOpacity
-                style={
-                  taskAnswerRef.current
-                    ? styles.resetIconContainer
-                    : styles.resetIconContainerDiabled
-                }
-                disabled={!taskAnswerRef.current && true}
-                onPress={() => {
-                  Alert.alert(
-                    "Reset the Task text field?",
-                    "The process is unsaved, you will lose it.",
-                    [
-                      {
-                        text: "Cancel",
-                      },
-                      {
-                        text: "Confirm",
-                        onPress: () => {
-                          // clear the answer both in state and the ref
-                          setTaskAnswer("");
-                          taskAnswerRef.current = "";
-                          // update the answers object
-                          setAnswers((prevAnswers) => ({
-                            ...prevAnswers,
-                            task: "", // Reset the specific field
-                          }));
-                        },
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity> */}
               <Text
                 style={[
                   styles.wordCountText,
-                  isCharacterLimit && styles.taskWordCountLimit,
+                  taskIsCharacterLimit && styles.taskWordCountLimit,
                 ]}
               >
                 {taskCountNumber}/500 Characters
@@ -316,6 +269,7 @@ const StarQuizCarousel = ({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={actionInputRef}
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
@@ -331,49 +285,15 @@ const StarQuizCarousel = ({
                     "action"
                   )
                 }
-                onBlur={() => handleBlur("action")}
                 onFocus={() => handleFocus("action")}
+                onBlur={() => handleBlur("action")}
               />
             </View>
             <View style={styles.countNumberContainer}>
-              {/* <TouchableOpacity
-                style={
-                  actionAnswerRef.current
-                    ? styles.resetIconContainer
-                    : styles.resetIconContainerDiabled
-                }
-                disabled={!actionAnswerRef.current && true}
-                onPress={() => {
-                  Alert.alert(
-                    "Reset the Action text field?",
-                    "The process is unsaved, you will lose it.",
-                    [
-                      {
-                        text: "Cancel",
-                      },
-                      {
-                        text: "Confirm",
-                        onPress: () => {
-                          // clear the answer both in state and the ref
-                          setActionAnswer("");
-                          actionAnswerRef.current = "";
-                          // update the answers object
-                          setAnswers((prevAnswers) => ({
-                            ...prevAnswers,
-                            action: "", // Reset the specific field
-                          }));
-                        },
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity> */}
               <Text
                 style={[
                   styles.wordCountText,
-                  isCharacterLimit && styles.actionWordCountLimit,
+                  actionIsCharacterLimit && styles.actionWordCountLimit,
                 ]}
               >
                 {actionCountNumber}/500 Characters
@@ -407,6 +327,7 @@ const StarQuizCarousel = ({
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
+                ref={resultInputRef}
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
@@ -422,8 +343,8 @@ const StarQuizCarousel = ({
                     "result"
                   )
                 }
-                onBlur={() => handleBlur("result")}
                 onFocus={() => handleFocus("result")}
+                onBlur={() => handleBlur("result")}
               />
             </View>
             <View style={styles.countNumberContainer}>
@@ -464,7 +385,7 @@ const StarQuizCarousel = ({
               <Text
                 style={[
                   styles.wordCountText,
-                  isCharacterLimit && styles.resultWordCountLimit,
+                  resultIsCharacterLimit && styles.resultWordCountLimit,
                 ]}
               >
                 {resultCountNumber}/500 Characters
@@ -482,10 +403,10 @@ export default StarQuizCarousel;
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: 25,
     marginBottom: 100,
     width: "90%",
   },
@@ -530,7 +451,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    marginTop: 12,
+    marginTop: 14,
   },
   // resetIconContainer: {
   //   backgroundColor: Colors.backgroundDarkGray,

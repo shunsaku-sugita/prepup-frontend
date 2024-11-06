@@ -10,9 +10,17 @@ import {
 } from "@/components/ui/accordion";
 import { Ionicons } from "@expo/vector-icons";
 
-const StarQuizFeedbackCard = ({ value, titleText, contentText, backgroundColorStyle }) => {
+const StarQuizFeedbackCard = ({
+  value,
+  titleText,
+  contentText,
+  backgroundColorStyle,
+}) => {
   return (
-    <AccordionItem value={value} style={[styles.accordionItem, {backgroundColor: backgroundColorStyle}]} >
+    <AccordionItem
+      value={value}
+      style={[styles.accordionItem, { backgroundColor: backgroundColorStyle }]}
+    >
       <AccordionHeader>
         <AccordionTrigger style={styles.accordionTrigger}>
           {({ isExpanded }) => {
@@ -53,9 +61,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
   },
-  // accordionItemBackgroundColor: {
-  //   backgroundColor: backgroundColorStyle,
-  // },
   accordionTrigger: {
     flexDirection: "row",
     justifyContent: "space-between",

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 12,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     marginBottom: 25,
   },
   textContainer: {

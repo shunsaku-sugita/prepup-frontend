@@ -8,7 +8,14 @@ import { AppContext } from "@/store/app-context";
 import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
-  const { setAnswers, loading } = useContext(AppContext);
+  const {
+    setAnswers,
+    loading,
+    situationInputRef,
+    taskInputRef,
+    actionInputRef,
+    resultInputRef,
+  } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (
@@ -27,6 +34,10 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
               action: "",
               result: "",
             }));
+            situationInputRef.current?.blur();
+            taskInputRef.current?.blur();
+            actionInputRef.current?.blur();
+            resultInputRef.current?.blur();
             navigation.navigate("StarQuiz");
           }}
         />
@@ -40,7 +51,7 @@ export default StarQuizFeedbackOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     marginTop: 10,
     marginBottom: 40,

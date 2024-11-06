@@ -29,7 +29,11 @@ const StarQuizOutput = () => {
     action: false,
     result: false,
   });
-  const [isCharacterLimit, setIsCharacterLimit] = useState(false);
+  const [situationIsCharacterLimit, setSituationIsCharacterLimit] =
+    useState(false);
+  const [taskIsCharacterLimit, setTaskIsCharacterLimit] = useState(false);
+  const [actionIsCharacterLimit, setActionIsCharacterLimit] = useState(false);
+  const [resultIsCharacterLimit, setResultIsCharacterLimit] = useState(false);
 
   const [situationCountNumber, setSituationCountNumber] = useState(0);
   const [taskCountNumber, setTaskCountNumber] = useState(0);
@@ -59,6 +63,10 @@ const StarQuizOutput = () => {
     taskAnswerRef,
     actionAnswerRef,
     resultAnswerRef,
+    situationInputRef,
+    taskInputRef,
+    actionInputRef,
+    resultInputRef,
     loading,
     setLoading,
   } = useContext(AppContext);
@@ -75,25 +83,27 @@ const StarQuizOutput = () => {
   };
 
   useEffect(() => {
-    if (isFocused) {
-      // reset input fields when the screen comes into focus
-      setSituationAnswer("");
-      setTaskAnswer("");
-      setActionAnswer("");
-      setResultAnswer("");
-      situationAnswerRef.current = "";
-      taskAnswerRef.current = "";
-      actionAnswerRef.current = "";
-      resultAnswerRef.current = "";
+    handleModalClose();
 
-      // always scroll to the leftmost (start) position by default
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollTo({ x: 0, animated: true });
-      }
+    // if (isFocused) {
+    // reset input fields when the screen comes into focus
+    setSituationAnswer("");
+    setTaskAnswer("");
+    setActionAnswer("");
+    setResultAnswer("");
+    situationAnswerRef.current = "";
+    taskAnswerRef.current = "";
+    actionAnswerRef.current = "";
+    resultAnswerRef.current = "";
+
+    // always scroll to the leftmost (start) position by default
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x: 0, animated: true });
     }
+    // }
     // Fetch the random question initially
     fetchStarQuestion();
-  }, [isFocused]);
+  }, []);
 
   // the state is only updated once the input field loses focus (onBlur), avoiding re-renders on every keystroke
   const handleBlur = (field) => {
@@ -138,8 +148,13 @@ const StarQuizOutput = () => {
     }
   };
 
-  const handleModalClose = (field) => {
-    setModalVisible((prev) => ({ ...prev, [field]: false }));
+  const handleModalClose = () => {
+    setModalVisible({
+      situation: false,
+      task: false,
+      action: false,
+      result: false,
+    });
   };
 
   // submit typed answers and get feedback text and average score
@@ -215,13 +230,23 @@ const StarQuizOutput = () => {
         setActionAnswer={setActionAnswer}
         resultAnswerRef={resultAnswerRef}
         setResultAnswer={setResultAnswer}
+        situationInputRef={situationInputRef}
+        taskInputRef={taskInputRef}
+        actionInputRef={actionInputRef}
+        resultInputRef={resultInputRef}
         answers={answers}
         setAnswers={setAnswers}
         handleBlur={handleBlur}
         handleFocus={handleFocus}
         scrollViewRef={scrollViewRef}
-        isCharacterLimit={isCharacterLimit}
-        setIsCharacterLimit={setIsCharacterLimit}
+        situationIsCharacterLimit={situationIsCharacterLimit}
+        setSituationIsCharacterLimit={setSituationIsCharacterLimit}
+        taskIsCharacterLimit={taskIsCharacterLimit}
+        setTaskIsCharacterLimit={setTaskIsCharacterLimit}
+        actionIsCharacterLimit={actionIsCharacterLimit}
+        setActionIsCharacterLimit={setActionIsCharacterLimit}
+        resultIsCharacterLimit={resultIsCharacterLimit}
+        setResultIsCharacterLimit={setResultIsCharacterLimit}
         situationCountNumber={situationCountNumber}
         setSituationCountNumber={setSituationCountNumber}
         taskCountNumber={taskCountNumber}
@@ -267,7 +292,8 @@ const StarQuizOutput = () => {
         </TouchableOpacity>
       </View>
 
-      {/* <StarQuizCardModal
+      {/* modal container */}
+      <StarQuizCardModal
         situationAnswerRef={situationAnswerRef}
         setSituationAnswer={setSituationAnswer}
         taskAnswerRef={taskAnswerRef}
@@ -277,12 +303,18 @@ const StarQuizOutput = () => {
         resultAnswerRef={resultAnswerRef}
         setResultAnswer={setResultAnswer}
         handleBlur={handleBlur}
+        handleFocus={handleFocus}
         scrollViewRef={scrollViewRef}
         answers={answers}
         setAnswers={setAnswers}
-        handleFocus={handleFocus}
-        isCharacterLimit={isCharacterLimit}
-        setIsCharacterLimit={setIsCharacterLimit}
+        situationIsCharacterLimit={situationIsCharacterLimit}
+        setSituationIsCharacterLimit={setSituationIsCharacterLimit}
+        taskIsCharacterLimit={taskIsCharacterLimit}
+        setTaskIsCharacterLimit={setTaskIsCharacterLimit}
+        actionIsCharacterLimit={actionIsCharacterLimit}
+        setActionIsCharacterLimit={setActionIsCharacterLimit}
+        resultIsCharacterLimit={resultIsCharacterLimit}
+        setResultIsCharacterLimit={setResultIsCharacterLimit}
         situationCountNumber={situationCountNumber}
         setSituationCountNumber={setSituationCountNumber}
         taskCountNumber={taskCountNumber}
@@ -295,7 +327,7 @@ const StarQuizOutput = () => {
         setModalVisible={setModalVisible}
         handleModalClose={handleModalClose}
         backgroundColor={backgroundColor}
-      /> */}
+      />
     </View>
   );
 };
@@ -305,7 +337,7 @@ export default StarQuizOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
@@ -313,7 +345,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   questionContainer: {
-    flex: 2,
+    flex: 1.5,
     marginTop: 5,
   },
   buttonsContainer: {
@@ -329,7 +361,7 @@ const styles = StyleSheet.create({
   cancelButton: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.defaultBeige,
+    backgroundColor: Colors.disabledBeige,
     borderWidth: 2,
     borderColor: Colors.defaultBlue,
     borderRadius: 6,
@@ -356,19 +388,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  // modalContainer: {
-  //   flex: 1,
-  //   justifyContent: "flex-end", // Align the modal to the bottom of the screen
-  //   backgroundColor: "rgba(0, 0, 0, 0.2)", // Transparent background
-  //   width: "100%",
-  // },
-  // modalContent: {
-  //   height: "73%",
-  //   borderTopLeftRadius: 20,
-  //   borderTopRightRadius: 20,
-  //   paddingHorizontal: 15,
-  //   paddingVertical: 8,
-  //   alignItems: "center",
-  //   justifyContent: "flex-start",
-  // },
 });
