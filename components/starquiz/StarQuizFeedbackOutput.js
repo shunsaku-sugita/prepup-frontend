@@ -15,6 +15,7 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
     taskInputRef,
     actionInputRef,
     resultInputRef,
+    scrollViewRef,
   } = useContext(AppContext);
   const navigation = useNavigation();
 
@@ -34,11 +35,14 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
               action: "",
               result: "",
             }));
-            situationInputRef.current?.blur();
-            taskInputRef.current?.blur();
-            actionInputRef.current?.blur();
-            resultInputRef.current?.blur();
+            // situationInputRef.current.blur();
+            // taskInputRef.current.blur();
+            // actionInputRef.current.blur();
+            // resultInputRef.current.blur();
             navigation.navigate("StarQuiz");
+            if (scrollViewRef?.current) {
+              scrollViewRef?.current.scrollTo({ x: 0, animated: true });
+            }
           }}
         />
       </View>
