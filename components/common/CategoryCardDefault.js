@@ -5,7 +5,13 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "../../store/app-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CategoryCardDefault = ({ index, categoryName, categories, image, backgroundColor }) => {
+const CategoryCardDefault = ({
+  index,
+  categoryName,
+  categories,
+  image,
+  backgroundColor,
+}) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
@@ -34,20 +40,34 @@ const CategoryCardDefault = ({ index, categoryName, categories, image, backgroun
   };
 
   return (
-    <View style={[styles.cardContainer, {backgroundColor}]}>
+    <View style={[styles.cardContainer, { backgroundColor }]}>
       <View style={styles.imageContainer}>
         <View style={styles.imageInnerContainer}>
-          <Image source={image} style={index === 0 || index === 2 ? styles.image : styles.image1} />
+          <Image
+            source={image}
+            style={index === 0 || index === 2 ? styles.image : styles.image1}
+          />
         </View>
       </View>
       <View style={styles.textAndButtonArea}>
         <View style={styles.textContainer}>
-          <Text style={styles.categoryText}>
-            {categoryName}
-          </Text>
+          <Text style={styles.categoryText}>{categoryName}</Text>
         </View>
-        <TouchableOpacity style={categoryName !== "My Occupation" ? styles.buttonContainer : styles.addButtonContainer} onPress={categoryName !== "My Occupation" ? () => startInterviewHandler(index) : () => navigation.navigate("Profile")}>
-          <Text style={styles.buttonText}>{categoryName !== "My Occupation" ? "Start" : "Add"}</Text>
+        <TouchableOpacity
+          style={
+            categoryName !== "My Occupation"
+              ? styles.buttonContainer
+              : styles.addButtonContainer
+          }
+          onPress={
+            categoryName !== "My Occupation"
+              ? () => startInterviewHandler(index)
+              : () => navigation.navigate("Profile")
+          }
+        >
+          <Text style={styles.buttonText}>
+            {categoryName !== "My Occupation" ? "Start" : "Add"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -59,7 +79,7 @@ export default CategoryCardDefault;
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
@@ -75,48 +95,48 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.3,
   },
-  imageContainer:  {
+  imageContainer: {
     flex: 6,
     backgroundColor: "white",
     borderTopLeftRadius: 50,
     borderBottomLeftRadius: 8,
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
   },
   imageInnerContainer: {
     justifyContent: "center",
     marginTop: 30,
   },
   image: {
-    width: '100%',
-    height: '160%',
+    width: "100%",
+    height: "160%",
     resizeMode: "contain",
     marginTop: 10,
     marginBottom: 20,
     marginLeft: 10,
   },
   image1: {
-    width: '110%',
-    height: '100%',
+    width: "110%",
+    height: "100%",
     resizeMode: "contain",
     marginBottom: 40,
   },
   textAndButtonArea: {
     flex: 4.5,
     paddingHorizontal: 0,
-    paddingVertical: 10.8,
+    paddingVertical: 12,
     justifyContent: "center",
     width: 100,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderTopRightRadius: 8,
     borderBottomRightRadius: 22,
   },
   textContainer: {
     paddingHorizontal: 9,
     paddingVertical: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 47,
   },
   categoryText: {
@@ -148,6 +168,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: 'white',
+    color: "white",
   },
 });

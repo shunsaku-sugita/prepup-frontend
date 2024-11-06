@@ -6,19 +6,6 @@ import { View, TextInput, Text, Button, StyleSheet } from "react-native";
 import HearableQuestions from "@/components/common/HearableQuestions";
 
 const StarModalScreen = () => {
-  const { params } = useRoute();
-  const { cardType, initialText } = params;
-  // Create a ref for the input field
-  // const situationInputRef = useRef(null);
-
-  useEffect(() => {
-    // Focus on the input field when the screen is opened
-    if (situationInputRef.current) situationInputRef.current.focus();
-    if (taskInputRef.current) taskInputRef.current.focus();
-    if (actionInputRef.current) actionInputRef.current.focus();
-    if (resultInputRef.current) resultInputRef.current.focus();
-  }, []);
-
   const {
     situationAnswerRef,
     setSituationAnswer,
@@ -34,9 +21,7 @@ const StarModalScreen = () => {
     resultInputRef,
     answers,
     setAnswers,
-    scrollViewRef,
     handleBlur,
-    handleFocus,
     situationIsCharacterLimit,
     setSituationIsCharacterLimit,
     taskIsCharacterLimit,
@@ -54,11 +39,20 @@ const StarModalScreen = () => {
     resultCountNumber,
     setResultCountNumber,
     starQuestionText,
-    modalVisible,
-    setModalVisible,
-    backgroundColor,
-    handleModalClose,
+    fieldType,
   } = useContext(AppContext);
+
+  useEffect(() => {
+    // Focus on the input field when the screen is opened
+    if (fieldType === "situation" && situationInputRef.current)
+      situationInputRef.current.focus();
+    if (fieldType === "task" && taskInputRef.current)
+      taskInputRef.current.focus();
+    if (fieldType === "action" && actionInputRef.current)
+      actionInputRef.current.focus();
+    if (fieldType === "result" && resultInputRef.current)
+      resultInputRef.current.focus();
+  }, [fieldType]);
 
   const textChangeHandler = (
     text,
@@ -104,7 +98,7 @@ const StarModalScreen = () => {
       </View>
       <View style={styles.modalContainer}>
         {/* Situation screen */}
-        {cardType === "situation" && (
+        {fieldType === "situation" && (
           <View
             style={[
               styles.modalContent,
@@ -148,7 +142,7 @@ const StarModalScreen = () => {
           </View>
         )}
         {/* Task screen */}
-        {cardType === "task" && (
+        {fieldType === "task" && (
           <View
             style={[
               styles.modalContent,
@@ -192,7 +186,7 @@ const StarModalScreen = () => {
           </View>
         )}
         {/* Action screen */}
-        {cardType === "action" && (
+        {fieldType === "action" && (
           <View
             style={[
               styles.modalContent,
@@ -236,7 +230,7 @@ const StarModalScreen = () => {
           </View>
         )}
         {/* Result screen */}
-        {cardType === "result" && (
+        {fieldType === "result" && (
           <View
             style={[
               styles.modalContent,

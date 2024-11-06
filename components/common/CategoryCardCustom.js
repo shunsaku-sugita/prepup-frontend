@@ -1,13 +1,31 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useContext, useEffect, useRef, useState} from "react";
-import { Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View, Animated, ScrollView, Easing } from "react-native";
+import { useContext, useEffect, useRef, useState } from "react";
+import {
+  Alert,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Animated,
+  ScrollView,
+  Easing,
+} from "react-native";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "../../store/app-context";
 import { deleteInterviewCategory } from "../services/api";
 import SmallButton from "./SmallButton";
 
-const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCategories, image, backgroundColor }) => {
+const CategoryCardCustom = ({
+  index,
+  categoryName,
+  customCategories,
+  setCustomCategories,
+  image,
+  backgroundColor,
+}) => {
   const navigation = useNavigation();
   const {
     setCurrentQuestionIndex,
@@ -65,7 +83,7 @@ const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCa
     );
     console.log("selectedQuestionTexts: ");
     console.log(selectedQuestionTexts);
-    
+
     setSelectedCategoryQuestions(selectedQuestionTexts);
   };
 
@@ -77,7 +95,9 @@ const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCa
 
     // if successful, update the categories state excluding the selected category at the given index
     if (deleteSuccess) {
-      const updatedCategories = customCategories.filter((_, idx) => idx !== index);
+      const updatedCategories = customCategories.filter(
+        (_, idx) => idx !== index
+      );
       setCustomCategories(updatedCategories);
     } else {
       Alert.alert("Error", "Failed to delete the category. Please try again.");
@@ -87,7 +107,6 @@ const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCa
     // const updatedCategories = categories.filter((_, idx) => idx !== index);
     // // Update the state with the new array
     // setCategories(updatedCategories);
-
   };
 
   const deleteAlertHandler = (index) => {
@@ -110,10 +129,13 @@ const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCa
   };
 
   return (
-    <View style={[styles.cardContainer, {backgroundColor}]}>
+    <View style={[styles.cardContainer, { backgroundColor }]}>
       <View style={styles.imageContainer}>
         <Image source={image} style={styles.image} />
-        <TouchableOpacity style={styles.trashIconContainer} onPress={() => deleteAlertHandler(index)}>
+        <TouchableOpacity
+          style={styles.trashIconContainer}
+          onPress={() => deleteAlertHandler(index)}
+        >
           <Feather
             name="trash"
             color="white"
@@ -123,19 +145,24 @@ const CategoryCardCustom = ({ index, categoryName, customCategories, setCustomCa
         </TouchableOpacity>
       </View>
       <View style={styles.cardBottom}>
-        <View style={styles.textContainer}              
+        <View
+          style={styles.textContainer}
           onLayout={(event) => {
             const { height } = event.nativeEvent.layout;
             setContainerHeight(height); // measure container height
           }}
         >
-          <ScrollView contentContainerStyle={styles.scrollView} scrollEnabled={false}>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            scrollEnabled={false}
+          >
             <Animated.View
               style={{
                 transform: [{ translateY: shouldScroll ? scrollAnim : 0 }],
               }}
             >
-              <Text style={styles.categoryText}
+              <Text
+                style={styles.categoryText}
                 onLayout={(event) => {
                   const { height } = event.nativeEvent.layout;
                   setTextHeight(height); // measure text height
@@ -208,23 +235,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 1,
     paddingVertical: 5,
     justifyContent: "center",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: 150,
     height: 80,
     paddingBottom: 30,
     borderBottomRightRadius: 24,
   },
   textContainer: {
-    justifyContent: 'center',
+    justifyContent: "center",
     height: 26,
     width: 138,
-    marginTop:24,
+    marginTop: 24,
     overflow: "hidden",
   },
   scrollView: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   categoryText: {
     fontSize: 16,

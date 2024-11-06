@@ -50,6 +50,29 @@ const AppContextProvider = ({ children }) => {
   const [resultCountNumber, setResultCountNumber] = useState(0);
   const [backgroundColor, setBackgroundColor] = useState("white");
 
+  // Track current field
+  const [focusedField, setFocusedField] = useState(null);
+  const [fieldType, setFieldType] = useState(null);
+
+  const handleBlur = (field) => {
+    switch (field) {
+      case "situation":
+        setSituationAnswer(situationAnswerRef.current);
+        break;
+      case "task":
+        setTaskAnswer(taskAnswerRef.current);
+        break;
+      case "action":
+        setActionAnswer(actionAnswerRef.current);
+        break;
+      case "result":
+        setResultAnswer(resultAnswerRef.current);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <AppContext.Provider
       // can provide states and functions grobally
@@ -106,6 +129,11 @@ const AppContextProvider = ({ children }) => {
         setBackgroundColor,
         starQuestionText,
         setStarQuestionText,
+        focusedField,
+        setFocusedField,
+        fieldType,
+        setFieldType,
+        handleBlur,
       }}
     >
       {children}

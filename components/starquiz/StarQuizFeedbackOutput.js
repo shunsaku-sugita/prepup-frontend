@@ -8,15 +8,7 @@ import { AppContext } from "@/store/app-context";
 import { Colors } from "@/constants/Colors";
 
 const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
-  const {
-    setAnswers,
-    loading,
-    situationInputRef,
-    taskInputRef,
-    actionInputRef,
-    resultInputRef,
-    scrollViewRef,
-  } = useContext(AppContext);
+  const { setAnswers, loading, scrollViewRef } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (
@@ -35,14 +27,7 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
               action: "",
               result: "",
             }));
-            // situationInputRef.current.blur();
-            // taskInputRef.current.blur();
-            // actionInputRef.current.blur();
-            // resultInputRef.current.blur();
             navigation.navigate("StarQuiz");
-            if (scrollViewRef?.current) {
-              scrollViewRef?.current.scrollTo({ x: 0, animated: true });
-            }
           }}
         />
       </View>

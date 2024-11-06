@@ -6,13 +6,14 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import IconButton from "../common/IconButton";
 import * as Speech from "expo-speech";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import debounce from "lodash.debounce";
 
 const StarQuizCarousel = ({
   situationAnswerRef,
@@ -48,12 +49,27 @@ const StarQuizCarousel = ({
   setActionCountNumber,
   resultCountNumber,
   setResultCountNumber,
+  fieldType,
+  setFieldType,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const navigation = useNavigation();
 
-  // Create a ref for the input field
-  // const situationInputRef = useRef(null);
+  // Debounce function for handling fieldType updates
+  const handleFieldTypeChange = useCallback(
+    debounce((newFieldType) => {
+      // Update the field type only once after a slight delay
+      setFieldType(newFieldType);
+    }, 300),
+    []
+  );
+
+  // Example of using the debounced function on card press
+  const onCardPress = (type) => {
+    if (type !== fieldType) {
+      handleFieldTypeChange(type); // Only update if type is different
+    }
+  };
 
   // Handle screen focus changes
   useEffect(() => {
@@ -126,12 +142,9 @@ const StarQuizCarousel = ({
     }
   };
 
-  // ==== added code ====
-  const openModalScreen = (cardType) => {
-    navigation.navigate("StarModal", {
-      cardType, // Pass the cardType to indicate which field was pressed
-      initialText: answers[cardType],
-    });
+  const openModalScreen = (field) => {
+    handleFocus(field); // ensure the correct modal is set to visible
+    navigation.navigate("StarModal", { fieldType: field });
   };
 
   return (
@@ -193,6 +206,7 @@ const StarQuizCarousel = ({
                 onFocus={() => {
                   navigation.navigate("StarModal");
                   openModalScreen("situation");
+                  onCardPress("situation");
                 }}
                 onBlur={() => {
                   handleBlur("situation");
@@ -261,6 +275,7 @@ const StarQuizCarousel = ({
                 onFocus={() => {
                   navigation.navigate("StarModal");
                   openModalScreen("task");
+                  onCardPress("task");
                 }}
                 onBlur={() => handleBlur("task")}
               />
@@ -323,6 +338,7 @@ const StarQuizCarousel = ({
                 onFocus={() => {
                   navigation.navigate("StarModal");
                   openModalScreen("action");
+                  onCardPress("action");
                 }}
                 onBlur={() => handleBlur("action")}
               />
@@ -385,6 +401,7 @@ const StarQuizCarousel = ({
                 onFocus={() => {
                   navigation.navigate("StarModal");
                   openModalScreen("result");
+                  onCardPress("result");
                 }}
                 onBlur={() => handleBlur("result")}
               />
@@ -448,8 +465,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 25,
-    marginBottom: 100,
+    marginTop: 10,
+    marginBottom: 60,
     width: "90%",
   },
   carouselContainer: {},
@@ -459,10 +476,18 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     marginHorizontal: 7, // horizontal gap between cards
+    marginBottom: 6,
     width: 310,
     paddingTop: 16,
     paddingHorizontal: 20,
     borderRadius: 6,
+    // shadow for android
+    elevation: 4,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
   },
   cardHeaderContainer: {
     flexDirection: "row",
