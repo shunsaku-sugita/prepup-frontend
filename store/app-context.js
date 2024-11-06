@@ -25,6 +25,8 @@ const AppContextProvider = ({ children }) => {
     result: "",
   });
 
+  const [starQuestionText, setStarQuestionText] = useState("");
+
   // useRef to prevent re-renders during typing in STAR master
   const situationAnswerRef = useRef("");
   const taskAnswerRef = useRef("");
@@ -35,6 +37,18 @@ const AppContextProvider = ({ children }) => {
   const taskInputRef = useRef(null);
   const actionInputRef = useRef(null);
   const resultInputRef = useRef(null);
+
+  const [situationIsCharacterLimit, setSituationIsCharacterLimit] =
+    useState(false);
+  const [taskIsCharacterLimit, setTaskIsCharacterLimit] = useState(false);
+  const [actionIsCharacterLimit, setActionIsCharacterLimit] = useState(false);
+  const [resultIsCharacterLimit, setResultIsCharacterLimit] = useState(false);
+
+  const [situationCountNumber, setSituationCountNumber] = useState(0);
+  const [taskCountNumber, setTaskCountNumber] = useState(0);
+  const [actionCountNumber, setActionCountNumber] = useState(0);
+  const [resultCountNumber, setResultCountNumber] = useState(0);
+  const [backgroundColor, setBackgroundColor] = useState("white");
 
   return (
     <AppContext.Provider
@@ -72,6 +86,26 @@ const AppContextProvider = ({ children }) => {
         setProgressUpdate,
         loading,
         setLoading,
+        situationIsCharacterLimit,
+        setSituationIsCharacterLimit,
+        taskIsCharacterLimit,
+        setTaskIsCharacterLimit,
+        actionIsCharacterLimit,
+        setActionIsCharacterLimit,
+        resultIsCharacterLimit,
+        setResultIsCharacterLimit,
+        situationCountNumber,
+        setSituationCountNumber,
+        taskCountNumber,
+        setTaskCountNumber,
+        actionCountNumber,
+        setActionCountNumber,
+        resultCountNumber,
+        setResultCountNumber,
+        backgroundColor,
+        setBackgroundColor,
+        starQuestionText,
+        setStarQuestionText,
       }}
     >
       {children}

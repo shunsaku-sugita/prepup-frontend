@@ -10,37 +10,36 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import StarQuizCardModal from "./StarQuizCardModal";
 import HearableQuestions from "../common/HearableQuestions";
-import { useNavigation } from "expo-router";
+
 import {
   anayzeStarMasterAnsewers,
   getStarMasterQuestion,
 } from "../services/api";
 import { AppContext } from "@/store/app-context";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import LoadingOverlay from "../common/LoadingOverlay";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
-  const [starQuestionText, setStarQuestionText] = useState("");
+  // const [starQuestionText, setStarQuestionText] = useState("");
   const [modalVisible, setModalVisible] = useState({
     situation: false,
     task: false,
     action: false,
     result: false,
   });
-  const [situationIsCharacterLimit, setSituationIsCharacterLimit] =
-    useState(false);
-  const [taskIsCharacterLimit, setTaskIsCharacterLimit] = useState(false);
-  const [actionIsCharacterLimit, setActionIsCharacterLimit] = useState(false);
-  const [resultIsCharacterLimit, setResultIsCharacterLimit] = useState(false);
+  // const [situationIsCharacterLimit, setSituationIsCharacterLimit] =
+  //   useState(false);
+  // const [taskIsCharacterLimit, setTaskIsCharacterLimit] = useState(false);
+  // const [actionIsCharacterLimit, setActionIsCharacterLimit] = useState(false);
+  // const [resultIsCharacterLimit, setResultIsCharacterLimit] = useState(false);
 
-  const [situationCountNumber, setSituationCountNumber] = useState(0);
-  const [taskCountNumber, setTaskCountNumber] = useState(0);
-  const [actionCountNumber, setActionCountNumber] = useState(0);
-  const [resultCountNumber, setResultCountNumber] = useState(0);
-
-  const [backgroundColor, setBackgroundColor] = useState("white");
+  // const [situationCountNumber, setSituationCountNumber] = useState(0);
+  // const [taskCountNumber, setTaskCountNumber] = useState(0);
+  // const [actionCountNumber, setActionCountNumber] = useState(0);
+  // const [resultCountNumber, setResultCountNumber] = useState(0);
+  // const [backgroundColor, setBackgroundColor] = useState("white");
 
   // track if the screen is in focus
   const isFocused = useIsFocused();
@@ -69,6 +68,27 @@ const StarQuizOutput = () => {
     resultInputRef,
     loading,
     setLoading,
+    //
+    situationIsCharacterLimit,
+    setSituationIsCharacterLimit,
+    taskIsCharacterLimit,
+    setTaskIsCharacterLimit,
+    actionIsCharacterLimit,
+    setActionIsCharacterLimit,
+    resultIsCharacterLimit,
+    setResultIsCharacterLimit,
+    situationCountNumber,
+    setSituationCountNumber,
+    taskCountNumber,
+    setTaskCountNumber,
+    actionCountNumber,
+    setActionCountNumber,
+    resultCountNumber,
+    setResultCountNumber,
+    backgroundColor,
+    setBackgroundColor,
+    starQuestionText,
+    setStarQuestionText,
   } = useContext(AppContext);
 
   // fetch a random question when the page is mounted
@@ -293,7 +313,7 @@ const StarQuizOutput = () => {
       </View>
 
       {/* modal container */}
-      <StarQuizCardModal
+      {/* <StarQuizCardModal
         situationAnswerRef={situationAnswerRef}
         setSituationAnswer={setSituationAnswer}
         taskAnswerRef={taskAnswerRef}
@@ -327,7 +347,7 @@ const StarQuizOutput = () => {
         setModalVisible={setModalVisible}
         handleModalClose={handleModalClose}
         backgroundColor={backgroundColor}
-      />
+      /> */}
     </View>
   );
 };
