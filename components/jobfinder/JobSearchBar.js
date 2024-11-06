@@ -4,22 +4,20 @@ import { Ionicons } from '@expo/vector-icons';
 
 const JobSearchBar = ({ searchQuery, setSearchQuery }) => {
   const [localQuery, setLocalQuery] = useState(searchQuery);
-  const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Function to handle when the user presses the enter key
   const handleSearchSubmit = () => {
-    setIsTyping(false); 
-    setSearchQuery(localQuery); 
+    setIsLoading(true);
+    setSearchQuery(localQuery);
   };
 
-  // Function to clear the search bar
   const handleClearSearch = () => {
-    setLocalQuery(""); 
-    setSearchQuery(""); 
+    setLocalQuery("");
+    setSearchQuery("");
   };
 
   useEffect(() => {
-    setLocalQuery(searchQuery); // Keep local state in sync with parent state changes
+    setLocalQuery(searchQuery);
   }, [searchQuery]);
 
   return (
@@ -30,14 +28,13 @@ const JobSearchBar = ({ searchQuery, setSearchQuery }) => {
         value={localQuery}
         onChangeText={(text) => {
           setLocalQuery(text);
-          setIsTyping(true); // Indicate that typing is happening
         }}
         placeholderTextColor="#4D63B5"
         onSubmitEditing={handleSearchSubmit} // Handle "Enter" key press
         returnKeyType="search"
       />
 
-      {isTyping ? (
+      {isLoading ? (
         <ActivityIndicator size="small" color="#4D63B5" style={styles.icon} />
       ) : localQuery ? (
         <TouchableOpacity onPress={handleClearSearch}>
@@ -60,13 +57,13 @@ const styles = StyleSheet.create({
     borderColor: '#4D63B5',
     borderRadius: 8,
     padding: 8,
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   searchInput: {
     flex: 1,
     paddingRight: 10,
     fontSize: 16,
-    color:"#4D63B5"
+    color: "#4D63B5"
   },
   icon: {
     paddingLeft: 10,
