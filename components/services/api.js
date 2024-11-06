@@ -30,6 +30,14 @@ const storeTokenSecurely = async (token) => {
   }
 };
 
+export const emptyToken = async () => {
+  try {
+    await SecureStore.deleteItemAsync("authToken");
+  } catch (error) {
+    console.error("Error while emptying token", error.message);
+  }
+};
+
 // Job Finder APIs
 export const fetchJobs = async (page = 1) => {
   try {
@@ -417,20 +425,19 @@ export const login = async (email, password) => {
   try {
     const endpoint = "/" + PATH_AUTH + "/" + TYPE_SIGNIN;
     const response = await apiClient.post(endpoint, { email, password });
-
     if (response.status == 200) {
       const token = response.data.authorization;
-      console.log(token);
       if (token) {
         await storeTokenSecurely(token);
         console.log("Token stored successfully");
       } else {
-        console.error("Token not received");
+        response.status = 403;
+        console.log("Token not received");
       }
     }
     return response;
   } catch (error) {
-    console.error(
+    console.log(
       "Error while login : ",
       error.response ? error.response.data : error.message
     );
@@ -536,11 +543,9 @@ export const resetPassword = async (email, password) => {
 export const createPassword = async (password) => {
   try {
     const endpoint = "/" + PATH_PROFILE + "/" + TYPE_CREATE_PASSWORD;
-    const response = await apiClient.post(endpoint, { email, password });
+    const response = await apiClient.post(endpoint, { password });
 
-    if (response.status == 200) {
-      return true;
-    }
+    return response;
   } catch (error) {
     console.error(
       "Error while createPassword : ",

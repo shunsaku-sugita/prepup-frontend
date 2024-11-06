@@ -11,12 +11,16 @@ import {
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import WideButton from "@/components/common/WideButton";
-import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
 import * as SecureStore from "expo-secure-store";
 import { toastConfig } from "@/components/toast/ToastComponent";
-import { getProfile } from "@/components/services/api"; // Ensure this path is correct
+import { emptyToken, getProfile } from "@/components/services/api"; // Ensure this path is correct
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -29,23 +33,27 @@ const ProfileScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [termsAccepted, setTermsAccepted] = useState(true);
   const [privacyAccepted, setPrivacyAccepted] = useState(true);
+  const [isGmailLogin, setIsGmailLogin] = useState(false);
 
   // Fetch user profile data when the screen mounts
-  const loadUserProfile = async () => {
-    try {
-      const profileData = await getProfile();
-      if (profileData) {
-        setName(`${profileData.givenName} ${profileData.familyName}`);
-        setUsername(profileData.userName);
-        setEmail(profileData.email);
-        setOccupation(profileData.occupation || ""); // Optional, based on available data
-      } else {
-        console.error("Failed to load user profile data");
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const profileData = await getProfile();
+        if (profileData) {
+          setName(`${profileData.givenName} ${profileData.familyName}`);
+          setUsername(profileData.userName);
+          setEmail(profileData.email);
+          setOccupation(profileData.occupation || "");
+          setIsGmailLogin(profileData?.isGmailLogin);
+        } else {
+          console.error("Failed to load user profile data");
+        }
+      } catch (error) {
+        console.error("Error loading profile data:", error);
       }
-    } catch (error) {
-      console.error("Error loading profile data:", error);
-    }
-  };
+    };
+  });
 
   useEffect(() => {
     loadUserProfile();
@@ -160,9 +168,9 @@ const ProfileScreen = () => {
             <ProfileField label="Name" value={name} />
             <ProfileField label="Username" value={username} />
             <ProfileField label="Email" value={email} />
-            <ProfileField 
-              label="Occupation" 
-              value={occupation} 
+            <ProfileField
+              label="Occupation"
+              value={occupation}
               noSeparator
               isWarning={occupation === ""} // Show warning if occupation is empty
             />
@@ -177,24 +185,70 @@ const ProfileScreen = () => {
     {
       key: "password",
       renderItem: () => (
-        <View style={[styles.sectionContainer, styles.whiteBackground]}>
-          <Text style={styles.sectionTitle}>Password</Text>
+        <View
+          style={[
+            styles.sectionContainer,
+            styles.whiteBackground,
+            isGmailLogin && styles.disabledSection, // Apply disabled styling if Gmail login
+          ]}
+          pointerEvents={isGmailLogin ? "none" : "auto"} // Disable interactions if Gmail login
+        >
+          <Text
+            style={[
+              styles.sectionTitle,
+              isGmailLogin && { color: "#B0B0B0" }, // Adjust text color if disabled
+            ]}
+          >
+            Password
+          </Text>
           <View style={styles.sectionSeparator} />
           <View style={styles.infoContainer}>
             <View style={styles.fieldContainer}>
               <View style={styles.fieldRow}>
-                <Text style={styles.fieldLabel}>Change Password</Text>
+                <Text
+                  style={[
+                    styles.fieldLabel,
+                    isGmailLogin && { color: "#B0B0B0" },
+                  ]}
+                >
+                  Change Password
+                </Text>
                 <View style={styles.passwordContainer}>
-                  <Text style={styles.passwordText}>**********</Text>
+                  <Text
+                    style={[
+                      styles.passwordText,
+                      isGmailLogin && { color: "#B0B0B0" },
+                    ]}
+                  >
+                    **********
+                  </Text>
                 </View>
               </View>
             </View>
           </View>
-          <TouchableOpacity 
-            style={styles.editButton}
-            onPress={() => navigation.navigate("EditPW_ChangePW")}>
-            <Text style={styles.editButtonText}>Edit</Text>
-            <Ionicons name="pencil" size={16} color="black" />
+          <TouchableOpacity
+            style={[
+              styles.editButton,
+              isGmailLogin && styles.disabledButton, // Apply additional styles if disabled
+            ]}
+            onPress={() =>
+              !isGmailLogin && navigation.navigate("EditPW_ChangePW")
+            }
+            disabled={isGmailLogin} // Disables the touch interaction
+          >
+            <Text
+              style={[
+                styles.editButtonText,
+                isGmailLogin && { color: "#B0B0B0" },
+              ]}
+            >
+              Edit
+            </Text>
+            <Ionicons
+              name="pencil"
+              size={16}
+              color={isGmailLogin ? "#B0B0B0" : "black"}
+            />
           </TouchableOpacity>
         </View>
       ),
@@ -241,7 +295,10 @@ const ProfileScreen = () => {
         <View style={[styles.sectionContainer, styles.whiteBackground]}>
           <View style={styles.deleteRow}>
             <Text style={styles.deleteTitle}>Delete your account</Text>
-            <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={handleDeleteAccount}
+            >
               <Text style={styles.deleteButtonText}>Delete</Text>
             </TouchableOpacity>
           </View>
@@ -252,10 +309,7 @@ const ProfileScreen = () => {
       key: "logout",
       renderItem: () => (
         <View style={styles.logoutContainer}>
-          <TouchableOpacity
-            style={styles.logoutButton}  
-            onPress={handleLogout}
-          >
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -280,7 +334,9 @@ const ProfileScreen = () => {
 const ProfileField = ({ label, value, noSeparator, isWarning }) => (
   <View style={styles.fieldContainer}>
     <View style={styles.fieldRow}>
-      <Text style={[styles.fieldLabel, isWarning && styles.occupationWarning]}>{label}</Text>
+      <Text style={[styles.fieldLabel, isWarning && styles.occupationWarning]}>
+        {label}
+      </Text>
       <Text style={styles.fieldValue}>{value}</Text>
     </View>
     {!noSeparator && <View style={styles.fieldSeparator} />}
@@ -356,6 +412,15 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 16,
   },
+  editButtonDisable: {
+    backgroundColor: "#D3D3D3",
+  },
+  disabledSection: {
+    backgroundColor: "#F5F5F5", // Lighter background color
+  },
+  disabledButton: {
+    backgroundColor: "#D3D3D3", // Disabled button color
+  },
   editButtonText: {
     fontSize: 16,
     fontWeight: "600",
@@ -391,7 +456,6 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     paddingHorizontal: 17.5,
     borderRadius: 4,
-   
   },
   deleteButtonText: {
     color: "white",
@@ -412,17 +476,17 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   logoutButton: {
-    backgroundColor: Colors.defaultBlue, 
+    backgroundColor: Colors.defaultBlue,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
-    width: 397, 
+    width: 397,
     height: 48,
   },
   logoutButtonText: {
     color: "#FEFEFF",
     fontSize: 16,
-    fontWeight: "800", 
+    fontWeight: "800",
   },
   occupationWarning: {
     fontWeight: "bold",

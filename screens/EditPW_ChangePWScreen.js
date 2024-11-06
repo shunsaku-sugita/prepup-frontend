@@ -13,8 +13,7 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
-import * as SecureStore from 'expo-secure-store'; // Assuming you're using SecureStore to store email
-import { createPassword } from "@/components/services/api";  // Import the createPassword API
+import { createPassword, emptyToken } from "@/components/services/api";
 
 const EditPW_ChangePWScreen = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -29,6 +28,7 @@ const EditPW_ChangePWScreen = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigation = useNavigation();
 
@@ -71,25 +71,25 @@ const EditPW_ChangePWScreen = () => {
     }
 
     if (passwordIsValid && confirmPasswordIsValid && passwordsMatch) {
+      setIsProcessing(true);
+
       try {
-        // Fetch the email from SecureStore (or any other method you're using to store it)
-        const email = await SecureStore.getItemAsync("userEmail");  // Adjust the key to match your app's implementation
+        const response = await createPassword(enteredPassword);
 
-        if (!email) {
-          throw new Error("Email not found. Please login again.");
-        }
-
-        // Call the createPassword API with both email and password
-        const success = await createPassword({ email, password: enteredPassword });
-        if (success) {
-          Alert.alert("Success", "Your password has been updated!");
+        if (response.status == 200) {
+          await emptyToken();
           navigation.navigate("ResetPW_Success");
         } else {
-          Alert.alert("Error", "Failed to update password.");
+          setErrorMessage(
+            response.response
+              ? response.response.data.message
+              : response.message
+          );
         }
       } catch (error) {
-        console.error("Error updating password:", error.message);
-        Alert.alert("Error", "An error occurred while updating the password.");
+        setErrorMessage("An error occurred. Please try again.");
+      } finally {
+        setIsProcessing(false); // Stop processing after API call
       }
     }
   };
@@ -99,12 +99,17 @@ const EditPW_ChangePWScreen = () => {
       <View style={styles.mainContents}>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Create New Password" />
-          <Text>Your new password must be different from previously used passwords.</Text>
+          <Text>
+            Your new password must be different from previously used passwords.
+          </Text>
         </View>
 
         {/* Password form */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
+            <Text style={styles.fieldLabel}>
+              Password <Text style={styles.astarisk}>*</Text>
+            </Text>
             <Text style={styles.fieldLabel}>
               Password <Text style={styles.astarisk}>*</Text>
             </Text>
@@ -121,7 +126,8 @@ const EditPW_ChangePWScreen = () => {
               <View style={styles.triangle} />
               <View style={styles.tooltipContainer}>
                 <Text style={styles.tooltipText}>
-                  Minimum of 8 characters with a mix of letters, numbers, and symbols.
+                  Minimum of 8 characters with a mix of letters, numbers, and
+                  symbols.
                 </Text>
               </View>
             </View>
@@ -160,7 +166,11 @@ const EditPW_ChangePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -169,6 +179,9 @@ const EditPW_ChangePWScreen = () => {
         {/* Confirm password form */}
         <View style={styles.formContainer}>
           <View>
+            <Text style={styles.fieldLabel}>
+              Confirm Password <Text style={styles.astarisk}>*</Text>
+            </Text>
             <Text style={styles.fieldLabel}>
               Confirm Password <Text style={styles.astarisk}>*</Text>
             </Text>
@@ -209,7 +222,11 @@ const EditPW_ChangePWScreen = () => {
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
                 <Text style={styles.alertText}>{errorMessage}</Text>
               </View>
             )}
@@ -218,9 +235,10 @@ const EditPW_ChangePWScreen = () => {
 
       <View style={styles.buttonContainer}>
         <WideButton
-          title="Save"
+          title={isProcessing ? "Saveing..." : "Save"}
           color="white"
-          onPress={ConfirmHandler}  // Call ConfirmHandler on button press
+          onPress={ConfirmHandler}
+          display={isProcessing}
         />
       </View>
     </View>
@@ -252,7 +270,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -300,7 +318,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -337,7 +355,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.defaultBlue,
   },
 });

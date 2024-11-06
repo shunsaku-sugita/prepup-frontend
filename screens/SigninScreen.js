@@ -21,7 +21,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential,
-  signOut
+  signOut,
 } from "firebase/auth";
 import { auth } from "../config/firebaseConfig";
 
@@ -43,6 +43,7 @@ const SigninScreen = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const [emailError, setEmailError] = useState("Incorrect email.");
+  const [passwordError, setPasswordError] = useState("Incorrect Password");
 
   // general email validation function(requires **@**.** format)
   const emailValidation = (email) => {
@@ -58,12 +59,14 @@ const SigninScreen = () => {
   // real-time validation for email
   useEffect(() => {
     const isEmailValid = emailValidation(enteredEmail);
+    setEmailError("Invalid email format.");
     setEmailIsValid(isEmailValid);
   }, [enteredEmail]);
 
   // real-time validation for password
   useEffect(() => {
     const isPasswordValid = passwordValidation(enteredPassword);
+    setPasswordError("Invalid passsword fromat.");
     setPasswordIsValid(isPasswordValid);
   }, [enteredPassword]);
 
@@ -78,8 +81,14 @@ const SigninScreen = () => {
       console.log("Response: " + response);
       if (response?.status == 200) {
         navigation.navigate("Category");
+      } else if (response?.status == 400) {
+        setEmailError(
+          response.response ? response.response.data.message : response.message
+        );
+        setEmailIsValid(false);
       } else {
-        console.log("error");
+        setPasswordError(response?.data?.message);
+        setPasswordIsValid(false);
       }
     }
   };
@@ -97,7 +106,8 @@ const SigninScreen = () => {
       if (userJSON) {
         const localUser = JSON.parse(userJSON);
         setUserInfo(localUser);
-        const { email, firstName, lastName } = formatGoogleAccountData(localUser);
+        const { email, firstName, lastName } =
+          formatGoogleAccountData(localUser);
         await signinWithGoogle(email, firstName, lastName);
         navigation.navigate("Category");
       } else {
@@ -115,9 +125,16 @@ const SigninScreen = () => {
         const userCredential = await signInWithCredential(auth, credential);
         const user = userCredential.user;
         const { email, firstName, lastName } = formatGoogleAccountData(user);
-        const resSigninWithGoogle = await signinWithGoogle(email, firstName, lastName);
+        const resSigninWithGoogle = await signinWithGoogle(
+          email,
+          firstName,
+          lastName
+        );
         setUserInfo(user);
-        if (resSigninWithGoogle?.status === 200 || resSigninWithGoogle?.status === 201) {
+        if (
+          resSigninWithGoogle?.status === 200 ||
+          resSigninWithGoogle?.status === 201
+        ) {
           await AsyncStorage.setItem("userInfo", JSON.stringify(user));
           navigation.navigate("Category");
         } else {
@@ -157,22 +174,34 @@ const SigninScreen = () => {
 
   const formatGoogleAccountData = (userData) => {
     const { email, displayName } = userData;
-    const firstName = displayName.split(" ").length > 1 ? displayName.split(" ")[0] : displayName;
-    const lastName = displayName.split(" ").length > 1 ? displayName.split(" ")[1] : "";
+    const firstName =
+      displayName.split(" ").length > 1
+        ? displayName.split(" ")[0]
+        : displayName;
+    const lastName =
+      displayName.split(" ").length > 1 ? displayName.split(" ")[1] : "";
     return { email, firstName, lastName };
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={require("../assets/images/signin-background.png")} style={styles.backgroundImage} />
-        <Image source={require("../assets/images/PrepUp-Logo-COLORED.png")} style={styles.logoImage} />
+        <Image
+          source={require("../assets/images/signin-background.png")}
+          style={styles.backgroundImage}
+        />
+        <Image
+          source={require("../assets/images/PrepUp-Logo-COLORED.png")}
+          style={styles.logoImage}
+        />
       </View>
 
       {/* email field */}
       <View style={styles.formContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.fieldLabel}>Email{" "}<Text style={styles.astarisk}>*</Text></Text>
+          <Text style={styles.fieldLabel}>
+            Email <Text style={styles.astarisk}>*</Text>
+          </Text>
         </View>
         <View
           style={[
@@ -198,7 +227,11 @@ const SigninScreen = () => {
         </View>
         {!emailIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
-            <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
+            <Ionicons
+              name="alert-circle-outline"
+              color={Colors.errorRed}
+              size={20}
+            />
             <Text style={styles.alertText}>{emailError}</Text>
           </View>
         )}
@@ -207,7 +240,9 @@ const SigninScreen = () => {
       {/* password field */}
       <View style={styles.formContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.fieldLabel}>Password{" "}<Text style={styles.astarisk}>*</Text></Text>
+          <Text style={styles.fieldLabel}>
+            Password <Text style={styles.astarisk}>*</Text>
+          </Text>
         </View>
         <View
           style={[
@@ -244,8 +279,12 @@ const SigninScreen = () => {
         </View>
         {!passwordIsValid && isSubmitted && (
           <View style={styles.alertContainer}>
-            <Ionicons name="alert-circle-outline" color={Colors.errorRed} size={20} />
-            <Text style={styles.alertText}>Incorrect password.</Text>
+            <Ionicons
+              name="alert-circle-outline"
+              color={Colors.errorRed}
+              size={20}
+            />
+            <Text style={styles.alertText}>{passwordError}</Text>
           </View>
         )}
       </View>
@@ -341,7 +380,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   fieldLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -353,7 +392,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -365,7 +404,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.errorRed,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -377,7 +416,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.defaultBeige,
     borderRadius: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -418,7 +457,7 @@ const styles = StyleSheet.create({
   },
   forgetPasswordButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.defaultBlue,
   },
   signupTextContainer: {
