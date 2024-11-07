@@ -12,7 +12,9 @@ const ResetPW_SuccessScreen = () => {
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.imageContainer}>
-          <Image source={require("../assets/images/img.png")} />
+          <Image
+            source={require("../assets/images/ResetPasswordSuccessMessage.png")}
+          />
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Well Done!" />
@@ -47,18 +49,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  imageContainer: {
+    marginTop: 80,
+    marginBottom: 60,
+  },
   titleAndTextContainer: {
-    marginBottom: 50,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 20,
     width: 340,
-  },
-  imageContainer: {
-    marginBottom: 40,
+    marginBottom: 80,
   },
   buttonContainer: {
-    flex: 1,
-    marginBottom: 50,
+    flex: 0.8,
+    marginTop: 50,
   },
 });

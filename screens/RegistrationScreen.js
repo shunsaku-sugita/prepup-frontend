@@ -353,7 +353,7 @@ const RegistrationScreen = () => {
 
       <View style={styles.bottomButton}>
         <WideButton
-          title="Regiser"
+          title="Register"
           color="white"
           // need to check if user's info matches to our database
           onPress={registerHandler}
