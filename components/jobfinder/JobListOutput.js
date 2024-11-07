@@ -150,7 +150,7 @@ const jobListOutput = () => {
         );
 
         Toast.show({
-          type: 'info',
+          type: 'success',
           text1: 'Job removed from saved jobs',
           text2: '',
           position: 'top',

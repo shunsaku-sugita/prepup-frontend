@@ -14,8 +14,8 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
       <View style={styles.subContainer}>
         <Text style={styles.title}>{job.title}</Text>
         <Text style={styles.createdDate}>{`Added ${job.createdDate}`}</Text>
-        <Text>
-          <Text style={{ fontWeight: 'bold' }}>Portal: </Text>
+        <Text style={styles.createdPortal}>
+          <Text style={{ fontFamily: 'Mulish_700Bold' }}>Portal: </Text>
           Adzuna
         </Text>
       </View>
@@ -25,7 +25,7 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
         <Ionicons
           name={job.isSaved ? "bookmark" : "bookmark-outline"}
           size={26}
-          color={job.isSaved ? "#F7C42B" : "#black"}
+          color={job.isSaved ? "#F7C42B" : "black"}
         />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -49,14 +49,24 @@ const styles = StyleSheet.create({
   subContainer: {
     width: "75%",
     paddingLeft: 40,
+    gap:3
   },
   title: {
-    fontWeight: "bold",
-    fontSize: 16,
+    fontFamily:"MavenPro_400Regular,",
+    fontWeight: "700",
+    fontSize: 20,
   },
   createdDate: {
-    fontSize: 14,
-    color: 'gray',
+    fontFamily: 'Mulish_400Regular',
+    fontSize: 16,
+    fontWeight:400,
+   
+  },
+  createdPortal: {
+    fontFamily: 'Mulish_400Regular',
+    fontSize:16,
+    
+    
   },
   logoContainer: {
     width: 64,
@@ -66,6 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoText: {
+    fontFamily: 'Mulish_800ExtrBold',
     fontSize: 20,
     fontWeight: "bold",
     color: "white",

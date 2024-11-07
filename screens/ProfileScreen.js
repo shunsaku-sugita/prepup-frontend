@@ -329,7 +329,7 @@ const ProfileScreen = () => {
         keyExtractor={(item) => item.key}
         contentContainerStyle={styles.listContainer}
       />
-      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
+      <Toast config={toastConfig} />
     </>
   );
 };
@@ -350,7 +350,9 @@ const ProfileField = ({ label, value, noSeparator, isWarning }) => (
 const ToggleRow = ({ label, value, onValueChange }) => (
   <View style={[styles.toggleRow, styles.toggleRowSmaller]}>
     <Text>{label}</Text>
-    <Switch value={value} onValueChange={onValueChange} />
+    <Switch value={value} onValueChange={onValueChange}
+    trackColor={{ false: "#E0E0E0", true: Colors.defaultBlue }} 
+    />
   </View>
 );
 
@@ -412,7 +414,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    backgroundColor: "#E7EFFF",
+    backgroundColor: Colors.disabledBlue,
     paddingVertical: 16,
     paddingHorizontal: 16,
   },
@@ -438,10 +440,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderRadius: 8,
+
   },
   toggleRowSmaller: {
     width: "100%",
     alignSelf: "center",
+    
   },
   deleteRow: {
     flexDirection: "row",

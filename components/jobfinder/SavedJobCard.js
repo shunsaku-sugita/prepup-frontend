@@ -34,10 +34,10 @@ const SavedJobCard = ({ data, toggleBookmark }) => {
     <View style={styles.jobListSaved}>
       <FlatList
         data={data}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item._id || item.id || item.jobId} // Ensure a unique key exists
         renderItem={({ item }) => (
           <JobCard
-            key={item.id}
+            key={item._id || item.id || item.jobId} // Use the same unique identifier
             job={{ ...item, isSaved: true }}
             toggleBookmark={toggleBookmark}
             onPress={() => handleJobPress(item)}

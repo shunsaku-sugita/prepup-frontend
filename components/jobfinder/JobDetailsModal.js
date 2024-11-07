@@ -15,6 +15,7 @@ import { WebView } from "react-native-webview";
 import { generateQuestionByJobDescription } from "../services/api";
 import { socket } from "../services/socket";
 import { AppContext } from "@/store/app-context";
+import { Colors } from "@/constants/Colors";
 
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [webViewVisible, setWebViewVisible] = useState(false);
@@ -26,7 +27,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
     setSelectedCategoryQuestions,
     setCurrentQuestionIndex,
   } = useContext(AppContext);
-  
+
   if (!job) {
     return null;
   }
@@ -98,16 +99,16 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <View style={styles.closeIcon}>
+        <View style={styles.headerRow}>
+          <View style={styles.titleContainer}>
+            <TitleText text={job.title} numberOfLines={1} ellipsizeMode="tail" />
+          </View>
           <Ionicons
             name="close"
             color="black"
             size={28}
             onPress={() => setModalVisible(false)}
           />
-        </View>
-        <View style={styles.titleWrapper}>
-          <TitleText text={job.title} />
         </View>
         <Text style={styles.companyLabel}>
           Company: <Text style={styles.companyValue}>{job.company}</Text>
@@ -145,7 +146,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
               onPress={() => setWebViewVisible(false)}
               style={styles.closeWebView}
             >
-              <Text style={styles.closeWebViewText}>Close</Text>
+              <Ionicons name="close" size={28} color="black" />
             </TouchableOpacity>
           </SafeAreaView>
         </Modal>
@@ -170,14 +171,16 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     justifyContent: "flex-start",
+    gap: 13,
   },
-  closeIcon: {
-    alignItems: "flex-end",
-    marginBottom: 10,
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  titleWrapper: {
-    marginBottom: 8,
-    alignItems: "left",
+  titleContainer: {
+    flex: 1,
+    marginRight: 10, // Space between the title and the close icon
   },
   companyLabel: {
     fontSize: 16,
@@ -186,16 +189,15 @@ const styles = StyleSheet.create({
   },
   companyValue: {
     fontSize: 16,
-    fontWeight: "normal", // Regular weight for the company value
+    fontWeight: "normal",
   },
   descriptionLabel: {
+    fontFamily: "Mulish_800ExtraBold",
     fontSize: 16,
-    fontWeight: "bold", // Bold for "Description"
-   
   },
   descriptionValue: {
+    fontFamily: "Mulish_400Regular",
     fontSize: 16,
-    fontWeight: "normal", // Regular weight for the description value
   },
   buttonContainer: {
     flexDirection: "column",
@@ -210,8 +212,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   applyButtonText: {
-    color: "black",
-    fontSize: 18,
+    color: Colors.defaultBlue,
+    fontSize: 16,
+    fontWeight: 800,
   },
   closeWebView: {
     position: "absolute",
