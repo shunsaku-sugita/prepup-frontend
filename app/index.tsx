@@ -32,6 +32,7 @@ import ResetPW_SuccessScreen from "../screens/ResetPW_SuccessScreen";
 
 import StarQuizScreen from "../screens/StarQuizScreen";
 import StarQuizFeedbackScreen from "../screens/StarQuizFeedbackScreen";
+import StarModalScreen from "../screens/StarModalScreen";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -291,6 +292,28 @@ export default function App() {
                           },
                         ]
                       );
+                    }}
+                  />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="StarModal"
+              component={StarModalScreen}
+              options={({ navigation }) => ({
+                headerShown: true,
+                headerStyle: { backgroundColor: Colors.disabledBeige },
+                headerShadowVisible: false,
+                headerTitle: "",
+                headerRight: null,
+                headerLeft: () => (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    display={false}
+                    onPress={() => {
+                      navigation.navigate("StarQuiz");
                     }}
                   />
                 ),
