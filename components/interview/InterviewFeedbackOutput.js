@@ -1,14 +1,13 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import InterviewFeedbackBadge from "./InterviewFeedbackBadge";
 import InterviewFeedbackButtons from "./InterviewFeedbackButtons";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import InterviewFeedbackAccordions from "./InterviewFeedbackAccordions";
 import { AppContext } from "@/store/app-context";
 import { useContext, useEffect } from "react";
 import { Colors } from "@/constants/Colors";
 import LoadingOverlay from "../common/LoadingOverlay";
 
-const InterviewFeedbackOutput = () => {
+const InterviewFeedbackOutput = ({ analyzedAnswer }) => {
   const {
     currentQuestionIndex,
     setCurrentQuestionIndex,
@@ -18,36 +17,23 @@ const InterviewFeedbackOutput = () => {
     progressUpdate,
     categories,
     setCategories,
-    analyzedAnswer,
-    loading,
   } = useContext(AppContext);
 
-  // useEffect(() => {
-  //   console.log("=== progressUpdate ===");
-  //   console.log(progressUpdate.status);
-  // }, [])
-
   return (
-    <GestureHandlerRootView style={styles.container}>
-      {loading ? (
-        <LoadingOverlay />
-      ) : (
-        <>
-          <InterviewFeedbackBadge analyzedAnswer={analyzedAnswer} />
-          <InterviewFeedbackAccordions analyzedAnswer={analyzedAnswer} />
-          <InterviewFeedbackButtons
-            currentQuestionIndex={currentQuestionIndex}
-            setCurrentQuestionIndex={setCurrentQuestionIndex}
-            selectedCategoryQuestions={selectedCategoryQuestions}
-            setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-            setQuestionAnswerArray={setQuestionAnswerArray}
-            categories={categories}
-            setCategories={setCategories}
-            progressUpdate={progressUpdate}
-          />
-        </>
-      )}
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <InterviewFeedbackBadge analyzedAnswer={analyzedAnswer} />
+      <InterviewFeedbackAccordions analyzedAnswer={analyzedAnswer} />
+      <InterviewFeedbackButtons
+        currentQuestionIndex={currentQuestionIndex}
+        setCurrentQuestionIndex={setCurrentQuestionIndex}
+        selectedCategoryQuestions={selectedCategoryQuestions}
+        setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+        setQuestionAnswerArray={setQuestionAnswerArray}
+        categories={categories}
+        setCategories={setCategories}
+        progressUpdate={progressUpdate}
+      />
+    </View>
   );
 };
 

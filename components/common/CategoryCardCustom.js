@@ -11,12 +11,12 @@ import {
   View,
   Animated,
   ScrollView,
-  Easing,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "../../store/app-context";
 import { deleteInterviewCategory } from "../services/api";
 import SmallButton from "./SmallButton";
+import Toast from "react-native-toast-message";
 
 const CategoryCardCustom = ({
   index,
@@ -100,8 +100,23 @@ const CategoryCardCustom = ({
         (_, idx) => idx !== index
       );
       setCustomCategories(updatedCategories);
+      Toast.show({
+        type: "success",
+        text1: `Category successfully deleted!`,
+        text2: "",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 3000,
+      });
     } else {
-      Alert.alert("Error", "Failed to delete the category. Please try again.");
+      Toast.show({
+        type: "info",
+        text1: "Failed to delete a category.",
+        text2: "",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 3000,
+      });
     }
 
     // // Create a new array excluding the item at the given index
@@ -155,7 +170,7 @@ const CategoryCardCustom = ({
         >
           <ScrollView
             contentContainerStyle={styles.scrollView}
-            scrollEnabled={false}
+            scrollEnabled={true}
           >
             <Animated.View
               style={{
@@ -194,20 +209,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginLeft: 4,
     rowGap: 4,
-    // marginBottom: 14,
     minWidth: Platform.OS === "ios" ? 150 : 165,
     height: 200,
     // shadow for android
-    elevation: 3,
+    elevation: 2,
     // shadow for iOS
     shadowColor: Colors.textLightDarkGray,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    shadowOpacity: 0.2,
   },
   imageContainer: {
     flex: 3,
-    // overflow: 'hidden',
     width: 150,
     height: 130,
   },
@@ -241,6 +254,7 @@ const styles = StyleSheet.create({
     height: 80,
     paddingBottom: 30,
     borderBottomRightRadius: 24,
+    borderBottomLeftRadius: 8,
   },
   textContainer: {
     justifyContent: "center",

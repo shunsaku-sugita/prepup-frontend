@@ -1,10 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   FlatList,
-  Image,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -17,7 +16,8 @@ import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 import { getInterviewCategory, getProfile } from "../services/api";
 import { AppContext } from "@/store/app-context";
-import Svg, { Defs, Rect, LinearGradient, Stop } from "react-native-svg";
+// import Svg, { Defs, Rect, LinearGradient, Stop } from "react-native-svg";
+import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "@/constants/Colors";
 
 // Custom Bottom Tabs Component
@@ -53,7 +53,7 @@ const CustomBottomTabs = () => {
         }}
       >
         <View style={styles.starMasterIconContainer}>
-          <Octicons name="star-fill" size={24} color="white" />
+          <Octicons name="star-fill" size={23} color="white" />
         </View>
       </TouchableOpacity>
     </View>
@@ -174,54 +174,53 @@ const CategoryOutput = () => {
     <View style={styles.rootContainer}>
       {/* header bar */}
       <View style={styles.headerContainer}>
-        <Svg height="100%" width="100%">
-          <Defs>
-            <LinearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="0%">
-              <Stop offset="0" stopColor={Colors.headerBlue} />
-              <Stop offset="1" stopColor={Colors.disabledBlue} />
-            </LinearGradient>
-          </Defs>
-          <Rect width="100%" height="50" fill="url(#grad)" rx="16" ry="16" />
-        </Svg>
-        <View style={styles.headerInnerContainer}>
-          <Greeting userName={userName} />
-          <HeaderRightIcons color={Colors.backgroundDarkGray} />
-        </View>
-      </View>
-
-      {/* Default category cards (scrollable with fixed height) */}
-      <View style={styles.defaultCategoryContainer}>
-        <FlatList
-          data={categories.slice(0, 3)}
-          keyExtractor={(item, index) => item.categoryName + index}
-          ListHeaderComponent={
-            <View style={styles.upperTextContainer}>
-              <View style={styles.title}>
-                <TitleText text="Choose a category to practice:" />
-              </View>
-            </View>
-          }
-          renderItem={renderDefaultCategoryCard}
-          scrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-
-      {/* Custom category cards (only if there are more than 3 categories) */}
-      {customCategories.length > 0 && (
-        <View style={styles.bottomCardContainer}>
-          <View style={styles.title}>
-            <TitleText text="Custom categories:" />
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          colors={[Colors.headerBlue, Colors.disabledBlue]}
+          style={styles.linearGradient}
+        >
+          <View style={styles.headerInnerContainer}>
+            <Greeting userName={userName} />
+            <HeaderRightIcons color={Colors.backgroundDarkGray} />
           </View>
+        </LinearGradient>
+      </View>
+
+      <ScrollView>
+        {/* Default category cards (scrollable with fixed height) */}
+        <View style={styles.defaultCategoryContainer}>
           <FlatList
-            data={customCategories} // display items from the 4th onward
-            keyExtractor={(item, index) => item.categoryName + index + 3}
-            renderItem={renderCustomCategoryCard}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
+            data={categories.slice(0, 3)}
+            keyExtractor={(item, index) => item.categoryName + index}
+            ListHeaderComponent={
+              <View style={styles.upperTextContainer}>
+                <View style={styles.title}>
+                  <TitleText text="Choose a category to practice:" />
+                </View>
+              </View>
+            }
+            renderItem={renderDefaultCategoryCard}
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false}
           />
         </View>
-      )}
+        {/* Custom category cards (only if there are more than 3 categories) */}
+        {customCategories.length > 0 && (
+          <View style={styles.bottomCardContainer}>
+            <View style={styles.title}>
+              <TitleText text="Custom categories:" />
+            </View>
+            <FlatList
+              data={customCategories} // display items from the 4th onward
+              keyExtractor={(item, index) => item.categoryName + index + 3}
+              renderItem={renderCustomCategoryCard}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+        )}
+      </ScrollView>
       <CustomBottomTabs />
     </View>
   );
@@ -235,9 +234,20 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerContainer: {
+    // // shadow for android
+    // elevation: 3,
+    // // shadow for iOS
+    // shadowColor: "black",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 2,
+    // shadowOpacity: 0.2,
+  },
+  linearGradient: {
     marginTop: 60,
     marginHorizontal: 18,
-    height: 50,
+    borderRadius: 18,
+    justifyContent: "center",
+    height: 58,
   },
   headerInnerContainer: {
     flexDirection: "row",
@@ -273,7 +283,8 @@ const styles = StyleSheet.create({
   },
   jobFinderIconContainer: {
     borderRadius: 50,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 15,
     marginHorizontal: 18,
     backgroundColor: Colors.lightBlack,
     // shadow for android
@@ -286,7 +297,8 @@ const styles = StyleSheet.create({
   },
   starMasterIconContainer: {
     borderRadius: 50,
-    padding: 15,
+    paddingHorizontal: 16,
+    paddingVertical: 15,
     marginHorizontal: 18,
     backgroundColor: Colors.lightBlack,
     // shadow for android

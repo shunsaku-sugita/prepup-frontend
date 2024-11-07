@@ -461,12 +461,12 @@ export default StarQuizCarousel;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 6,
+    flex: 5,
     backgroundColor: Colors.disabledBeige,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    marginBottom: 60,
+    marginBottom: 70,
     width: "90%",
   },
   carouselContainer: {},
@@ -482,12 +482,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 6,
     // shadow for android
-    elevation: 4,
+    elevation: 3,
     // shadow for iOS
     shadowColor: "black",
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
   },
   cardHeaderContainer: {
     flexDirection: "row",

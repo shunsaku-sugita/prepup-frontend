@@ -14,6 +14,7 @@ const ResetPW_SuccessScreen = () => {
         <View style={styles.imageContainer}>
           <Image
             source={require("../assets/images/ResetPasswordSuccessMessage.png")}
+            style={styles.image}
           />
         </View>
         <View style={styles.titleAndTextContainer}>
@@ -25,7 +26,6 @@ const ResetPW_SuccessScreen = () => {
         <WideButton
           title="Sign In"
           color="white"
-          // need to check if user's info matches to our database
           onPress={() => navigation.navigate("SignIn")}
         />
       </View>
@@ -53,6 +53,10 @@ const styles = StyleSheet.create({
     marginTop: 80,
     marginBottom: 60,
   },
+  image: {
+    width: 300,
+    height: 300,
+  },
   titleAndTextContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -62,6 +66,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0.8,
-    marginTop: 50,
+    marginTop: 100,
+    marginBottom: 60,
   },
 });

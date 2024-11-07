@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { ActivityIndicator, StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Video } from "expo-av";
 import { useRef } from "react";
 

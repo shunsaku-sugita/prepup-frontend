@@ -13,45 +13,47 @@ const HearableQuestions = ({ questionText }) => {
 
   const [isPlaying, setIsPlaying] = useState(false);
 
-// To manage initial delay and interval for the scrolling behavior
-const initialDelay = 7000; // 7 seconds initial delay
-const scrollInterval = 7000; // 7 seconds interval between scroll cycles
-const scrollDuration = 10000; // 10 seconds scroll duration
+  // To manage initial delay and interval for the scrolling behavior
+  const initialDelay = 7000; // 7 seconds initial delay
+  const scrollInterval = 7000; // 7 seconds interval between scroll cycles
+  const scrollDuration = 10000; // 10 seconds scroll duration
 
-useEffect(() => {
-  let delayTimeout, intervalId;
+  useEffect(() => {
+    let delayTimeout, intervalId;
 
-  const startScrollAnimation = () => {
-    scrollAnim.setValue(0); // Reset scroll position
+    const startScrollAnimation = () => {
+      scrollAnim.setValue(0); // Reset scroll position
 
-    Animated.timing(scrollAnim, {
-      toValue: -(textHeight - containerHeight), // Scroll distance
-      duration: scrollDuration,
-      useNativeDriver: true,
-    }).start(() => {
-      scrollAnim.setValue(0); // Reset to starting position
-    });
-  };
+      Animated.timing(scrollAnim, {
+        toValue: -(textHeight - containerHeight), // Scroll distance
+        duration: scrollDuration,
+        useNativeDriver: true,
+      }).start(() => {
+        scrollAnim.setValue(0); // Reset to starting position
+      });
+    };
 
-  if (textHeight > containerHeight) {
-    setShouldScroll(true);
-    // Start with the initial delay, then proceed with interval-based scrolls
-    delayTimeout = setTimeout(() => {
-      startScrollAnimation();
-      intervalId = setInterval(startScrollAnimation, scrollDuration + scrollInterval);
-    }, initialDelay);
-  } else {
-    setShouldScroll(false);
-    scrollAnim.setValue(0);
-  }
-  // Cleanup on questionText change or component unmount
-  return () => {
-    clearTimeout(delayTimeout);
-    clearInterval(intervalId);
-    scrollAnim.stopAnimation();
-  };
-}, [textHeight, containerHeight, questionText]);
-
+    if (textHeight > containerHeight) {
+      setShouldScroll(true);
+      // Start with the initial delay, then proceed with interval-based scrolls
+      delayTimeout = setTimeout(() => {
+        startScrollAnimation();
+        intervalId = setInterval(
+          startScrollAnimation,
+          scrollDuration + scrollInterval
+        );
+      }, initialDelay);
+    } else {
+      setShouldScroll(false);
+      scrollAnim.setValue(0);
+    }
+    // Cleanup on questionText change or component unmount
+    return () => {
+      clearTimeout(delayTimeout);
+      clearInterval(intervalId);
+      scrollAnim.stopAnimation();
+    };
+  }, [textHeight, containerHeight, questionText]);
 
   const speakHandler = async () => {
     const speaking = await Speech.isSpeakingAsync();
@@ -85,8 +87,12 @@ useEffect(() => {
         onLayout={(event) => {
           const { height } = event.nativeEvent.layout;
           setContainerHeight(height); // measure container height
-        }}>
-        <ScrollView contentContainerStyle={styles.scrollView} scrollEnabled={false} >
+        }}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          scrollEnabled={true}
+        >
           <Animated.View
             style={{
               transform: [{ translateY: shouldScroll ? scrollAnim : 0 }],
@@ -97,7 +103,10 @@ useEffect(() => {
               onLayout={(event) => {
                 const { height } = event.nativeEvent.layout;
                 setTextHeight(height); // measure text height
-              }}>{questionText}</Text>
+              }}
+            >
+              {questionText}
+            </Text>
           </Animated.View>
         </ScrollView>
       </View>
@@ -127,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     height: 120,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   scrollView: {
     flexGrow: 1,

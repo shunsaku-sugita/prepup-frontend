@@ -264,43 +264,6 @@ const StarQuizOutput = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
-      {/* modal container */}
-      {/* <StarQuizCardModal
-        situationAnswerRef={situationAnswerRef}
-        setSituationAnswer={setSituationAnswer}
-        taskAnswerRef={taskAnswerRef}
-        setTaskAnswer={setTaskAnswer}
-        actionAnswerRef={actionAnswerRef}
-        setActionAnswer={setActionAnswer}
-        resultAnswerRef={resultAnswerRef}
-        setResultAnswer={setResultAnswer}
-        handleBlur={handleBlur}
-        handleFocus={handleFocus}
-        scrollViewRef={scrollViewRef}
-        answers={answers}
-        setAnswers={setAnswers}
-        situationIsCharacterLimit={situationIsCharacterLimit}
-        setSituationIsCharacterLimit={setSituationIsCharacterLimit}
-        taskIsCharacterLimit={taskIsCharacterLimit}
-        setTaskIsCharacterLimit={setTaskIsCharacterLimit}
-        actionIsCharacterLimit={actionIsCharacterLimit}
-        setActionIsCharacterLimit={setActionIsCharacterLimit}
-        resultIsCharacterLimit={resultIsCharacterLimit}
-        setResultIsCharacterLimit={setResultIsCharacterLimit}
-        situationCountNumber={situationCountNumber}
-        setSituationCountNumber={setSituationCountNumber}
-        taskCountNumber={taskCountNumber}
-        setTaskCountNumber={setTaskCountNumber}
-        actionCountNumber={actionCountNumber}
-        setActionCountNumber={setActionCountNumber}
-        resultCountNumber={resultCountNumber}
-        setResultCountNumber={setResultCountNumber}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        handleModalClose={handleModalClose}
-        backgroundColor={backgroundColor}
-      /> */}
     </View>
   );
 };
@@ -318,7 +281,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   questionContainer: {
-    flex: 2,
+    flex: 1.5,
     marginTop: 10,
   },
   buttonsContainer: {
