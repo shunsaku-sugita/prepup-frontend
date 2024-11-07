@@ -227,7 +227,7 @@ const EditProfileScreen = () => {
           <Text style={styles.fieldLabel}>
             Email <Text style={styles.asterisk}>*</Text>
           </Text>
-          <View style={[styles.emailField]}>
+          <View style={[styles.emailField, { opacity: 0.4 }]}>
             <TextInput value={email} editable={false} />
           </View>
         </View>

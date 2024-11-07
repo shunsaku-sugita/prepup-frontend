@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
@@ -39,10 +39,33 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
 import { toastConfig } from "../components/toast/ToastComponent";
+// import * as Font from 'expo-font';
+// import { useFonts, Mulish_400Regular, Mulish_700Bold, Mulish_800ExtraBold } from '@expo-google-fonts/mulish';
+// import { MavenPro_400Regular, MavenPro_500Medium, MavenPro_700Bold, } from '@expo-google-fonts/maven-pro';
+
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  // let [fontsLoaded] = useFonts({
+  //   Mulish_400Regular,
+  //   Mulish_700Bold,
+  //   Mulish_800ExtraBold,
+  //   MavenPro_400Regular,
+  //   MavenPro_500Medium,
+  //   MavenPro_700Bold,
+  // });
+
+  // if (!fontsLoaded) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //     </View>
+  //   );
+  // }
+
   const navigation = useNavigation();
   return (
     <>

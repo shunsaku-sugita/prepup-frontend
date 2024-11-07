@@ -17,6 +17,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/maven-pro": "^0.2.3",
+    "@expo-google-fonts/mulish": "^0.2.3",
     "@expo/html-elements": "^0.4.2",
     "@expo/vector-icons": "^14.0.2",
     "@gluestack-ui/accordion": "^1.0.7",
@@ -37,7 +39,7 @@
     "expo-constants": "~16.0.2",
     "expo-crypto": "~13.0.2",
     "expo-dev-client": "~4.0.28",
-    "expo-font": "~12.0.9",
+    "expo-font": "~12.0.10",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
     "expo-secure-store": "~13.0.2",
