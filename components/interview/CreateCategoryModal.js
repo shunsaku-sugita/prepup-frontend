@@ -45,10 +45,10 @@ const CreateCategoryModal = ({
 
     setModalVisible(false);
 
-    if (isSaved && success) {
+    if (success) {
       Toast.show({
         type: "success",
-        text1: "A new category has saved",
+        text1: `${typedText} saved successfully`,
         text2: "",
         position: "top",
         autoHide: true,

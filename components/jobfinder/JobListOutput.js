@@ -64,16 +64,16 @@ const jobListOutput = () => {
         fetchedJobs = await fetchJobsByKeyword(page, searchQuery);
       }
 
+      // Update fetched jobs with saved status
       const updatedFetchedJobs = fetchedJobs.map((job) => {
         const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
         return { ...job, isSaved };
       });
-      console.log(updatedFetchedJobs)
       setJobs(updatedFetchedJobs);
     } catch (err) {
       console.error("Error fetching jobs:", err);
     } finally {
-      setIsLoading(false);  // Set loading to false once jobs are fetched
+      setIsLoading(false);
     }
   };
 
@@ -84,7 +84,7 @@ const jobListOutput = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true); // Set loading to true when the screen is focused
+      setIsLoading(true);
       loadJobsAndSavedJobs();
     }, [searchQuery, filterType])
   );
@@ -210,7 +210,7 @@ const jobListOutput = () => {
           {filterType === 0 ? (
             <SavedJobCard
               data={savedJobs.filter((job) =>
-                job.title.toLowerCase().includes(searchQuery.toLowerCase())
+                job.title.toLowerCase()
               )}
               toggleBookmark={toggleBookmark}
             />
@@ -221,10 +221,7 @@ const jobListOutput = () => {
                   job.title.toLowerCase()
                 )}
                 toggleBookmark={toggleBookmark}
-                handleJobPress={(job) => {
-                  setSelectedJob(job);
-                  setModalVisible(true);
-                }}
+                handleJobPress={handleJobPress}
               />
               <TouchableOpacity
                 style={styles.loadMoreButton}

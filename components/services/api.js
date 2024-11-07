@@ -344,10 +344,12 @@ export const saveInterviewQuestions = async (categoryName, questions) => {
 export const deleteInterviewCategory = async (categoryId) => {
   try {
     const endpoint = "/" + PATH_INTERVIEW + "/" + TYPE_CATEGORY;
-    const response = await apiClient.delete(endpoint, { categoryId });
+    const response = await apiClient.delete(endpoint, { data: { categoryId } });
 
     if (response.status == 200) {
       return true;
+    } else {
+      console.log(response);
     }
   } catch (error) {
     console.error(

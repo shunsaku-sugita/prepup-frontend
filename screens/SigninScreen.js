@@ -28,8 +28,8 @@ import { auth } from "../config/firebaseConfig";
 WebBrowser.maybeCompleteAuthSession();
 
 const SigninScreen = () => {
-  const [enteredEmail, setEnteredEmail] = useState("test107@gmail.com");
-  const [enteredPassword, setEnteredPassword] = useState("12345@abcde");
+  const [enteredEmail, setEnteredEmail] = useState("khushalkhnta4@gmail.com");
+  const [enteredPassword, setEnteredPassword] = useState("Hello@123");
 
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);

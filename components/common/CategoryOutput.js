@@ -63,6 +63,7 @@ const CustomBottomTabs = () => {
 const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
   const [userName, setUserName] = useState("");
+  const [customCategories, setCustomCategories] = useState([]);
 
   // fixed colors for default cards (limits 3)
   const defaultBackgroundColors = [
@@ -95,7 +96,7 @@ const CategoryOutput = () => {
   useEffect(() => {
     const loadCategories = async () => {
       const data = await getInterviewCategory();
-      console.log(data);
+      console.log("Data from the category output =====> " + data);
 
       const categoriesData = data.category;
       const occupationFlag = data.occupation;
@@ -118,7 +119,9 @@ const CategoryOutput = () => {
       // Debugging: check updated categories
       console.log("Updated Categories: ==> ");
       console.log(categories);
-
+      if (categories.length > 3) {
+        setCustomCategories(categories.slice(3));
+      }
       // load user data
       const userData = await getProfile();
       setUserName(userData.givenName);
@@ -147,8 +150,8 @@ const CategoryOutput = () => {
       <CategoryCardCustom
         index={index}
         categoryName={item.categoryName}
-        categories={categories}
-        setCategories={setCategories}
+        customCategories={customCategories}
+        setCustomCategories={setCustomCategories}
         image={customImages[index]}
         backgroundColor={
           customBackgroundColors[index % customBackgroundColors.length]
@@ -201,7 +204,7 @@ const CategoryOutput = () => {
             <TitleText text="Custom categories:" />
           </View>
           <FlatList
-            data={categories.slice(3)} // display items from the 4th onward
+            data={customCategories} // display items from the 4th onward
             keyExtractor={(item, index) => item.categoryName + index + 3}
             renderItem={renderCustomCategoryCard}
             horizontal={true}

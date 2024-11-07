@@ -8,7 +8,7 @@ const LoadingOverlay = () => {
   return (
     <View style={styles.container}>
       <Video
-        source={require("../../assets/videos/PrepUp-Preloader-V1.mp4")}
+        source={require("../../assets/videos/PrepUp-Preloader-V2.mp4")}
         style={styles.video}
         resizeMode="contain"
         shouldPlay

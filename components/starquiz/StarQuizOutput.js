@@ -10,44 +10,18 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
 import StarQuizCardModal from "./StarQuizCardModal";
 import HearableQuestions from "../common/HearableQuestions";
-import { useNavigation } from "expo-router";
+
 import {
   anayzeStarMasterAnsewers,
   getStarMasterQuestion,
 } from "../services/api";
 import { AppContext } from "@/store/app-context";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import LoadingOverlay from "../common/LoadingOverlay";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
-  const [starQuestionText, setStarQuestionText] = useState("");
-  const [modalVisible, setModalVisible] = useState({
-    situation: false,
-    task: false,
-    action: false,
-    result: false,
-  });
-  const [situationIsCharacterLimit, setSituationIsCharacterLimit] =
-    useState(false);
-  const [taskIsCharacterLimit, setTaskIsCharacterLimit] = useState(false);
-  const [actionIsCharacterLimit, setActionIsCharacterLimit] = useState(false);
-  const [resultIsCharacterLimit, setResultIsCharacterLimit] = useState(false);
-
-  const [situationCountNumber, setSituationCountNumber] = useState(0);
-  const [taskCountNumber, setTaskCountNumber] = useState(0);
-  const [actionCountNumber, setActionCountNumber] = useState(0);
-  const [resultCountNumber, setResultCountNumber] = useState(0);
-
-  const [backgroundColor, setBackgroundColor] = useState("white");
-
-  // track if the screen is in focus
-  const isFocused = useIsFocused();
-  // create a ref for the ScrollView (to move to a specific position of the screen
-  const scrollViewRef = useRef(null);
-
-  // Separate states for four input fields, and combined answers state
   const {
     situationAnswer,
     setSituationAnswer,
@@ -69,7 +43,39 @@ const StarQuizOutput = () => {
     resultInputRef,
     loading,
     setLoading,
+    situationIsCharacterLimit,
+    setSituationIsCharacterLimit,
+    taskIsCharacterLimit,
+    setTaskIsCharacterLimit,
+    actionIsCharacterLimit,
+    setActionIsCharacterLimit,
+    resultIsCharacterLimit,
+    setResultIsCharacterLimit,
+    situationCountNumber,
+    setSituationCountNumber,
+    taskCountNumber,
+    setTaskCountNumber,
+    actionCountNumber,
+    setActionCountNumber,
+    resultCountNumber,
+    setResultCountNumber,
+    starQuestionText,
+    setStarQuestionText,
+    focusedField,
+    setFocusedField,
+    setFieldType,
+    handleBlur,
   } = useContext(AppContext);
+
+  const [modalVisible, setModalVisible] = useState({
+    situation: false,
+    task: false,
+    action: false,
+    result: false,
+  });
+
+  // create a ref for the ScrollView (to move to a specific position of the screen
+  const scrollViewRef = useRef(null);
 
   // fetch a random question when the page is mounted
   const fetchStarQuestion = async () => {
@@ -85,7 +91,6 @@ const StarQuizOutput = () => {
   useEffect(() => {
     handleModalClose();
 
-    // if (isFocused) {
     // reset input fields when the screen comes into focus
     setSituationAnswer("");
     setTaskAnswer("");
@@ -100,52 +105,13 @@ const StarQuizOutput = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ x: 0, animated: true });
     }
-    // }
     // Fetch the random question initially
     fetchStarQuestion();
   }, []);
 
-  // the state is only updated once the input field loses focus (onBlur), avoiding re-renders on every keystroke
-  const handleBlur = (field) => {
-    switch (field) {
-      case "situation":
-        setSituationAnswer(situationAnswerRef.current);
-        break;
-      case "task":
-        setTaskAnswer(taskAnswerRef.current);
-        break;
-      case "action":
-        setActionAnswer(actionAnswerRef.current);
-        break;
-      case "result":
-        setResultAnswer(resultAnswerRef.current);
-        break;
-      default:
-        break;
-    }
-  };
-
   const handleFocus = (field) => {
-    console.log(`Field ${field} focused`);
+    setFocusedField(field); // Set the currently focused field
     setModalVisible((prev) => ({ ...prev, [field]: true }));
-
-    switch (field) {
-      case "situation":
-        setBackgroundColor(Colors.disabledYellow);
-        break;
-      case "task":
-        setBackgroundColor(Colors.disabledRed);
-        break;
-      case "action":
-        setBackgroundColor(Colors.disabledBlue);
-        break;
-      case "result":
-        setBackgroundColor(Colors.defaultBeige);
-        break;
-      default:
-        setBackgroundColor("white");
-        break;
-    }
   };
 
   const handleModalClose = () => {
@@ -155,6 +121,7 @@ const StarQuizOutput = () => {
       action: false,
       result: false,
     });
+    setFocusedField(null); // Reset the focused field
   };
 
   // submit typed answers and get feedback text and average score
@@ -209,6 +176,10 @@ const StarQuizOutput = () => {
               navigation.navigate("StarQuizFeedback", { loading: true });
               // call the fetch method and navigate to the next screen, passing the feedback as a parameter
               await fetchStarMasterFeedback();
+              // always scroll to the leftmost (start) position by default
+              if (scrollViewRef.current) {
+                scrollViewRef.current.scrollTo({ x: 0, animated: true });
+              }
             },
           },
         ]
@@ -255,6 +226,8 @@ const StarQuizOutput = () => {
         setActionCountNumber={setActionCountNumber}
         resultCountNumber={resultCountNumber}
         setResultCountNumber={setResultCountNumber}
+        focusedField={focusedField}
+        setFieldType={setFieldType}
       />
 
       <View style={styles.buttonsContainer}>
@@ -293,7 +266,7 @@ const StarQuizOutput = () => {
       </View>
 
       {/* modal container */}
-      <StarQuizCardModal
+      {/* <StarQuizCardModal
         situationAnswerRef={situationAnswerRef}
         setSituationAnswer={setSituationAnswer}
         taskAnswerRef={taskAnswerRef}
@@ -327,7 +300,7 @@ const StarQuizOutput = () => {
         setModalVisible={setModalVisible}
         handleModalClose={handleModalClose}
         backgroundColor={backgroundColor}
-      />
+      /> */}
     </View>
   );
 };
@@ -345,8 +318,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   questionContainer: {
-    flex: 1.5,
-    marginTop: 5,
+    flex: 2,
+    marginTop: 10,
   },
   buttonsContainer: {
     flex: 1,
