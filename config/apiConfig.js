@@ -1,5 +1,7 @@
 export const BASE_URL = "https://api.prepup.ca/api";
 export const SOCKET_BASE_URL = "https://api.prepup.ca";
+// export const BASE_URL = "http://localhost:4000/api";
+// export const SOCKET_BASE_URL = "http://localhost";
 
 export const PATH_INTERVIEW = "interview";
 export const PATH_PROFILE = "profile";
@@ -19,3 +21,4 @@ export const TYPE_VERIFY_OTP = "verify-otp";
 export const TYPE_RESET = "reset";
 export const TYPE_SIGNIN_WITH_GOOGLE = "signin-with-google";
 export const TYPE_CREATE_PASSWORD = "create-password";
+export const TYPE_DELETE_USER = "delete-user";

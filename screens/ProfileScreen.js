@@ -20,7 +20,11 @@ import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
 import * as SecureStore from "expo-secure-store";
 import { toastConfig } from "@/components/toast/ToastComponent";
-import { emptyToken, getProfile } from "@/components/services/api"; // Ensure this path is correct
+import {
+  deleteAccount,
+  emptyToken,
+  getProfile,
+} from "@/components/services/api"; // Ensure this path is correct
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
@@ -92,8 +96,38 @@ const ProfileScreen = () => {
         {
           text: "Delete",
           style: "destructive",
-          onPress: () => {
-            console.log("Account deleted");
+          onPress: async () => {
+            const response = await deleteAccount();
+            console.log("Response: " + response);
+            if (response?.status == 200) {
+              await emptyToken();
+              Toast.show({
+                type: "success",
+                text1: "Account Deleted succssfully",
+                position: "top",
+                autoHide: true,
+                visibilityTime: 3000,
+              });
+              // Clear user data from AsyncStorage
+              await AsyncStorage.removeItem("userInfo");
+              // Navigate to the sign-in screen
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "SignIn" }], // Replace "SignIn" with the actual name of your sign-in route
+              });
+            } else {
+              const response = response.response
+                ? response.response.data.message
+                : response.message;
+
+              Toast.show({
+                type: "error",
+                text1: "Somnething went wrong deleteing your account",
+                position: "top",
+                autoHide: true,
+                visibilityTime: 3000,
+              });
+            }
           },
         },
       ]
