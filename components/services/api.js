@@ -19,6 +19,7 @@ import {
   TYPE_SIGNIN_WITH_GOOGLE,
   TYPE_VERIFY_OTP,
   TYPE_CREATE_PASSWORD,
+  TYPE_DELETE_USER,
 } from "../../config/apiConfig";
 import { socket } from "./socket";
 
@@ -577,6 +578,22 @@ export const signinWithGoogle = async (email, firstName, lastName) => {
         console.error("Token not received");
       }
     }
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Error while signinWithGoogle : ",
+      error.response ? error.response.data : error.message
+    );
+
+    return error;
+  }
+};
+
+export const deleteAccount = async () => {
+  try {
+    const endpoint = "/" + PATH_PROFILE + "/" + TYPE_DELETE_USER;
+    const response = await apiClient.delete(endpoint);
 
     return response;
   } catch (error) {

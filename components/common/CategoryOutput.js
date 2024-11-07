@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import Octicons from "@expo/vector-icons/Octicons";
-import { useNavigation } from "@react-navigation/native";
-import { useContext, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -93,41 +93,51 @@ const CategoryOutput = () => {
     require("../../assets/images/CustomCategory-Image5.png"),
   ];
 
-  useEffect(() => {
-    const loadCategories = async () => {
-      const data = await getInterviewCategory();
-      console.log("Data from the category output =====> " + data);
+  useFocusEffect(
+    useCallback(() => {
+      const loadCategories = async () => {
+        const data = await getInterviewCategory();
+        console.log("Data from the category output =====> " + data);
 
-      const categoriesData = data.category;
-      const occupationFlag = data.occupation;
+        const categoriesData = data.category;
+        const occupationFlag = data.occupation;
 
-      // create copy of categoriesData(array of objects)
-      let updatedCategories = [...categoriesData];
+        // create copy of categoriesData(array of objects)
+        let updatedCategories = [...categoriesData];
 
-      if (!occupationFlag) {
-        // insert "My Occupation" as the first item if occupation is false
-        updatedCategories.unshift({
-          categoryName: "My Occupation",
-          questions: [],
-          score: [],
-          _id: "",
-          badge: "",
-        });
-      }
-      setCategories(updatedCategories);
+        if (!occupationFlag) {
+          // insert "My Occupation" as the first item if occupation is false
+          updatedCategories.unshift({
+            categoryName: "My Occupation",
+            questions: [],
+            score: [],
+            _id: "",
+            badge: "",
+          });
+        }
+        setCategories(updatedCategories);
 
-      // Debugging: check updated categories
-      console.log("Updated Categories: ==> ");
-      console.log(categories);
-      if (categories.length > 3) {
-        setCustomCategories(categories.slice(3));
-      }
-      // load user data
-      const userData = await getProfile();
-      setUserName(userData.givenName);
-    };
-    loadCategories();
-  }, []);
+        // Debugging: check updated categories
+        console.log("Updated Categories: ==> ");
+        console.log(updatedCategories); // Updated to show the updated categories
+
+        if (updatedCategories.length > 3) {
+          setCustomCategories(updatedCategories.slice(3));
+        }
+
+        // load user data
+        const userData = await getProfile();
+        setUserName(userData.givenName);
+      };
+
+      loadCategories();
+
+      // Optional cleanup
+      return () => {
+        // Any cleanup actions if needed
+      };
+    }, []) // Empty dependency array to run this only on screen focus
+  );
 
   // default category card
   const renderDefaultCategoryCard = ({ item, index }) => (
@@ -198,7 +208,7 @@ const CategoryOutput = () => {
       </View>
 
       {/* Custom category cards (only if there are more than 3 categories) */}
-      {categories.length > 3 && (
+      {customCategories.length > 0 && (
         <View style={styles.bottomCardContainer}>
           <View style={styles.title}>
             <TitleText text="Custom categories:" />
