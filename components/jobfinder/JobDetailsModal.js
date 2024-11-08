@@ -16,6 +16,8 @@ import { generateQuestionByJobDescription } from "../services/api";
 import { socket } from "../services/socket";
 import { AppContext } from "@/store/app-context";
 import { Colors } from "@/constants/Colors";
+import LoadingOverlay from "../common/LoadingOverlay";
+
 
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [webViewVisible, setWebViewVisible] = useState(false);
@@ -98,6 +100,11 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
 
   return (
     <View style={styles.container}>
+      {loading && (
+        <View style={styles.overlay}>
+          <LoadingOverlay />
+        </View>
+      )}
       <View style={styles.innerContainer}>
         <View style={styles.headerRow}>
           <View style={styles.titleContainer}>
@@ -116,9 +123,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         <Text style={styles.descriptionLabel}>Description</Text>
         <Text style={styles.descriptionValue}>{job.description}</Text>
         <View style={styles.buttonContainer}>
-        {loading ? (
-            <ActivityIndicator size="large" color="#4D63B5" />
-          ) : (
+        {!loading && (
             <WideButton
               title="Practice Interview"
               color="white"
@@ -164,9 +169,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
+  },
   innerContainer: {
     width: "100%",
-    height: "60%",
+    height: 500,
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -180,7 +192,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
-    marginRight: 10, // Space between the title and the close icon
+    marginRight: 10, 
   },
   companyNameLabel:{
      fontFamily: "Mulish_400Regular",

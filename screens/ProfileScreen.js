@@ -24,7 +24,7 @@ import {
   deleteAccount,
   emptyToken,
   getProfile,
-} from "@/components/services/api"; // Ensure this path is correct
+} from "@/components/services/api"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
@@ -116,18 +116,18 @@ const ProfileScreen = () => {
                 routes: [{ name: "SignIn" }], // Replace "SignIn" with the actual name of your sign-in route
               });
             } else {
-              const response = response.response
+              const errorMessage = response.response
                 ? response.response.data.message
                 : response.message;
 
               Toast.show({
                 type: "error",
-                text1: "Somnething went wrong deleteing your account",
+                text1: `Something went wrong deleteing your account ${errorMessage}`,
                 position: "top",
                 autoHide: true,
                 visibilityTime: 3000,
               });
-            }
+            } 
           },
         },
       ]

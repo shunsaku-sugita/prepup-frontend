@@ -227,7 +227,7 @@ const EditProfileScreen = () => {
           <Text style={styles.fieldLabel}>
             Email <Text style={styles.asterisk}>*</Text>
           </Text>
-          <View style={[styles.emailField, { opacity: 0.4 }]}>
+          <View style={[styles.emailField, { opacity: 0.4, borderColor:Colors.disabledGray }]}>
             <TextInput value={email} editable={false} />
           </View>
         </View>
@@ -263,6 +263,7 @@ const EditProfileScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding:10,
     flex: 1,
     paddingTop: 16,
     backgroundColor: Colors.disabledBeige,
@@ -274,9 +275,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   mainContents: {
+    paddingTop:20,
     flex: 1,
-    paddingHorizontal: 16,
-    gap: 30,
+    padding:10,
+    gap: 24,
   },
   nameHorizontalContainer: {
     flexDirection: "row",
@@ -335,6 +337,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginVertical: 20,
+    padding:18
   },
 });
 
