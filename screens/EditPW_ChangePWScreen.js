@@ -20,6 +20,7 @@ import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
 import { createPassword, emptyToken } from "@/components/services/api";
 import { AppContext } from "@/store/app-context";
+import Toast from "react-native-toast-message";
 
 const EditPW_ChangePWScreen = () => {
   const { fontsLoaded } = useContext(AppContext);
@@ -88,7 +89,14 @@ const EditPW_ChangePWScreen = () => {
 
         if (response.status == 200) {
           await emptyToken();
-          navigation.navigate("ResetPW_Success");
+          navigation.navigate("Profile");
+          Toast.show({
+            type: "success",
+            text1: "New password has been saved!",
+            position: "top",
+            autoHide: true,
+            visibilityTime: 3000,
+          });
         } else {
           setErrorMessage(
             response.response

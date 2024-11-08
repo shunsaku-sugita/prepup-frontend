@@ -90,6 +90,7 @@ const ResetPW_VerifycodeScreen = () => {
               placeholder="_ _ _ _ _ _"
               placeholderTextColor={Colors.placeHolderTextGray}
               keyboardType="number-pad"
+              returnKeyType="done"
               maxLength={6}
               value={enteredCode}
               onChangeText={(text) => setEnteredCode(text)}
@@ -141,6 +142,7 @@ const styles = StyleSheet.create({
     paddingTop: 90,
   },
   mainContents: {
+    backgroundColor: Colors.disabledBeige,
     flex: 5,
   },
   titleAndTextContainer: {

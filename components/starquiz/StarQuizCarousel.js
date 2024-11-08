@@ -166,6 +166,7 @@ const StarQuizCarousel = ({
             scrollToCard(0);
           }}
           style={styles.touchableOpacityWrapper}
+          pointerEvents="box-none" // Ensures icon inside TouchableOpacity is still pressable
         >
           <View
             style={[
@@ -175,7 +176,9 @@ const StarQuizCarousel = ({
           >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Situation:</Text>
-              <View>
+              <TouchableOpacity
+                onPress={() => speakHandler(situationAnswerRef.current)}
+              >
                 <IconButton
                   icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
                   color={
@@ -185,9 +188,8 @@ const StarQuizCarousel = ({
                   }
                   size={20}
                   display={!situationAnswerRef.current && true}
-                  onPress={() => speakHandler(situationAnswerRef.current)}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
@@ -235,6 +237,7 @@ const StarQuizCarousel = ({
         <TouchableOpacity
           onPress={() => scrollToCard(322)}
           style={styles.touchableOpacityWrapper}
+          pointerEvents="box-none" // Ensures icon inside TouchableOpacity is still pressable
         >
           <View
             style={[
@@ -248,15 +251,18 @@ const StarQuizCarousel = ({
           >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Task:</Text>
-              <IconButton
-                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={
-                  taskAnswerRef.current ? "black" : Colors.placeHolderTextGray
-                }
-                size={20}
-                display={!taskAnswerRef.current && true}
+              <TouchableOpacity
                 onPress={() => speakHandler(taskAnswerRef.current)}
-              />
+              >
+                <IconButton
+                  icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                  color={
+                    taskAnswerRef.current ? "black" : Colors.placeHolderTextGray
+                  }
+                  size={20}
+                  display={!taskAnswerRef.current && true}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
@@ -302,6 +308,7 @@ const StarQuizCarousel = ({
         <TouchableOpacity
           onPress={() => scrollToCard(645)}
           style={styles.touchableOpacityWrapper}
+          pointerEvents="box-none" // Ensures icon inside TouchableOpacity is still pressable
         >
           <View
             style={[
@@ -311,15 +318,20 @@ const StarQuizCarousel = ({
           >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Action:</Text>
-              <IconButton
-                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={
-                  actionAnswerRef.current ? "black" : Colors.placeHolderTextGray
-                }
-                size={20}
-                display={!actionAnswerRef.current && true}
+              <TouchableOpacity
                 onPress={() => speakHandler(actionAnswerRef.current)}
-              />
+              >
+                <IconButton
+                  icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                  color={
+                    actionAnswerRef.current
+                      ? "black"
+                      : Colors.placeHolderTextGray
+                  }
+                  size={20}
+                  display={!actionAnswerRef.current && true}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.textInputContainer}>
               <TextInput
@@ -365,6 +377,7 @@ const StarQuizCarousel = ({
         <TouchableOpacity
           onPress={() => scrollToCard(970)}
           style={styles.touchableOpacityWrapper}
+          pointerEvents="box-none" // Ensures icon inside TouchableOpacity is still pressable
         >
           <View
             style={[
@@ -374,15 +387,20 @@ const StarQuizCarousel = ({
           >
             <View style={styles.cardHeaderContainer}>
               <Text style={styles.title}>Result:</Text>
-              <IconButton
-                icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
-                color={
-                  resultAnswerRef.current ? "black" : Colors.placeHolderTextGray
-                }
-                size={20}
-                display={!resultAnswerRef.current && true}
+              <TouchableOpacity
                 onPress={() => speakHandler(resultAnswerRef.current)}
-              />
+              >
+                <IconButton
+                  icon={isPlaying ? "stop-circle-outline" : "ear-outline"}
+                  color={
+                    resultAnswerRef.current
+                      ? "black"
+                      : Colors.placeHolderTextGray
+                  }
+                  size={20}
+                  display={!resultAnswerRef.current && true}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.textInputContainer}>
               <TextInput

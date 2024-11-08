@@ -42,7 +42,7 @@ const SigninScreen = () => {
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
 
-  const [passwordIsSecure, setPasswordIsSecure] = useState(false);
+  const [passwordIsSecure, setPasswordIsSecure] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigation = useNavigation();

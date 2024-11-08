@@ -112,11 +112,11 @@ const ResetPW_CreatePWScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: Colors.disabledBeige }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
           <View style={styles.container}>
             <View style={styles.mainContents}>
               <View style={styles.titleAndTextContainer}>
