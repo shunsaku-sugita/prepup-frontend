@@ -1,10 +1,13 @@
 import { useNavigation } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 // import { AppContext } from "../../store/app-context";

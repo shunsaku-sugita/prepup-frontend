@@ -179,11 +179,13 @@ const InterviewControllerIcons = ({
       <InterviewAnswerScript transcription={transcription} />
       <View style={styles.retryContainer}>
         <Text style={styles.pressText}>Press to try again!</Text>
-        <TouchableOpacity
-          style={styles.retryIconContainer}
-          onPress={startRecording}
-        >
-          <IconButton icon="refresh" color="black" size={25} />
+        <TouchableOpacity style={styles.retryIconContainer}>
+          <IconButton
+            icon="refresh"
+            color="black"
+            size={25}
+            onPress={startRecording}
+          />
         </TouchableOpacity>
       </View>
     </>
@@ -195,12 +197,12 @@ const InterviewControllerIcons = ({
       <View style={styles.micOuterContainer}>
         <TouchableOpacity
           style={isRecording ? styles.micStopContainer : styles.micContainer}
-          onPress={isRecording ? stopRecording : startRecording}
         >
           <IconButton
             icon={isRecording ? "stop-sharp" : "mic"}
             color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
             size={isRecording ? 35 : 50}
+            onPress={isRecording ? stopRecording : startRecording}
           />
         </TouchableOpacity>
       </View>
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
   pressText: {
     fontSize: 16,
     marginBottom: 2,
-    fontFamily: "MavenPro-Medium",
+    fontFamily: "MavenPro-SemiBold",
   },
   retryContainer: {
     justifyContent: "center",
