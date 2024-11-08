@@ -127,9 +127,6 @@ const EditPW_ChangePWScreen = () => {
                   <Text style={styles.fieldLabel}>
                     Password <Text style={styles.astarisk}>*</Text>
                   </Text>
-                  <Text style={styles.fieldLabel}>
-                    Password <Text style={styles.astarisk}>*</Text>
-                  </Text>
                   <TouchableOpacity
                     style={styles.questionIcon}
                     onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
@@ -200,9 +197,6 @@ const EditPW_ChangePWScreen = () => {
               {/* Confirm password form */}
               <View style={styles.formContainer}>
                 <View>
-                  <Text style={styles.fieldLabel}>
-                    Confirm Password <Text style={styles.astarisk}>*</Text>
-                  </Text>
                   <Text style={styles.fieldLabel}>
                     Confirm Password <Text style={styles.astarisk}>*</Text>
                   </Text>
