@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import TitleText from "../common/TitleText";
 import WideButton from "../common/WideButton";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
+import { AppContext } from "@/store/app-context";
 
 const CreateCategoryModal = ({
   setModalVisible,
@@ -12,6 +13,8 @@ const CreateCategoryModal = ({
   selectedCategoryQuestions,
   saveInterviewQuestions,
 }) => {
+  const { fontsLoaded } = useContext(AppContext);
+
   const [typedText, setTypedText] = useState("");
   const textInputHandler = (enteredText) => {
     setTypedText(enteredText);
@@ -64,6 +67,10 @@ const CreateCategoryModal = ({
     setIsSaved(false);
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -78,7 +85,7 @@ const CreateCategoryModal = ({
         <View style={styles.titleWrapper}>
           <TitleText text="Create Category" />
         </View>
-        <Text style={styles.upperText}>Title</Text>
+        <Text style={styles.titleText}>Title</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={textInputHandler}
@@ -120,9 +127,9 @@ const styles = StyleSheet.create({
   titleWrapper: {
     marginBottom: 18,
   },
-  upperText: {
+  titleText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
   },
   textInput: {
     borderWidth: 1,
@@ -133,10 +140,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontSize: 18,
-  },
-  lowerText: {
-    fontSize: 18,
-    color: "red",
   },
   buttonContainer: {
     marginTop: 22,

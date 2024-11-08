@@ -31,6 +31,7 @@ const CategoryCardCustom = ({
     setCurrentQuestionIndex,
     setSelectedCategoryQuestions,
     setQuestionAnswerArray,
+    fontsLoaded,
   } = useContext(AppContext);
 
   const scrollAnim = useRef(new Animated.Value(0)).current;
@@ -118,11 +119,6 @@ const CategoryCardCustom = ({
         visibilityTime: 3000,
       });
     }
-
-    // // Create a new array excluding the item at the given index
-    // const updatedCategories = categories.filter((_, idx) => idx !== index);
-    // // Update the state with the new array
-    // setCategories(updatedCategories);
   };
 
   const deleteAlertHandler = (index) => {
@@ -143,6 +139,10 @@ const CategoryCardCustom = ({
       ]
     );
   };
+
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   return (
     <View style={[styles.cardContainer, { backgroundColor }]}>
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
     paddingHorizontal: 9,
     paddingTop: 4,
   },

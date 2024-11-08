@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, Animated } from "react-native";
 import IconButton from "./IconButton";
 import * as Speech from "expo-speech";
 import LoadingOverlay from "./LoadingOverlay";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/store/app-context";
 
 const HearableQuestions = ({ questionText }) => {
   const scrollAnim = useRef(new Animated.Value(0)).current;
@@ -12,6 +13,7 @@ const HearableQuestions = ({ questionText }) => {
   const [containerHeight, setContainerHeight] = useState(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const { fontsLoaded } = useContext(AppContext);
 
   // To manage initial delay and interval for the scrolling behavior
   const initialDelay = 7000; // 7 seconds initial delay
@@ -71,6 +73,10 @@ const HearableQuestions = ({ questionText }) => {
       setIsPlaying(false); // Reset the state to not playing
     }
   };
+
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   return (
     <View style={styles.container}>
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
     color: Colors.lightBlack,
   },
 });

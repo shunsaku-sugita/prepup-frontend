@@ -1,8 +1,20 @@
-import { StyleSheet, TextInput, View, TouchableOpacity, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from "react";
-import { Ionicons } from '@expo/vector-icons';
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { AppContext } from "@/store/app-context";
+import { Colors } from "@/constants/Colors";
 
 const JobSearchBar = ({ searchQuery, setSearchQuery }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   const [localQuery, setLocalQuery] = useState(searchQuery);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +49,12 @@ const JobSearchBar = ({ searchQuery, setSearchQuery }) => {
         <ActivityIndicator size="small" color="#4D63B5" style={styles.icon} />
       ) : localQuery ? (
         <TouchableOpacity onPress={handleClearSearch}>
-          <Ionicons name="close" size={20} color="#4D63B5" style={styles.icon} />
+          <Ionicons
+            name="close"
+            size={20}
+            color="#4D63B5"
+            style={styles.icon}
+          />
         </TouchableOpacity>
       ) : (
         <Ionicons name="search" size={20} color="#4D63B5" style={styles.icon} />
@@ -53,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: '#4D63B5',
+    borderColor: "#4D63B5",
     borderRadius: 8,
     padding: 8,
     marginBottom: 10,
@@ -62,7 +79,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 10,
     fontSize: 16,
-    color: "#4D63B5"
+    color: Colors.backgroundDarkGray,
+    fontFamily: "Mulish-Medium",
   },
   icon: {
     paddingLeft: 10,

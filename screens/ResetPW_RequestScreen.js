@@ -5,18 +5,21 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
 import { verifyEmail } from "@/components/services/api";
+import { AppContext } from "@/store/app-context";
 
 const ResetPW_RequestScreen = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const { fontsLoaded } = useContext(AppContext);
 
   const navigation = useNavigation();
 
@@ -49,12 +52,16 @@ const ResetPW_RequestScreen = () => {
     }
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Reset Your Password" />
-          <Text>
+          <Text style={styles.description}>
             Enter the email associated with your account and we’ll send an email
             with instructions to reset your password.
           </Text>
@@ -91,18 +98,6 @@ const ResetPW_RequestScreen = () => {
         </View>
       </View>
 
-      {/* tentative button for development purpose */}
-      <View style={styles.devButtonsContainer}>
-        <TouchableOpacity
-          style={styles.homeNavigationButton}
-          onPress={() => navigation.navigate("ResetPW_Success")}
-        >
-          <Text style={styles.homeNavigationText}>
-            Dev: Jump to Success Screen(Category)
-          </Text>
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.buttonContainer}>
         <WideButton
           title={isProcessing ? "Sending..." : "Send Link"}
@@ -124,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingTop: 100,
+    paddingTop: 90,
   },
   mainContents: {
     flex: 5,
@@ -135,12 +130,16 @@ const styles = StyleSheet.create({
     rowGap: 20,
     width: 340,
   },
+  description: {
+    fontSize: 15,
+    fontFamily: "Mulish-Medium",
+  },
   formContainer: {
     width: 340,
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -156,6 +155,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   emailFieldAlert: {
     flexDirection: "row",
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   alertContainer: {
     flexDirection: "row",
@@ -176,24 +177,11 @@ const styles = StyleSheet.create({
   },
   alertText: {
     color: Colors.errorRed,
-    fontWeight: 500,
+    fontFamily: "Roboto-Medium",
   },
   buttonContainer: {
     flex: 0.8,
+    marginTop: 30,
     marginBottom: 50,
-  },
-  // tentative (delete)
-  devButtonsContainer: {
-    borderWidth: 1,
-    borderRadius: 6,
-    padding: 6,
-    columnGap: 20,
-    flexDirection: "row",
-  },
-  homeNavigationText: {
-    textDecorationLine: "underline",
-  },
-  onboardingNavigationText: {
-    textDecorationLine: "underline",
   },
 });

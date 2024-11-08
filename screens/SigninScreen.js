@@ -1,12 +1,17 @@
 import {
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,10 +29,13 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../config/firebaseConfig";
+import { AppContext } from "@/store/app-context";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SigninScreen = () => {
+  const { fontsLoaded } = useContext(AppContext);
+
   const [enteredEmail, setEnteredEmail] = useState("khushalkhnta4@gmail.com");
   const [enteredPassword, setEnteredPassword] = useState("Hello@123");
 
@@ -177,155 +185,174 @@ const SigninScreen = () => {
     return { email, firstName, lastName };
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={require("../assets/images/signin-background.png")}
-          style={styles.backgroundImage}
-        />
-        <Image
-          source={require("../assets/images/PrepUp-Logo-COLORED.png")}
-          style={styles.logoImage}
-        />
-      </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
+          <View style={styles.container}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={require("../assets/images/signin-background.png")}
+                style={styles.backgroundImage}
+              />
+              <Image
+                source={require("../assets/images/PrepUp-Logo-COLORED.png")}
+                style={styles.logoImage}
+              />
+            </View>
 
-      {/* email field */}
-      <View style={styles.formContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.fieldLabel}>
-            Email <Text style={styles.astarisk}>*</Text>
-          </Text>
-        </View>
-        <View
-          style={[
-            !emailIsValid && isSubmitted
-              ? styles.fieldAlert
-              : styles.emailField,
-            isEmailFocused && {
-              borderWidth: 2,
-              borderColor: Colors.defaultBlue,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="Enter your email adddress"
-            placeholderTextColor={Colors.placeHolderTextGray}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={enteredEmail}
-            onChangeText={(text) => setEnteredEmail(text)}
-            onFocus={() => setIsEmailFocused(true)}
-            onBlur={() => setIsEmailFocused(false)}
-          />
-        </View>
-        {!emailIsValid && isSubmitted && (
-          <View style={styles.alertContainer}>
-            <Ionicons
-              name="alert-circle-outline"
-              color={Colors.errorRed}
-              size={20}
-            />
-            <Text style={styles.alertText}>{emailError}</Text>
+            {/* email field */}
+            <View style={styles.formContainer}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.fieldLabel}>
+                  Email <Text style={styles.astarisk}>*</Text>
+                </Text>
+              </View>
+              <View
+                style={[
+                  !emailIsValid && isSubmitted
+                    ? styles.fieldAlert
+                    : styles.emailField,
+                  isEmailFocused && {
+                    borderWidth: 2,
+                    borderColor: Colors.defaultBlue,
+                  },
+                ]}
+              >
+                <TextInput
+                  placeholder="Enter your email adddress"
+                  placeholderTextColor={Colors.placeHolderTextGray}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={enteredEmail}
+                  onChangeText={(text) => setEnteredEmail(text)}
+                  onFocus={() => setIsEmailFocused(true)}
+                  onBlur={() => setIsEmailFocused(false)}
+                />
+              </View>
+              {!emailIsValid && isSubmitted && (
+                <View style={styles.alertContainer}>
+                  <Ionicons
+                    name="alert-circle-outline"
+                    color={Colors.errorRed}
+                    size={20}
+                  />
+                  <Text style={styles.alertText}>{emailError}</Text>
+                </View>
+              )}
+            </View>
+
+            {/* password field */}
+            <View style={styles.formContainer}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.fieldLabel}>
+                  Password <Text style={styles.astarisk}>*</Text>
+                </Text>
+              </View>
+              <View
+                style={[
+                  !passwordIsValid && isSubmitted
+                    ? styles.fieldAlert
+                    : styles.passwordField,
+                  isPasswordFocused && {
+                    borderWidth: 2,
+                    borderColor: Colors.defaultBlue,
+                  },
+                ]}
+              >
+                <TextInput
+                  placeholder="Enter a password"
+                  placeholderTextColor={Colors.placeHolderTextGray}
+                  keyboardType="default"
+                  autoCapitalize="none"
+                  secureTextEntry={passwordIsSecure}
+                  value={enteredPassword}
+                  onChangeText={(text) => setEnteredPassword(text)}
+                  maxLength={30}
+                  style={{
+                    width: "90%",
+                  }}
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
+                />
+                <Ionicons
+                  name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
+                  color="black"
+                  size={20}
+                  onPress={() => setPasswordIsSecure(!passwordIsSecure)}
+                />
+              </View>
+              {!passwordIsValid && isSubmitted && (
+                <View style={styles.alertContainer}>
+                  <Ionicons
+                    name="alert-circle-outline"
+                    color={Colors.errorRed}
+                    size={20}
+                  />
+                  <Text style={styles.alertText}>{passwordError}</Text>
+                </View>
+              )}
+            </View>
+
+            {/* buttons and link */}
+            <View style={styles.buttonsContainer}>
+              <WideButton
+                title="Sign In"
+                color="white"
+                // need to check if user's info matches to our database
+                onPress={signInHandler}
+              />
+              <TouchableOpacity
+                style={styles.googleButton}
+                onPress={GoogleSigninHandler}
+              >
+                <Image
+                  source={require("../assets/images/google-signin-icon.png")}
+                />
+                <Text style={styles.googleButtonText}>
+                  Continue with Google
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.forgetPasswordButton}
+                onPress={() => navigation.navigate("ResetPW_request")}
+              >
+                <Text style={styles.forgetPasswordButtonText}>
+                  Forget Password
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.signupTextContainer}>
+                <Text style={styles.signupText}>Don't have an account?</Text>
+                <TouchableOpacity
+                  style={styles.signupLinkButton}
+                  onPress={() => navigation.navigate("Registration")}
+                >
+                  <Text style={styles.signupLinkText}>Sign up</Text>
+                </TouchableOpacity>
+                <Text style={styles.signupText}>here</Text>
+              </View>
+            </View>
+
+            {/* tentative button for development purpose */}
+            <View style={styles.devButtonsContainer}>
+              <TouchableOpacity
+                style={styles.homeNavigationButton}
+                onPress={() => navigation.navigate("Category")}
+              >
+                <Text style={styles.homeNavigationText}>Home(Category)</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        )}
-      </View>
-
-      {/* password field */}
-      <View style={styles.formContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.fieldLabel}>
-            Password <Text style={styles.astarisk}>*</Text>
-          </Text>
-        </View>
-        <View
-          style={[
-            !passwordIsValid && isSubmitted
-              ? styles.fieldAlert
-              : styles.passwordField,
-            isPasswordFocused && {
-              borderWidth: 2,
-              borderColor: Colors.defaultBlue,
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="Enter a password"
-            placeholderTextColor={Colors.placeHolderTextGray}
-            keyboardType="default"
-            autoCapitalize="none"
-            secureTextEntry={passwordIsSecure}
-            value={enteredPassword}
-            onChangeText={(text) => setEnteredPassword(text)}
-            maxLength={30}
-            style={{
-              width: "90%",
-            }}
-            onFocus={() => setIsPasswordFocused(true)}
-            onBlur={() => setIsPasswordFocused(false)}
-          />
-          <Ionicons
-            name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
-            color="black"
-            size={20}
-            onPress={() => setPasswordIsSecure(!passwordIsSecure)}
-          />
-        </View>
-        {!passwordIsValid && isSubmitted && (
-          <View style={styles.alertContainer}>
-            <Ionicons
-              name="alert-circle-outline"
-              color={Colors.errorRed}
-              size={20}
-            />
-            <Text style={styles.alertText}>{passwordError}</Text>
-          </View>
-        )}
-      </View>
-
-      {/* buttons and link */}
-      <View style={styles.buttonsContainer}>
-        <WideButton
-          title="Sign In"
-          color="white"
-          // need to check if user's info matches to our database
-          onPress={signInHandler}
-        />
-        <TouchableOpacity
-          style={styles.googleButton}
-          onPress={GoogleSigninHandler}
-        >
-          <Image source={require("../assets/images/google-signin-icon.png")} />
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.forgetPasswordButton}
-          onPress={() => navigation.navigate("ResetPW_request")}
-        >
-          <Text style={styles.forgetPasswordButtonText}>Forget Password</Text>
-        </TouchableOpacity>
-        <View style={styles.signupTextContainer}>
-          <Text style={styles.signupText}>Don't have an account?</Text>
-          <TouchableOpacity
-            style={styles.signupLinkButton}
-            onPress={() => navigation.navigate("Registration")}
-          >
-            <Text style={styles.signupLinkText}>Sign up</Text>
-          </TouchableOpacity>
-          <Text style={styles.signupText}>here</Text>
-        </View>
-      </View>
-
-      {/* tentative button for development purpose */}
-      <View style={styles.devButtonsContainer}>
-        <TouchableOpacity
-          style={styles.homeNavigationButton}
-          onPress={() => navigation.navigate("Category")}
-        >
-          <Text style={styles.homeNavigationText}>Home(Category)</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -367,7 +394,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   fieldLabel: {
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -383,6 +410,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   fieldAlert: {
     flexDirection: "row",
@@ -395,6 +423,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   passwordField: {
     flexDirection: "row",
@@ -407,6 +436,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   alertContainer: {
     flexDirection: "row",
@@ -416,7 +446,7 @@ const styles = StyleSheet.create({
   },
   alertText: {
     color: Colors.errorRed,
-    fontWeight: 500,
+    fontFamily: "Roboto-Medium",
   },
   buttonsContainer: {
     marginTop: 20,
@@ -437,14 +467,14 @@ const styles = StyleSheet.create({
   },
   googleButtonText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
   },
   forgetPasswordButton: {
     marginVertical: 15,
   },
   forgetPasswordButtonText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     color: Colors.defaultBlue,
   },
   signupTextContainer: {
@@ -455,11 +485,12 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: Colors.placeHolderTextGray,
+    fontFamily: "Roboto-Regular",
   },
   signupLinkButton: {},
   signupLinkText: {
     color: Colors.lightBlack,
-    fontWeight: "600",
+    fontFamily: "Roboto-Bold",
   },
   // tentative (delete)
   devButtonsContainer: {

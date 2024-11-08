@@ -1,9 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/store/app-context";
 
 const JobCard = ({ job, toggleBookmark, onPress }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {/* logo */}
@@ -15,7 +20,7 @@ const JobCard = ({ job, toggleBookmark, onPress }) => {
         <Text style={styles.title}>{job.title}</Text>
         <Text style={styles.createdDate}>{`Added ${job.createdDate}`}</Text>
         <Text style={styles.createdPortal}>
-          <Text style={{ fontFamily: 'Mulish_700Bold' }}>Portal: </Text>
+          <Text style={{ fontFamily: "Mulish-ExtraBold" }}>Portal: </Text>
           Adzuna
         </Text>
       </View>
@@ -49,24 +54,20 @@ const styles = StyleSheet.create({
   subContainer: {
     width: "75%",
     paddingLeft: 40,
-    gap:3
+    gap: 3,
   },
   title: {
-    fontFamily:"MavenPro_700Bold",
-    fontWeight: "700",
+    fontFamily: "MavenPro-Bold",
     fontSize: 20,
   },
   createdDate: {
-    fontFamily: "Mulish_400Regular",
+    fontFamily: "Mulish-Medium",
     fontSize: 16,
-    fontWeight:400,
-   
+    fontWeight: 400,
   },
   createdPortal: {
-    fontFamily: "Mulish_400Regular",
-    fontSize:16,
-    
-    
+    fontFamily: "Mulish-Medium",
+    fontSize: 16,
   },
   logoContainer: {
     width: 64,
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoText: {
-    fontFamily: "Mulish_800ExtraBold",
+    fontFamily: "Mulish-ExtraBold",
     fontSize: 20,
     fontWeight: "bold",
     color: "white",

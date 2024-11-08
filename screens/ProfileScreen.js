@@ -8,7 +8,7 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import WideButton from "@/components/common/WideButton";
 import {
@@ -26,8 +26,13 @@ import {
   getProfile,
 } from "@/components/services/api"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppContext } from "@/store/app-context";
 
 const ProfileScreen = () => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -356,7 +361,7 @@ const ProfileScreen = () => {
   ];
 
   return (
-    <>
+    <View style={styles.rootContainer}>
       <FlatList
         data={profileSections}
         renderItem={({ item }) => item.renderItem()}
@@ -364,7 +369,7 @@ const ProfileScreen = () => {
         contentContainerStyle={styles.listContainer}
       />
       <Toast config={toastConfig} />
-    </>
+    </View>
   );
 };
 
@@ -384,8 +389,10 @@ const ProfileField = ({ label, value, noSeparator, isWarning }) => (
 const ToggleRow = ({ label, value, onValueChange }) => (
   <View style={[styles.toggleRow, styles.toggleRowSmaller]}>
     <Text>{label}</Text>
-    <Switch value={value} onValueChange={onValueChange}
-    trackColor={{ false: "#E0E0E0", true: Colors.defaultBlue }} 
+    <Switch
+      value={value}
+      onValueChange={onValueChange}
+      trackColor={{ false: "#E0E0E0", true: Colors.defaultBlue }}
     />
   </View>
 );
@@ -393,6 +400,9 @@ const ToggleRow = ({ label, value, onValueChange }) => (
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    backgroundColor: Colors.disabledBeige,
+  },
   listContainer: {
     padding: 16,
     backgroundColor: Colors.disabledBeige,
@@ -409,7 +419,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
     paddingVertical: 16,
     paddingHorizontal: 16,
   },
@@ -431,12 +441,12 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     fontSize: 14,
-    fontWeight: "500",
+    fontFamily: "Mulish-Medium",
     color: "#666",
   },
   fieldValue: {
     fontSize: 14,
-    fontWeight: "400",
+    fontFamily: "Mulish-Bold",
     color: "#333",
   },
   fieldSeparator: {
@@ -463,7 +473,7 @@ const styles = StyleSheet.create({
   },
   editButtonText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Mulish-ExtraBold",
     color: "black",
     marginRight: 4,
   },
@@ -474,12 +484,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderRadius: 8,
-
   },
   toggleRowSmaller: {
     width: "100%",
     alignSelf: "center",
-    
   },
   deleteRow: {
     flexDirection: "row",
@@ -502,7 +510,7 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: "white",
     fontSize: 14,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
   },
   passwordContainer: {
     flexDirection: "row",
@@ -528,10 +536,10 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: "#FEFEFF",
     fontSize: 16,
-    fontWeight: "800",
+    fontFamily: "Mulish-ExtraBold",
   },
   occupationWarning: {
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     color: "red",
   },
 });

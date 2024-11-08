@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,6 +14,7 @@ import { Colors } from "@/constants/Colors";
 import { useRoute } from "@react-navigation/native";
 import { verifyOTP } from "@/components/services/api";
 import Toast from "react-native-toast-message";
+import { AppContext } from "@/store/app-context";
 
 const ResetPW_VerifycodeScreen = () => {
   const [enteredCode, setEnteredCode] = useState("");
@@ -24,6 +25,8 @@ const ResetPW_VerifycodeScreen = () => {
 
   const route = useRoute();
   const { email } = route.params;
+
+  const { fontsLoaded } = useContext(AppContext);
 
   const VerifyHandler = async () => {
     const codeRegex = /^\d{6}$/;
@@ -62,12 +65,16 @@ const ResetPW_VerifycodeScreen = () => {
     });
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Change Password" />
-          <Text>
+          <Text style={styles.description}>
             Enter the verify code that we sent an email with instructions to
             reset your password.
           </Text>
@@ -105,7 +112,6 @@ const ResetPW_VerifycodeScreen = () => {
         <WideButton
           title={isProcessing ? "Verifying..." : "Verify"}
           color="white"
-          // need to check if user's info matches to our database
           onPress={VerifyHandler}
           display={isProcessing}
         />
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    paddingTop: 100,
+    paddingTop: 90,
   },
   mainContents: {
     flex: 5,
@@ -143,12 +149,16 @@ const styles = StyleSheet.create({
     rowGap: 20,
     width: 340,
   },
+  description: {
+    fontSize: 15,
+    fontFamily: "Mulish-Medium",
+  },
   formContainer: {
     width: 340,
     rowGap: 4,
   },
   fieldLabel: {
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
   },
   astarisk: {
     color: Colors.defaultRed,
@@ -164,6 +174,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   codeFieldAlert: {
     flexDirection: "row",
@@ -174,6 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: "100%",
     padding: 8,
+    fontFamily: "MavenPro-Medium",
   },
   alertContainer: {
     flexDirection: "row",
@@ -183,12 +195,13 @@ const styles = StyleSheet.create({
   },
   alertText: {
     color: Colors.errorRed,
-    fontWeight: 500,
+    fontFamily: "Roboto-Medium",
   },
   buttonContainer: {
     flex: 1,
     alignItems: "center",
     rowGap: 10,
+    marginTop: 30,
     marginBottom: 50,
   },
   codeTextContainer: {
@@ -202,10 +215,11 @@ const styles = StyleSheet.create({
   simpleButtonText: {
     fontSize: 16,
     color: Colors.defaultBlue,
+    fontFamily: "Mulish-Medium",
   },
   resendCodeText: {
     color: Colors.defaultBlue,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     textDecorationLine: "underline",
     marginBottom: 10,
   },

@@ -1,11 +1,11 @@
 import { useRoute } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/store/app-context";
-import React, { useState, useEffect, useContext } from "react";
-import { View, TextInput, Text, Button, StyleSheet } from "react-native";
+import React, { useEffect, useContext } from "react";
+import { View, TextInput, Text, StyleSheet } from "react-native";
 import HearableQuestions from "@/components/common/HearableQuestions";
 
-const StarModalScreen = () => {
+const StarQuizModalScreen = () => {
   const {
     situationAnswerRef,
     setSituationAnswer,
@@ -40,18 +40,24 @@ const StarModalScreen = () => {
     setResultCountNumber,
     starQuestionText,
     fieldType,
+    fontsLoaded,
   } = useContext(AppContext);
 
   useEffect(() => {
-    // Focus on the input field when the screen is opened
-    if (fieldType === "situation" && situationInputRef.current)
-      situationInputRef.current.focus();
-    if (fieldType === "task" && taskInputRef.current)
-      taskInputRef.current.focus();
-    if (fieldType === "action" && actionInputRef.current)
-      actionInputRef.current.focus();
-    if (fieldType === "result" && resultInputRef.current)
-      resultInputRef.current.focus();
+    // Use a slight delay before focusing to prevent keyboard flicker
+    const focusTimeout = setTimeout(() => {
+      // Focus on the input field when the screen is opened
+      if (fieldType === "situation" && situationInputRef.current)
+        situationInputRef.current.focus();
+      if (fieldType === "task" && taskInputRef.current)
+        taskInputRef.current.focus();
+      if (fieldType === "action" && actionInputRef.current)
+        actionInputRef.current.focus();
+      if (fieldType === "result" && resultInputRef.current)
+        resultInputRef.current.focus();
+    }, 100);
+    // Clear the timeout when the component unmounts or fieldType changes
+    return () => clearTimeout(focusTimeout);
   }, [fieldType]);
 
   const textChangeHandler = (
@@ -91,6 +97,10 @@ const StarModalScreen = () => {
     }));
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.questionContainer}>
@@ -126,6 +136,7 @@ const StarModalScreen = () => {
                     "situation"
                   );
                 }}
+                style={styles.inputFieldText}
                 onBlur={() => handleBlur("situation")}
               />
             </View>
@@ -170,6 +181,7 @@ const StarModalScreen = () => {
                     "task"
                   );
                 }}
+                style={styles.inputFieldText}
                 onBlur={() => handleBlur("task")}
               />
             </View>
@@ -214,6 +226,7 @@ const StarModalScreen = () => {
                     "action"
                   );
                 }}
+                style={styles.inputFieldText}
                 onBlur={() => handleBlur("action")}
               />
             </View>
@@ -258,6 +271,7 @@ const StarModalScreen = () => {
                     "result"
                   );
                 }}
+                style={styles.inputFieldText}
                 onBlur={() => handleBlur("result")}
               />
             </View>
@@ -278,7 +292,7 @@ const StarModalScreen = () => {
   );
 };
 
-export default StarModalScreen;
+export default StarQuizModalScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -321,8 +335,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontFamily: "MavenPro-Bold",
   },
   textInputContainer: {
     backgroundColor: "white",
@@ -331,26 +345,35 @@ const styles = StyleSheet.create({
     height: "37%",
     width: "100%",
   },
+  inputFieldText: {
+    fontFamily: "Mulish-Medium",
+    color: Colors.backgroundDarkGray,
+  },
   countNumberContainer: {
     marginTop: 8,
   },
   wordCountText: {
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   situationWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   taskWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   actionWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   resultWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
 });

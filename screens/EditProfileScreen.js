@@ -1,5 +1,15 @@
-import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
-import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  ScrollView,
+} from "react-native";
+import React, { useState, useEffect, useContext } from "react";
 import WideButton from "@/components/common/WideButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -7,8 +17,14 @@ import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/toast/ToastComponent";
 import { updateProfile, getProfile } from "@/components/services/api";
+import { AppContext } from "@/store/app-context";
+import { TouchableWithoutFeedback } from "react-native";
 
 const EditProfileScreen = () => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   const navigation = useNavigation();
 
   const [firstName, setFirstName] = useState("");
@@ -140,124 +156,143 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.mainContents}>
-        {/* First and Last Name */}
-        <View style={styles.nameHorizontalContainer}>
-          <View style={styles.nameFormContainer}>
-            <Text style={styles.fieldLabel}>
-              First Name <Text style={styles.asterisk}>*</Text>
-            </Text>
-            <View
-              style={[
-                !firstNameIsValid && isSubmitted
-                  ? styles.fieldAlert
-                  : styles.nameField,
-                focusedField === "firstName" && styles.focusedField, // Apply blue border if focused
-              ]}
-            >
-              <TextInput
-                placeholder="First Name"
-                placeholderTextColor="#aaa"
-                value={firstName}
-                onChangeText={setFirstName}
-                onFocus={() => setFocusedField("firstName")}
-                onBlur={() => setFocusedField(null)}
-              />
-            </View>
-            {!firstNameIsValid && isSubmitted && (
-              <View style={styles.alertContainer}>
-                <Ionicons name="alert-circle-outline" color="red" size={20} />
-                <Text style={styles.alertText}>First name is required</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
+          <View style={styles.container}>
+            <View style={styles.mainContents}>
+              {/* First and Last Name */}
+              <View style={styles.nameHorizontalContainer}>
+                <View style={styles.nameFormContainer}>
+                  <Text style={styles.fieldLabel}>
+                    First Name <Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <View
+                    style={[
+                      !firstNameIsValid && isSubmitted
+                        ? styles.fieldAlert
+                        : styles.nameField,
+                      focusedField === "firstName" && styles.focusedField, // Apply blue border if focused
+                    ]}
+                  >
+                    <TextInput
+                      placeholder="First Name"
+                      placeholderTextColor={Colors.placeHolderTextGray}
+                      value={firstName}
+                      onChangeText={setFirstName}
+                      onFocus={() => setFocusedField("firstName")}
+                      onBlur={() => setFocusedField(null)}
+                    />
+                  </View>
+                  {!firstNameIsValid && isSubmitted && (
+                    <View style={styles.alertContainer}>
+                      <Ionicons
+                        name="alert-circle-outline"
+                        color="red"
+                        size={20}
+                      />
+                      <Text style={styles.alertText}>
+                        First name is required
+                      </Text>
+                    </View>
+                  )}
+                </View>
+                <View style={styles.nameFormContainer}>
+                  <Text style={styles.fieldLabel}>Last Name</Text>
+                  <View
+                    style={[
+                      styles.nameField,
+                      focusedField === "lastName" && styles.focusedField, // Apply blue border if focused
+                    ]}
+                  >
+                    <TextInput
+                      placeholder="Last Name"
+                      placeholderTextColor={Colors.placeHolderTextGray}
+                      value={lastName}
+                      onChangeText={setLastName}
+                      onFocus={() => setFocusedField("lastName")}
+                      onBlur={() => setFocusedField(null)}
+                    />
+                  </View>
+                </View>
               </View>
-            )}
-          </View>
-          <View style={styles.nameFormContainer}>
-            <Text style={styles.fieldLabel}>Last Name</Text>
-            <View
-              style={[
-                styles.nameField,
-                focusedField === "lastName" && styles.focusedField, // Apply blue border if focused
-              ]}
-            >
-              <TextInput
-                placeholder="Last Name"
-                placeholderTextColor="#aaa"
-                value={lastName}
-                onChangeText={setLastName}
-                onFocus={() => setFocusedField("lastName")}
-                onBlur={() => setFocusedField(null)}
-              />
+
+              {/* Username */}
+              <View style={styles.formContainer}>
+                <Text style={styles.fieldLabel}>
+                  Username <Text style={styles.asterisk}>*</Text>
+                </Text>
+                <View
+                  style={[
+                    !usernameIsValid && isSubmitted
+                      ? styles.fieldAlert
+                      : styles.emailField,
+                    focusedField === "username" && styles.focusedField, // Apply blue border if focused
+                  ]}
+                >
+                  <TextInput
+                    placeholder="Enter a username"
+                    placeholderTextColor={Colors.placeHolderTextGray}
+                    value={username}
+                    onChangeText={setUsername}
+                    onFocus={() => setFocusedField("username")}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                </View>
+                {!usernameIsValid && isSubmitted && (
+                  <View style={styles.alertContainer}>
+                    <Ionicons
+                      name="alert-circle-outline"
+                      color="red"
+                      size={20}
+                    />
+                    <Text style={styles.alertText}>Username is required</Text>
+                  </View>
+                )}
+              </View>
+
+              {/* Email */}
+              <View style={styles.formContainer}>
+                <Text style={styles.fieldLabel}>
+                  Email <Text style={styles.asterisk}>*</Text>
+                </Text>
+                <View style={[styles.emailField, { opacity: 0.4 }]}>
+                  <TextInput value={email} editable={false} />
+                </View>
+              </View>
+
+              {/* Occupation */}
+              <View style={styles.formContainer}>
+                <Text style={styles.fieldLabel}>Occupation</Text>
+                <View
+                  style={[
+                    styles.emailField,
+                    focusedField === "occupation" && styles.focusedField, // Apply blue border if focused
+                  ]}
+                >
+                  <TextInput
+                    placeholder="Occupation"
+                    placeholderTextColor={Colors.placeHolderTextGray}
+                    value={occupation}
+                    onChangeText={setOccupation}
+                    onFocus={() => setFocusedField("occupation")}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                </View>
+              </View>
+            </View>
+
+            {/* Save Button */}
+            <View style={styles.buttonContainer}>
+              <WideButton title="Save" color="white" onPress={handleSave} />
             </View>
           </View>
-        </View>
-
-        {/* Username */}
-        <View style={styles.formContainer}>
-          <Text style={styles.fieldLabel}>
-            Username <Text style={styles.asterisk}>*</Text>
-          </Text>
-          <View
-            style={[
-              !usernameIsValid && isSubmitted
-                ? styles.fieldAlert
-                : styles.emailField,
-              focusedField === "username" && styles.focusedField, // Apply blue border if focused
-            ]}
-          >
-            <TextInput
-              placeholder="Enter a username"
-              placeholderTextColor="#aaa"
-              value={username}
-              onChangeText={setUsername}
-              onFocus={() => setFocusedField("username")}
-              onBlur={() => setFocusedField(null)}
-            />
-          </View>
-          {!usernameIsValid && isSubmitted && (
-            <View style={styles.alertContainer}>
-              <Ionicons name="alert-circle-outline" color="red" size={20} />
-              <Text style={styles.alertText}>Username is required</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Email */}
-        <View style={styles.formContainer}>
-          <Text style={styles.fieldLabel}>
-            Email <Text style={styles.asterisk}>*</Text>
-          </Text>
-          <View style={[styles.emailField, { opacity: 0.4, borderColor:Colors.disabledGray }]}>
-            <TextInput value={email} editable={false} />
-          </View>
-        </View>
-
-        {/* Occupation */}
-        <View style={styles.formContainer}>
-          <Text style={styles.fieldLabel}>Occupation</Text>
-          <View
-            style={[
-              styles.emailField,
-              focusedField === "occupation" && styles.focusedField, // Apply blue border if focused
-            ]}
-          >
-            <TextInput
-              placeholder="Occupation"
-              placeholderTextColor="#aaa"
-              value={occupation}
-              onChangeText={setOccupation}
-              onFocus={() => setFocusedField("occupation")}
-              onBlur={() => setFocusedField(null)}
-            />
-          </View>
-        </View>
-      </View>
-
-      {/* Save Button */}
-      <View style={styles.buttonContainer}>
-        <WideButton title="Save" color="white" onPress={handleSave} />
-      </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -292,7 +327,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   fieldLabel: {
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
     marginBottom: 8,
   },
   asterisk: {
@@ -305,6 +340,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
     backgroundColor: "white",
+    fontFamily: "MavenPro-Medium",
   },
   emailField: {
     borderWidth: 1,
@@ -313,13 +349,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
     backgroundColor: "white",
+    fontFamily: "MavenPro-Medium",
   },
   fieldAlert: {
     borderWidth: 2,
-    borderColor: "red",
+    borderColor: Colors.errorRed,
     borderRadius: 4,
     paddingHorizontal: 8,
     paddingVertical: 12,
+    fontFamily: "MavenPro-Medium",
   },
   focusedField: {
     borderColor: "blue", // Blue border on focus
@@ -333,6 +371,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 12,
     marginLeft: 4,
+    fontFamily: "Roboto-Medium",
   },
   buttonContainer: {
     alignItems: "center",

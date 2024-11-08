@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     width: 340,
     marginTop: 20,
     marginHorizontal: 10,
-    rowGap: 15,
+    rowGap: 12,
   },
 });

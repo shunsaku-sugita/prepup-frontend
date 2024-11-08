@@ -13,6 +13,7 @@ import CreateCategoryModal from "./CreateCategoryModal";
 import { saveInterviewQuestions } from "../services/api";
 import { Colors } from "@/constants/Colors";
 import WideButton from "../common/WideButton";
+import { AppContext } from "@/store/app-context";
 
 const InterviewFeedbackButtons = ({
   setCurrentQuestionIndex,
@@ -23,6 +24,10 @@ const InterviewFeedbackButtons = ({
   setCategories,
   progressUpdate,
 }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   const [modalVisible, setModalVisible] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const navigation = useNavigation();
@@ -77,18 +82,22 @@ const InterviewFeedbackButtons = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.modalContainer}
         >
-          <View style={styles.modalContent}>
-            <CreateCategoryModal
-              setModalVisible={setModalVisible}
-              isSaved={isSaved}
-              setIsSaved={setIsSaved}
-              categories={categories}
-              setCategories={setCategories}
-              selectedCategoryQuestions={selectedCategoryQuestions}
-              setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-              saveInterviewQuestions={saveInterviewQuestions}
-            />
-          </View>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView contentContainerStyle={{ flex: 1 }}>
+              <View style={styles.modalContent}>
+                <CreateCategoryModal
+                  setModalVisible={setModalVisible}
+                  isSaved={isSaved}
+                  setIsSaved={setIsSaved}
+                  categories={categories}
+                  setCategories={setCategories}
+                  selectedCategoryQuestions={selectedCategoryQuestions}
+                  setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+                  saveInterviewQuestions={saveInterviewQuestions}
+                />
+              </View>
+            </ScrollView>
+          </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       </Modal>
     </View>
@@ -121,7 +130,7 @@ const styles = StyleSheet.create({
   },
   saveText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish_ExtraBold",
     color: Colors.defaultBlue,
   },
   tryAgainButton: {
@@ -137,7 +146,7 @@ const styles = StyleSheet.create({
   tryAgainText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish_ExtraBold",
   },
   modalContainer: {
     flex: 1,

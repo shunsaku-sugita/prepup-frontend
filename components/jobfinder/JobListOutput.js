@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useEffect } from "react";
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";
 import JobFilterLocationItem from "./JobFilterLocationItem";
@@ -19,12 +19,17 @@ import {
   fetchSavedJobs,
   fetchJobs,
   fetchJobsByKeyword,
-} from '../services/api';
-import Toast from 'react-native-toast-message';
+} from "../services/api";
+import Toast from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
 import LoadingOverlay from "../common/LoadingOverlay";
+import { AppContext } from "@/store/app-context";
 
 const jobListOutput = () => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   const [filterType, setFilterType] = useState(1);
   const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -66,7 +71,9 @@ const jobListOutput = () => {
       }
 
       const updatedFetchedJobs = fetchedJobs.map((job) => {
-        const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
+        const isSaved = savedJobs.some(
+          (savedJob) => savedJob.jobId === job.jobId
+        );
         return { ...job, isSaved };
       });
       setJobs(updatedFetchedJobs);
@@ -107,11 +114,18 @@ const jobListOutput = () => {
 
         if (uniqueNewJobs.length > 0) {
           const updatedNewJobs = uniqueNewJobs.map((job) => {
-            const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
+            const isSaved = savedJobs.some(
+              (savedJob) => savedJob.jobId === job.jobId
+            );
             return { ...job, isSaved };
           });
           setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
           setPage(nextPage);
+        }
+        if (uniqueNewJobs.length < 10) {
+          console.warn(
+            `Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`
+          );
         }
       }
     } catch (error) {
@@ -133,7 +147,9 @@ const jobListOutput = () => {
       url: job.url,
     };
 
-    const isAlreadySaved = savedJobs.some((savedJob) => savedJob.jobId === jobId);
+    const isAlreadySaved = savedJobs.some(
+      (savedJob) => savedJob.jobId === jobId
+    );
 
     try {
       setIsBookmarking(true);
@@ -151,10 +167,10 @@ const jobListOutput = () => {
         );
 
         Toast.show({
-          type: 'success',
-          text1: 'Job removed from saved jobs',
-          text2: '',
-          position: 'top',
+          type: "success",
+          text1: "Job removed from saved jobs",
+          text2: "",
+          position: "top",
           autoHide: true,
           visibilityTime: 3000,
         });
@@ -169,10 +185,10 @@ const jobListOutput = () => {
         );
 
         Toast.show({
-          type: 'success',
-          text1: 'Job added to saved jobs',
-          text2: '',
-          position: 'top',
+          type: "success",
+          text1: "Job added to saved jobs",
+          text2: "",
+          position: "top",
           autoHide: true,
           visibilityTime: 3000,
         });
@@ -205,22 +221,24 @@ const jobListOutput = () => {
       {/* Show content once initial loading is complete */}
       {!initialLoading && (
         <>
-          <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-          <JobFilterBar filterType={filterType} changeFilter={(type) => setFilterType(type)} />
+          <JobSearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+          <JobFilterBar
+            filterType={filterType}
+            changeFilter={(type) => setFilterType(type)}
+          />
 
           {filterType === 0 ? (
             <SavedJobCard
-              data={savedJobs.filter((job) =>
-                job.title.toLowerCase()
-              )}
+              data={savedJobs.filter((job) => job.title.toLowerCase())}
               toggleBookmark={toggleBookmark}
             />
           ) : (
             <View style={styles.container}>
               <JobFilterLocationItem
-                data={jobs.filter((job) =>
-                  job.title.toLowerCase()
-                )}
+                data={jobs.filter((job) => job.title.toLowerCase())}
                 toggleBookmark={toggleBookmark}
                 handleJobPress={handleJobPress}
               />
@@ -271,8 +289,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.3)",
   },
   innerContainer: {
-    width: '100%',
-    height: '80%',
+    width: "100%",
+    height: "80%",
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -296,6 +314,6 @@ const styles = StyleSheet.create({
   loadMoreButtonText: {
     color: "#FEFEFF",
     fontSize: 16,
-    fontWeight: "800",
+    fontFamily: "Mulish-ExtraBold",
   },
 });

@@ -1,7 +1,13 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useContext } from "react";
+import { AppContext } from "@/store/app-context";
 
 const InterviewAnswerScript = ({ transcription }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -33,5 +39,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    fontFamily: "Mulish-SemiBold",
   },
 });

@@ -17,6 +17,7 @@ const CategoryCardDefault = ({
     setCurrentQuestionIndex,
     setSelectedCategoryQuestions,
     setQuestionAnswerArray,
+    fontsLoaded,
   } = useContext(AppContext);
 
   const startInterviewHandler = (index) => {
@@ -37,6 +38,10 @@ const CategoryCardDefault = ({
     // reset the setProgressUpdate to delete previous job questions data (to avoid showing "save" button on feedback)
     // setProgressUpdate(null);
   };
+
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   return (
     <View style={[styles.cardContainer, { backgroundColor }]}>
@@ -87,12 +92,12 @@ const styles = StyleSheet.create({
     minWidth: Platform.OS === "ios" ? 150 : 165,
     height: 112,
     // shadow for android
-    elevation: 2,
+    elevation: 3,
     // shadow for iOS
     shadowColor: Colors.textLightDarkGray,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
-    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
   },
   imageContainer: {
     flex: 6,
@@ -139,8 +144,8 @@ const styles = StyleSheet.create({
     height: 47,
   },
   categoryText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 17,
+    fontFamily: "MavenPro-Bold",
   },
   buttonContainer: {
     justifyContent: "center",
@@ -166,7 +171,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     color: "white",
   },
 });

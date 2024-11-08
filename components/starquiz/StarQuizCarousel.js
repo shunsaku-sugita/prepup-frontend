@@ -6,14 +6,14 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import IconButton from "../common/IconButton";
 import * as Speech from "expo-speech";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import debounce from "lodash.debounce";
+import { AppContext } from "@/store/app-context";
 
 const StarQuizCarousel = ({
   situationAnswerRef,
@@ -52,6 +52,7 @@ const StarQuizCarousel = ({
   fieldType,
   setFieldType,
 }) => {
+  const { fontsLoaded } = useContext(AppContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const navigation = useNavigation();
 
@@ -144,8 +145,12 @@ const StarQuizCarousel = ({
 
   const openModalScreen = (field) => {
     handleFocus(field); // ensure the correct modal is set to visible
-    navigation.navigate("StarModal", { fieldType: field });
+    navigation.navigate("StarQuizModal", { fieldType: field });
   };
+
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   return (
     <View style={styles.container}>
@@ -190,7 +195,7 @@ const StarQuizCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                keyboardType="default"
+                // keyboardType="default"
                 value={answers.situation}
                 maxLength={500}
                 onChangeText={(text) => {
@@ -202,9 +207,9 @@ const StarQuizCarousel = ({
                     "situation"
                   );
                 }}
-                // onFocus={() => handleFocus("situation")}
+                style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarModal");
+                  navigation.navigate("StarQuizModal");
                   openModalScreen("situation");
                   onCardPress("situation");
                 }}
@@ -259,7 +264,7 @@ const StarQuizCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                keyboardType="default"
+                // keyboardType="default"
                 value={answers.task}
                 maxLength={500}
                 onChangeText={(text) =>
@@ -271,9 +276,9 @@ const StarQuizCarousel = ({
                     "task"
                   )
                 }
-                // onFocus={() => handleFocus("task")}
+                style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarModal");
+                  navigation.navigate("StarQuizModal");
                   openModalScreen("task");
                   onCardPress("task");
                 }}
@@ -322,7 +327,7 @@ const StarQuizCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                keyboardType="default"
+                // keyboardType="default"
                 value={answers.action}
                 maxLength={500}
                 onChangeText={(text) =>
@@ -334,9 +339,9 @@ const StarQuizCarousel = ({
                     "action"
                   )
                 }
-                // onFocus={() => handleFocus("action")}
+                style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarModal");
+                  navigation.navigate("StarQuizModal");
                   openModalScreen("action");
                   onCardPress("action");
                 }}
@@ -385,7 +390,7 @@ const StarQuizCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                keyboardType="default"
+                // keyboardType="default"
                 value={answers.result}
                 maxLength={500}
                 onChangeText={(text) =>
@@ -397,9 +402,9 @@ const StarQuizCarousel = ({
                     "result"
                   )
                 }
-                // onFocus={() => handleFocus("result")}
+                style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarModal");
+                  navigation.navigate("StarQuizModal");
                   openModalScreen("result");
                   onCardPress("result");
                 }}
@@ -495,24 +500,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  cardFooterContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 4,
-  },
-  swipeContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  swipeText: {
-    fontSize: 16,
+  title: {
+    fontSize: 20,
+    fontFamily: "MavenPro-Bold",
   },
   textInputContainer: {
     backgroundColor: "white",
     borderRadius: 6,
     padding: 10,
     height: "75%",
+  },
+  inputFieldText: {
+    fontFamily: "Mulish-Medium",
+    color: Colors.backgroundDarkGray,
+  },
+  cardFooterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 4,
   },
   countNumberContainer: {
     flexDirection: "row",
@@ -531,26 +536,27 @@ const styles = StyleSheet.create({
   //   padding: 6,
   // },
   wordCountText: {
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   situationWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   taskWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   actionWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
   resultWordCountLimit: {
     color: "red",
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
+    fontSize: 15,
   },
 });

@@ -1,7 +1,14 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Alert, Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
 import JobSearchScreen from "../screens/JobSearchScreen";
@@ -32,42 +39,39 @@ import ResetPW_SuccessScreen from "../screens/ResetPW_SuccessScreen";
 
 import StarQuizScreen from "../screens/StarQuizScreen";
 import StarQuizFeedbackScreen from "../screens/StarQuizFeedbackScreen";
-import StarModalScreen from "../screens/StarModalScreen";
+import StarQuizModalScreen from "../screens/StarQuizModalScreen";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Toast from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
 import { toastConfig } from "../components/toast/ToastComponent";
-import * as Font from 'expo-font';
-import { useFonts, Mulish_400Regular, Mulish_700Bold, Mulish_800ExtraBold } from '@expo-google-fonts/mulish';
-import { MavenPro_400Regular, MavenPro_500Medium, MavenPro_700Bold, } from '@expo-google-fonts/maven-pro';
-
-
+import LoadingOverlay from "@/components/common/LoadingOverlay";
+import { useFonts } from "expo-font";
+// import * as Font from 'expo-font';
+// import { useFonts, Mulish_400Regular, Mulish_700Bold, Mulish_800ExtraBold } from '@expo-google-fonts/mulish';
+// import { MavenPro_400Regular, MavenPro_500Medium, MavenPro_700Bold, } from '@expo-google-fonts/maven-pro';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
-  let [fontsLoaded] = useFonts({
-    Mulish_400Regular,
-    Mulish_700Bold,
-    Mulish_800ExtraBold,
-    MavenPro_400Regular,
-    MavenPro_500Medium,
-    MavenPro_700Bold,
-  });
-
-
-  if (!fontsLoaded) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
   const navigation = useNavigation();
+
+  // const [fontsLoaded] = useFonts({
+  //   "Mulish-Regular": require("../assets/fonts/Mulish-Regular.ttf"),
+  //   "Mulish-Bold": require("../assets/fonts/Mulish-Bold.ttf"),
+  //   "Mulish-ExtraBold": require("../assets/fonts/Mulish-ExtraBold.ttf"),
+  //   "MavenPro-Regular": require("../assets/fonts/MavenPro-Regular.ttf"),
+  //   "MavenPro-Bold": require("../assets/fonts/MavenPro-Bold.ttf"),
+  //   "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+  //   "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+  // });
+
+  // if (!fontsLoaded) {
+  //   // Show a loading screen while fonts are loading
+  //   return <LoadingOverlay />;
+  // }
+
   return (
     <>
       <StatusBar style="auto" />
@@ -113,7 +117,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Job Finder
                     </Text>
                   </View>
@@ -129,23 +139,6 @@ export default function App() {
                 ),
               }}
             />
-            {/* <Stack.Screen
-              name="Flashcard"
-              component={QuizStarterScreen}
-              options={{
-                headerShown: true,
-                title: "",
-                headerLeft: () => (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    display={false}
-                    onPress={() => navigation.goBack()}
-                  />
-                ),
-              }}
-            /> */}
             <Stack.Screen
               name="InterviewSimulator"
               component={InterviewSimulatorScreen}
@@ -154,12 +147,23 @@ export default function App() {
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Simulator
                     </Text>
                   </View>
@@ -207,7 +211,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Feedback
                     </Text>
                   </View>
@@ -240,7 +250,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       S.T.A.R Master
                     </Text>
                   </View>
@@ -288,7 +304,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       S.T.A.R Master
                     </Text>
                   </View>
@@ -322,8 +344,8 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="StarModal"
-              component={StarModalScreen}
+              name="StarQuizModal"
+              component={StarQuizModalScreen}
               options={({ navigation }) => ({
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
@@ -356,7 +378,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Account
                     </Text>
                   </View>
@@ -387,7 +415,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Edit Information
                     </Text>
                   </View>
@@ -416,7 +450,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Change Password
                     </Text>
                   </View>
@@ -452,7 +492,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Sign In
                     </Text>
                   </View>
@@ -473,7 +519,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Sign Up
                     </Text>
                   </View>
@@ -543,7 +595,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Reset Password Request
                     </Text>
                   </View>
@@ -574,7 +632,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Verify Code
                     </Text>
                   </View>
@@ -605,7 +669,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Create New Password
                     </Text>
                   </View>
@@ -652,7 +722,13 @@ export default function App() {
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
                     />
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
                       Create New Password
                     </Text>
                   </View>
@@ -686,80 +762,6 @@ export default function App() {
                       size={28}
                       display={false}
                       onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
-              })}
-            />
-            <Stack.Screen
-              name="QuizStarterScreen"
-              component={QuizStarterScreen}
-              options={({ navigation }) => ({
-                headerShown: true,
-                title: "",
-                headerRight: null,
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
-              })}
-            />
-            <Stack.Screen
-              name="QuizScreen"
-              component={QuizScreen}
-              options={({ navigation }) => ({
-                headerShown: true,
-                title: "",
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => {
-                        Alert.alert(
-                          "Cancel the flashcard?",
-                          "The process is unsaved, you will lose it.",
-                          [
-                            {
-                              text: "Cancel",
-                            },
-                            {
-                              text: "Confirm",
-                              onPress: () => {
-                                navigation.navigate("Category");
-                              },
-                            },
-                          ]
-                        );
-                      }}
-                    />
-                  ) : null,
-              })}
-            />
-            <Stack.Screen
-              name="QuizFeedback"
-              component={QuizFeedbackScreen}
-              options={({ navigation }) => ({
-                headerShown: true,
-                title: "",
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.navigate("Category")}
                     />
                   ) : null,
               })}

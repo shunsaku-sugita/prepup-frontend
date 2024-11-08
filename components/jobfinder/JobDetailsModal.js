@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Modal,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import TitleText from "../common/TitleText";
@@ -28,7 +28,11 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
     setProgressUpdate,
     setSelectedCategoryQuestions,
     setCurrentQuestionIndex,
+    fontsLoaded,
   } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   if (!job) {
     return null;
@@ -108,7 +112,11 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
       <View style={styles.innerContainer}>
         <View style={styles.headerRow}>
           <View style={styles.titleContainer}>
-            <TitleText text={job.title} numberOfLines={1} ellipsizeMode="tail" />
+            <TitleText
+              text={job.title}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            />
           </View>
           <Ionicons
             name="close"
@@ -199,20 +207,20 @@ const styles = StyleSheet.create({
 
   },
   companyLabel: {
-    fontFamily: "Mulish_800ExtraBold",
     fontSize: 16,
+    fontFamily: "Mulish-ExtraBold",
     marginBottom: 20,
   },
   companyValue: {
     fontSize: 16,
-    fontWeight: "normal",
+    fontFamily: "Mulish-Medium",
   },
   descriptionLabel: {
-    fontFamily: "Mulish_800ExtraBold",
+    fontFamily: "Mulish-ExtraBold",
     fontSize: 16,
   },
   descriptionValue: {
-    fontFamily: "Mulish_400Regular",
+    fontFamily: "Mulish-Medium",
     fontSize: 16,
   },
   buttonContainer: {
@@ -230,12 +238,12 @@ const styles = StyleSheet.create({
   applyButtonText: {
     color: Colors.defaultBlue,
     fontSize: 16,
-    fontWeight: 800,
+    fontFamily: "Mulish-ExtraBold",
   },
   closeWebView: {
     position: "absolute",
-    top: 40,
-    right: 20,
+    top: 75,
+    right: 14,
     backgroundColor: "white",
     padding: 10,
     borderRadius: 5,
