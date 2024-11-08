@@ -1,14 +1,17 @@
 import {
   Alert,
-  Modal,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import StarQuizCarousel from "./StarQuizCarousel";
-import StarQuizCardModal from "./StarQuizCardModal";
 import HearableQuestions from "../common/HearableQuestions";
 
 import {
@@ -16,9 +19,8 @@ import {
   getStarMasterQuestion,
 } from "../services/api";
 import { AppContext } from "@/store/app-context";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
-import LoadingOverlay from "../common/LoadingOverlay";
 
 const StarQuizOutput = () => {
   const navigation = useNavigation();
@@ -41,7 +43,6 @@ const StarQuizOutput = () => {
     taskInputRef,
     actionInputRef,
     resultInputRef,
-    loading,
     setLoading,
     situationIsCharacterLimit,
     setSituationIsCharacterLimit,
@@ -65,6 +66,7 @@ const StarQuizOutput = () => {
     setFocusedField,
     setFieldType,
     handleBlur,
+    fontsLoaded,
   } = useContext(AppContext);
 
   const [modalVisible, setModalVisible] = useState({
@@ -187,7 +189,17 @@ const StarQuizOutput = () => {
     }
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
+    // <KeyboardAvoidingView
+    //   style={{ flex: 1 }}
+    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
+    // >
+    //   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    //     <ScrollView contentContainerStyle={{ flex: 1 }}>
     <View style={styles.container}>
       <View style={styles.questionContainer}>
         <HearableQuestions questionText={starQuestionText} />
@@ -265,6 +277,9 @@ const StarQuizOutput = () => {
         </TouchableOpacity>
       </View>
     </View>
+    //     </ScrollView>
+    //   </TouchableWithoutFeedback>
+    // </KeyboardAvoidingView>
   );
 };
 
@@ -307,7 +322,7 @@ const styles = StyleSheet.create({
   cancelText: {
     fontSize: 16,
     color: Colors.defaultBlue,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
   },
   skipOrNextButton: {
     justifyContent: "center",
@@ -321,7 +336,7 @@ const styles = StyleSheet.create({
   },
   skipOrNextText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     color: "white",
   },
 });

@@ -1,7 +1,13 @@
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/store/app-context";
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const SmallButton = ({ title, color, onPress }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
       <Text style={[styles.buttonText, { color: color }]}>{title}</Text>
@@ -25,6 +31,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
   },
 });

@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import WideButton from "@/components/common/WideButton";
 import { useNavigation } from "expo-router";
 import TitleText from "@/components/common/TitleText";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/store/app-context";
 
 const RegistrationSuccessScreen = () => {
   const navigation = useNavigation();
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   return (
     <View style={styles.container}>
@@ -18,7 +23,7 @@ const RegistrationSuccessScreen = () => {
         </View>
         <View style={styles.titleAndTextContainer}>
           <TitleText text="Registration Successful!" />
-          <Text>Your account has been registered.</Text>
+          <Text style={styles.text}>Your account has been registered.</Text>
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -59,6 +64,10 @@ const styles = StyleSheet.create({
     rowGap: 20,
     width: 340,
     marginBottom: 80,
+  },
+  text: {
+    fontSize: 15,
+    fontFamily: "Mulish-Medium",
   },
   buttonContainer: {
     flex: 0.8,

@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TitleText from "../common/TitleText";
 // import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
 import StarQuizFeedbackRatingDisplay from "./StarQuizFeedbackRatingDisplay";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/store/app-context";
 
 const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
   const [ratingStarNumber, setRatingStarNumber] = useState(0);
   const [ratingPhrase, setRatingPhrase] = useState("");
+  const { fontsLoaded } = useContext(AppContext);
 
   const ratingPhrases = ["Keep Trying!", "Well Done!", "Impressive Work!"];
 
@@ -42,6 +44,10 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
     else if (stars === 5) setRatingPhrase(ratingPhrases[2]);
   };
 
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.phraseContainer}>
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
   },
   phrase: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
     color: Colors.backgroundDarkGray,
     marginVertical: 10,
   },

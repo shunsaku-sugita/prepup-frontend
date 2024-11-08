@@ -1,4 +1,5 @@
-import { useRoute } from "@react-navigation/native";
+import LoadingOverlay from "@/components/common/LoadingOverlay";
+import { useFonts } from "expo-font";
 import { createContext, useRef, useState } from "react";
 
 export const AppContext = createContext();
@@ -73,6 +74,26 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+  const [fontsLoaded] = useFonts({
+    "Mulish-Regular": require("../assets/fonts/Mulish-Regular.ttf"),
+    "Mulish-Medium": require("../assets/fonts/Mulish-Medium.ttf"),
+    "Mulish-SemiBold": require("../assets/fonts/Mulish-SemiBold.ttf"),
+    "Mulish-Bold": require("../assets/fonts/Mulish-Bold.ttf"),
+    "Mulish-ExtraBold": require("../assets/fonts/Mulish-ExtraBold.ttf"),
+    "MavenPro-Regular": require("../assets/fonts/MavenPro-Regular.ttf"),
+    "MavenPro-Medium": require("../assets/fonts/MavenPro-Medium.ttf"),
+    "MavenPro-SemiBold": require("../assets/fonts/MavenPro-SemiBold.ttf"),
+    "MavenPro-Bold": require("../assets/fonts/MavenPro-Bold.ttf"),
+    "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Medium": require("../assets/fonts/Roboto-Medium.ttf"),
+    "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    // Show a loading screen while fonts are loading
+    return <LoadingOverlay />;
+  }
+
   return (
     <AppContext.Provider
       // can provide states and functions grobally
@@ -134,6 +155,7 @@ const AppContextProvider = ({ children }) => {
         fieldType,
         setFieldType,
         handleBlur,
+        fontsLoaded,
       }}
     >
       {children}

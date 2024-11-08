@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import WideButton from "@/components/common/WideButton";
 import TitleText from "@/components/common/TitleText";
 import { useNavigation } from "expo-router";
 import { Colors } from "@/constants/Colors";
+import { AppContext } from "@/store/app-context";
 
 const OnboardingOne = () => {
   const navigation = useNavigation();
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   return (
     <View style={styles.container}>
       <View style={styles.mainContents}>
@@ -87,7 +92,8 @@ const styles = StyleSheet.create({
     width: "73%",
   },
   description: {
-    fontSize: 16,
+    fontSize: 15,
+    fontFamily: "Mulish-Medium",
   },
   buttonContainer: {
     flex: 1,
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
   },
   simpleButtonText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     color: Colors.defaultBlue,
   },
 });

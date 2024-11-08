@@ -8,7 +8,8 @@ import {
   AccordionContentText,
 } from "@/components/ui/accordion";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors";
+import { useContext } from "react";
+import { AppContext } from "@/store/app-context";
 
 const InterviewFeedbackCard = ({
   value,
@@ -17,6 +18,10 @@ const InterviewFeedbackCard = ({
   contentText,
   backgroundColorStyle,
 }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   return (
     <AccordionItem
       value={value}
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
   },
   accordionItem: {
     borderRadius: 4,
-    padding: 16,
+    padding: 14,
   },
   accordionTrigger: {
     flexDirection: "row",
@@ -78,7 +83,7 @@ const styles = StyleSheet.create({
   },
   accordionTitleText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "MavenPro-Bold",
   },
   accordionContent: {
     marginTop: 10,
@@ -87,5 +92,6 @@ const styles = StyleSheet.create({
   accordionContentText: {
     fontSize: 15,
     lineHeight: 21,
+    fontFamily: "Mulish-Medium",
   },
 });

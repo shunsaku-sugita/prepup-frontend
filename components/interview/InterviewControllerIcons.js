@@ -25,8 +25,9 @@ const InterviewControllerIcons = ({
   questionAnswerArray,
   setQuestionAnswerArray,
 }) => {
-  const { setLoading, analyzedAnswer, setAnalyzedAnswer } =
+  const { setLoading, analyzedAnswer, setAnalyzedAnswer, fontsLoaded } =
     useContext(AppContext);
+
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
   const [sound, setSound] = useState(null);
@@ -178,14 +179,12 @@ const InterviewControllerIcons = ({
       <InterviewAnswerScript transcription={transcription} />
       <View style={styles.retryContainer}>
         <Text style={styles.pressText}>Press to try again!</Text>
-        <View style={styles.retryIconContainer}>
-          <IconButton
-            icon="refresh"
-            color="black"
-            size={25}
-            onPress={startRecording}
-          />
-        </View>
+        <TouchableOpacity
+          style={styles.retryIconContainer}
+          onPress={startRecording}
+        >
+          <IconButton icon="refresh" color="black" size={25} />
+        </TouchableOpacity>
       </View>
     </>
   ) : (
@@ -193,16 +192,24 @@ const InterviewControllerIcons = ({
       <Text style={styles.pressText}>
         {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
       </Text>
-      <View style={isRecording ? styles.micStopContainer : styles.micContainer}>
-        <IconButton
-          icon={isRecording ? "stop-sharp" : "mic"}
-          color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
-          size={isRecording ? 35 : 50}
+      <View style={styles.micOuterContainer}>
+        <TouchableOpacity
+          style={isRecording ? styles.micStopContainer : styles.micContainer}
           onPress={isRecording ? stopRecording : startRecording}
-        />
+        >
+          <IconButton
+            icon={isRecording ? "stop-sharp" : "mic"}
+            color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
+            size={isRecording ? 35 : 50}
+          />
+        </TouchableOpacity>
       </View>
     </>
   );
+
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
 
   return (
     <View style={styles.container}>
@@ -269,8 +276,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   pressText: {
-    fontSize: 15,
+    fontSize: 16,
     marginBottom: 2,
+    fontFamily: "MavenPro-Medium",
   },
   retryContainer: {
     justifyContent: "center",
@@ -286,17 +294,26 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.disabledBlue,
     padding: 15,
   },
+  micOuterContainer: {
+    borderWidth: 18,
+    borderColor: "#dee3f4",
+    borderRadius: 150,
+  },
   micContainer: {
     borderWidth: 15,
     borderColor: Colors.successGreen,
     borderRadius: 100,
     padding: 35,
+    margin: 10,
+    backgroundColor: Colors.disabledBlue,
   },
   micStopContainer: {
     borderWidth: 15,
     borderColor: Colors.defaultRed,
     borderRadius: 100,
-    padding: 42,
+    padding: 42.5,
+    margin: 10,
+    backgroundColor: Colors.disabledBlue,
   },
   buttonsContainer: {
     flex: 1,
@@ -330,7 +347,7 @@ const styles = StyleSheet.create({
   },
   listenText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
     color: Colors.defaultBlue,
   },
   nextButton: {
@@ -357,6 +374,6 @@ const styles = StyleSheet.create({
   nextText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Mulish-ExtraBold",
   },
 });

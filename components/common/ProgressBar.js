@@ -1,10 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 import * as Progress from "react-native-progress";
 import { Colors } from "@/constants/Colors";
+import { useContext } from "react";
+import { AppContext } from "@/store/app-context";
 
 const ProgressBar = ({ currentIndexNum, totalNum }) => {
+  const { fontsLoaded } = useContext(AppContext);
+
   const currentIndex = Number(currentIndexNum + 1);
   const totalNumber = Number(totalNum);
+
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
@@ -36,5 +45,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    fontFamily: "MavenPro-Medium",
   },
 });

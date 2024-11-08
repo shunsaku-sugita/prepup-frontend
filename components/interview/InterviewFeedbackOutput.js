@@ -5,7 +5,6 @@ import InterviewFeedbackAccordions from "./InterviewFeedbackAccordions";
 import { AppContext } from "@/store/app-context";
 import { useContext, useEffect } from "react";
 import { Colors } from "@/constants/Colors";
-import LoadingOverlay from "../common/LoadingOverlay";
 
 const InterviewFeedbackOutput = ({ analyzedAnswer }) => {
   const {

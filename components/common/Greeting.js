@@ -1,6 +1,12 @@
+import { AppContext } from "@/store/app-context";
+import { useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 
 const Greeting = ({ userName }) => {
+  const { fontsLoaded } = useContext(AppContext);
+  if (!fontsLoaded) {
+    return null; // return null if fonts aren't loaded
+  }
   return (
     <View style={styles.container}>
       <Image
@@ -21,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "flex-start",
     marginLeft: 10,
     columnGap: 6,
@@ -33,8 +39,9 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 18,
     color: "white",
+    fontFamily: "MavenPro",
   },
   userNameText: {
-    fontWeight: "600",
+    fontFamily: "MavenPro-Bold",
   },
 });

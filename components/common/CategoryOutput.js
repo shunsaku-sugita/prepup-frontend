@@ -173,19 +173,17 @@ const CategoryOutput = () => {
   return (
     <View style={styles.rootContainer}>
       {/* header bar */}
-      <View style={styles.headerContainer}>
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          colors={[Colors.headerBlue, Colors.disabledBlue]}
-          style={styles.linearGradient}
-        >
-          <View style={styles.headerInnerContainer}>
-            <Greeting userName={userName} />
-            <HeaderRightIcons color={Colors.backgroundDarkGray} />
-          </View>
-        </LinearGradient>
-      </View>
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        colors={[Colors.headerBlue, Colors.disabledBlue]}
+        style={styles.linearGradient}
+      >
+        <View style={styles.headerInnerContainer}>
+          <Greeting userName={userName} />
+          <HeaderRightIcons color={Colors.backgroundDarkGray} />
+        </View>
+      </LinearGradient>
 
       <ScrollView>
         {/* Default category cards (scrollable with fixed height) */}
@@ -195,7 +193,7 @@ const CategoryOutput = () => {
             keyExtractor={(item, index) => item.categoryName + index}
             ListHeaderComponent={
               <View style={styles.upperTextContainer}>
-                <View style={styles.title}>
+                <View style={styles.titleContainer}>
                   <TitleText text="Choose a category to practice:" />
                 </View>
               </View>
@@ -208,7 +206,7 @@ const CategoryOutput = () => {
         {/* Custom category cards (only if there are more than 3 categories) */}
         {customCategories.length > 0 && (
           <View style={styles.bottomCardContainer}>
-            <View style={styles.title}>
+            <View style={styles.titleContainer}>
               <TitleText text="Custom categories:" />
             </View>
             <FlatList
@@ -232,15 +230,6 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     width: "100%",
-  },
-  headerContainer: {
-    // // shadow for android
-    // elevation: 3,
-    // // shadow for iOS
-    // shadowColor: "black",
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowRadius: 2,
-    // shadowOpacity: 0.2,
   },
   linearGradient: {
     marginTop: 60,
@@ -266,7 +255,7 @@ const styles = StyleSheet.create({
     flex: 4,
     paddingHorizontal: 18,
   },
-  title: {
+  titleContainer: {
     paddingHorizontal: 8,
   },
   bottomTabContainer: {
@@ -309,13 +298,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.4,
   },
-  defaultCategoryContainer: {
-    // height: 410,
-    // marginBottom: 4,
-  },
+  defaultCategoryContainer: {},
   defaultCardContainer: {
-    // flexDirection: "row",
-    // justifyContent: "space-between",
     marginHorizontal: 18,
   },
   customCardContainer: {
