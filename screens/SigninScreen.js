@@ -36,8 +36,8 @@ WebBrowser.maybeCompleteAuthSession();
 const SigninScreen = () => {
   const { fontsLoaded } = useContext(AppContext);
 
-  const [enteredEmail, setEnteredEmail] = useState("khushalkhnta4@gmail.com");
-  const [enteredPassword, setEnteredPassword] = useState("Hello@123");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
 
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
@@ -341,14 +341,14 @@ const SigninScreen = () => {
             </View>
 
             {/* tentative button for development purpose */}
-            <View style={styles.devButtonsContainer}>
+            {/* <View style={styles.devButtonsContainer}>
               <TouchableOpacity
                 style={styles.homeNavigationButton}
                 onPress={() => navigation.navigate("Category")}
               >
                 <Text style={styles.homeNavigationText}>Home(Category)</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>

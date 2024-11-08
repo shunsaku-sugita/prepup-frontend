@@ -86,20 +86,18 @@ const InterviewFeedbackButtons = ({
           style={styles.modalContainer}
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ScrollView contentContainerStyle={{ flex: 1 }}>
-              <View style={styles.modalContent}>
-                <CreateCategoryModal
-                  setModalVisible={setModalVisible}
-                  isSaved={isSaved}
-                  setIsSaved={setIsSaved}
-                  categories={categories}
-                  setCategories={setCategories}
-                  selectedCategoryQuestions={selectedCategoryQuestions}
-                  setSelectedCategoryQuestions={setSelectedCategoryQuestions}
-                  saveInterviewQuestions={saveInterviewQuestions}
-                />
-              </View>
-            </ScrollView>
+            <View style={styles.modalContent}>
+              <CreateCategoryModal
+                setModalVisible={setModalVisible}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                categories={categories}
+                setCategories={setCategories}
+                selectedCategoryQuestions={selectedCategoryQuestions}
+                setSelectedCategoryQuestions={setSelectedCategoryQuestions}
+                saveInterviewQuestions={saveInterviewQuestions}
+              />
+            </View>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       </Modal>
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
   },
   saveText: {
     fontSize: 16,
-    fontFamily: "Mulish_ExtraBold",
+    fontFamily: "Mulish-ExtraBold",
     color: Colors.defaultBlue,
   },
   tryAgainButton: {
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
   tryAgainText: {
     color: "white",
     fontSize: 16,
-    fontFamily: "Mulish_ExtraBold",
+    fontFamily: "Mulish-ExtraBold",
   },
   modalContainer: {
     flex: 1,
