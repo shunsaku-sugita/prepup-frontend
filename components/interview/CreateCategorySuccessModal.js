@@ -6,15 +6,8 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 
-const CreateCategorySuccessModal = ({
-  categories,
-  modalVisible,
-  setModalVisible,
-  selectedCategoryQuestions,
-}) => {
+const CreateCategorySuccessModal = ({ modalVisible, setModalVisible }) => {
   const navigation = useNavigation();
-
-  // onPress function
 
   return (
     <View style={styles.container}>

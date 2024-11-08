@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import {
   StyleSheet,
@@ -14,6 +14,8 @@ import InterviewAnswerScript from "./InterviewAnswerScript";
 import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
 import { analyzeAnswer } from "../services/api";
 import { Colors } from "@/constants/Colors";
+import LoadingOverlay from "../common/LoadingOverlay";
+import { AppContext } from "@/store/app-context";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -22,13 +24,9 @@ const InterviewControllerIcons = ({
   setCurrentQuestionIndex,
   questionAnswerArray,
   setQuestionAnswerArray,
-  analyzedAnswer,
-  setAnalyzedAnswer,
-  progressUpdate,
-  setProgressUpdate,
-  setSelectedCategoryQuestions,
-  setLoading,
 }) => {
+  const { setLoading, analyzedAnswer, setAnalyzedAnswer } =
+    useContext(AppContext);
   const navigation = useNavigation();
   const [recording, setRecording] = useState(null);
   const [sound, setSound] = useState(null);
@@ -152,11 +150,9 @@ const InterviewControllerIcons = ({
 
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
-
+      setLoading(true);
       // if it's the last question, navigate to the feedback screen
       navigation.navigate("InterviewFeedback");
-
-      setLoading(true);
       // use analyzeAnswer endpoint to pass questionAnswerArray and get feedback
       const analyzedFeedback = await analyzeAnswer([
         ...questionAnswerArray,
@@ -165,7 +161,6 @@ const InterviewControllerIcons = ({
       // if it's the last question, pass sets of questions/answers and get feedback
       setAnalyzedAnswer(analyzedFeedback);
       setLoading(false);
-
     } else {
       if (currentQuestionIndex < interviewQuestions.length - 1) {
         // Increment the current question index
@@ -201,7 +196,7 @@ const InterviewControllerIcons = ({
       <View style={isRecording ? styles.micStopContainer : styles.micContainer}>
         <IconButton
           icon={isRecording ? "stop-sharp" : "mic"}
-          color={isRecording ? Colors.errorRed : Colors.backgroundDarkGray}
+          color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
           size={isRecording ? 35 : 50}
           onPress={isRecording ? stopRecording : startRecording}
         />
@@ -299,7 +294,7 @@ const styles = StyleSheet.create({
   },
   micStopContainer: {
     borderWidth: 15,
-    borderColor: Colors.errorRed,
+    borderColor: Colors.defaultRed,
     borderRadius: 100,
     padding: 42,
   },

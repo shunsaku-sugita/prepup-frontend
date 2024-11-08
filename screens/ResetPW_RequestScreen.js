@@ -91,6 +91,18 @@ const ResetPW_RequestScreen = () => {
         </View>
       </View>
 
+      {/* tentative button for development purpose */}
+      <View style={styles.devButtonsContainer}>
+        <TouchableOpacity
+          style={styles.homeNavigationButton}
+          onPress={() => navigation.navigate("ResetPW_Success")}
+        >
+          <Text style={styles.homeNavigationText}>
+            Dev: Jump to Success Screen(Category)
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.buttonContainer}>
         <WideButton
           title={isProcessing ? "Sending..." : "Send Link"}
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: Colors.defaultBeige,
+    borderColor: Colors.disabledBeige,
     borderRadius: 4,
     backgroundColor: "white",
     width: "100%",
@@ -167,7 +179,21 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   buttonContainer: {
-    flex: 1,
+    flex: 0.8,
     marginBottom: 50,
+  },
+  // tentative (delete)
+  devButtonsContainer: {
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 6,
+    columnGap: 20,
+    flexDirection: "row",
+  },
+  homeNavigationText: {
+    textDecorationLine: "underline",
+  },
+  onboardingNavigationText: {
+    textDecorationLine: "underline",
   },
 });

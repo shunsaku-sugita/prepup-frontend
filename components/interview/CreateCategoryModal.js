@@ -8,12 +8,8 @@ import Toast from "react-native-toast-message";
 
 const CreateCategoryModal = ({
   setModalVisible,
-  isSaved,
   setIsSaved,
   selectedCategoryQuestions,
-  setSelectedCategoryQuestions,
-  categories,
-  setCategories,
   saveInterviewQuestions,
 }) => {
   const [typedText, setTypedText] = useState("");
@@ -48,7 +44,7 @@ const CreateCategoryModal = ({
     if (success) {
       Toast.show({
         type: "success",
-        text1: `${typedText} saved successfully`,
+        text1: `New category has been successfully added!`,
         text2: "",
         position: "top",
         autoHide: true,
@@ -57,7 +53,7 @@ const CreateCategoryModal = ({
     } else {
       Toast.show({
         type: "info",
-        text1: "Failed to save a new category",
+        text1: "Failed to save a new category.",
         text2: "",
         position: "top",
         autoHide: true,
@@ -110,7 +106,7 @@ export default CreateCategoryModal;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.disabledBeige,
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 20,
@@ -133,10 +129,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: Colors.textLightDarkGray,
     width: 340,
-    height: 50,
     marginTop: 6,
-    marginBottom: 2,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     fontSize: 18,
   },
   lowerText: {
@@ -144,7 +139,6 @@ const styles = StyleSheet.create({
     color: "red",
   },
   buttonContainer: {
-    marginVertical: 16,
-    marginTop: 24,
+    marginTop: 22,
   },
 });

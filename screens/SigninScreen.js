@@ -177,8 +177,6 @@ const SigninScreen = () => {
     return { email, firstName, lastName };
   };
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -318,19 +316,13 @@ const SigninScreen = () => {
         </View>
       </View>
 
-      {/* tentative buttons for development purpose */}
+      {/* tentative button for development purpose */}
       <View style={styles.devButtonsContainer}>
         <TouchableOpacity
           style={styles.homeNavigationButton}
           onPress={() => navigation.navigate("Category")}
         >
           <Text style={styles.homeNavigationText}>Home(Category)</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.onboardingNavigationButton}
-          onPress={() => navigation.navigate("OnboardingOne")}
-        >
-          <Text style={styles.onboardingNavigationText}>Onboarding</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -346,7 +338,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     rowGap: 12,
-    // paddingBottom: 10,
   },
   imageContainer: {
     marginTop: 70,
@@ -361,8 +352,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   logoImage: {
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
     resizeMode: "contain",
     marginBottom: 120,
   },
@@ -465,13 +456,12 @@ const styles = StyleSheet.create({
   signupText: {
     color: Colors.placeHolderTextGray,
   },
-  signupLinkButton: {
-    // backgroundColor: "#ddd",
-  },
+  signupLinkButton: {},
   signupLinkText: {
     color: Colors.lightBlack,
     fontWeight: "600",
   },
+  // tentative (delete)
   devButtonsContainer: {
     borderWidth: 1,
     borderRadius: 6,

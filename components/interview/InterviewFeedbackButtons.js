@@ -1,6 +1,11 @@
 import { useNavigation } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { Platform, Text, TouchableOpacity } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
 // import { AppContext } from "../../store/app-context";
 import CreateCategoryModal from "./CreateCategoryModal";
@@ -68,7 +73,10 @@ const InterviewFeedbackButtons = ({
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)} // Close modal when back button is pressed
       >
-        <View style={styles.modalContainer}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.modalContainer}
+        >
           <View style={styles.modalContent}>
             <CreateCategoryModal
               setModalVisible={setModalVisible}
@@ -81,7 +89,7 @@ const InterviewFeedbackButtons = ({
               saveInterviewQuestions={saveInterviewQuestions}
             />
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );
@@ -137,8 +145,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparent background
   },
   modalContent: {
-    height: "40%",
-    backgroundColor: "#fff",
+    height: "41%",
+    backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 15,

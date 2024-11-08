@@ -17,7 +17,6 @@ const CategoryCardDefault = ({
     setCurrentQuestionIndex,
     setSelectedCategoryQuestions,
     setQuestionAnswerArray,
-    setProgressUpdate,
   } = useContext(AppContext);
 
   const startInterviewHandler = (index) => {
@@ -88,12 +87,12 @@ const styles = StyleSheet.create({
     minWidth: Platform.OS === "ios" ? 150 : 165,
     height: 112,
     // shadow for android
-    elevation: 3,
+    elevation: 2,
     // shadow for iOS
     shadowColor: Colors.textLightDarkGray,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    shadowOpacity: 0.2,
   },
   imageContainer: {
     flex: 6,

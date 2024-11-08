@@ -13,9 +13,6 @@ const InterviewContentsOutput = () => {
     selectedCategoryQuestions,
     questionAnswerArray,
     setQuestionAnswerArray,
-    analyzedAnswer,
-    setAnalyzedAnswer,
-    setLoading,
   } = useContext(AppContext);
 
   const questionText = selectedCategoryQuestions[currentQuestionIndex];
@@ -37,9 +34,6 @@ const InterviewContentsOutput = () => {
           setCurrentQuestionIndex={setCurrentQuestionIndex}
           questionAnswerArray={questionAnswerArray}
           setQuestionAnswerArray={setQuestionAnswerArray}
-          analyzedAnswer={analyzedAnswer}
-          setAnalyzedAnswer={setAnalyzedAnswer}
-          setLoading={setLoading}
         />
       </View>
     </View>
