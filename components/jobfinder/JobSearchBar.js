@@ -7,7 +7,6 @@ const JobSearchBar = ({ searchQuery, setSearchQuery }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearchSubmit = () => {
-    setIsLoading(true);
     setSearchQuery(localQuery);
   };
 

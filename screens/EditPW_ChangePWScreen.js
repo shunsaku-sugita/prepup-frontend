@@ -107,9 +107,7 @@ const EditPW_ChangePWScreen = () => {
         {/* Password form */}
         <View style={styles.formContainer}>
           <View style={styles.titleQuestionContainer}>
-            <Text style={styles.fieldLabel}>
-              Password <Text style={styles.astarisk}>*</Text>
-            </Text>
+            
             <Text style={styles.fieldLabel}>
               Password <Text style={styles.astarisk}>*</Text>
             </Text>
@@ -179,9 +177,6 @@ const EditPW_ChangePWScreen = () => {
         {/* Confirm password form */}
         <View style={styles.formContainer}>
           <View>
-            <Text style={styles.fieldLabel}>
-              Confirm Password <Text style={styles.astarisk}>*</Text>
-            </Text>
             <Text style={styles.fieldLabel}>
               Confirm Password <Text style={styles.astarisk}>*</Text>
             </Text>

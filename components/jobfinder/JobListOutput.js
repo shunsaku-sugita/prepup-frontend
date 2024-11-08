@@ -29,7 +29,8 @@ const jobListOutput = () => {
   const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true); // Set initial loading to true
+  const [isLoading, setIsLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [isBookmarking, setIsBookmarking] = useState(false);
   const [page, setPage] = useState(1);
   const [savedJobs, setSavedJobs] = useState([]);
@@ -64,7 +65,6 @@ const jobListOutput = () => {
         fetchedJobs = await fetchJobsByKeyword(page, searchQuery);
       }
 
-      // Update fetched jobs with saved status
       const updatedFetchedJobs = fetchedJobs.map((job) => {
         const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
         return { ...job, isSaved };
@@ -74,6 +74,7 @@ const jobListOutput = () => {
       console.error("Error fetching jobs:", err);
     } finally {
       setIsLoading(false);
+      if (initialLoading) setInitialLoading(false);
     }
   };
 
@@ -84,8 +85,11 @@ const jobListOutput = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true);
-      loadJobsAndSavedJobs();
+      if (initialLoading) {
+        loadJobsAndSavedJobs();
+      } else {
+        fetchJobsByKeywordEffect();
+      }
     }, [searchQuery, filterType])
   );
 
@@ -108,9 +112,6 @@ const jobListOutput = () => {
           });
           setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
           setPage(nextPage);
-        }
-        if (uniqueNewJobs.length < 10) {
-          console.warn(`Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`);
         }
       }
     } catch (error) {
@@ -198,11 +199,11 @@ const jobListOutput = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Show LoadingOverlay until jobs are fetched */}
-      {isLoading && <LoadingOverlay />}
+      {/* Show LoadingOverlay only during the first load */}
+      {initialLoading && <LoadingOverlay />}
 
-      {/* Only show the content once the jobs are loaded */}
-      {!isLoading && (
+      {/* Show content once initial loading is complete */}
+      {!initialLoading && (
         <>
           <JobSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           <JobFilterBar filterType={filterType} changeFilter={(type) => setFilterType(type)} />

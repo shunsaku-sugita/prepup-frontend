@@ -39,9 +39,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
 import { toastConfig } from "../components/toast/ToastComponent";
-// import * as Font from 'expo-font';
-// import { useFonts, Mulish_400Regular, Mulish_700Bold, Mulish_800ExtraBold } from '@expo-google-fonts/mulish';
-// import { MavenPro_400Regular, MavenPro_500Medium, MavenPro_700Bold, } from '@expo-google-fonts/maven-pro';
+import * as Font from 'expo-font';
+import { useFonts, Mulish_400Regular, Mulish_700Bold, Mulish_800ExtraBold } from '@expo-google-fonts/mulish';
+import { MavenPro_400Regular, MavenPro_500Medium, MavenPro_700Bold, } from '@expo-google-fonts/maven-pro';
 
 
 
@@ -49,22 +49,23 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  // let [fontsLoaded] = useFonts({
-  //   Mulish_400Regular,
-  //   Mulish_700Bold,
-  //   Mulish_800ExtraBold,
-  //   MavenPro_400Regular,
-  //   MavenPro_500Medium,
-  //   MavenPro_700Bold,
-  // });
+  let [fontsLoaded] = useFonts({
+    Mulish_400Regular,
+    Mulish_700Bold,
+    Mulish_800ExtraBold,
+    MavenPro_400Regular,
+    MavenPro_500Medium,
+    MavenPro_700Bold,
+  });
 
-  // if (!fontsLoaded) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //     </View>
-  //   );
-  // }
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   const navigation = useNavigation();
   return (

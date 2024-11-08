@@ -69,9 +69,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFEFEF", // Grayish background for unselected tab
   },
   tabText: {
-    fontFamily:"MavenPro_400Regular,",
+    fontFamily:"MavenPro_500Medium",
     fontSize: 16,
-    fontWeight: "500",
   },
   activeTabText: {
     color: "#FFFFFF", 

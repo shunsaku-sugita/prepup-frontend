@@ -111,12 +111,12 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           />
         </View>
         <Text style={styles.companyLabel}>
-          Company: <Text style={styles.companyValue}>{job.company}</Text>
+          Company: <Text style={[styles.companyValue, styles.companyNameLabel]}>{job.company}</Text>
         </Text>
         <Text style={styles.descriptionLabel}>Description</Text>
         <Text style={styles.descriptionValue}>{job.description}</Text>
         <View style={styles.buttonContainer}>
-          {loading ? (
+        {loading ? (
             <ActivityIndicator size="large" color="#4D63B5" />
           ) : (
             <WideButton
@@ -182,9 +182,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10, // Space between the title and the close icon
   },
+  companyNameLabel:{
+     fontFamily: "Mulish_400Regular",
+
+  },
   companyLabel: {
+    fontFamily: "Mulish_800ExtraBold",
     fontSize: 16,
-    fontWeight: "bold",
     marginBottom: 20,
   },
   companyValue: {

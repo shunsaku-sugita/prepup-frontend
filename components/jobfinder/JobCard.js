@@ -52,18 +52,18 @@ const styles = StyleSheet.create({
     gap:3
   },
   title: {
-    fontFamily:"MavenPro_400Regular,",
+    fontFamily:"MavenPro_700Bold",
     fontWeight: "700",
     fontSize: 20,
   },
   createdDate: {
-    fontFamily: 'Mulish_400Regular',
+    fontFamily: "Mulish_400Regular",
     fontSize: 16,
     fontWeight:400,
    
   },
   createdPortal: {
-    fontFamily: 'Mulish_400Regular',
+    fontFamily: "Mulish_400Regular",
     fontSize:16,
     
     
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoText: {
-    fontFamily: 'Mulish_800ExtrBold',
+    fontFamily: "Mulish_800ExtraBold",
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
