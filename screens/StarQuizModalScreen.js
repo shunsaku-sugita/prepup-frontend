@@ -1,4 +1,3 @@
-import { useRoute } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/store/app-context";
 import React, { useEffect, useContext } from "react";
