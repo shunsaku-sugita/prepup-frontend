@@ -1,12 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import TitleText from "../common/TitleText";
-// import StarRating, { StarRatingDisplay } from "react-native-star-rating-widget";
-import StarQuizFeedbackRatingDisplay from "./StarQuizFeedbackRatingDisplay";
+import StarMasterFeedbackRatingDisplay from "./StarMasterFeedbackRatingDisplay";
 import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/store/app-context";
 
-const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
+const StarMasterFeedbackIconRatings = ({ starMasterFeedback }) => {
   const [ratingStarNumber, setRatingStarNumber] = useState(0);
   const [ratingPhrase, setRatingPhrase] = useState("");
   const { fontsLoaded } = useContext(AppContext);
@@ -54,13 +52,13 @@ const StarQuizFeedbackIconRatings = ({ starMasterFeedback }) => {
         <Text style={styles.phrase}>{ratingPhrase}</Text>
       </View>
       <View>
-        <StarQuizFeedbackRatingDisplay rating={ratingStarNumber} />
+        <StarMasterFeedbackRatingDisplay rating={ratingStarNumber} />
       </View>
     </View>
   );
 };
 
-export default StarQuizFeedbackIconRatings;
+export default StarMasterFeedbackIconRatings;
 
 const styles = StyleSheet.create({
   container: {
@@ -70,9 +68,7 @@ const styles = StyleSheet.create({
     rowGap: 30,
     marginTop: 20,
   },
-  phraseContainer: {
-    // marginTop: 30,
-  },
+  phraseContainer: {},
   phrase: {
     fontSize: 28,
     fontFamily: "MavenPro-Bold",

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useContext } from "react";
 import {
   AccordionItem,
@@ -11,7 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { AppContext } from "@/store/app-context";
 
-const StarQuizFeedbackCard = ({
+const StarMasterFeedbackCard = ({
   value,
   titleText,
   contentText,
@@ -57,7 +57,7 @@ const StarQuizFeedbackCard = ({
   );
 };
 
-export default StarQuizFeedbackCard;
+export default StarMasterFeedbackCard;
 
 const styles = StyleSheet.create({
   container: {

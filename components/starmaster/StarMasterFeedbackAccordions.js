@@ -1,10 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Accordion } from "@/components/ui/accordion";
-import StarQuizFeedbackCard from "./StarQuizFeedbackCard";
+import StarMasterFeedbackCard from "./StarMasterFeedbackCard";
 import { Colors } from "@/constants/Colors";
 
-const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
+const StarMasterFeedbackAccordions = ({ starMasterFeedback }) => {
   const [situationFeedbackComment, setSituationFeedbackComment] = useState("");
   const [taskFeedbackComment, setTaskFeedbackComment] = useState("");
   const [actionFeedbackComment, setActionFeedbackComment] = useState("");
@@ -22,25 +22,25 @@ const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={true}>
         <Accordion style={styles.accordionContainer} type="multiple">
-          <StarQuizFeedbackCard
+          <StarMasterFeedbackCard
             value="a"
             titleText="Situation"
             contentText={situationFeedbackComment}
             backgroundColorStyle={Colors.defaultYellow}
           />
-          <StarQuizFeedbackCard
+          <StarMasterFeedbackCard
             value="b"
             titleText="Task"
             contentText={taskFeedbackComment}
             backgroundColorStyle={Colors.defaultRed}
           />
-          <StarQuizFeedbackCard
+          <StarMasterFeedbackCard
             value="c"
             titleText="Action"
             contentText={actionFeedbackComment}
             backgroundColorStyle={Colors.defaultBlue}
           />
-          <StarQuizFeedbackCard
+          <StarMasterFeedbackCard
             value="d"
             titleText="Result"
             contentText={resultFeedbackComment}
@@ -52,7 +52,7 @@ const StarQuizFeedbackAccordions = ({ starMasterFeedback }) => {
   );
 };
 
-export default StarQuizFeedbackAccordions;
+export default StarMasterFeedbackAccordions;
 
 const styles = StyleSheet.create({
   container: {

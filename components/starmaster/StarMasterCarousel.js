@@ -1,11 +1,4 @@
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import IconButton from "../common/IconButton";
 import * as Speech from "expo-speech";
@@ -15,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import debounce from "lodash.debounce";
 import { AppContext } from "@/store/app-context";
 
-const StarQuizCarousel = ({
+const StarMasterCarousel = ({
   situationAnswerRef,
   setSituationAnswer,
   taskAnswerRef,
@@ -145,7 +138,7 @@ const StarQuizCarousel = ({
 
   const openModalScreen = (field) => {
     handleFocus(field); // ensure the correct modal is set to visible
-    navigation.navigate("StarQuizModal", { fieldType: field });
+    navigation.navigate("StarMasterModal", { fieldType: field });
   };
 
   if (!fontsLoaded) {
@@ -211,7 +204,7 @@ const StarQuizCarousel = ({
                 }}
                 style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarQuizModal");
+                  navigation.navigate("StarMasterModal");
                   openModalScreen("situation");
                   onCardPress("situation");
                 }}
@@ -284,7 +277,7 @@ const StarQuizCarousel = ({
                 }
                 style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarQuizModal");
+                  navigation.navigate("StarMasterModal");
                   openModalScreen("task");
                   onCardPress("task");
                 }}
@@ -353,7 +346,7 @@ const StarQuizCarousel = ({
                 }
                 style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarQuizModal");
+                  navigation.navigate("StarMasterModal");
                   openModalScreen("action");
                   onCardPress("action");
                 }}
@@ -422,7 +415,7 @@ const StarQuizCarousel = ({
                 }
                 style={styles.inputFieldText}
                 onFocus={() => {
-                  navigation.navigate("StarQuizModal");
+                  navigation.navigate("StarMasterModal");
                   openModalScreen("result");
                   onCardPress("result");
                 }}
@@ -480,7 +473,7 @@ const StarQuizCarousel = ({
   );
 };
 
-export default StarQuizCarousel;
+export default StarMasterCarousel;
 
 const styles = StyleSheet.create({
   container: {

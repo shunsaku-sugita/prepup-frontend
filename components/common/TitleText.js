@@ -1,4 +1,3 @@
-import { Fonts } from "@/constants/Fonts";
 import { AppContext } from "@/store/app-context";
 import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
