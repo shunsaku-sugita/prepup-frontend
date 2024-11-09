@@ -20,11 +20,11 @@ import { Colors } from "@/constants/Colors";
 import { AppContext } from "@/store/app-context";
 
 const RegistrationScreen = () => {
-  const [enteredFirstname, setEnteredFirstname] = useState("");
-  const [enteredLastname, setEnteredLastname] = useState("");
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredUsername, setEnteredUsername] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredFirstname, setEnteredFirstname] = useState("Blanca");
+  const [enteredLastname, setEnteredLastname] = useState("Shanchaz");
+  const [enteredEmail, setEnteredEmail] = useState("blalisf7893@gmail.com");
+  const [enteredUsername, setEnteredUsername] = useState("BlancaFlores");
+  const [enteredPassword, setEnteredPassword] = useState("hello123");
 
   const [firstnameIsValid, setFirstnameIsValid] = useState(false);
   const [emailIsValid, setEmailIsValid] = useState(false);
