@@ -16,8 +16,7 @@ import { generateQuestionByJobDescription } from "../services/api";
 import { socket } from "../services/socket";
 import { AppContext } from "@/store/app-context";
 import { Colors } from "@/constants/Colors";
-import LoadingOverlay from "../common/LoadingOverlay";
-
+import LoadingOverlayInModal from "../common/LoadingOverlayInModal";
 
 const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
   const [webViewVisible, setWebViewVisible] = useState(false);
@@ -106,7 +105,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
     <View style={styles.container}>
       {loading && (
         <View style={styles.overlay}>
-          <LoadingOverlay />
+          <LoadingOverlayInModal />
         </View>
       )}
       <View style={styles.innerContainer}>
@@ -126,12 +125,15 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
           />
         </View>
         <Text style={styles.companyLabel}>
-          Company: <Text style={[styles.companyValue, styles.companyNameLabel]}>{job.company}</Text>
+          Company:{" "}
+          <Text style={[styles.companyValue, styles.companyNameLabel]}>
+            {job.company}
+          </Text>
         </Text>
         <Text style={styles.descriptionLabel}>Description</Text>
         <Text style={styles.descriptionValue}>{job.description}</Text>
         <View style={styles.buttonContainer}>
-        {!loading && (
+          {!loading && (
             <WideButton
               title="Practice Interview"
               color="white"
@@ -200,11 +202,10 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
-    marginRight: 10, 
+    marginRight: 10,
   },
-  companyNameLabel:{
-     fontFamily: "Mulish_400Regular",
-
+  companyNameLabel: {
+    fontFamily: "Mulish_400Regular",
   },
   companyLabel: {
     fontSize: 16,

@@ -62,7 +62,7 @@ const RegistrationScreen = () => {
     const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
     return usernameRegex.test(username.trim());
   };
-  // password validation function for 8+ characters, letters, numbers, and symbols
+  // password validation function for 8+ letters, numbers, and symbols
   const passwordValidation = (password) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,}$/;
     return passwordRegex.test(password);
