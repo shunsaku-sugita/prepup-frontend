@@ -341,14 +341,14 @@ const SigninOutput = () => {
             </View>
 
             {/* tentative button for development purpose */}
-            {/* <View style={styles.devButtonsContainer}>
+            <View style={styles.devButtonsContainer}>
               <TouchableOpacity
                 style={styles.homeNavigationButton}
                 onPress={() => navigation.navigate("Category")}
               >
                 <Text style={styles.homeNavigationText}>Home(Category)</Text>
               </TouchableOpacity>
-            </View> */}
+            </View>
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
