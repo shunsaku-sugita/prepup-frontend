@@ -224,6 +224,8 @@ const jobListOutput = () => {
           <JobSearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            filterType={filterType}
+            setFilterType={setFilterType}
           />
           <JobFilterBar
             filterType={filterType}
@@ -231,10 +233,16 @@ const jobListOutput = () => {
           />
 
           {filterType === 0 ? (
-            <SavedJobCard
-              data={savedJobs.filter((job) => job.title.toLowerCase())}
-              toggleBookmark={toggleBookmark}
-            />
+            savedJobs.length === 0 ? (
+              <Text style={styles.noSavedJobsText}>
+                You have no saved jobs.
+              </Text>
+            ) : (
+              <SavedJobCard
+                data={savedJobs.filter((job) => job.title.toLowerCase())}
+                toggleBookmark={toggleBookmark}
+              />
+            )
           ) : (
             <View style={styles.container}>
               <JobFilterLocationItem
@@ -315,5 +323,11 @@ const styles = StyleSheet.create({
     color: "#FEFEFF",
     fontSize: 16,
     fontFamily: "Mulish-ExtraBold",
+  },
+  noSavedJobsText: {
+    fontSize: 16,
+    color: Colors.backgroundDarkGray,
+    textAlign: "center",
+    marginTop: 20,
   },
 });
