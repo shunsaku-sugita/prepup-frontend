@@ -1,20 +1,20 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext } from "react";
-import StarQuizFeedbackIconRatings from "./StarQuizFeedbackIconRatings";
-import StarQuizFeedbackAccordions from "./StarQuizFeedbackAccordions";
+import StarMasterFeedbackIconRatings from "./StarMasterFeedbackIconRatings";
+import StarMasterFeedbackAccordions from "./StarMasterFeedbackAccordions";
 import WideButton from "../common/WideButton";
 import { useNavigation } from "expo-router";
 import { AppContext } from "@/store/app-context";
 import { Colors } from "@/constants/Colors";
 
-const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
+const StarMasterFeedbackOutput = ({ starMasterFeedback }) => {
   const { setAnswers } = useContext(AppContext);
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <StarQuizFeedbackIconRatings starMasterFeedback={starMasterFeedback} />
-      <StarQuizFeedbackAccordions starMasterFeedback={starMasterFeedback} />
+      <StarMasterFeedbackIconRatings starMasterFeedback={starMasterFeedback} />
+      <StarMasterFeedbackAccordions starMasterFeedback={starMasterFeedback} />
       <View style={styles.retryButton}>
         <WideButton
           title="Practice Again"
@@ -27,7 +27,7 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
               action: "",
               result: "",
             }));
-            navigation.navigate("StarQuiz");
+            navigation.navigate("StarMaster");
           }}
         />
       </View>
@@ -35,7 +35,7 @@ const StarQuizFeedbackOutput = ({ starMasterFeedback }) => {
   );
 };
 
-export default StarQuizFeedbackOutput;
+export default StarMasterFeedbackOutput;
 
 const styles = StyleSheet.create({
   container: {

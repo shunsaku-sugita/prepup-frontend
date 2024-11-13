@@ -4,7 +4,7 @@ import React, { useEffect, useContext } from "react";
 import { View, TextInput, Text, StyleSheet } from "react-native";
 import HearableQuestions from "@/components/common/HearableQuestions";
 
-const StarQuizModalScreen = () => {
+const StarMasterModalOutput = () => {
   const {
     situationAnswerRef,
     setSituationAnswer,
@@ -291,7 +291,7 @@ const StarQuizModalScreen = () => {
   );
 };
 
-export default StarQuizModalScreen;
+export default StarMasterModalOutput;
 
 const styles = StyleSheet.create({
   container: {

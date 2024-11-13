@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import StarQuizOutput from "../components/starquiz/StarQuizOutput";
+import StarMasterOutput from "../components/starmaster/StarMasterOutput";
 import { Colors } from "@/constants/Colors";
 
 const StarMasterScreen = () => {
   return (
     <View style={styles.container}>
-      <StarQuizOutput />
+      <StarMasterOutput />
     </View>
   );
 };

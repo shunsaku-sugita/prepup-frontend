@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 80,
-    marginBottom: 60,
+    marginBottom: 40,
   },
   image: {
     width: 280,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     rowGap: 20,
     width: 340,
-    marginBottom: 80,
+    marginBottom: 100,
   },
   text: {
     fontSize: 15,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0.8,
-    marginTop: 100,
-    marginBottom: 60,
+    // marginTop: 80,
+    marginBottom: 30,
   },
 });

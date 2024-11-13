@@ -1,17 +1,6 @@
-import {
-  Alert,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import StarQuizCarousel from "./StarQuizCarousel";
+import StarMasterCarousel from "./StarMasterCarousel";
 import HearableQuestions from "../common/HearableQuestions";
 
 import {
@@ -22,7 +11,7 @@ import { AppContext } from "@/store/app-context";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 
-const StarQuizOutput = () => {
+const StarMasterOutput = () => {
   const navigation = useNavigation();
   const {
     situationAnswer,
@@ -111,9 +100,16 @@ const StarQuizOutput = () => {
     fetchStarQuestion();
   }, []);
 
+  // const handleFocus = (field) => {
+  //   setFocusedField(field); // Set the currently focused field
+  //   setModalVisible((prev) => ({ ...prev, [field]: true }));
+  // };
   const handleFocus = (field) => {
-    setFocusedField(field); // Set the currently focused field
-    setModalVisible((prev) => ({ ...prev, [field]: true }));
+    if (focusedField !== field) {
+      setModalVisible((prev) => ({ ...prev, [field]: true }));
+      setFieldType(field);
+      setFocusedField(field); // Track the active field
+    }
   };
 
   const handleModalClose = () => {
@@ -152,7 +148,7 @@ const StarQuizOutput = () => {
 
       if (starMasterFeedback) {
         // navigate to the feedback screen, passing the feedback as a parameter
-        navigation.navigate("StarQuizFeedback", { starMasterFeedback });
+        navigation.navigate("StarMasterFeedback", { starMasterFeedback });
       }
     } catch (error) {
       console.error("Error fetching STAR feedback:", error);
@@ -175,7 +171,7 @@ const StarQuizOutput = () => {
             text: "Confirm",
             onPress: async () => {
               // navigate to the feedback screen immediately
-              navigation.navigate("StarQuizFeedback", { loading: true });
+              navigation.navigate("StarMasterFeedback", { loading: true });
               // call the fetch method and navigate to the next screen, passing the feedback as a parameter
               await fetchStarMasterFeedback();
               // always scroll to the leftmost (start) position by default
@@ -194,17 +190,11 @@ const StarQuizOutput = () => {
   }
 
   return (
-    // <KeyboardAvoidingView
-    //   style={{ flex: 1 }}
-    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
-    // >
-    //   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    //     <ScrollView contentContainerStyle={{ flex: 1 }}>
     <View style={styles.container}>
       <View style={styles.questionContainer}>
         <HearableQuestions questionText={starQuestionText} />
       </View>
-      <StarQuizCarousel
+      <StarMasterCarousel
         situationAnswerRef={situationAnswerRef}
         setSituationAnswer={setSituationAnswer}
         taskAnswerRef={taskAnswerRef}
@@ -277,13 +267,10 @@ const StarQuizOutput = () => {
         </TouchableOpacity>
       </View>
     </View>
-    //     </ScrollView>
-    //   </TouchableWithoutFeedback>
-    // </KeyboardAvoidingView>
   );
 };
 
-export default StarQuizOutput;
+export default StarMasterOutput;
 
 const styles = StyleSheet.create({
   container: {

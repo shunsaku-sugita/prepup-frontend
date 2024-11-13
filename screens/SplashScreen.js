@@ -6,22 +6,6 @@ import { Colors } from "@/constants/Colors";
 
 const SplashScreen = () => {
   const navigataion = useNavigation();
-  // const [showFirstLogo, setShowFirstLogo] = useState(true);
-
-  // useEffect(() => {
-  //   const firstLogoTimer = setTimeout(() => {
-  //     setShowFirstLogo(false);
-  //   }, 2000);
-
-  //   const secondLogoTimer = setTimeout(() => {
-  //     navigataion.navigate("SignIn");
-  //   }, 4000);
-
-  //   return () => {
-  //     clearTimeout(firstLogoTimer);
-  //     clearTimeout(secondLogoTimer);
-  //   };
-  // }, [navigataion]);
 
   const videoEndHandler = () => {
     navigataion.navigate("SignIn");

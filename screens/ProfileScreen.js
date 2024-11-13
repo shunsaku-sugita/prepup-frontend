@@ -24,7 +24,7 @@ import {
   deleteAccount,
   emptyToken,
   getProfile,
-} from "@/components/services/api"; 
+} from "@/components/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppContext } from "@/store/app-context";
 
@@ -65,10 +65,6 @@ const ProfileScreen = () => {
     };
     loadUserProfile();
   }, []);
-
-  // useEffect(() => {
-  //   loadUserProfile();
-  // }, []);
 
   // Update profile information when navigating back from EditProfileScreen
   useFocusEffect(
@@ -132,7 +128,7 @@ const ProfileScreen = () => {
                 autoHide: true,
                 visibilityTime: 3000,
               });
-            } 
+            }
           },
         },
       ]

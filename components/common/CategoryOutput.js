@@ -29,7 +29,7 @@ const CustomBottomTabs = () => {
     <View style={styles.bottomTabContainer}>
       <TouchableOpacity
         style={styles.tabButton}
-        onPress={() => navigation.navigate("JobSearch")}
+        onPress={() => navigation.navigate("JobFinder")}
       >
         <View style={styles.jobFinderIconContainer}>
           <Ionicons name="briefcase" size={23} color="white" />
@@ -49,7 +49,7 @@ const CustomBottomTabs = () => {
           }));
 
           // navigete to the STAR master screen
-          navigation.navigate("StarQuiz");
+          navigation.navigate("StarMaster");
         }}
       >
         <View style={styles.starMasterIconContainer}>
@@ -116,10 +116,6 @@ const CategoryOutput = () => {
           });
         }
         setCategories(updatedCategories);
-
-        // Debugging: check updated categories
-        console.log("Updated Categories: ==> ");
-        console.log(updatedCategories); // Updated to show the updated categories
 
         if (updatedCategories.length > 3) {
           setCustomCategories(updatedCategories.slice(3));

@@ -1,17 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import {
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import { Alert, Image, Platform, StyleSheet, Text, View } from "react-native";
 import InterviewSimulatorScreen from "../screens/InterviewSimulatorScreen";
 import InterviewFeedbackScreen from "../screens/InterviewFeedbackScreen";
-import JobSearchScreen from "../screens/JobSearchScreen";
+import JobFinderScreen from "../screens/JobFinderScreen";
 import IconButton from "../components/common/IconButton";
 
 import SplashScreen from "../screens/SplashScreen";
@@ -20,12 +13,8 @@ import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import EditPW_ChangePWScreen from "../screens/EditPW_ChangePWScreen";
 
-import AppContextProvider, { AppContext } from "../store/app-context";
+import AppContextProvider from "../store/app-context";
 import CategoryScreen from "../screens/CategoryScreen";
-import QuizStarterScreen from "../screens/QuizStarterScreen";
-import QuizFeedbackScreen from "../screens/QuizFeedbackScreen";
-import QuizScreen from "../screens/QuizScreen";
-import PreloaderScreen from "../screens/PreloaderScreen";
 import SigninScreen from "../screens/SigninScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import RegistrationSuccessScreen from "../screens/RegistrationSuccessScreen";
@@ -37,41 +26,20 @@ import ResetPW_VerifycodeScreen from "../screens/ResetPW_VerifycodeScreen";
 import ResetPW_CreatePWScreen from "../screens/ResetPW_CreatePWScreen";
 import ResetPW_SuccessScreen from "../screens/ResetPW_SuccessScreen";
 
-import StarQuizScreen from "../screens/StarQuizScreen";
-import StarQuizFeedbackScreen from "../screens/StarQuizFeedbackScreen";
-import StarQuizModalScreen from "../screens/StarQuizModalScreen";
+import StarMasterScreen from "../screens/StarMasterScreen";
+import StarMasterFeedbackScreen from "../screens/StarMasterFeedbackScreen";
+import StarMasterModalScreen from "../screens/StarMasterModalScreen";
 import { useNavigation } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Toast from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
 import { toastConfig } from "../components/toast/ToastComponent";
-import LoadingOverlay from "@/components/common/LoadingOverlay";
-import { useFonts } from "expo-font";
-// import * as Font from 'expo-font';
-// import { useFonts, Mulish_400Regular, Mulish_700Bold, Mulish_800ExtraBold } from '@expo-google-fonts/mulish';
-// import { MavenPro_400Regular, MavenPro_500Medium, MavenPro_700Bold, } from '@expo-google-fonts/maven-pro';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const navigation = useNavigation();
-
-  // const [fontsLoaded] = useFonts({
-  //   "Mulish-Regular": require("../assets/fonts/Mulish-Regular.ttf"),
-  //   "Mulish-Bold": require("../assets/fonts/Mulish-Bold.ttf"),
-  //   "Mulish-ExtraBold": require("../assets/fonts/Mulish-ExtraBold.ttf"),
-  //   "MavenPro-Regular": require("../assets/fonts/MavenPro-Regular.ttf"),
-  //   "MavenPro-Bold": require("../assets/fonts/MavenPro-Bold.ttf"),
-  //   "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
-  //   "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
-  // });
-
-  // if (!fontsLoaded) {
-  //   // Show a loading screen while fonts are loading
-  //   return <LoadingOverlay />;
-  // }
-
   return (
     <>
       <StatusBar style="auto" />
@@ -99,46 +67,6 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            {/* <Stack.Screen
-              name="EditProfile"
-              component={EditProfileScreen}
-              options={{ title: "Edit Profile", headerShown: true }}
-            /> */}
-            <Stack.Screen
-              name="JobSearch"
-              component={JobSearchScreen}
-              options={{
-                headerShown: true,
-                headerStyle: { backgroundColor: Colors.disabledBeige },
-                headerShadowVisible: false,
-                headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                      source={require("../assets/images/PrepUp-Black-Small.png")}
-                      style={{ width: 34, height: 34 }}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontFamily: "MavenPro-Bold",
-                        marginBottom: 4,
-                      }}
-                    >
-                      Job Finder
-                    </Text>
-                  </View>
-                ),
-                headerLeft: () => (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    display={false}
-                    onPress={() => navigation.goBack()}
-                  />
-                ),
-              }}
-            />
             <Stack.Screen
               name="InterviewSimulator"
               component={InterviewSimulatorScreen}
@@ -146,11 +74,15 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
                   <View
                     style={{
+                      flex: 1,
                       flexDirection: "row",
                       alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
                     }}
                   >
                     <Image
@@ -205,8 +137,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -237,15 +178,68 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="StarQuiz"
-              component={StarQuizScreen}
+              name="JobFinder"
+              component={JobFinderScreen}
+              options={{
+                headerShown: true,
+                headerStyle: { backgroundColor: Colors.disabledBeige },
+                headerShadowVisible: false,
+                headerBackVisible: false,
+                headerTitle: () => (
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
+                    <Image
+                      source={require("../assets/images/PrepUp-Black-Small.png")}
+                      style={{ width: 34, height: 34 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 4,
+                      }}
+                    >
+                      Job Finder
+                    </Text>
+                  </View>
+                ),
+                headerLeft: () => (
+                  <IconButton
+                    icon="arrow-back"
+                    color="black"
+                    size={28}
+                    display={false}
+                    onPress={() => navigation.goBack()}
+                  />
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="StarMaster"
+              component={StarMasterScreen}
               options={({ navigation }) => ({
                 headerShown: true,
                 title: "S.T.A.R Master",
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -292,14 +286,23 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="StarQuizFeedback"
-              component={StarQuizFeedbackScreen}
+              name="StarMasterFeedback"
+              component={StarMasterFeedbackScreen}
               options={({ navigation }) => ({
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -344,8 +347,8 @@ export default function App() {
               })}
             />
             <Stack.Screen
-              name="StarQuizModal"
-              component={StarQuizModalScreen}
+              name="StarMasterModal"
+              component={StarMasterModalScreen}
               options={({ navigation }) => ({
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
@@ -359,7 +362,7 @@ export default function App() {
                     size={28}
                     display={false}
                     onPress={() => {
-                      navigation.navigate("StarQuiz");
+                      navigation.navigate("StarMaster");
                     }}
                   />
                 ),
@@ -372,8 +375,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -409,8 +421,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -444,8 +465,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -473,13 +503,6 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="Preloader"
-              component={PreloaderScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
               name="SignIn"
               component={SigninScreen}
               options={{
@@ -487,10 +510,21 @@ export default function App() {
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: 45,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
-                      style={{ width: 34, height: 34 }}
+                      style={{
+                        width: 34,
+                        height: 34,
+                      }}
                     />
                     <Text
                       style={{
@@ -513,8 +547,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -546,19 +589,8 @@ export default function App() {
             <Stack.Screen
               name="RegistrationSuccess"
               component={RegistrationSuccessScreen}
-              options={({ navigation }) => ({
+              options={() => ({
                 headerShown: false,
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
               })}
             />
             <Stack.Screen
@@ -589,8 +621,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -626,8 +667,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -663,8 +713,17 @@ export default function App() {
                 headerShown: true,
                 headerStyle: { backgroundColor: Colors.disabledBeige },
                 headerShadowVisible: false,
+                headerBackVisible: false,
                 headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: Platform.OS === "ios" ? 135 : 80,
+                    }}
+                  >
                     <Image
                       source={require("../assets/images/PrepUp-Black-Small.png")}
                       style={{ width: 34, height: 34 }}
@@ -712,60 +771,10 @@ export default function App() {
             <Stack.Screen
               name="ResetPW_Success"
               component={ResetPW_SuccessScreen}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerStyle: { backgroundColor: Colors.disabledBeige },
-                headerShadowVisible: false,
-                headerTitle: () => (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                      source={require("../assets/images/PrepUp-Black-Small.png")}
-                      style={{ width: 34, height: 34 }}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontFamily: "MavenPro-Bold",
-                        marginBottom: 4,
-                      }}
-                    >
-                      Create New Password
-                    </Text>
-                  </View>
-                ),
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
+              options={() => ({
+                headerShown: false,
               })}
             />
-
-            {/* <Stack.Screen
-              name="Notifications"
-              component={NotificationsScreen}
-              options={({ navigation }) => ({
-                headerShown: true,
-                title: "",
-                headerLeft: () =>
-                  // Check if the user can go back before showing the back button
-                  navigation.canGoBack() ? (
-                    <IconButton
-                      icon="arrow-back"
-                      color="black"
-                      size={28}
-                      display={false}
-                      onPress={() => navigation.goBack()}
-                    />
-                  ) : null,
-              })}
-            /> */}
           </Stack.Navigator>
         </AppContextProvider>
         <Toast config={toastConfig} />

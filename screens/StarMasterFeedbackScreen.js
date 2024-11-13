@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import StarQuizFeedbackOutput from "../components/starquiz/StarQuizFeedbackOutput";
+import StarMasterFeedbackOutput from "../components/starmaster/StarMasterFeedbackOutput";
 import LoadingOverlay from "@/components/common/LoadingOverlay";
 import { Colors } from "@/constants/Colors";
 
@@ -11,7 +11,7 @@ const StarMasterFeedbackScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       {starMasterFeedback ? (
-        <StarQuizFeedbackOutput starMasterFeedback={starMasterFeedback} />
+        <StarMasterFeedbackOutput starMasterFeedback={starMasterFeedback} />
       ) : (
         <LoadingOverlay />
       )}
