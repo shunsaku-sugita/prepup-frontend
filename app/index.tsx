@@ -42,14 +42,14 @@ export default function App() {
   const navigation = useNavigation();
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <GestureHandlerRootView>
         <AppContextProvider>
           <Stack.Navigator
             screenOptions={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: "#FFEAD9",
+                backgroundColor: Colors.disabledBeige,
               },
             }}
           >
@@ -356,15 +356,26 @@ export default function App() {
                 headerTitle: "",
                 headerRight: null,
                 headerLeft: () => (
-                  <IconButton
-                    icon="arrow-back"
-                    color="black"
-                    size={28}
-                    display={false}
-                    onPress={() => {
-                      navigation.navigate("StarMaster");
-                    }}
-                  />
+                  <>
+                    <IconButton
+                      icon="arrow-back"
+                      color="black"
+                      size={28}
+                      display={false}
+                      onPress={() => {
+                        navigation.navigate("StarMaster");
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontFamily: "MavenPro-Bold",
+                        marginBottom: 2,
+                      }}
+                    >
+                      Save
+                    </Text>
+                  </>
                 ),
               })}
             />
