@@ -111,191 +111,182 @@ const ResetPW_CreatePWOutput = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: Colors.disabledBeige }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
-          <View style={styles.container}>
-            <View style={styles.mainContents}>
-              <View style={styles.titleAndTextContainer}>
-                <TitleText text="Create New Password" />
-                <Text style={styles.description}>
-                  Your new password must be different from previous used
-                  passwords.
+    // <KeyboardAvoidingView
+    //   style={{ flex: 1, backgroundColor: Colors.disabledBeige }}
+    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
+    // >
+    //   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    //     <ScrollView contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
+    <View style={styles.container}>
+      <View style={styles.mainContents}>
+        <View style={styles.titleAndTextContainer}>
+          <TitleText text="Create New Password" />
+          <Text style={styles.description}>
+            Your new password must be different from previous used passwords.
+          </Text>
+        </View>
+
+        {/* password form */}
+        <View style={styles.formContainer}>
+          <View style={styles.titleQuestionContainer}>
+            <Text style={styles.fieldLabel}>
+              Password <Text style={styles.astarisk}>*</Text>
+            </Text>
+            <TouchableOpacity
+              style={styles.questionIcon}
+              onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
+            >
+              <Image
+                source={require("../../assets/images/question-icon.png")}
+              />
+            </TouchableOpacity>
+          </View>
+          {/* Tooltip */}
+          {showPasswordTooltip && (
+            <View style={styles.tooltipWrapper}>
+              <View style={styles.triangle} />
+              <View style={styles.tooltipContainer}>
+                <Text style={styles.tooltipText}>
+                  Minimum of 8 characters with a mix of letters, numbers, and
+                  symbols.
                 </Text>
               </View>
-
-              {/* password form */}
-              <View style={styles.formContainer}>
-                <View style={styles.titleQuestionContainer}>
-                  <Text style={styles.fieldLabel}>
-                    Password <Text style={styles.astarisk}>*</Text>
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.questionIcon}
-                    onPress={() => setShowPasswordTooltip(!showPasswordTooltip)}
-                  >
-                    <Image
-                      source={require("../../assets/images/question-icon.png")}
-                    />
-                  </TouchableOpacity>
-                </View>
-                {/* Tooltip */}
-                {showPasswordTooltip && (
-                  <View style={styles.tooltipWrapper}>
-                    <View style={styles.triangle} />
-                    <View style={styles.tooltipContainer}>
-                      <Text style={styles.tooltipText}>
-                        Minimum of 8 characters with a mix of letters, numbers,
-                        and symbols.
-                      </Text>
-                    </View>
-                  </View>
-                )}
-                <View
-                  style={[
-                    !passwordIsValid && isSubmitted
-                      ? styles.passwordFieldAlert
-                      : styles.passwordField,
-                    isPasswordFocused && {
-                      borderWidth: 2,
-                      borderColor: Colors.defaultBlue,
-                    },
-                  ]}
-                >
-                  <TextInput
-                    placeholder="Enter a password"
-                    placeholderTextColor={Colors.placeHolderTextGray}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    secureTextEntry={passwordIsSecure}
-                    value={enteredPassword}
-                    onChangeText={(text) => setEnteredPassword(text)}
-                    maxLength={30}
-                    style={{ width: "90%" }}
-                    onFocus={() => setIsPasswordFocused(true)}
-                    onBlur={() => setIsPasswordFocused(false)}
-                  />
-                  <Ionicons
-                    name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
-                    color="black"
-                    size={20}
-                    onPress={() => setPasswordIsSecure(!passwordIsSecure)}
-                  />
-                </View>
-                {(!passwordIsValid ||
-                  !confirmPasswordIsValid ||
-                  !passwordsMatch) &&
-                  isSubmitted && (
-                    <View style={styles.alertContainer}>
-                      <Ionicons
-                        name="alert-circle-outline"
-                        color={Colors.errorRed}
-                        size={20}
-                      />
-                      <Text style={styles.alertText}>{errorMessage}</Text>
-                    </View>
-                  )}
-              </View>
-
-              {/* confirm password form */}
-              <View style={styles.formContainer}>
-                <View>
-                  <Text style={styles.fieldLabel}>
-                    Confirm Password <Text style={styles.astarisk}>*</Text>
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    !confirmPasswordIsValid && isSubmitted
-                      ? styles.passwordFieldAlert
-                      : styles.passwordField,
-                    isConfirmPasswordFocused && {
-                      borderWidth: 2,
-                      borderColor: Colors.defaultBlue,
-                    },
-                  ]}
-                >
-                  <TextInput
-                    placeholder="Enter a password"
-                    placeholderTextColor={Colors.placeHolderTextGray}
-                    keyboardType="default"
-                    autoCapitalize="none"
-                    secureTextEntry={confirmPasswordIsSecure}
-                    value={confirmPassword}
-                    onChangeText={(text) => setConfirmPassword(text)}
-                    maxLength={30}
-                    style={{ width: "90%" }}
-                    onFocus={() => setIsConfirmPasswordFocused(true)}
-                    onBlur={() => setIsConfirmPasswordFocused(false)}
-                  />
-                  <Ionicons
-                    name={
-                      confirmPasswordIsSecure
-                        ? "eye-off-outline"
-                        : "eye-outline"
-                    }
-                    color="black"
-                    size={20}
-                    onPress={() =>
-                      setConfirmPasswordIsSecure(!confirmPasswordIsSecure)
-                    }
-                  />
-                </View>
-
-                {(!passwordIsValid ||
-                  !confirmPasswordIsValid ||
-                  !passwordsMatch) &&
-                  isSubmitted && (
-                    <View style={styles.alertContainer}>
-                      <Ionicons
-                        name="alert-circle-outline"
-                        color={Colors.errorRed}
-                        size={20}
-                      />
-                      <Text style={styles.alertText}>{errorMessage}</Text>
-                    </View>
-                  )}
-              </View>
             </View>
-
-            <View style={styles.buttonContainer}>
-              <WideButton
-                title={isProcessing ? "Confirming..." : "Confirm"}
-                color="white"
-                // need to check if user's info matches to our database
-                onPress={ConfirmHandler}
-                display={isProcessing}
-              />
-              <TouchableOpacity
-                style={styles.simpleButton}
-                onPress={() => {
-                  Alert.alert(
-                    "Discard password changes?",
-                    "Your current password will not be changed.",
-                    [
-                      {
-                        text: "Cancel",
-                      },
-                      {
-                        text: "Continue",
-                        onPress: () => {
-                          navigation.navigate("ResetPW_request");
-                        },
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Text style={styles.simpleButtonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
+          )}
+          <View
+            style={[
+              !passwordIsValid && isSubmitted
+                ? styles.passwordFieldAlert
+                : styles.passwordField,
+              isPasswordFocused && {
+                borderWidth: 2,
+                borderColor: Colors.defaultBlue,
+              },
+            ]}
+          >
+            <TextInput
+              placeholder="Enter a password"
+              placeholderTextColor={Colors.placeHolderTextGray}
+              keyboardType="default"
+              autoCapitalize="none"
+              secureTextEntry={passwordIsSecure}
+              value={enteredPassword}
+              onChangeText={(text) => setEnteredPassword(text)}
+              maxLength={30}
+              style={{ width: "90%" }}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
+            />
+            <Ionicons
+              name={passwordIsSecure ? "eye-off-outline" : "eye-outline"}
+              color="black"
+              size={20}
+              onPress={() => setPasswordIsSecure(!passwordIsSecure)}
+            />
           </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+          {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
+            isSubmitted && (
+              <View style={styles.alertContainer}>
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
+                <Text style={styles.alertText}>{errorMessage}</Text>
+              </View>
+            )}
+        </View>
+
+        {/* confirm password form */}
+        <View style={styles.formContainer}>
+          <View>
+            <Text style={styles.fieldLabel}>
+              Confirm Password <Text style={styles.astarisk}>*</Text>
+            </Text>
+          </View>
+          <View
+            style={[
+              !confirmPasswordIsValid && isSubmitted
+                ? styles.passwordFieldAlert
+                : styles.passwordField,
+              isConfirmPasswordFocused && {
+                borderWidth: 2,
+                borderColor: Colors.defaultBlue,
+              },
+            ]}
+          >
+            <TextInput
+              placeholder="Enter a password"
+              placeholderTextColor={Colors.placeHolderTextGray}
+              keyboardType="default"
+              autoCapitalize="none"
+              secureTextEntry={confirmPasswordIsSecure}
+              value={confirmPassword}
+              onChangeText={(text) => setConfirmPassword(text)}
+              maxLength={30}
+              style={{ width: "90%" }}
+              onFocus={() => setIsConfirmPasswordFocused(true)}
+              onBlur={() => setIsConfirmPasswordFocused(false)}
+            />
+            <Ionicons
+              name={confirmPasswordIsSecure ? "eye-off-outline" : "eye-outline"}
+              color="black"
+              size={20}
+              onPress={() =>
+                setConfirmPasswordIsSecure(!confirmPasswordIsSecure)
+              }
+            />
+          </View>
+
+          {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
+            isSubmitted && (
+              <View style={styles.alertContainer}>
+                <Ionicons
+                  name="alert-circle-outline"
+                  color={Colors.errorRed}
+                  size={20}
+                />
+                <Text style={styles.alertText}>{errorMessage}</Text>
+              </View>
+            )}
+        </View>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <WideButton
+          title={isProcessing ? "Confirming..." : "Confirm"}
+          color="white"
+          // need to check if user's info matches to our database
+          onPress={ConfirmHandler}
+          display={isProcessing}
+        />
+        <TouchableOpacity
+          style={styles.simpleButton}
+          onPress={() => {
+            Alert.alert(
+              "Discard password changes?",
+              "Your current password will not be changed.",
+              [
+                {
+                  text: "Cancel",
+                },
+                {
+                  text: "Continue",
+                  onPress: () => {
+                    navigation.navigate("ResetPW_request");
+                  },
+                },
+              ]
+            );
+          }}
+        >
+          <Text style={styles.simpleButtonText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+    //     </ScrollView>
+    //   </TouchableWithoutFeedback>
+    // </KeyboardAvoidingView>
   );
 };
 

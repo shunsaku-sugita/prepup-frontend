@@ -1,5 +1,6 @@
 import {
   Image,
+  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -30,14 +31,17 @@ import {
 } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { AppContext } from "@/store/app-context";
+// import SigninBackgroundImage from "../../assets/images/SigninBackgroundImage";
+// import Svg, { Path } from "react-native-svg";
+// SigninBackgroundImage;
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SigninOutput = () => {
   const { fontsLoaded } = useContext(AppContext);
 
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("khushalkhnta4@gmail.com");
+  const [enteredPassword, setEnteredPassword] = useState("Hello@123");
 
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
@@ -190,24 +194,31 @@ const SigninOutput = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
-          <View style={styles.container}>
-            <View style={styles.imageContainer}>
-              <Image
-                source={require("../../assets/images/signin-background.png")}
-                style={styles.backgroundImage}
-              />
-              <Image
-                source={require("../../assets/images/PrepUp-Logo-COLORED.png")}
-                style={styles.logoImage}
-              />
-            </View>
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        <ImageBackground
+          source={require("../../assets/images/signin-background.png")}
+          style={styles.backgroundImage}
+        />
+        {/* <SigninBackgroundImage /> */}
+        {/* <SigninBackground width={360} height={360} /> */}
+        {/* <View style={styles.logoContainer}> */}
+        {/* <Image
+                  source={require("../../assets/images/PrepUp-Logo-COLORED.png")}
+                  style={styles.logoImage}
+                /> */}
+        {/* </View> */}
+      </View>
 
+      {/* input fields area */}
+      <KeyboardAvoidingView
+        style={{ flex: 0.6 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={100}
+        enabled={true}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View>
             {/* email field */}
             <View style={styles.formContainer}>
               <View style={styles.titleContainer}>
@@ -231,6 +242,7 @@ const SigninOutput = () => {
                   placeholderTextColor={Colors.placeHolderTextGray}
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  autoCorrect={false}
                   value={enteredEmail}
                   onChangeText={(text) => setEnteredEmail(text)}
                   onFocus={() => setIsEmailFocused(true)}
@@ -275,7 +287,7 @@ const SigninOutput = () => {
                   secureTextEntry={passwordIsSecure}
                   value={enteredPassword}
                   onChangeText={(text) => setEnteredPassword(text)}
-                  maxLength={30}
+                  maxLength={35}
                   style={{
                     width: "90%",
                   }}
@@ -300,59 +312,55 @@ const SigninOutput = () => {
                 </View>
               )}
             </View>
-
-            {/* buttons and link */}
-            <View style={styles.buttonsContainer}>
-              <WideButton
-                title="Sign In"
-                color="white"
-                // need to check if user's info matches to our database
-                onPress={signInHandler}
-              />
-              <TouchableOpacity
-                style={styles.googleButton}
-                onPress={GoogleSigninHandler}
-              >
-                <Image
-                  source={require("../../assets/images/google-signin-icon.png")}
-                />
-                <Text style={styles.googleButtonText}>
-                  Continue with Google
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.forgetPasswordButton}
-                onPress={() => navigation.navigate("ResetPW_request")}
-              >
-                <Text style={styles.forgetPasswordButtonText}>
-                  Forget Password
-                </Text>
-              </TouchableOpacity>
-              <View style={styles.signupTextContainer}>
-                <Text style={styles.signupText}>Don't have an account?</Text>
-                <TouchableOpacity
-                  style={styles.signupLinkButton}
-                  onPress={() => navigation.navigate("Registration")}
-                >
-                  <Text style={styles.signupLinkText}>Sign up</Text>
-                </TouchableOpacity>
-                <Text style={styles.signupText}>here</Text>
-              </View>
-            </View>
-
-            {/* tentative button for development purpose */}
-            <View style={styles.devButtonsContainer}>
-              <TouchableOpacity
-                style={styles.homeNavigationButton}
-                onPress={() => navigation.navigate("Category")}
-              >
-                <Text style={styles.homeNavigationText}>Home(Category)</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+
+      {/* buttons and link */}
+      <View style={styles.buttonsContainer}>
+        <WideButton
+          title="Sign In"
+          color="white"
+          // need to check if user's info matches to our database
+          onPress={signInHandler}
+        />
+        <TouchableOpacity
+          style={styles.googleButton}
+          onPress={GoogleSigninHandler}
+        >
+          <Image
+            source={require("../../assets/images/google-signin-icon.png")}
+          />
+          <Text style={styles.googleButtonText}>Continue with Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.forgetPasswordButton}
+          onPress={() => navigation.navigate("ResetPW_request")}
+        >
+          <Text style={styles.forgetPasswordButtonText}>Forget Password</Text>
+        </TouchableOpacity>
+        <View style={styles.signupTextContainer}>
+          <Text style={styles.signupText}>Don't have an account?</Text>
+          <TouchableOpacity
+            style={styles.signupLinkButton}
+            onPress={() => navigation.navigate("Registration")}
+          >
+            <Text style={styles.signupLinkText}>Sign up</Text>
+          </TouchableOpacity>
+          <Text style={styles.signupText}>here</Text>
+        </View>
+      </View>
+
+      {/* tentative button for development purpose */}
+      <View style={styles.devButtonsContainer}>
+        <TouchableOpacity
+          style={styles.homeNavigationButton}
+          onPress={() => navigation.navigate("Category")}
+        >
+          <Text style={styles.homeNavigationText}>Home(Category)</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -367,26 +375,28 @@ const styles = StyleSheet.create({
     rowGap: 12,
   },
   imageContainer: {
-    marginTop: 70,
-    marginBottom: 10,
-    width: 140,
-    height: 140,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    position: "relative",
   },
   backgroundImage: {
-    position: "absolute",
+    width: 360,
+    height: 360,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  logoImage: {
-    width: 110,
-    height: 110,
-    resizeMode: "contain",
-    marginBottom: 120,
-  },
+  // logoImage: {
+  //   width: 105,
+  //   height: 105,
+  //   resizeMode: "contain",
+  //   marginBottom: 20,
+  // },
   formContainer: {
     width: 340,
+    height: 70,
     rowGap: 4,
+    marginBottom: 10,
   },
   titleContainer: {
     flexDirection: "row",
@@ -449,7 +459,8 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Medium",
   },
   buttonsContainer: {
-    marginTop: 20,
+    flex: 0.8,
+    // marginTop: 20,
     alignItems: "center",
     rowGap: 10,
   },
@@ -470,7 +481,7 @@ const styles = StyleSheet.create({
     fontFamily: "Mulish-ExtraBold",
   },
   forgetPasswordButton: {
-    marginVertical: 15,
+    marginVertical: 10,
   },
   forgetPasswordButtonText: {
     fontSize: 16,
@@ -482,6 +493,7 @@ const styles = StyleSheet.create({
     columnGap: 6,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
   },
   signupText: {
     color: Colors.placeHolderTextGray,
