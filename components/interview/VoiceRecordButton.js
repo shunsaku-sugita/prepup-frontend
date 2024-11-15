@@ -40,8 +40,8 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference}`}
         strokeDashoffset={strokeDashoffset} // Use the reversed offset
-        transform={`rotate(265 ${radius } ${radius})`} // Rotate to make it appear to decrease clockwise
-        strokeLinecap="round"
+        transform={`rotate(270 ${radius } ${radius})`} // Rotate to make it appear to decrease clockwise
+        strokeLinecap="butt"
       />
       <View style={styles.containerStyle}>
       <Ionicons name={isRecording ? "stop-sharp" : "mic"} size={45} color={iconColor}
@@ -54,7 +54,7 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
 
 const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
   const [isRecording, setIsRecording] = useState(isRecord);
-  const [recordDuration, setRecordDuration] = useState(120);
+  const [recordDuration, setRecordDuration] = useState(60);
   const [intervalId, setIntervalId] = useState(0);
 
   useEffect(() => {
@@ -97,6 +97,8 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
         } else {
           clearInterval(id); // Stop interval at 0
           setIsRecording(false);
+          stopRecord(); // Automatically stop the recording
+        console.log("Time's up, stopping recording and transcribing...");
           return 0;
         }
       });
@@ -106,11 +108,17 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
   };
 
   const stopRecording = () => {
-    stopRecord()
+    if (isRecording) {
+      stopRecord(); // External function to stop actual recording
+      console.log("Recording stopped.");
+  
     setIsRecording(false);
     clearInterval(intervalId);
     setIntervalId(null);
-    setRecordDuration(120); // Reset the duration to 2 minutes if stopped
+    setRecordDuration(120); 
+  } else {
+    console.log("No active recording to stop.");
+  }// Reset the duration to 2 minutes if stopped
   };
 
   const handlePress = () => {
@@ -131,7 +139,7 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
       <TouchableOpacity onPress={handlePress} style={styles.touchable}>
         <CircularProgress
           key={recordDuration}
-          percentage={isRecording ? (120 - recordDuration / 120) * 100 : 100}
+          percentage={isRecording ? (120- recordDuration / 120) * 100 : 100}
           radius={45}
           strokeWidth={8}
           isRecording={isRecording}
