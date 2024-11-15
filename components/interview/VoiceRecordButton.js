@@ -5,42 +5,48 @@ import Svg, { Circle } from 'react-native-svg';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from "@/constants/Colors";
 
-const CircularProgress = ({ percentage, radius }) => {
-  const strokeWidth = 15;
-  const padding = 35;
+const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
+  const strokeWidth = 8;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
+  const strokeColor = isRecording ? Colors.defaultRed : Colors.successGreen;
+  const iconColor = isRecording ? Colors.defaultRed : "black";
+  
 
   
 
   return (
-    <Svg height={(radius + padding) * 2} 
-        width={(radius + padding) * 2}>
+    <Svg
+    viewBox={`0 0 ${radius * 2} ${radius * 2}`}
+      width={radius * 2 + 70} // Control size with this directly (e.g., radius * 2 + padding)
+      height={radius * 2 + 70}>
 
       {/* Background Circle */}
       <Circle  
         fill={Colors.disabledBlue} // Use Colors.disabledBlue for background
-        cx={radius + padding}
-        cy={radius + padding}
+        cx={radius }
+        cy={radius }
         r={radius - strokeWidth / 2}
         strokeWidth={strokeWidth}
       />
 
       {/* Progress Circle */}
       <Circle
-        stroke={Colors.successGreen}
+        stroke={strokeColor}
         fill="none"
-        cx={radius + padding}
-        cy={radius + padding}
+        cx={radius }
+        cy={radius}
         r={radius - strokeWidth / 2}
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference}`}
         strokeDashoffset={strokeDashoffset} // Use the reversed offset
-        transform={`rotate(260 ${radius + padding} ${radius + padding})`} // Rotate to make it appear to decrease clockwise
+        transform={`rotate(265 ${radius } ${radius})`} // Rotate to make it appear to decrease clockwise
         strokeLinecap="round"
       />
       <View style={styles.containerStyle}>
-        <Ionicons name="mic" size={45} color="black" style={styles.image} />
+      <Ionicons name={isRecording ? "stop-sharp" : "mic"} size={45} color={iconColor}
+      onPress={onPress}
+      style={styles.image} />
       </View>
     </Svg>
   );
@@ -62,7 +68,7 @@ const VoiceRecordButton = () => {
 
       // Start recording and initialize the duration
       setIsRecording(true);
-      // setRecordDuration(120); // Start at 120 seconds
+      setRecordDuration(120); // Start at 120 seconds
 
       // Start countdown immediately
       const id = setInterval(() => {
@@ -71,6 +77,7 @@ const VoiceRecordButton = () => {
             return prevDuration - 1; // Decrement by 1 every second
           } else {
             clearInterval(id); // Stop the interval at 0
+            setIsRecording(false);
             return 0; // Ensure it stays at 0
           }
         });
@@ -85,6 +92,7 @@ const VoiceRecordButton = () => {
   const stopRecording = () => {
     setIsRecording(false);
     clearInterval(intervalId);
+    setIntervalId(null);
     setRecordDuration(120); // Reset the duration to 2 minutes if stopped
   };
 
@@ -101,16 +109,20 @@ const VoiceRecordButton = () => {
 
   return (
     <View style={styles.container}>
+    <Text style={styles.pressText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
+    <View style={styles.micOuterContainer}>
       <TouchableOpacity onPress={handlePress} style={styles.touchable}>
-        <Text style={styles.recordingText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
         <CircularProgress
-      key={recordDuration}  
-      percentage={(120 - recordDuration / 120) * 100}  
-      radius={45}
-      strokeWidth={8}
-/>
+          key={recordDuration}
+          percentage={isRecording ? (120 - recordDuration / 120) * 100 : 100}
+          radius={45}
+          strokeWidth={8}
+          isRecording={isRecording}
+          onPress={handlePress}
+        />
       </TouchableOpacity>
     </View>
+  </View>
   );
 };
 
@@ -120,14 +132,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
   },
+  micOuterContainer: {
+    borderWidth: 18,
+    borderColor: "#dee3f4",
+    borderRadius: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10, // Add some padding if needed to create space around the circular progress
+  },
   touchable: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  recordingText: {
-    fontSize: 15,
-    fontWeight: 'normal',
-    textAlign: 'center',
+  pressText: {
+    fontSize: 16,
+    marginBottom: 2,
+    fontFamily: "MavenPro-SemiBold",
   },
   containerStyle: {
     position: 'relative',
