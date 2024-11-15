@@ -26,25 +26,25 @@ const StarMasterFeedbackAccordions = ({ starMasterFeedback }) => {
             value="a"
             titleText="Situation"
             contentText={situationFeedbackComment}
-            backgroundColorStyle={Colors.defaultYellow}
+            backgroundColorStyle={Colors.disabledYellow}
           />
           <StarMasterFeedbackCard
             value="b"
             titleText="Task"
             contentText={taskFeedbackComment}
-            backgroundColorStyle={Colors.defaultRed}
+            backgroundColorStyle={Colors.disabledRed}
           />
           <StarMasterFeedbackCard
             value="c"
             titleText="Action"
             contentText={actionFeedbackComment}
-            backgroundColorStyle={Colors.defaultBlue}
+            backgroundColorStyle={Colors.disabledBlue}
           />
           <StarMasterFeedbackCard
             value="d"
             titleText="Result"
             contentText={resultFeedbackComment}
-            backgroundColorStyle={Colors.onPressBeige}
+            backgroundColorStyle={Colors.defaultBeige}
           />
         </Accordion>
       </ScrollView>
