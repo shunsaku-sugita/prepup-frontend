@@ -43,13 +43,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    marginBottom: 16,
-    padding: 10,
+    paddingTop: 16,
+    paddingBottom: 8,
     borderBottomWidth: 1,
     borderColor: Colors.onPressYellow,
     alignContent: "center",
     alignItems: "center",
-    margin: 0,
   },
   subContainer: {
     width: "75%",

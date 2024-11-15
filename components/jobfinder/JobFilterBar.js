@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 3,
     borderBottomColor: Colors.onPressBlue,
-    marginBottom: 20,
+    marginBottom: 4,
   },
   tab: {
     flex: 1,
