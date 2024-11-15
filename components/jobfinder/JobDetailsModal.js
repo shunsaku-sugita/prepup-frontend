@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   innerContainer: {
+    flex: 1,
     width: "100%",
     height: 500,
     backgroundColor: "#fff",
@@ -225,6 +226,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonContainer: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
     flexDirection: "column",
     alignItems: "center",
     marginTop: 20,
@@ -233,8 +238,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     borderRadius: 6,
-    width: "100%",
+    width: 340,
     alignItems: "center",
+    borderWidth: 1.28,
+    borderColor: Colors.defaultBlue,
   },
   applyButtonText: {
     color: Colors.defaultBlue,
