@@ -191,14 +191,13 @@ const InterviewControllerIcons = ({
     </>
   ) : (
     <>
-      <Text style={styles.pressText} >
+      {/* <Text style={styles.pressText} >
         {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
       </Text>
       <View style={styles.micOuterContainer}>
         <TouchableOpacity 
           style={isRecording ? styles.micStopContainer : styles.micContainer}
         >
-          {/* <VoiceRecordButton /> */}
           <IconButton
             icon={isRecording ? "stop-sharp" : "mic"}
             color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
@@ -206,7 +205,9 @@ const InterviewControllerIcons = ({
             onPress={isRecording ? stopRecording : startRecording}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
+
+<VoiceRecordButton startRecord={startRecording} stopRecord={stopRecording} isRecord={isRecording}/>
     </>
   );
 
@@ -223,7 +224,7 @@ const InterviewControllerIcons = ({
       >
         {mainContents}
       </View>
-      {/* <VoiceRecordButton /> */}
+     
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={

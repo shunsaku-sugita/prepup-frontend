@@ -318,12 +318,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     flex: 1,
     padding: 10,
-    gap: 24,
+    gap: 15,
   },
   nameHorizontalContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16,
+    marginBottom: 10,
   },
   nameFormContainer: {
     width: "48%",

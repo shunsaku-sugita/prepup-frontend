@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import Svg, { Circle } from 'react-native-svg';
@@ -52,11 +52,18 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
   );
 };
 
-const VoiceRecordButton = () => {
-  const [isRecording, setIsRecording] = useState(false);
+const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
+  const [isRecording, setIsRecording] = useState(isRecord);
   const [recordDuration, setRecordDuration] = useState(120);
   const [intervalId, setIntervalId] = useState(0);
 
+  useEffect(() => {
+    if (isRecord) {
+      startAnimation()
+    // console.log("hello")
+    // setIsRecording(true)
+    }
+    }, [isRecord])
 
   const startRecording = async () => {
     try {
@@ -65,7 +72,17 @@ const VoiceRecordButton = () => {
         console.log('Permission to access microphone denied');
         return;
       }
+     
+      startRecord()
+      startAnimation()
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  };
 
+  const startAnimation = async () => {
+    try {
+    
       // Start recording and initialize the duration
       setIsRecording(true);
       setRecordDuration(120); // Start at 120 seconds
@@ -90,6 +107,7 @@ const VoiceRecordButton = () => {
   };
 
   const stopRecording = () => {
+    stopRecord()
     setIsRecording(false);
     clearInterval(intervalId);
     setIntervalId(null);
