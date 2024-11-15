@@ -16,6 +16,7 @@ import { analyzeAnswer } from "../services/api";
 import { Colors } from "@/constants/Colors";
 import LoadingOverlay from "../common/LoadingOverlay";
 import { AppContext } from "@/store/app-context";
+import Voice from "@react-native-voice/voice";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -39,6 +40,33 @@ const InterviewControllerIcons = ({
   const [intervalId, setIntervalId] = useState(0);
 
   const [transcription, setTranscription] = useState("Transcribing...");
+  const [currentWord, setCurrentWord] = useState("Transcript...");
+  const [isLiveTranscribeHidden, setIsLiveTranscribeHidden] = useState(true);
+
+  useEffect(() => {
+    Voice.onSpeechPartialResults = onSpeechPartialResults;
+    Voice.onSpeechResults = onSpeechResults;
+    Voice.onSpeechError = onSpeechError;
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, []);
+
+  const onSpeechPartialResults = (e) => {
+    const words = e.value[0].split(" ");
+    setCurrentWord(words[words.length - 1]); // Set to the last word spoken
+  };
+
+  const onSpeechResults = (e) => {
+    const words = e.value[0].split(" ");
+    setCurrentWord(words[words.length - 1]); // Set to the last word in the final result
+  };
+
+  const onSpeechError = (event) => {
+    console.error(event.error);
+    setListening(false);
+  };
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
@@ -82,13 +110,22 @@ const InterviewControllerIcons = ({
       setRecording(recording); // recorded audio file is stored locally
       setIsRecording(true);
       setRecordingUri(null);
+
+      try {
+        await Voice.start("en-IN");
+      } catch (e) {
+        console.error(e);
+      }
+      setIsLiveTranscribeHidden(false);
       console.log("Recording started");
     } catch (err) {
       console.error("Failed to start recording", err);
+      setIsLiveTranscribeHidden(true);
     }
   };
 
   const stopRecording = async () => {
+    setIsLiveTranscribeHidden(true);
     console.log("Stopping recording...");
     setRecording(undefined);
     if (recording) {
@@ -108,6 +145,12 @@ const InterviewControllerIcons = ({
         // Get and display transcription from audio uri
         const audioText = await transcribeAudio(uri);
         setTranscription(audioText);
+
+        try {
+          await Voice.stop();
+        } catch (e) {
+          console.error(e);
+        }
       } catch (error) {
         console.error("Failed to stop recording", error);
       }
@@ -206,6 +249,19 @@ const InterviewControllerIcons = ({
           />
         </TouchableOpacity>
       </View>
+      <View
+        style={[
+          styles.textOutercontainer,
+          { display: isLiveTranscribeHidden ? "none" : "flex" },
+        ]}
+      >
+        <View style={styles.textContainer}>
+          <Text style={styles.pressText} numberOfLines={1} ellipsizeMode="head">
+            {currentWord}
+          </Text>
+        </View>
+      </View>
+      {/* <Text style={styles.text}>Listening: {listening ? "Yes" : "No"}</Text> */}
     </>
   );
 
@@ -256,6 +312,14 @@ const InterviewControllerIcons = ({
 export default InterviewControllerIcons;
 
 const styles = StyleSheet.create({
+  textOutercontainer: {
+    flex: 1,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
   container: {
     flex: 6,
     alignItems: "center",
