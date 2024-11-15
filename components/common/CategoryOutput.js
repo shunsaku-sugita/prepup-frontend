@@ -8,11 +8,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text,
 } from "react-native";
 import Greeting from "./Greeting";
 import CategoryCardCustom from "./CategoryCardCustom";
 import CategoryCardDefault from "./CategoryCardDefault";
-import HeaderRightIcons from "./HeaderRightIcons";
 import TitleText from "./TitleText";
 import { getInterviewCategory, getProfile } from "../services/api";
 import { AppContext } from "@/store/app-context";
@@ -63,7 +63,10 @@ const CustomBottomTabs = () => {
 const CategoryOutput = () => {
   const { categories, setCategories } = useContext(AppContext);
   const [userName, setUserName] = useState("");
+  const [userInitials, setUserInitials] = useState("");
   const [customCategories, setCustomCategories] = useState([]);
+
+  const navigation = useNavigation();
 
   // fixed colors for default cards (limits 3)
   const defaultBackgroundColors = [
@@ -124,6 +127,7 @@ const CategoryOutput = () => {
         // load user data
         const userData = await getProfile();
         setUserName(userData.givenName);
+        setUserInitials(userData.initials);
       };
 
       loadCategories();
@@ -177,7 +181,12 @@ const CategoryOutput = () => {
       >
         <View style={styles.headerInnerContainer}>
           <Greeting userName={userName} />
-          <HeaderRightIcons color={Colors.backgroundDarkGray} />
+          <TouchableOpacity
+            style={styles.userIconContainer}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <Text style={styles.userIconText}>{userInitials}</Text>
+          </TouchableOpacity>
         </View>
       </LinearGradient>
 
@@ -303,5 +312,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginRight: 12,
     paddingBottom: 4,
+  },
+  userIconContainer: {
+    width: 24,
+    height: 24,
+    borderRadius: 15,
+    backgroundColor: '#1F1F1F',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  userIconText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12,
   },
 });
