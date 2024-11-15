@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     width: "75%",
-    paddingLeft: 40,
+    paddingLeft: 16,
+    paddingRight: 4,
     gap: 3,
   },
   title: {
