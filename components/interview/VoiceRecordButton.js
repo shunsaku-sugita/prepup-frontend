@@ -80,30 +80,29 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
     }
   };
 
-  const startAnimation = async () => {
-    try {
-    
-      // Start recording and initialize the duration
-      setIsRecording(true);
-      setRecordDuration(120); // Start at 120 seconds
-
-      // Start countdown immediately
-      const id = setInterval(() => {
-        setRecordDuration((prevDuration) => {
-          if (prevDuration > 0) {
-            return prevDuration - 1; // Decrement by 1 every second
-          } else {
-            clearInterval(id); // Stop the interval at 0
-            setIsRecording(false);
-            return 0; // Ensure it stays at 0
-          }
-        });
-      }, 1000);
-
-      setIntervalId(id);
-    } catch (err) {
-      console.error('Failed to start recording', err);
+  const startAnimation = () => {
+    // Clear any existing interval before starting a new one
+    if (intervalId) {
+      clearInterval(intervalId);
     }
+  
+    setIsRecording(true);
+    setRecordDuration(120); // Initialize duration
+  
+    // Start countdown
+    const id = setInterval(() => {
+      setRecordDuration((prevDuration) => {
+        if (prevDuration > 0) {
+          return prevDuration - 1; // Decrement by 1 every second
+        } else {
+          clearInterval(id); // Stop interval at 0
+          setIsRecording(false);
+          return 0;
+        }
+      });
+    }, 1000);
+  
+    setIntervalId(id);
   };
 
   const stopRecording = () => {
