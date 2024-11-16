@@ -207,7 +207,11 @@ const InterviewControllerIcons = ({
         </TouchableOpacity>
       </View> */}
 
-<VoiceRecordButton startRecord={startRecording} stopRecord={stopRecording} isRecord={isRecording}/>
+      <VoiceRecordButton
+        startRecord={startRecording}
+        stopRecord={stopRecording}
+        isRecord={isRecording}
+      />
     </>
   );
 
@@ -224,7 +228,7 @@ const InterviewControllerIcons = ({
       >
         {mainContents}
       </View>
-     
+
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={
