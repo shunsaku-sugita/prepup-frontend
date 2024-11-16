@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  Image,
 } from "react-native";
 import Greeting from "./Greeting";
 import CategoryCardCustom from "./CategoryCardCustom";
@@ -209,11 +210,11 @@ const CategoryOutput = () => {
           />
         </View>
         {/* Custom category cards (only if there are more than 3 categories) */}
-        {customCategories.length > 0 && (
+        <View style={styles.customTitleContainer}>
+          <TitleText text="Custom categories:" />
+        </View>
+        {customCategories.length > 0 ? (
           <View style={styles.bottomCardContainer}>
-            <View style={styles.titleContainer}>
-              <TitleText text="Custom categories:" />
-            </View>
             <FlatList
               data={customCategories} // display items from the 4th onward
               keyExtractor={(item, index) => item.categoryName + index + 3}
@@ -221,6 +222,16 @@ const CategoryOutput = () => {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             />
+          </View>
+        ) : (
+          <View style={styles.customPlaceholderContainer}>
+            <Image
+              source={require("../../assets/images/logo-gray.png")}
+              style={styles.graylogo}
+            />
+            <Text style={styles.customPlaceholderText}>
+              Your custom categories will go here!
+            </Text>
           </View>
         )}
       </ScrollView>
@@ -257,11 +268,14 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   bottomCardContainer: {
-    flex: 4,
+    flex: 3.5,
     paddingHorizontal: 18,
   },
   titleContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
+  },
+  customTitleContainer: {
+    paddingHorizontal: 21,
   },
   bottomTabContainer: {
     backgroundColor: "transparent",
@@ -317,14 +331,40 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 15,
-    backgroundColor: '#1F1F1F',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colors.backgroundDarkGray,
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 16,
   },
   userIconText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 12,
+  },
+  customPlaceholderContainer: {
+    marginHorizontal: 22,
+    width: "88.8%",
+    height: 200,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    // shadow for android
+    elevation: 3,
+    // shadow for iOS
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    shadowOpacity: 0.2,
+  },
+  graylogo: {
+    width: 57,
+    height: 70,
+  },
+  customPlaceholderText: {
+    fontSize: 16,
+    fontFamily: "MavenPro-SemiBold",
+    marginTop: 14,
+    color: Colors.placeHolderTextGray,
   },
 });
