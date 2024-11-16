@@ -90,7 +90,7 @@ const CreateCategoryModal = ({
           style={styles.textInput}
           onChangeText={textInputHandler}
           value={typedText}
-          placeholder="Enter a category title."
+          placeholder="Enter a category title"
           placeholderTextColor={Colors.placeHolderTextGray}
           keyboardType="default"
         />

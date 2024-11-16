@@ -88,16 +88,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 8,
     marginHorizontal: 4,
-    marginBottom: 14,
+    marginBottom: 16,
     minWidth: Platform.OS === "ios" ? 150 : 165,
     height: 112,
     // shadow for android
-    elevation: 3,
+    elevation: 4,
     // shadow for iOS
     shadowColor: Colors.textLightDarkGray,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    shadowOpacity: 0.25,
   },
   imageContainer: {
     flex: 6,
