@@ -61,8 +61,6 @@ const VoiceRecordButton = ({ startRecord, stopRecord, isRecord }) => {
   useEffect(() => {
     if (isRecord) {
       startAnimation();
-      // console.log("hello")
-      // setIsRecording(true)
     }
   }, [isRecord]);
 
@@ -146,7 +144,6 @@ const VoiceRecordButton = ({ startRecord, stopRecord, isRecord }) => {
             radius={45}
             strokeWidth={8}
             isRecording={isRecording}
-            onPress={handlePress}
           />
         </TouchableOpacity>
       </View>
