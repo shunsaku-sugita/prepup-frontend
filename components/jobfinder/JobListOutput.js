@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";
@@ -27,58 +27,46 @@ import { AppContext } from "@/store/app-context";
 
 const jobListOutput = () => {
   const { fontsLoaded } = useContext(AppContext);
-  if (!fontsLoaded) {
-    return null; // return null if fonts aren't loaded
-  }
+  const navigation = useNavigation();
+
   const [filterType, setFilterType] = useState(1);
   const [jobs, setJobs] = useState([]);
+  const [savedJobs, setSavedJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [isBookmarking, setIsBookmarking] = useState(false);
-  const [page, setPage] = useState(1);
-  const [savedJobs, setSavedJobs] = useState([]);
-  const [error, setError] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  const navigation = useNavigation();
-
   const getSavedJobs = async () => {
     try {
-      const savedJobsResponse = await fetchSavedJobs();
-      if (Array.isArray(savedJobsResponse)) {
-        setSavedJobs(savedJobsResponse);
-      } else {
-        setSavedJobs([]);
-      }
+      const response = await fetchSavedJobs();
+      setSavedJobs(Array.isArray(response) ? response : []);
     } catch (error) {
       console.error("Error fetching saved jobs:", error);
+      Toast.show({ type: "error", text1: "Failed to fetch saved jobs." });
     }
   };
 
-  const fetchJobsByKeywordEffect = async (page = 1) => {
+  const fetchAndUpdateJobs = async (page = 1) => {
     setIsLoading(true);
-    setError("");
-
     try {
-      let fetchedJobs = [];
-      if (!searchQuery) {
-        fetchedJobs = await fetchJobs(page);
-      } else {
-        fetchedJobs = await fetchJobsByKeyword(page, searchQuery);
-      }
+      const fetchedJobs = searchQuery
+        ? await fetchJobsByKeyword(page, searchQuery)
+        : await fetchJobs(page);
 
-      const updatedFetchedJobs = fetchedJobs.map((job) => {
-        const isSaved = savedJobs.some(
-          (savedJob) => savedJob.jobId === job.jobId
-        );
-        return { ...job, isSaved };
-      });
-      setJobs(updatedFetchedJobs);
-    } catch (err) {
-      console.error("Error fetching jobs:", err);
+      const updatedJobs = fetchedJobs.map((job) => ({
+        ...job,
+        isSaved: savedJobs.some((savedJob) => savedJob.jobId === job.jobId),
+      }));
+
+      setJobs((prevJobs) =>
+        page === 1 ? updatedJobs : [...prevJobs, ...updatedJobs]
+      );
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+      Toast.show({ type: "error", text1: "Failed to load jobs." });
     } finally {
       setIsLoading(false);
       if (initialLoading) setInitialLoading(false);
@@ -87,7 +75,7 @@ const jobListOutput = () => {
 
   const loadJobsAndSavedJobs = async () => {
     await getSavedJobs();
-    fetchJobsByKeywordEffect();
+    await fetchAndUpdateJobs();
   };
 
   useFocusEffect(
@@ -95,116 +83,47 @@ const jobListOutput = () => {
       if (initialLoading) {
         loadJobsAndSavedJobs();
       } else {
-        fetchJobsByKeywordEffect();
+        fetchAndUpdateJobs();
       }
-    }, [searchQuery, filterType])
+    }, [searchQuery, savedJobs])
   );
 
   const loadMoreJobs = async () => {
     if (isLoading) return;
-    setIsLoading(true);
-    try {
-      const nextPage = page + 1;
-      const newJobs = await fetchJobs(nextPage);
-
-      if (newJobs.length > 0) {
-        const uniqueNewJobs = newJobs.filter(
-          (newJob) => !jobs.some((job) => job.jobId === newJob.jobId)
-        );
-
-        if (uniqueNewJobs.length > 0) {
-          const updatedNewJobs = uniqueNewJobs.map((job) => {
-            const isSaved = savedJobs.some(
-              (savedJob) => savedJob.jobId === job.jobId
-            );
-            return { ...job, isSaved };
-          });
-          setJobs((prevJobs) => [...prevJobs, ...updatedNewJobs]);
-          setPage(nextPage);
-        }
-        if (uniqueNewJobs.length < 10) {
-          console.warn(
-            `Expected 10 jobs, but received ${uniqueNewJobs.length} jobs.`
-          );
-        }
-      }
-    } catch (error) {
-      console.error("Error loading more jobs:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    await fetchAndUpdateJobs(page + 1);
+    setPage((prevPage) => prevPage + 1);
   };
 
   const toggleBookmark = async (job) => {
-    const jobId = job.jobId;
-    const jobDetails = {
-      jobId: job.jobId,
-      title: job.title,
-      company: job.company,
-      companyInitial: job.companyInitial,
-      description: job.description,
-      createdDate: job.createdDate,
-      url: job.url,
-    };
-
-    const isAlreadySaved = savedJobs.some(
-      (savedJob) => savedJob.jobId === jobId
-    );
+    const isSaved = savedJobs.some((savedJob) => savedJob.jobId === job.jobId);
 
     try {
-      setIsBookmarking(true);
+      const updatedSavedJobs = isSaved
+        ? savedJobs.filter((savedJob) => savedJob.jobId !== job.jobId)
+        : [...savedJobs, job];
 
-      if (isAlreadySaved) {
-        await unbookmarkJob(jobId);
-        setSavedJobs((prevSavedJobs) =>
-          prevSavedJobs.filter((savedJob) => savedJob.jobId !== jobId)
-        );
+      setSavedJobs(updatedSavedJobs);
 
-        setJobs((prevJobs) =>
-          prevJobs.map((item) =>
-            item.jobId === jobId ? { ...item, isSaved: false } : item
-          )
-        );
+      await (isSaved ? unbookmarkJob(job.jobId) : bookmarkJob(job));
 
-        Toast.show({
-          type: "success",
-          text1: "Job removed from saved jobs",
-          text2: "",
-          position: "top",
-          autoHide: true,
-          visibilityTime: 3000,
-        });
-      } else {
-        await bookmarkJob(jobDetails);
-        setSavedJobs((prevSavedJobs) => [...prevSavedJobs, jobDetails]);
+      setJobs((prevJobs) =>
+        prevJobs.map((item) =>
+          item.jobId === job.jobId ? { ...item, isSaved: !isSaved } : item
+        )
+      );
 
-        setJobs((prevJobs) =>
-          prevJobs.map((item) =>
-            item.jobId === jobId ? { ...item, isSaved: true } : item
-          )
-        );
-
-        Toast.show({
-          type: "success",
-          text1: "Job added to saved jobs",
-          text2: "",
-          position: "top",
-          autoHide: true,
-          visibilityTime: 3000,
-        });
-      }
+      Toast.show({
+        type: "success",
+        text1: isSaved
+          ? "Removed from saved jobs"
+          : "Added to saved jobs",
+      });
     } catch (error) {
       console.error("Error updating bookmark:", error);
-      if (error.response) {
-        console.error("Server responded with:", error.response.data);
-      }
-
-      const rollbackJobs = jobs.map((item) =>
-        item.jobId === jobId ? { ...item, isSaved: isAlreadySaved } : item
-      );
-      setJobs(rollbackJobs);
-    } finally {
-      setIsBookmarking(false);
+      Toast.show({
+        type: "error",
+        text1: "Failed to update bookmark. Please try again.",
+      });
     }
   };
 
@@ -213,12 +132,21 @@ const jobListOutput = () => {
     setModalVisible(true);
   };
 
+  const filteredJobs = useMemo(
+    () =>
+      jobs.map((job) => ({
+        ...job,
+        isSaved: savedJobs.some((savedJob) => savedJob.jobId === job.jobId),
+      })),
+    [jobs, savedJobs]
+  );
+
+  if (!fontsLoaded) return null;
+
   return (
     <View style={{ flex: 1 }}>
-      {/* Show LoadingOverlay only during the first load */}
       {initialLoading && <LoadingOverlay />}
 
-      {/* Show content once initial loading is complete */}
       {!initialLoading && (
         <>
           <JobSearchBar
@@ -229,24 +157,19 @@ const jobListOutput = () => {
           />
           <JobFilterBar
             filterType={filterType}
-            changeFilter={(type) => setFilterType(type)}
+            changeFilter={setFilterType}
           />
 
           {filterType === 0 ? (
             savedJobs.length === 0 ? (
-              <Text style={styles.noSavedJobsText}>
-                You have no saved jobs.
-              </Text>
+              <Text style={styles.noSavedJobsText}>You have no saved jobs.</Text>
             ) : (
-              <SavedJobCard
-                data={savedJobs.filter((job) => job.title.toLowerCase())}
-                toggleBookmark={toggleBookmark}
-              />
+              <SavedJobCard data={savedJobs} toggleBookmark={toggleBookmark} />
             )
           ) : (
             <View style={styles.container}>
               <JobFilterLocationItem
-                data={jobs.filter((job) => job.title.toLowerCase())}
+                data={filteredJobs}
                 toggleBookmark={toggleBookmark}
                 handleJobPress={handleJobPress}
               />
@@ -282,8 +205,6 @@ const jobListOutput = () => {
           </View>
         </View>
       </Modal>
-
-      {/* Move Toast to the bottom of the component tree */}
     </View>
   );
 };
