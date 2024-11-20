@@ -221,12 +221,12 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 3,
-    width: 150,
-    height: 130,
+    width: Platform.OS === "ios" ? 160 : 165,
+    height: 120,
   },
   image: {
-    width: 150,
-    height: 130,
+    width: Platform.OS === "ios" ? 160 : 165,
+    height: 120,
     borderTopLeftRadius: 60,
     borderTopRightRadius: 8,
   },
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     justifyContent: "center",
     backgroundColor: "white",
-    width: 150,
+    width: Platform.OS === "ios" ? 160 : 165,
     height: 80,
     paddingBottom: 30,
     borderBottomRightRadius: 24,
@@ -272,6 +272,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "MavenPro-Bold",
     paddingHorizontal: 9,
-    paddingTop: 4,
   },
 });

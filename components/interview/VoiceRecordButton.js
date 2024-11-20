@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
-import Svg, { Circle } from 'react-native-svg';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Audio } from "expo-av";
+import Svg, { Circle } from "react-native-svg";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "@/constants/Colors";
 
 const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
@@ -11,21 +11,18 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
   const strokeColor = isRecording ? Colors.defaultRed : Colors.successGreen;
   const iconColor = isRecording ? Colors.defaultRed : "black";
-  
-
-  
 
   return (
     <Svg
-    viewBox={`0 0 ${radius * 2} ${radius * 2}`}
+      viewBox={`0 0 ${radius * 2} ${radius * 2}`}
       width={radius * 2 + 70} // Control size with this directly (e.g., radius * 2 + padding)
-      height={radius * 2 + 70}>
-
+      height={radius * 2 + 70}
+    >
       {/* Background Circle */}
-      <Circle  
+      <Circle
         fill={Colors.disabledBlue} // Use Colors.disabledBlue for background
-        cx={radius }
-        cy={radius }
+        cx={radius}
+        cy={radius}
         r={radius - strokeWidth / 2}
         strokeWidth={strokeWidth}
       />
@@ -34,49 +31,51 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
       <Circle
         stroke={strokeColor}
         fill="none"
-        cx={radius }
+        cx={radius}
         cy={radius}
         r={radius - strokeWidth / 2}
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference}`}
         strokeDashoffset={strokeDashoffset} // Use the reversed offset
-        transform={`rotate(270 ${radius } ${radius})`} // Rotate to make it appear to decrease clockwise
+        transform={`rotate(270 ${radius} ${radius})`} // Rotate to make it appear to decrease clockwise
         strokeLinecap="butt"
       />
       <View style={styles.containerStyle}>
-      <Ionicons name={isRecording ? "stop-sharp" : "mic"} size={45} color={iconColor}
-      onPress={onPress}
-      style={styles.image} />
+        <Ionicons
+          name={isRecording ? "stop-sharp" : "mic"}
+          size={45}
+          color={iconColor}
+          onPress={onPress}
+          style={styles.image}
+        />
       </View>
     </Svg>
   );
 };
 
-const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
+const VoiceRecordButton = ({ startRecord, stopRecord, isRecord }) => {
   const [isRecording, setIsRecording] = useState(isRecord);
   const [recordDuration, setRecordDuration] = useState(60);
   const [intervalId, setIntervalId] = useState(0);
 
   useEffect(() => {
     if (isRecord) {
-      startAnimation()
-    // console.log("hello")
-    // setIsRecording(true)
+      startAnimation();
     }
-    }, [isRecord])
+  }, [isRecord]);
 
   const startRecording = async () => {
     try {
       const { status } = await Audio.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access microphone denied');
+      if (status !== "granted") {
+        console.log("Permission to access microphone denied");
         return;
       }
-     
-      startRecord()
-      startAnimation()
+
+      startRecord();
+      startAnimation();
     } catch (err) {
-      console.error('Failed to start recording', err);
+      console.error("Failed to start recording", err);
     }
   };
 
@@ -85,10 +84,10 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
     if (intervalId) {
       clearInterval(intervalId);
     }
-  
+
     setIsRecording(true);
     setRecordDuration(120); // Initialize duration
-  
+
     // Start countdown
     const id = setInterval(() => {
       setRecordDuration((prevDuration) => {
@@ -98,12 +97,12 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
           clearInterval(id); // Stop interval at 0
           setIsRecording(false);
           stopRecord(); // Automatically stop the recording
-        console.log("Time's up, stopping recording and transcribing...");
+          console.log("Time's up, stopping recording and transcribing...");
           return 0;
         }
       });
     }, 1000);
-  
+
     setIntervalId(id);
   };
 
@@ -111,14 +110,14 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
     if (isRecording) {
       stopRecord(); // External function to stop actual recording
       console.log("Recording stopped.");
-  
-    setIsRecording(false);
-    clearInterval(intervalId);
-    setIntervalId(null);
-    setRecordDuration(120); 
-  } else {
-    console.log("No active recording to stop.");
-  }// Reset the duration to 2 minutes if stopped
+
+      setIsRecording(false);
+      clearInterval(intervalId);
+      setIntervalId(null);
+      setRecordDuration(120);
+    } else {
+      console.log("No active recording to stop.");
+    } // Reset the duration to 2 minutes if stopped
   };
 
   const handlePress = () => {
@@ -130,44 +129,45 @@ const VoiceRecordButton = ({startRecord, stopRecord, isRecord}) => {
   };
 
   const minutes = Math.floor(recordDuration / 60);
-  const seconds = (recordDuration % 60).toString().padStart(2, '0');
+  const seconds = (recordDuration % 60).toString().padStart(2, "0");
 
   return (
     <View style={styles.container}>
-    <Text style={styles.pressText}>{isRecording ? `${minutes}:${seconds}` : 'Press to answer!'}</Text>
-    <View style={styles.micOuterContainer}>
-      <TouchableOpacity onPress={handlePress} style={styles.touchable}>
-        <CircularProgress
-          key={recordDuration}
-          percentage={isRecording ? (120- recordDuration / 120) * 100 : 100}
-          radius={45}
-          strokeWidth={8}
-          isRecording={isRecording}
-          onPress={handlePress}
-        />
-      </TouchableOpacity>
+      <Text style={styles.pressText}>
+        {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
+      </Text>
+      <View style={styles.micOuterContainer}>
+        <TouchableOpacity onPress={handlePress} style={styles.touchable}>
+          <CircularProgress
+            key={recordDuration}
+            percentage={isRecording ? (120 - recordDuration / 120) * 100 : 100}
+            radius={45}
+            strokeWidth={8}
+            isRecording={isRecording}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
   },
   micOuterContainer: {
     borderWidth: 18,
     borderColor: "#dee3f4",
     borderRadius: 150,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 10, // Add some padding if needed to create space around the circular progress
   },
   touchable: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   pressText: {
     fontSize: 16,
@@ -175,15 +175,14 @@ const styles = StyleSheet.create({
     fontFamily: "MavenPro-SemiBold",
   },
   containerStyle: {
-    position: 'relative',
-    alignCenter: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-
+    position: "relative",
+    alignCenter: "center",
+    justifyContent: "center",
+    height: "100%",
+    width: "100%",
   },
   image: {
-    margin: 'auto',
+    margin: "auto",
   },
 });
 
