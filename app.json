@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ss0403.prepupfed"
+      "bundleIdentifier": "com.blanca.prepupfed"
     },
     "android": {
       "adaptiveIcon": {
