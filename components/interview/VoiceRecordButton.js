@@ -53,7 +53,12 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
   );
 };
 
-const VoiceRecordButton = ({ startRecord, stopRecord, isRecord }) => {
+const VoiceRecordButton = ({
+  startRecord,
+  stopRecord,
+  isRecord,
+  isLiveTranscribeHidden,
+}) => {
   const [isRecording, setIsRecording] = useState(isRecord);
   const [recordDuration, setRecordDuration] = useState(60);
   const [intervalId, setIntervalId] = useState(0);
@@ -132,7 +137,13 @@ const VoiceRecordButton = ({ startRecord, stopRecord, isRecord }) => {
   const seconds = (recordDuration % 60).toString().padStart(2, "0");
 
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        isLiveTranscribeHidden
+          ? styles.container
+          : [styles.container, { marginTop: 58, marginBottom: 10 }]
+      }
+    >
       <Text style={styles.pressText}>
         {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
       </Text>
@@ -163,7 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     alignItems: "center",
     justifyContent: "center",
-    padding: 10, // Add some padding if needed to create space around the circular progress
+    padding: 10,
   },
   touchable: {
     alignItems: "center",

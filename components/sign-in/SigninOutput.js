@@ -200,14 +200,6 @@ const SigninOutput = () => {
           source={require("../../assets/images/signin-background.png")}
           style={styles.backgroundImage}
         />
-        {/* <SigninBackgroundImage /> */}
-        {/* <SigninBackground width={360} height={360} /> */}
-        {/* <View style={styles.logoContainer}> */}
-        {/* <Image
-                  source={require("../../assets/images/PrepUp-Logo-COLORED.png")}
-                  style={styles.logoImage}
-                /> */}
-        {/* </View> */}
       </View>
 
       {/* input fields area */}
@@ -350,16 +342,6 @@ const SigninOutput = () => {
           <Text style={styles.signupText}>here</Text>
         </View>
       </View>
-
-      {/* tentative button for development purpose */}
-      <View style={styles.devButtonsContainer}>
-        <TouchableOpacity
-          style={styles.homeNavigationButton}
-          onPress={() => navigation.navigate("Category")}
-        >
-          <Text style={styles.homeNavigationText}>Home(Category)</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -386,12 +368,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  // logoImage: {
-  //   width: 105,
-  //   height: 105,
-  //   resizeMode: "contain",
-  //   marginBottom: 20,
-  // },
   formContainer: {
     width: 340,
     height: 70,
@@ -503,21 +479,5 @@ const styles = StyleSheet.create({
   signupLinkText: {
     color: Colors.lightBlack,
     fontFamily: "Roboto-Bold",
-  },
-  // tentative (delete)
-  devButtonsContainer: {
-    borderWidth: 1,
-    borderRadius: 6,
-    padding: 6,
-    columnGap: 20,
-    flexDirection: "row",
-  },
-  // homeNavigationButton: {},
-  homeNavigationText: {
-    textDecorationLine: "underline",
-  },
-  // onboardingNavigationButton: {},
-  onboardingNavigationText: {
-    textDecorationLine: "underline",
   },
 });

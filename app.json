@@ -9,9 +9,8 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "video": "./assets/videos/PrepUp-SplashScreen.mp4",
+      "resizeMode": "contain"
     },
     "ios": {
       "supportsTablet": true,

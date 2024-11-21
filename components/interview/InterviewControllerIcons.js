@@ -67,7 +67,6 @@ const InterviewControllerIcons = ({
 
   const onSpeechError = (event) => {
     console.error(event.error);
-    setListening(false);
   };
 
   useEffect(() => {
@@ -80,10 +79,20 @@ const InterviewControllerIcons = ({
   }, [sound]);
 
   const startRecording = async () => {
+    if (isRecording) {
+      console.log("Speech recognition already started!");
+      return; // Prevent starting again if already active
+    }
+
     try {
       setTranscription("Transcribing...");
       // Ask for permissions to access the microphone
-      await Audio.requestPermissionsAsync();
+      // await Audio.requestPermissionsAsync();
+      const { status } = await Audio.requestPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Microphone permissions not granted.");
+        return;
+      }
 
       // Prepare audio recording settings
       await Audio.setAudioModeAsync({
@@ -114,7 +123,7 @@ const InterviewControllerIcons = ({
       setRecordingUri(null);
 
       try {
-        await Voice.start("en-IN");
+        await Voice.start("en-US");
       } catch (e) {
         console.error(e);
       }
@@ -127,16 +136,20 @@ const InterviewControllerIcons = ({
   };
 
   const stopRecording = async () => {
-    setIsLiveTranscribeHidden(true);
     console.log("Stopping recording...");
-    setRecording(undefined);
+    if (!isRecording) return; // Prevent stopping if not recording
+
+    setIsRecording(false);
+    setIsLiveTranscribeHidden(true);
+
+    // setRecording(undefined);
     if (recording) {
       try {
         // Stops the recording and deallocates the recorder from memory
         const status = await recording.stopAndUnloadAsync();
         const uri = recording.getURI(); // Get the URI of the recorded file
         setRecordingUri(uri);
-        setIsRecording(false);
+        // setIsRecording(false);
 
         clearInterval(intervalId);
         setRecordDuration(120); // Reset the duration to 2 minutes if stopped
@@ -236,26 +249,11 @@ const InterviewControllerIcons = ({
     </>
   ) : (
     <>
-      {/* <Text style={styles.pressText} >
-        {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
-      </Text>
-      <View style={styles.micOuterContainer}>
-        <TouchableOpacity 
-          style={isRecording ? styles.micStopContainer : styles.micContainer}
-        >
-          <IconButton
-            icon={isRecording ? "stop-sharp" : "mic"}
-            color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
-            size={isRecording ? 35 : 50}
-            onPress={isRecording ? stopRecording : startRecording}
-          />
-        </TouchableOpacity>
-      </View> */}
-
       <VoiceRecordButton
         startRecord={startRecording}
         stopRecord={stopRecording}
         isRecord={isRecording}
+        isLiveTranscribeHidden={isLiveTranscribeHidden}
       />
 
       <View
@@ -265,7 +263,7 @@ const InterviewControllerIcons = ({
         ]}
       >
         <View style={styles.textContainer}>
-          <Text style={styles.pressText} numberOfLines={1} ellipsizeMode="head">
+          <Text style={styles.liveText} numberOfLines={1} ellipsizeMode="head">
             {transcript || partialTranscript}
           </Text>
         </View>
@@ -323,25 +321,30 @@ export default InterviewControllerIcons;
 const styles = StyleSheet.create({
   textOutercontainer: {
     flex: 1,
+    // backgroundColor: "#ddd",
   },
   textContainer: {
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
+  liveText: {
+    // paddingTop: 20,
+  },
   container: {
-    flex: 6,
+    flex: 5,
     alignItems: "center",
     width: "90%",
     marginBottom: 10,
     paddingHorizontal: 28,
   },
   mainContainer: {
-    flex: 5,
+    flex: 8,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 6,
-    marginBottom: 130,
+    marginBottom: 100,
+    width: "100%",
   },
   mainContainerWithScript: {
     flex: Platform.OS === "ios" ? 6.6 : 6.4,
@@ -373,6 +376,7 @@ const styles = StyleSheet.create({
     borderWidth: 18,
     borderColor: "#dee3f4",
     borderRadius: 150,
+    marginBottom: 30,
   },
   micContainer: {
     borderWidth: 15,
