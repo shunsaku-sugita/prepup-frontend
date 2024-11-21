@@ -40,6 +40,8 @@ const InterviewControllerIcons = ({
   const [intervalId, setIntervalId] = useState(0);
 
   const [transcription, setTranscription] = useState("Transcribing...");
+  const [transcript, setTranscript] = useState("");
+  const [partialTranscript, setPartialTranscript] = useState("");
   const [currentWord, setCurrentWord] = useState("Transcript...");
   const [isLiveTranscribeHidden, setIsLiveTranscribeHidden] = useState(true);
 
@@ -54,13 +56,13 @@ const InterviewControllerIcons = ({
   }, []);
 
   const onSpeechPartialResults = (e) => {
-    const words = e.value[0].split(" ");
-    setCurrentWord(words[words.length - 1]); // Set to the last word spoken
+    setPartialTranscript(e.value[0]);
+    // setCurrentWord(words[words.length - 1]); // Set to the last word spoken
   };
 
   const onSpeechResults = (e) => {
-    const words = e.value[0].split(" ");
-    setCurrentWord(words[words.length - 1]); // Set to the last word in the final result
+    // const words = e.value[0].split(" ");
+    setTranscript(e.value[0]); // Set to the last word in the final result
   };
 
   const onSpeechError = (event) => {
@@ -264,7 +266,7 @@ const InterviewControllerIcons = ({
       >
         <View style={styles.textContainer}>
           <Text style={styles.pressText} numberOfLines={1} ellipsizeMode="head">
-            {currentWord}
+            {transcript || partialTranscript}
           </Text>
         </View>
       </View>
