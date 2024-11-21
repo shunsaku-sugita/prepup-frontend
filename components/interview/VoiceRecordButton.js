@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   pressText: {
     fontSize: 16,
-    marginBottom: 2,
+    marginBottom: 6,
     fontFamily: "MavenPro-SemiBold",
   },
   containerStyle: {

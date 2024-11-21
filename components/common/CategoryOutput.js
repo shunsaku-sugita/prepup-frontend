@@ -328,9 +328,9 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   userIconContainer: {
-    width: 24,
-    height: 24,
-    borderRadius: 15,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: Colors.backgroundDarkGray,
     alignItems: "center",
     justifyContent: "center",
@@ -339,8 +339,8 @@ const styles = StyleSheet.create({
   userIconText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 12,
-    textAlign: 'center',
+    fontSize: 16,
+    textAlign: "center",
   },
   customPlaceholderContainer: {
     marginHorizontal: 22,

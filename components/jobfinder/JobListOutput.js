@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useContext, useMemo } from "react";
+import React, { useState, useContext, useMemo, useEffect } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";
@@ -29,19 +29,21 @@ const jobListOutput = () => {
   const { fontsLoaded } = useContext(AppContext);
   const navigation = useNavigation();
 
-  const [filterType, setFilterType] = useState(1);
+  const [filterType, setFilterType] = useState(1); // 1: All jobs, 0: Saved jobs
   const [jobs, setJobs] = useState([]);
   const [savedJobs, setSavedJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true); // Track if there are more jobs to load
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
   const getSavedJobs = async () => {
     try {
       const response = await fetchSavedJobs();
+      console.log("Saved Jobs Response:", response);
       setSavedJobs(Array.isArray(response) ? response : []);
     } catch (error) {
       console.error("Error fetching saved jobs:", error);
@@ -49,49 +51,55 @@ const jobListOutput = () => {
     }
   };
 
-  const fetchAndUpdateJobs = async (page = 1) => {
+  const fetchAndUpdateJobs = async (currentPage) => {
+    if (isLoading || !hasMore) return;
+
     setIsLoading(true);
+
     try {
       const fetchedJobs = searchQuery
-        ? await fetchJobsByKeyword(page, searchQuery)
-        : await fetchJobs(page);
+        ? await fetchJobsByKeyword(currentPage, searchQuery)
+        : await fetchJobs(currentPage);
 
-      const updatedJobs = fetchedJobs.map((job) => ({
-        ...job,
-        isSaved: savedJobs.some((savedJob) => savedJob.jobId === job.jobId),
-      }));
+      console.log("Fetched Jobs:", fetchedJobs);
 
-      setJobs((prevJobs) =>
-        page === 1 ? updatedJobs : [...prevJobs, ...updatedJobs]
-      );
+      if (fetchedJobs.length === 0) {
+        setHasMore(false); // No more jobs to load
+      } else {
+        const updatedJobs = fetchedJobs.map((job) => ({
+          ...job,
+          isSaved: savedJobs.some((savedJob) => savedJob.jobId === job.jobId),
+        }));
+
+        setJobs((prevJobs) => [...prevJobs, ...updatedJobs]);
+      }
     } catch (error) {
       console.error("Error fetching jobs:", error);
       Toast.show({ type: "error", text1: "Failed to load jobs." });
     } finally {
       setIsLoading(false);
-      if (initialLoading) setInitialLoading(false);
+      setInitialLoading(false);
     }
   };
 
   const loadJobsAndSavedJobs = async () => {
     await getSavedJobs();
-    await fetchAndUpdateJobs();
+    setJobs([]);
+    setPage(1);
+    setHasMore(true); // Reset pagination
+    await fetchAndUpdateJobs(1);
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      if (initialLoading) {
-        loadJobsAndSavedJobs();
-      } else {
-        fetchAndUpdateJobs();
-      }
-    }, [searchQuery, savedJobs])
+      loadJobsAndSavedJobs();
+    }, [searchQuery])
   );
 
   const loadMoreJobs = async () => {
-    if (isLoading) return;
-    await fetchAndUpdateJobs(page + 1);
-    setPage((prevPage) => prevPage + 1);
+    const nextPage = page + 1;
+    await fetchAndUpdateJobs(nextPage);
+    setPage(nextPage);
   };
 
   const toggleBookmark = async (job) => {
@@ -114,9 +122,7 @@ const jobListOutput = () => {
 
       Toast.show({
         type: "success",
-        text1: isSaved
-          ? "Removed from saved jobs"
-          : "Added to saved jobs",
+        text1: isSaved ? "Removed from saved jobs" : "Added to saved jobs",
       });
     } catch (error) {
       console.error("Error updating bookmark:", error);
@@ -155,35 +161,40 @@ const jobListOutput = () => {
             filterType={filterType}
             setFilterType={setFilterType}
           />
-          <JobFilterBar
-            filterType={filterType}
-            changeFilter={setFilterType}
-          />
+          <JobFilterBar filterType={filterType} changeFilter={setFilterType} />
 
           {filterType === 0 ? (
             savedJobs.length === 0 ? (
-              <Text style={styles.noSavedJobsText}>You have no saved jobs.</Text>
+              <Text style={styles.noSavedJobsText}>
+                You have no saved jobs.
+              </Text>
             ) : (
               <SavedJobCard data={savedJobs} toggleBookmark={toggleBookmark} />
             )
           ) : (
             <View style={styles.container}>
-              <JobFilterLocationItem
-                data={filteredJobs}
-                toggleBookmark={toggleBookmark}
-                handleJobPress={handleJobPress}
-              />
-              <TouchableOpacity
-                style={styles.loadMoreButton}
-                onPress={loadMoreJobs}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={styles.loadMoreButtonText}>Load More</Text>
-                )}
-              </TouchableOpacity>
+              {filteredJobs.length === 0 ? (
+                <Text style={styles.noJobsText}>No jobs found.</Text>
+              ) : (
+                <JobFilterLocationItem
+                  data={filteredJobs}
+                  toggleBookmark={toggleBookmark}
+                  handleJobPress={handleJobPress}
+                />
+              )}
+              {hasMore && (
+                <TouchableOpacity
+                  style={styles.loadMoreButton}
+                  onPress={loadMoreJobs}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={styles.loadMoreButtonText}>Load More</Text>
+                  )}
+                </TouchableOpacity>
+              )}
             </View>
           )}
         </>
@@ -246,6 +257,12 @@ const styles = StyleSheet.create({
     fontFamily: "Mulish-ExtraBold",
   },
   noSavedJobsText: {
+    fontSize: 16,
+    color: Colors.backgroundDarkGray,
+    textAlign: "center",
+    marginTop: 20,
+  },
+  noJobsText: {
     fontSize: 16,
     color: Colors.backgroundDarkGray,
     textAlign: "center",
