@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 4,
     marginHorizontal: 8,
+    width: "90%",
   },
   buttonText: {
     fontSize: 16,

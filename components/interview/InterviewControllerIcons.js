@@ -16,6 +16,7 @@ import { analyzeAnswer } from "../services/api";
 import { Colors } from "@/constants/Colors";
 import LoadingOverlay from "../common/LoadingOverlay";
 import { AppContext } from "@/store/app-context";
+import Voice from "@react-native-voice/voice";
 
 const InterviewControllerIcons = ({
   currentQuestionIndex,
@@ -39,6 +40,34 @@ const InterviewControllerIcons = ({
   const [intervalId, setIntervalId] = useState(0);
 
   const [transcription, setTranscription] = useState("Transcribing...");
+  const [transcript, setTranscript] = useState("");
+  const [partialTranscript, setPartialTranscript] = useState("");
+  const [currentWord, setCurrentWord] = useState("Transcript...");
+  const [isLiveTranscribeHidden, setIsLiveTranscribeHidden] = useState(true);
+
+  useEffect(() => {
+    Voice.onSpeechPartialResults = onSpeechPartialResults;
+    Voice.onSpeechResults = onSpeechResults;
+    Voice.onSpeechError = onSpeechError;
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, []);
+
+  const onSpeechPartialResults = (e) => {
+    setPartialTranscript(e.value[0]);
+    // setCurrentWord(words[words.length - 1]); // Set to the last word spoken
+  };
+
+  const onSpeechResults = (e) => {
+    // const words = e.value[0].split(" ");
+    setTranscript(e.value[0]); // Set to the last word in the final result
+  };
+
+  const onSpeechError = (event) => {
+    console.error(event.error);
+  };
 
   useEffect(() => {
     // Unload sound when component unmounts or when a new sound is played
@@ -50,10 +79,20 @@ const InterviewControllerIcons = ({
   }, [sound]);
 
   const startRecording = async () => {
+    if (isRecording) {
+      console.log("Speech recognition already started!");
+      return; // Prevent starting again if already active
+    }
+
     try {
       setTranscription("Transcribing...");
       // Ask for permissions to access the microphone
-      await Audio.requestPermissionsAsync();
+      // await Audio.requestPermissionsAsync();
+      const { status } = await Audio.requestPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Microphone permissions not granted.");
+        return;
+      }
 
       // Prepare audio recording settings
       await Audio.setAudioModeAsync({
@@ -82,22 +121,35 @@ const InterviewControllerIcons = ({
       setRecording(recording); // recorded audio file is stored locally
       setIsRecording(true);
       setRecordingUri(null);
+
+      try {
+        await Voice.start("en-US");
+      } catch (e) {
+        console.error(e);
+      }
+      setIsLiveTranscribeHidden(false);
       console.log("Recording started");
     } catch (err) {
       console.error("Failed to start recording", err);
+      setIsLiveTranscribeHidden(true);
     }
   };
 
   const stopRecording = async () => {
     console.log("Stopping recording...");
-    setRecording(undefined);
+    if (!isRecording) return; // Prevent stopping if not recording
+
+    setIsRecording(false);
+    setIsLiveTranscribeHidden(true);
+
+    // setRecording(undefined);
     if (recording) {
       try {
         // Stops the recording and deallocates the recorder from memory
         const status = await recording.stopAndUnloadAsync();
         const uri = recording.getURI(); // Get the URI of the recorded file
         setRecordingUri(uri);
-        setIsRecording(false);
+        // setIsRecording(false);
 
         clearInterval(intervalId);
         setRecordDuration(120); // Reset the duration to 2 minutes if stopped
@@ -108,6 +160,12 @@ const InterviewControllerIcons = ({
         // Get and display transcription from audio uri
         const audioText = await transcribeAudio(uri);
         setTranscription(audioText);
+
+        try {
+          await Voice.stop();
+        } catch (e) {
+          console.error(e);
+        }
       } catch (error) {
         console.error("Failed to stop recording", error);
       }
@@ -191,27 +249,26 @@ const InterviewControllerIcons = ({
     </>
   ) : (
     <>
-      {/* <Text style={styles.pressText} >
-        {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
-      </Text>
-      <View style={styles.micOuterContainer}>
-        <TouchableOpacity 
-          style={isRecording ? styles.micStopContainer : styles.micContainer}
-        >
-          <IconButton
-            icon={isRecording ? "stop-sharp" : "mic"}
-            color={isRecording ? Colors.defaultRed : Colors.backgroundDarkGray}
-            size={isRecording ? 35 : 50}
-            onPress={isRecording ? stopRecording : startRecording}
-          />
-        </TouchableOpacity>
-      </View> */}
-
       <VoiceRecordButton
         startRecord={startRecording}
         stopRecord={stopRecording}
         isRecord={isRecording}
+        isLiveTranscribeHidden={isLiveTranscribeHidden}
       />
+
+      <View
+        style={[
+          styles.textOutercontainer,
+          { display: isLiveTranscribeHidden ? "none" : "flex" },
+        ]}
+      >
+        <View style={styles.textContainer}>
+          <Text style={styles.liveText} numberOfLines={1} ellipsizeMode="head">
+            {transcript || partialTranscript}
+          </Text>
+        </View>
+      </View>
+      {/* <Text style={styles.text}>Listening: {listening ? "Yes" : "No"}</Text> */}
     </>
   );
 
@@ -262,19 +319,32 @@ const InterviewControllerIcons = ({
 export default InterviewControllerIcons;
 
 const styles = StyleSheet.create({
+  textOutercontainer: {
+    flex: 1,
+    // backgroundColor: "#ddd",
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  liveText: {
+    // paddingTop: 20,
+  },
   container: {
-    flex: 6,
+    flex: 5,
     alignItems: "center",
     width: "90%",
     marginBottom: 10,
     paddingHorizontal: 28,
   },
   mainContainer: {
-    flex: 5,
+    flex: 8,
     justifyContent: "center",
     alignItems: "center",
     rowGap: 6,
-    marginBottom: 130,
+    marginBottom: 100,
+    width: "100%",
   },
   mainContainerWithScript: {
     flex: Platform.OS === "ios" ? 6.6 : 6.4,
@@ -306,6 +376,7 @@ const styles = StyleSheet.create({
     borderWidth: 18,
     borderColor: "#dee3f4",
     borderRadius: 150,
+    marginBottom: 30,
   },
   micContainer: {
     borderWidth: 15,
