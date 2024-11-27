@@ -132,15 +132,14 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         </Text>
         <Text style={styles.descriptionLabel}>Description</Text>
         <Text style={styles.descriptionValue}>{job.description}</Text>
-        <View style={styles.buttonContainer}>
           {!loading && (
+             <View style={styles.buttonContainer}>
             <WideButton
               title="Practice Interview"
               color="white"
               size={24}
               onPress={handlePracticeInterview}
             />
-          )}
           <TouchableOpacity
             style={styles.applyButton}
             onPress={handleApplyPress}
@@ -148,6 +147,7 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
             <Text style={styles.applyButtonText}>Apply</Text>
           </TouchableOpacity>
         </View>
+          )}
 
         <Modal
           visible={webViewVisible}
