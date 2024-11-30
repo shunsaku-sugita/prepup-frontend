@@ -3,7 +3,6 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
@@ -15,7 +14,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "@/constants/Colors";
 import Toast from "react-native-toast-message";
-import { toastConfig } from "@/components/toast/ToastComponent";
 import { updateProfile, getProfile } from "@/components/services/api";
 import { AppContext } from "@/store/app-context";
 import { TouchableWithoutFeedback } from "react-native";

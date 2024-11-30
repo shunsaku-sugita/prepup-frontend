@@ -152,3 +152,5 @@ ios
 android
 
 .patch
+
++not-found.tsx

@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   buttonContainer: {
-    backgroundColor: "#eee",
     color: "white",
     padding: 8,
     borderWidth: 2,

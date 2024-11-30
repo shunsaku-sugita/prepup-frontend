@@ -6,10 +6,6 @@ import {
   TouchableOpacity,
   Alert,
   Image,
-  KeyboardAvoidingView,
-  Keyboard,
-  ScrollView,
-  Platform,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import WideButton from "@/components/common/WideButton";
@@ -20,7 +16,6 @@ import { Colors } from "@/constants/Colors";
 import { resetPassword } from "@/components/services/api";
 import { useRoute } from "@react-navigation/native";
 import { AppContext } from "@/store/app-context";
-import { TouchableWithoutFeedback } from "react-native";
 
 const ResetPW_CreatePWOutput = () => {
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -111,12 +106,6 @@ const ResetPW_CreatePWOutput = () => {
   }
 
   return (
-    // <KeyboardAvoidingView
-    //   style={{ flex: 1, backgroundColor: Colors.disabledBeige }}
-    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
-    // >
-    //   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    //     <ScrollView contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
     <View style={styles.container}>
       <View style={styles.mainContents}>
         <View style={styles.titleAndTextContainer}>
@@ -284,9 +273,6 @@ const ResetPW_CreatePWOutput = () => {
         </TouchableOpacity>
       </View>
     </View>
-    //     </ScrollView>
-    //   </TouchableWithoutFeedback>
-    // </KeyboardAvoidingView>
   );
 };
 

@@ -190,7 +190,6 @@ const StarMasterCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                // keyboardType="default"
                 value={answers.situation}
                 maxLength={500}
                 onChangeText={(text) => {
@@ -263,7 +262,6 @@ const StarMasterCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                // keyboardType="default"
                 value={answers.task}
                 maxLength={500}
                 onChangeText={(text) =>
@@ -332,7 +330,6 @@ const StarMasterCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                // keyboardType="default"
                 value={answers.action}
                 maxLength={500}
                 onChangeText={(text) =>
@@ -401,7 +398,6 @@ const StarMasterCarousel = ({
                 multiline={true}
                 placeholder="Write your answer here."
                 placeholderTextColor={Colors.placeHolderTextGray}
-                // keyboardType="default"
                 value={answers.result}
                 maxLength={500}
                 onChangeText={(text) =>
@@ -423,40 +419,6 @@ const StarMasterCarousel = ({
               />
             </View>
             <View style={styles.countNumberContainer}>
-              {/* <TouchableOpacity
-                style={
-                  resultAnswerRef.current
-                    ? styles.resetIconContainer
-                    : styles.resetIconContainerDiabled
-                }
-                disabled={!resultAnswerRef.current && true}
-                onPress={() => {
-                  Alert.alert(
-                    "Reset the Result text field?",
-                    "The process is unsaved, you will lose it.",
-                    [
-                      {
-                        text: "Cancel",
-                      },
-                      {
-                        text: "Confirm",
-                        onPress: () => {
-                          // clear the answer both in state and the ref
-                          setResultAnswer("");
-                          resultAnswerRef.current = "";
-                          // update the answers object
-                          setAnswers((prevAnswers) => ({
-                            ...prevAnswers,
-                            result: "", // Reset the specific field
-                          }));
-                        },
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Ionicons name="backspace-outline" color="white" size={24} />
-              </TouchableOpacity> */}
               <Text
                 style={[
                   styles.wordCountText,
@@ -536,16 +498,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 14,
   },
-  // resetIconContainer: {
-  //   backgroundColor: Colors.backgroundDarkGray,
-  //   borderRadius: 6,
-  //   padding: 6,
-  // },
-  // resetIconContainerDiabled: {
-  //   backgroundColor: Colors.placeHolderTextGray,
-  //   borderRadius: 6,
-  //   padding: 6,
-  // },
   wordCountText: {
     fontFamily: "MavenPro-Bold",
     fontSize: 15,

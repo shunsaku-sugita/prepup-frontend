@@ -100,10 +100,6 @@ const StarMasterOutput = () => {
     fetchStarQuestion();
   }, []);
 
-  // const handleFocus = (field) => {
-  //   setFocusedField(field); // Set the currently focused field
-  //   setModalVisible((prev) => ({ ...prev, [field]: true }));
-  // };
   const handleFocus = (field) => {
     if (focusedField !== field) {
       setModalVisible((prev) => ({ ...prev, [field]: true }));

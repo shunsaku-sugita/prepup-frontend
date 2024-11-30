@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import Octicons from "@expo/vector-icons/Octicons"; // full star
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5"; // half
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5"; // half, empty star
 import { Colors } from "@/constants/Colors";
 
 const StarMasterFeedbackRatingDisplay = ({ rating }) => {

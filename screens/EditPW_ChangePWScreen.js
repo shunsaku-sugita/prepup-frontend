@@ -4,7 +4,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Alert,
   Image,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
