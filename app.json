@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "prepup-fed",
-    "slug": "prepup-fed",
+    "name": "PrepUp",
+    "slug": "prepup",
     "version": "1.0.0",
     "orientation": "default",
     "newArchEnabled": true,
