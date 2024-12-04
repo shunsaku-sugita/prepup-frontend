@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useState,
+} from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import Svg, { Circle } from "react-native-svg";
@@ -53,114 +58,131 @@ const CircularProgress = ({ percentage, radius, isRecording, onPress }) => {
   );
 };
 
-const VoiceRecordButton = ({
-  startRecord,
-  stopRecord,
-  isRecord,
-  isLiveTranscribeHidden,
-}) => {
-  const [isRecording, setIsRecording] = useState(isRecord);
-  const [recordDuration, setRecordDuration] = useState(60);
-  const [intervalId, setIntervalId] = useState(0);
+const VoiceRecordButton = forwardRef(
+  ({ startRecord, stopRecord, isRecord, isLiveTranscribeHidden }, ref) => {
+    const [isRecording, setIsRecording] = useState(isRecord);
+    const [recordDuration, setRecordDuration] = useState(60);
+    const [intervalId, setIntervalId] = useState(0);
 
-  useEffect(() => {
-    if (isRecord) {
-      startAnimation();
-    }
-  }, [isRecord]);
-
-  const startRecording = async () => {
-    try {
-      const { status } = await Audio.requestPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access microphone denied");
-        return;
+    useEffect(() => {
+      if (isRecord) {
+        startAnimation();
       }
+    }, [isRecord]);
 
-      startRecord();
-      startAnimation();
-    } catch (err) {
-      console.error("Failed to start recording", err);
-    }
-  };
-
-  const startAnimation = () => {
-    // Clear any existing interval before starting a new one
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-
-    setIsRecording(true);
-    setRecordDuration(120); // Initialize duration
-
-    // Start countdown
-    const id = setInterval(() => {
-      setRecordDuration((prevDuration) => {
-        if (prevDuration > 0) {
-          return prevDuration - 1; // Decrement by 1 every second
-        } else {
-          clearInterval(id); // Stop interval at 0
-          setIsRecording(false);
-          stopRecord(); // Automatically stop the recording
-          console.log("Time's up, stopping recording and transcribing...");
-          return 0;
+    const startRecording = async () => {
+      try {
+        const { status } = await Audio.requestPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access microphone denied");
+          return;
         }
-      });
-    }, 1000);
 
-    setIntervalId(id);
-  };
-
-  const stopRecording = () => {
-    if (isRecording) {
-      stopRecord(); // External function to stop actual recording
-      console.log("Recording stopped.");
-
-      setIsRecording(false);
-      clearInterval(intervalId);
-      setIntervalId(null);
-      setRecordDuration(120);
-    } else {
-      console.log("No active recording to stop.");
-    } // Reset the duration to 2 minutes if stopped
-  };
-
-  const handlePress = () => {
-    if (isRecording) {
-      stopRecording();
-    } else {
-      startRecording();
-    }
-  };
-
-  const minutes = Math.floor(recordDuration / 60);
-  const seconds = (recordDuration % 60).toString().padStart(2, "0");
-
-  return (
-    <View
-      style={
-        isLiveTranscribeHidden
-          ? styles.container
-          : [styles.container, { marginTop: 58, marginBottom: 10 }]
+        startRecord();
+        startAnimation();
+      } catch (err) {
+        console.error("Failed to start recording", err);
       }
-    >
-      <Text style={styles.pressText}>
-        {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
-      </Text>
-      <View style={styles.micOuterContainer}>
-        <TouchableOpacity onPress={handlePress} style={styles.touchable}>
-          <CircularProgress
-            key={recordDuration}
-            percentage={isRecording ? (120 - recordDuration / 120) * 100 : 100}
-            radius={45}
-            strokeWidth={8}
-            isRecording={isRecording}
-          />
-        </TouchableOpacity>
+    };
+
+    const startAnimation = () => {
+      // Clear any existing interval before starting a new one
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+
+      setIsRecording(true);
+      setRecordDuration(120); // Initialize duration
+
+      // Start countdown
+      const id = setInterval(() => {
+        setRecordDuration((prevDuration) => {
+          if (prevDuration > 0) {
+            return prevDuration - 1; // Decrement by 1 every second
+          } else {
+            clearInterval(id); // Stop interval at 0
+            setIsRecording(false);
+            stopRecord(); // Automatically stop the recording
+            console.log("Time's up, stopping recording and transcribing...");
+            return 0;
+          }
+        });
+      }, 1000);
+
+      setIntervalId(id);
+    };
+
+    const stopRecording = () => {
+      if (isRecording) {
+        stopRecord(); // External function to stop actual recording
+        console.log("Recording stopped.");
+
+        setIsRecording(false);
+        clearInterval(intervalId);
+        setIntervalId(null);
+        setRecordDuration(120);
+      } else {
+        console.log("No active recording to stop.");
+      } // Reset the duration to 2 minutes if stopped
+    };
+
+    const stopRecordingSkip = () => {
+      if (isRecording) {
+        console.log("Recording stopped.");
+
+        setIsRecording(false);
+        clearInterval(intervalId);
+        setIntervalId(null);
+        setRecordDuration(120);
+      } else {
+        console.log("No active recording to stop.");
+      } // Reset the duration to 2 minutes if stopped
+    };
+
+    const handlePress = () => {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        startRecording();
+      }
+    };
+
+    const minutes = Math.floor(recordDuration / 60);
+    const seconds = (recordDuration % 60).toString().padStart(2, "0");
+
+    // Expose functions to parent via ref
+    useImperativeHandle(ref, () => ({
+      stopRecordingSkip,
+    }));
+
+    return (
+      <View
+        style={
+          isLiveTranscribeHidden
+            ? styles.container
+            : [styles.container, { marginTop: 58, marginBottom: 10 }]
+        }
+      >
+        <Text style={styles.pressText}>
+          {isRecording ? `${minutes}:${seconds}` : "Press to answer!"}
+        </Text>
+        <View style={styles.micOuterContainer}>
+          <TouchableOpacity onPress={handlePress} style={styles.touchable}>
+            <CircularProgress
+              key={recordDuration}
+              percentage={
+                isRecording ? (120 - recordDuration / 120) * 100 : 100
+              }
+              radius={45}
+              strokeWidth={8}
+              isRecording={isRecording}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
