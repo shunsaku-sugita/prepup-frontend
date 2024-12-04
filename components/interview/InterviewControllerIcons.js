@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import React, { useRef } from "react";
 import { useContext, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import {
@@ -44,6 +45,13 @@ const InterviewControllerIcons = ({
   const [partialTranscript, setPartialTranscript] = useState("");
   const [currentWord, setCurrentWord] = useState("Transcript...");
   const [isLiveTranscribeHidden, setIsLiveTranscribeHidden] = useState(true);
+  const voiceRecordButtonRef = useRef();
+
+  const handleSkipRecording = () => {
+    if (voiceRecordButtonRef.current) {
+      voiceRecordButtonRef.current.stopRecordingSkip(); // Call the child function
+    }
+  };
 
   useEffect(() => {
     Voice.onSpeechPartialResults = onSpeechPartialResults;
@@ -85,6 +93,9 @@ const InterviewControllerIcons = ({
     }
 
     try {
+      setTranscript("");
+      setPartialTranscript("");
+
       setTranscription("Transcribing...");
       // Ask for permissions to access the microphone
       // await Audio.requestPermissionsAsync();
@@ -163,6 +174,41 @@ const InterviewControllerIcons = ({
 
         try {
           await Voice.stop();
+          setTranscript("");
+          setPartialTranscript("");
+        } catch (e) {
+          console.error(e);
+        }
+      } catch (error) {
+        console.error("Failed to stop recording", error);
+      }
+    }
+  };
+
+  const stopRecordingOnNext = async () => {
+    console.log("Stopping recording...");
+    if (!isRecording) {
+      console.log("it is not recording");
+      return;
+    } // Prevent stopping if not recording
+
+    setIsRecording(false);
+
+    // setRecording(undefined);
+    if (recording) {
+      handleSkipRecording();
+      console.log("stopRecording on next : Are you recording ?");
+      try {
+        // Stops the recording and deallocates the recorder from memory
+        const status = await recording.stopAndUnloadAsync();
+
+        clearInterval(intervalId);
+        setRecordDuration(120); // Reset the duration to 2 minutes if stopped
+
+        try {
+          await Voice.stop();
+          setTranscript("");
+          setPartialTranscript("");
         } catch (e) {
           console.error(e);
         }
@@ -196,16 +242,27 @@ const InterviewControllerIcons = ({
   };
 
   const nextHandler = async () => {
+    //stop recording if it is not stoped || Reset recording
+    stopRecordingOnNext();
+    //clear the live transcribe
+
     if (recordingUri) {
       // Clear the recording URI for the next recording
       setRecordingUri(null);
     }
 
+    if (recordingUri && transcription && transcription !== "Transcribing...") {
+      setQuestionAnswerArray((prevArray) => [
+        ...prevArray,
+        { question: questionText, answer: transcription },
+      ]);
+    } else {
+      setQuestionAnswerArray((prevArray) => [
+        ...prevArray,
+        { question: questionText, answer: "" },
+      ]);
+    }
     // Save the current question and answer transcription to questionAnswerArray
-    setQuestionAnswerArray((prevArray) => [
-      ...prevArray,
-      { question: questionText, answer: transcription },
-    ]);
 
     // Proceed to the next question only if recordingUri has been stored
     if (currentQuestionIndex === interviewQuestions.length - 1) {
@@ -213,13 +270,30 @@ const InterviewControllerIcons = ({
       // if it's the last question, navigate to the feedback screen
       navigation.navigate("InterviewFeedback");
       // use analyzeAnswer endpoint to pass questionAnswerArray and get feedback
-      const analyzedFeedback = await analyzeAnswer([
-        ...questionAnswerArray,
-        { question: questionText, answer: transcription },
-      ]);
+
+      let analyzedFeedback;
+      if (
+        recordingUri &&
+        transcription &&
+        transcription !== "Transcribing..."
+      ) {
+        analyzedFeedback = await analyzeAnswer([
+          ...questionAnswerArray,
+          { question: questionText, answer: transcription },
+        ]);
+      } else {
+        analyzedFeedback = await analyzeAnswer([
+          ...questionAnswerArray,
+          { question: questionText, answer: "" },
+        ]);
+      }
+
       // if it's the last question, pass sets of questions/answers and get feedback
       setAnalyzedAnswer(analyzedFeedback);
       setLoading(false);
+
+      setTranscript("");
+      setPartialTranscript("");
     } else {
       if (currentQuestionIndex < interviewQuestions.length - 1) {
         // Increment the current question index
@@ -250,6 +324,7 @@ const InterviewControllerIcons = ({
   ) : (
     <>
       <VoiceRecordButton
+        ref={voiceRecordButtonRef}
         startRecord={startRecording}
         stopRecord={stopRecording}
         isRecord={isRecording}
@@ -302,11 +377,11 @@ const InterviewControllerIcons = ({
               ? styles.nextButton
               : styles.nextButtonDisabled
           }
-          disabled={
-            recordingUri && transcription && transcription !== "Transcribing..."
-              ? false
-              : true
-          }
+          // disabled={
+          //   recordingUri && transcription && transcription !== "Transcribing..."
+          //     ? false
+          //     : true
+          // }
           onPress={nextHandler}
         >
           <Text style={styles.nextText}>Next</Text>
