@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Modal,
-  ActivityIndicator,
   SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
@@ -132,22 +131,22 @@ const JobDetailsModal = ({ job, setModalVisible, navigation }) => {
         </Text>
         <Text style={styles.descriptionLabel}>Description</Text>
         <Text style={styles.descriptionValue}>{job.description}</Text>
-          {!loading && (
-             <View style={styles.buttonContainer}>
+        {!loading && (
+          <View style={styles.buttonContainer}>
             <WideButton
               title="Practice Interview"
               color="white"
               size={24}
               onPress={handlePracticeInterview}
             />
-          <TouchableOpacity
-            style={styles.applyButton}
-            onPress={handleApplyPress}
-          >
-            <Text style={styles.applyButtonText}>Apply</Text>
-          </TouchableOpacity>
-        </View>
-          )}
+            <TouchableOpacity
+              style={styles.applyButton}
+              onPress={handleApplyPress}
+            >
+              <Text style={styles.applyButtonText}>Apply</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <Modal
           visible={webViewVisible}
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
     left: 0,
     right: 0,

@@ -4,15 +4,12 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
 import { Modal, StyleSheet, View } from "react-native";
-// import { AppContext } from "../../store/app-context";
 import CreateCategoryModal from "./CreateCategoryModal";
-// import CreateCategorySuccessModal from "./CreateCategorySuccessModal";
 import { saveInterviewQuestions } from "../services/api";
 import { Colors } from "@/constants/Colors";
 import WideButton from "../common/WideButton";

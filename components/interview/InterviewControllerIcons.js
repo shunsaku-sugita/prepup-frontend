@@ -15,7 +15,6 @@ import InterviewAnswerScript from "./InterviewAnswerScript";
 import { transcribeAudio } from "../services/chatgpt/transcribeAudio";
 import { analyzeAnswer } from "../services/api";
 import { Colors } from "@/constants/Colors";
-import LoadingOverlay from "../common/LoadingOverlay";
 import { AppContext } from "@/store/app-context";
 import Voice from "@react-native-voice/voice";
 
@@ -338,12 +337,11 @@ const InterviewControllerIcons = ({
         ]}
       >
         <View style={styles.textContainer}>
-          <Text style={styles.liveText} numberOfLines={1} ellipsizeMode="head">
+          <Text numberOfLines={1} ellipsizeMode="head">
             {transcript || partialTranscript}
           </Text>
         </View>
       </View>
-      {/* <Text style={styles.text}>Listening: {listening ? "Yes" : "No"}</Text> */}
     </>
   );
 
@@ -396,15 +394,11 @@ export default InterviewControllerIcons;
 const styles = StyleSheet.create({
   textOutercontainer: {
     flex: 1,
-    // backgroundColor: "#ddd",
   },
   textContainer: {
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "flex-end",
-  },
-  liveText: {
-    // paddingTop: 20,
   },
   container: {
     flex: 5,

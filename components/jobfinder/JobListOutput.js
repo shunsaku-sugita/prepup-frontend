@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useContext, useMemo, useEffect } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import JobFilterBar from "./JobFilterBar";
 import SavedJobCard from "./SavedJobCard";

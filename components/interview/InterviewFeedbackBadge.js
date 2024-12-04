@@ -1,8 +1,5 @@
 import { Image, StyleSheet, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import TitleText from "../common/TitleText";
 import { useEffect, useState } from "react";
-import { Colors } from "@/constants/Colors";
 
 const InterviewFeedbackBadge = ({ analyzedAnswer }) => {
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -12,17 +9,47 @@ const InterviewFeedbackBadge = ({ analyzedAnswer }) => {
     const badgeText = analyzedAnswer.badge;
 
     if (badgeText === "Bronze") {
-      setBackgroundImage(<Image source={require("../../assets/images/bronze-background.png")} style={styles.badgeBackgroundImage} />);
-      setBadgeImage(<Image source={require("../../assets/images/bronze-badge.png")} style={styles.badgeImage} />);
+      setBackgroundImage(
+        <Image
+          source={require("../../assets/images/bronze-background.png")}
+          style={styles.badgeBackgroundImage}
+        />
+      );
+      setBadgeImage(
+        <Image
+          source={require("../../assets/images/bronze-badge.png")}
+          style={styles.badgeImage}
+        />
+      );
     } else if (badgeText === "Silver") {
-      setBackgroundImage(<Image source={require("../../assets/images/silver-background.png")} style={styles.badgeBackgroundImage} />);
-      setBadgeImage(<Image source={require("../../assets/images/silver-badge.png")} style={styles.badgeImage} />);
+      setBackgroundImage(
+        <Image
+          source={require("../../assets/images/silver-background.png")}
+          style={styles.badgeBackgroundImage}
+        />
+      );
+      setBadgeImage(
+        <Image
+          source={require("../../assets/images/silver-badge.png")}
+          style={styles.badgeImage}
+        />
+      );
     } else if (badgeText === "Gold") {
-      setBackgroundImage(<Image source={require("../../assets/images/gold-background.png")} style={styles.badgeBackgroundImage} />);
-      setBadgeImage(<Image source={require("../../assets/images/gold-badge.png")} style={styles.badgeImage} />);
+      setBackgroundImage(
+        <Image
+          source={require("../../assets/images/gold-background.png")}
+          style={styles.badgeBackgroundImage}
+        />
+      );
+      setBadgeImage(
+        <Image
+          source={require("../../assets/images/gold-badge.png")}
+          style={styles.badgeImage}
+        />
+      );
     }
-  }, [])
-  
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.badgeArea}>
@@ -49,7 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: 95,
   },
   badgeBackgroundImage: {
-    position: 'absolute',
+    position: "absolute",
     width: 400,
     height: 300,
   },

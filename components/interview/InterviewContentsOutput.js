@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import InterviewControllerIcons from "./InterviewControllerIcons";
 import HearableQuestions from "../common/HearableQuestions";
 import ProgressBar from "../common/ProgressBar";

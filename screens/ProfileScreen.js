@@ -2,7 +2,6 @@ import {
   Alert,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Switch,
   StyleSheet,
@@ -10,7 +9,6 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import WideButton from "@/components/common/WideButton";
 import {
   useNavigation,
   useRoute,

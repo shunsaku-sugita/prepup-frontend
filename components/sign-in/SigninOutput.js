@@ -4,7 +4,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -31,9 +30,6 @@ import {
 } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { AppContext } from "@/store/app-context";
-// import SigninBackgroundImage from "../../assets/images/SigninBackgroundImage";
-// import Svg, { Path } from "react-native-svg";
-// SigninBackgroundImage;
 
 WebBrowser.maybeCompleteAuthSession();
 

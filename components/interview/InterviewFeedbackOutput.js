@@ -1,9 +1,9 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import InterviewFeedbackBadge from "./InterviewFeedbackBadge";
 import InterviewFeedbackButtons from "./InterviewFeedbackButtons";
 import InterviewFeedbackAccordions from "./InterviewFeedbackAccordions";
 import { AppContext } from "@/store/app-context";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Colors } from "@/constants/Colors";
 
 const InterviewFeedbackOutput = ({ analyzedAnswer }) => {

@@ -171,9 +171,6 @@ const ResetPW_CreatePWScreen = () => {
               }
             />
           </View>
-          {/* <View>
-              <Text>Both passwords must match.</Text>
-            </View> */}
           {(!passwordIsValid || !confirmPasswordIsValid || !passwordsMatch) &&
             isSubmitted && (
               <View style={styles.alertContainer}>

@@ -1,5 +1,5 @@
-import { StyleSheet, View, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import React from "react";
 import { useNavigation } from "expo-router";
 import { Video } from "expo-av";
 import { Colors } from "@/constants/Colors";
