@@ -160,7 +160,7 @@ const VoiceRecordButton = forwardRef(
         style={
           isLiveTranscribeHidden
             ? styles.container
-            : [styles.container, { marginTop: 58, marginBottom: 10 }]
+            : [styles.container, { marginTop: 59, marginBottom: 10 }]
         }
       >
         <Text style={styles.pressText}>
