@@ -239,7 +239,7 @@ prepup-frontend/          # React Native Mobile App
 
 ### **Backend Setup**
 
-###**Checkout README.md of backend repository**: [prepup-backend](https://github.com/shunsaku-sugita/prepup-backend)
+**Checkout README.md of backend repository**: [prepup-backend](https://github.com/shunsaku-sugita/prepup-backend)
 
 ## 📊 Technical Highlights
 
@@ -331,7 +331,7 @@ This project was developed as a final term college project. While it's primarily
 
 ## 📞 Contact & Links
 
-- **Visit Official Site**: [prepup-frontend](https://prepup.ca/)
+- **Visit Official Site**: [prepup.ca](https://prepup.ca/)
 
 ---
 
